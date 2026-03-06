@@ -55,7 +55,7 @@
 <div class="min-h-screen flex flex-col">
   <header class="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between backdrop-blur-md bg-white/5 dark:bg-zinc-950/5">
     <a href="/" class="flex items-center gap-2">
-      <img src="/logo-navbar.png" alt="MeshChatX" class="h-10 w-auto" />
+      <img src="/logo-navbar.png" alt="MeshChatX" width="120" height="40" class="h-10 w-auto" />
       <span class="text-xl font-black tracking-tight text-zinc-900 dark:text-white">MeshChatX</span>
     </a>
 
@@ -68,7 +68,9 @@
 
     <div class="flex items-center gap-4">
       <button 
+        type="button"
         onclick={toggleDarkMode}
+        aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
         class="p-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all border border-transparent dark:border-zinc-800 hidden sm:inline-flex"
       >
         <Icon path={isDarkMode ? mdiWeatherSunny : mdiWeatherNight} size="20" />
@@ -131,40 +133,40 @@
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
       <div class="col-span-1 md:col-span-2">
         <div class="flex items-center gap-2 mb-4">
-          <img src="/logo-navbar.png" alt="MeshChatX" class="h-8 w-auto" />
+          <img src="/logo-navbar.png" alt="MeshChatX" width="96" height="32" class="h-8 w-auto" />
           <span class="text-lg font-black tracking-tight text-zinc-900 dark:text-white">MeshChatX</span>
         </div>
-        <p class="text-zinc-500 dark:text-zinc-400 max-w-sm leading-relaxed">
+        <p class="text-zinc-600 dark:text-zinc-400 max-w-sm leading-relaxed">
           Secure, resilient, and unstoppable communication over the Reticulum network.
         </p>
       </div>
       <div>
         <h4 class="font-bold mb-4 text-zinc-900 dark:text-white">Community</h4>
-        <ul class="space-y-2 text-zinc-500 dark:text-zinc-400 text-sm font-medium">
-          <li><a href="https://git.quad4.io/RNS-Things/MeshChatX" class="hover:text-blue-500 transition-colors text-zinc-500">Source (Gitea)</a></li>
-          <li><a href={changelogUrl} target="_blank" rel="noopener noreferrer" class="hover:text-blue-500 transition-colors text-zinc-500">Changelog</a></li>
-          <li><a href="/donate" class="hover:text-blue-500 transition-colors text-zinc-500">Donate</a></li>
-          <li><a href="/contact" class="hover:text-blue-500 transition-colors text-zinc-500">Contact</a></li>
+        <ul class="space-y-2 text-zinc-600 dark:text-zinc-400 text-sm font-medium">
+          <li><a href="https://git.quad4.io/RNS-Things/MeshChatX" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-zinc-600 dark:text-zinc-400">Source (Gitea)</a></li>
+          <li><a href={changelogUrl} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-zinc-600 dark:text-zinc-400">Changelog</a></li>
+          <li><a href="/donate" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-zinc-600 dark:text-zinc-400">Donate</a></li>
+          <li><a href="/contact" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-zinc-600 dark:text-zinc-400">Contact</a></li>
         </ul>
       </div>
       <div>
         <h4 class="font-bold mb-4 text-zinc-900 dark:text-white">Legal</h4>
-        <ul class="space-y-2 text-zinc-500 dark:text-zinc-400 text-sm font-medium">
+        <ul class="space-y-2 text-zinc-600 dark:text-zinc-400 text-sm font-medium">
           <li>
-            <a href="/license" class="hover:text-blue-500 transition-colors text-zinc-500 flex items-center gap-2">
+            <a href="/license" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-zinc-600 dark:text-zinc-400 flex items-center gap-2">
               License
-              <span class="text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-400 font-bold tracking-widest">MIT</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 font-bold tracking-widest">MIT</span>
             </a>
           </li>
         </ul>
       </div>
     </div>
     <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-900 text-center space-y-2">
-      <p class="text-xs text-zinc-500 dark:text-zinc-600 font-bold uppercase tracking-widest">
+      <p class="text-xs text-zinc-600 dark:text-zinc-400 font-bold uppercase tracking-widest">
         &copy; {new Date().getFullYear()} MeshChatX. Secure Decentralized Networking.
       </p>
-      <p class="text-xs text-zinc-500 dark:text-zinc-600">
-        MeshChatX is a <a href="https://quad4.io/" class="hover:text-blue-500 transition-colors underline">quad4</a> project.
+      <p class="text-xs text-zinc-600 dark:text-zinc-400">
+        MeshChatX is a <a href="https://quad4.io/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors underline text-zinc-600 dark:text-zinc-400">quad4</a> project.
       </p>
     </div>
   </footer>

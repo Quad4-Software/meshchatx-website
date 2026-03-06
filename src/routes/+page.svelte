@@ -123,32 +123,32 @@
       All-in-one Reticulum Client
     </h1>
     
-    <p class="text-lg text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto mb-6 font-medium">
-      MeshChatX is a highly custom fork of the original <a href="https://github.com/liamcottle/reticulum-meshchat" target="_blank" rel="noopener noreferrer" class="underline decoration-dashed decoration-zinc-400 dark:decoration-zinc-600 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">MeshChat by Liam Cottle</a>. We have added many features and improvements.
+    <p class="text-lg text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto mb-6 font-medium">
+      MeshChatX is a highly custom fork of the original <a href="https://github.com/liamcottle/reticulum-meshchat" target="_blank" rel="noopener noreferrer" class="underline decoration-dashed decoration-zinc-500 dark:decoration-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors text-zinc-700 dark:text-zinc-300">MeshChat by Liam Cottle</a>. We have added many features and improvements.
     </p>
 
     <div class="flex flex-wrap items-center justify-center gap-4 mb-12">
-      <a href="/download#macos" class="flex flex-col items-center gap-1 {data.platforms?.macos ? 'text-zinc-600 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-400 dark:text-zinc-600 cursor-default'}" title="macOS">
+      <a href="/download#macos" class="flex flex-col items-center gap-1 {data.platforms?.macos ? 'text-zinc-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-500 dark:text-zinc-500 cursor-default'}" title="macOS">
         <Icon path={mdiApple} size="28" />
         <span class="text-[10px] font-bold uppercase tracking-wider">macOS</span>
       </a>
-      <a href="/download#linux" class="flex flex-col items-center gap-1 {data.platforms?.linux ? 'text-zinc-600 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-400 dark:text-zinc-600 cursor-default'}" title="Linux">
+      <a href="/download#linux" class="flex flex-col items-center gap-1 {data.platforms?.linux ? 'text-zinc-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-500 dark:text-zinc-500 cursor-default'}" title="Linux">
         <Icon path={mdiLinux} size="28" />
         <span class="text-[10px] font-bold uppercase tracking-wider">Linux</span>
       </a>
-      <a href="/download#windows" class="flex flex-col items-center gap-1 {data.platforms?.windows ? 'text-zinc-600 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-400 dark:text-zinc-600 cursor-default'}" title="Windows">
+      <a href="/download#windows" class="flex flex-col items-center gap-1 {data.platforms?.windows ? 'text-zinc-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-500 dark:text-zinc-500 cursor-default'}" title="Windows">
         <Icon path={mdiMicrosoftWindows} size="28" />
         <span class="text-[10px] font-bold uppercase tracking-wider">Windows</span>
       </a>
-      <a href="/download#docker" class="flex flex-col items-center gap-1 {data.platforms?.docker ? 'text-zinc-600 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-400 dark:text-zinc-600 cursor-default'}" title="Docker">
+      <a href="/download#docker" class="flex flex-col items-center gap-1 {data.platforms?.docker ? 'text-zinc-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-500 dark:text-zinc-500 cursor-default'}" title="Docker">
         <Icon path={mdiDocker} size="28" />
         <span class="text-[10px] font-bold uppercase tracking-wider">Docker</span>
       </a>
-      <a href="/download#python" class="flex flex-col items-center gap-1 {data.platforms?.python ? 'text-zinc-600 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-400 dark:text-zinc-600 cursor-default'}" title="Python">
+      <a href="/download#python" class="flex flex-col items-center gap-1 {data.platforms?.python ? 'text-zinc-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-500 dark:text-zinc-500 cursor-default'}" title="Python">
         <Icon path={mdiLanguagePython} size="28" />
         <span class="text-[10px] font-bold uppercase tracking-wider">Python</span>
       </a>
-      <a href="/download#termux" class="flex flex-col items-center gap-1 {data.platforms?.termux ? 'text-zinc-600 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-400 dark:text-zinc-600 cursor-default'}" title="Termux">
+      <a href="/download#termux" class="flex flex-col items-center gap-1 {data.platforms?.termux ? 'text-zinc-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400' : 'text-zinc-500 dark:text-zinc-500 cursor-default'}" title="Termux">
         <Icon path={mdiAndroid} size="28" />
         <span class="text-[10px] font-bold uppercase tracking-wider">Termux</span>
       </a>
@@ -221,7 +221,7 @@
             >
               <div class="text-center px-2 py-4">
                 <Icon path={mdiMessageTextOutline} size="32" className="text-zinc-200 dark:text-zinc-800 mx-auto mb-2" />
-                <span class="text-[10px] text-zinc-400 dark:text-zinc-600 font-black tracking-widest uppercase block">Mobile — {showcaseTabs[activeShowcaseTab]}</span>
+                <span class="text-[10px] text-zinc-500 dark:text-zinc-500 font-black tracking-widest uppercase block">Mobile — {showcaseTabs[activeShowcaseTab]}</span>
               </div>
             </div>
           </div>
@@ -234,15 +234,15 @@
               <div class="size-2.5 sm:size-3 rounded-full bg-yellow-500/80 border border-yellow-500/40"></div>
               <div class="size-2.5 sm:size-3 rounded-full bg-green-500/80 border border-green-500/40"></div>
             </div>
-            <div class="flex-1 min-w-0 flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 ml-1 sm:ml-2 rounded-lg bg-zinc-200/60 dark:bg-zinc-800/60 text-zinc-500 dark:text-zinc-400 text-[10px] sm:text-xs font-medium overflow-hidden">
-              <span class="opacity-60 truncate block">meshchatx</span>
+            <div class="flex-1 min-w-0 flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 ml-1 sm:ml-2 rounded-lg bg-zinc-200/60 dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-400 text-[10px] sm:text-xs font-medium overflow-hidden">
+              <span class="opacity-80 truncate block">meshchatx</span>
             </div>
           </div>
           <div class="hidden md:flex gap-0.5 px-1 sm:px-2 pt-1.5 sm:pt-2 pb-0 bg-zinc-100 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800">
             {#each showcaseTabs as tab, i}
               <button
                 type="button"
-                class="px-3 sm:px-4 py-2.5 rounded-t-lg text-xs font-bold border-b-2 shrink-0 transition-colors {activeShowcaseTab === i ? 'border-blue-500 text-blue-600 dark:text-blue-400 bg-white dark:bg-zinc-950' : 'border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50'}"
+                class="px-3 sm:px-4 py-2.5 rounded-t-lg text-xs font-bold border-b-2 shrink-0 transition-colors {activeShowcaseTab === i ? 'border-blue-500 text-blue-600 dark:text-blue-400 bg-white dark:bg-zinc-950' : 'border-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-300 hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50'}"
                 onclick={() => (activeShowcaseTab = i)}
               >
                 {tab}
@@ -265,7 +265,7 @@
           <div class="aspect-video bg-zinc-50 dark:bg-zinc-950/50 flex items-center justify-center min-h-[240px] sm:min-h-[280px]" onclick={() => (showcaseMenuOpen = false)} role="presentation">
             <div class="text-center px-2">
               <Icon path={mdiMessageTextOutline} size="48" className="text-zinc-200 dark:text-zinc-800 mx-auto mb-2 sm:mb-4" />
-              <span class="text-zinc-400 dark:text-zinc-600 font-black tracking-widest uppercase text-xs sm:text-sm block truncate">Desktop — {showcaseTabs[activeShowcaseTab]} — Screenshot</span>
+              <span class="text-zinc-500 dark:text-zinc-500 font-black tracking-widest uppercase text-xs sm:text-sm block truncate">Desktop — {showcaseTabs[activeShowcaseTab]} — Screenshot</span>
             </div>
           </div>
         </div>
@@ -274,18 +274,18 @@
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-y-6 gap-x-12 max-w-3xl mx-auto text-left mb-16 border-t border-zinc-200 dark:border-zinc-800/50 pt-12">
       {#each capabilities as capability}
-        <div class="flex items-center gap-3 text-sm font-black uppercase tracking-widest min-w-0 {capability.comingSoon ? 'text-zinc-400 dark:text-zinc-500' : 'text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-blue-500'} transition-colors">
-          <div class="size-8 shrink-0 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-400 dark:text-zinc-500 [&>svg]:shrink-0">
+        <div class="flex items-center gap-3 text-sm font-black uppercase tracking-widest min-w-0 {capability.comingSoon ? 'text-zinc-500 dark:text-zinc-500' : 'text-zinc-600 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-blue-500'} transition-colors">
+          <div class="size-8 shrink-0 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 [&>svg]:shrink-0">
             <Icon path={capability.icon} size="16" />
           </div>
           <span class="min-w-0 break-words flex flex-col">
             {capability.name}
-            {#if capability.comingSoon}<span class="normal-case font-medium tracking-normal text-zinc-400 dark:text-zinc-600">(coming soon)</span>{/if}
+            {#if capability.comingSoon}<span class="normal-case font-medium tracking-normal text-zinc-500 dark:text-zinc-500">(coming soon)</span>{/if}
           </span>
         </div>
       {/each}
     </div>
-    <p class="text-sm font-bold text-zinc-500 dark:text-zinc-400 mb-12">+ so much more</p>
+    <p class="text-sm font-bold text-zinc-600 dark:text-zinc-400 mb-12">+ so much more</p>
 
     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
       <a href="/download" class="btn-primary group">
@@ -303,7 +303,7 @@
   <div class="max-w-7xl mx-auto">
     <div class="text-center mb-24">
       <h2 class="text-3xl md:text-4xl font-black tracking-tight mb-4 text-zinc-900 dark:text-white">Decentralized Infrastructure</h2>
-      <p class="text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto font-medium">Built for mesh networks and censorship resistance.</p>
+      <p class="text-zinc-600 dark:text-zinc-400 max-w-xl mx-auto font-medium">Built for mesh networks and censorship resistance.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -313,7 +313,7 @@
             <Icon path={feature.icon} size="24" />
           </div>
           <h3 class="text-xl font-black mb-3 text-zinc-900 dark:text-white">{feature.title}</h3>
-          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium mb-4">
+          <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-medium mb-4">
             {feature.description}
           </p>
           {#if feature.link}
@@ -364,7 +364,7 @@
       <div class="aspect-[4/5] max-w-sm w-full glass-card flex items-center justify-center">
         <div class="text-center px-4">
           <Icon path={mdiSecurity} size="48" className="text-zinc-200 dark:text-zinc-800 mx-auto mb-4" />
-          <span class="text-[10px] text-zinc-400 dark:text-zinc-600 font-black tracking-widest uppercase">Identity & Sync</span>
+          <span class="text-[10px] text-zinc-500 dark:text-zinc-500 font-black tracking-widest uppercase">Identity & Sync</span>
         </div>
       </div>
     </div>
