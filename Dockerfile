@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 USER root
-RUN npm install -g pnpm && pnpm install --frozen-lockfile && chown -R node:node /app
+RUN corepack enable pnpm && pnpm install --frozen-lockfile && chown -R node:node /app
 USER node
 
 COPY --chown=node:node . .
@@ -31,4 +31,4 @@ EXPOSE 8080
 
 USER node
 
-CMD ["node", "build/index.js"]
+CMD ["build/index.js"]
