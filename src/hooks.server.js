@@ -12,15 +12,23 @@ const CSP_DIRECTIVES = [
   "upgrade-insecure-requests"
 ].join('; ');
 
+const STATIC_CACHE_MAX_AGE = '31536000';
+
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
   const response = await resolve(event);
+
+  const pathname = event.url.pathname;
+  if (/\.(png|jpg|jpeg|gif|ico|svg|webp|woff2?|css|js)$/i.test(pathname)) {
+    response.headers.set('Cache-Control', `public, max-age=${STATIC_CACHE_MAX_AGE}, immutable`);
+  }
 
   const isSecure =
     event.url.protocol === 'https:' ||
     event.request.headers.get('x-forwarded-proto') === 'https';
 
   response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-XSS-Protection', '1; mode=block');
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set(
