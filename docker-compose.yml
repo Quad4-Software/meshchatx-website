@@ -1,0 +1,31 @@
+services:
+  web:
+    build: .
+    image: meshchatx-website:latest
+    user: "65532:65532"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+        reservations:
+          cpus: "0.25"
+          memory: 128M
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - HOST=0.0.0.0
+      - DOMAIN=${DOMAIN:-meshchatx.io}
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.meshchatx-web.rule=Host(`${DOMAIN:-meshchatx.io}`) && PathPrefix(`/`)"
+      - traefik.http.routers.meshchatx-web.entrypoints=web
+      - traefik.http.services.meshchatx-web.loadbalancer.server.port=8080
