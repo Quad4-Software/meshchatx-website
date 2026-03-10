@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
   import Icon from '$lib/components/Icon.svelte';
   import { site } from '$lib/config.js';
   import {
@@ -20,16 +19,14 @@
   } from '@mdi/js';
 
   let { data } = $props();
-  let activeTab = $state('linux');
-  let dockerPodmanTab = $state('docker');
-  let linuxTab = $state('appimage');
   let copied = $state(null);
   const selectedRelease = $derived(data.selectedRelease ?? {});
   const selectedChannel = $derived(data.selectedChannel ?? 'stable');
+  const publishedAtRelative = $derived(data.publishedAtRelative ?? null);
 
   function getChannelHref(channel) {
     const query = channel === 'prerelease' ? '?channel=prerelease' : '';
-    return `/download${query}#${activeTab}`;
+    return `/download${query}`;
   }
 
   function getTabHref(tabId) {
@@ -67,53 +64,6 @@
     { id: 'python', label: 'Python', icon: mdiLanguagePython },
     { id: 'termux', label: 'Termux', icon: mdiAndroid }
   ];
-
-  function formatRelativeTime(publishedAt) {
-    if (!publishedAt) return null;
-    const date = new Date(publishedAt);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now - date) / 1000);
-
-    if (diffInSeconds < 60) return `${diffInSeconds} seconds ago`;
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    if (diffInMinutes < 60) return `${diffInMinutes} minute${diffInMinutes === 1 ? '' : 's'} ago`;
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `${diffInHours} hour${diffInHours === 1 ? '' : 's'} ago`;
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 30) return `${diffInDays} day${diffInDays === 1 ? '' : 's'} ago`;
-    const diffInMonths = Math.floor(diffInDays / 30);
-    if (diffInMonths < 12) return `${diffInMonths} month${diffInMonths === 1 ? '' : 's'} ago`;
-    const diffInYears = Math.floor(diffInMonths / 12);
-    return `${diffInYears} year${diffInYears === 1 ? '' : 's'} ago`;
-  }
-
-  function detectPlatform() {
-    if (typeof navigator === 'undefined') return 'linux';
-    const ua = navigator.userAgent.toLowerCase();
-    const platform = navigator.platform?.toLowerCase() ?? '';
-    if (ua.includes('win') || platform.includes('win32') || platform.includes('win64')) return 'windows';
-    if (ua.includes('mac') || platform.includes('mac')) return 'macos';
-    if (ua.includes('linux') || platform.includes('linux')) return 'linux';
-    return 'linux';
-  }
-
-  function setTabFromHash() {
-    const hash = typeof window !== 'undefined' ? window.location.hash.slice(1) : '';
-    if (hash && TABS.some((t) => t.id === hash)) {
-      activeTab = hash;
-    } else {
-      const platform = detectPlatform();
-      if (TABS.some((t) => t.id === platform)) {
-        activeTab = platform;
-      }
-    }
-  }
-
-  onMount(() => {
-    setTabFromHash();
-    window.addEventListener('popstate', setTabFromHash);
-    return () => window.removeEventListener('popstate', setTabFromHash);
-  });
 
   function copyToClipboard(text, id) {
     navigator.clipboard?.writeText(text).then(() => {
@@ -160,9 +110,9 @@
           {#if selectedRelease.releaseUrl}
             <a href={selectedRelease.releaseUrl} target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">All releases</a>
           {/if}
-          {#if selectedRelease.publishedAt}
+          {#if publishedAtRelative}
             <span class="text-emerald-600 dark:text-emerald-500 text-sm">
-              {formatRelativeTime(selectedRelease.publishedAt)}
+              {publishedAtRelative}
             </span>
           {/if}
           {#if data.hasPreRelease}
@@ -196,10 +146,7 @@
       {#each TABS as tab}
         <a
           href={getTabHref(tab.id)}
-          class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all {activeTab === tab.id
-            ? 'bg-blue-600 text-white'
-            : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'}"
-          onclick={(e) => { e.preventDefault(); activeTab = tab.id; history.replaceState(null, '', getTabHref(tab.id)); }}
+          class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm transition-all bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:bg-blue-100 dark:hover:bg-blue-950/30"
         >
           <Icon path={tab.icon} size="18" />
           {tab.label}
@@ -208,8 +155,7 @@
     </div>
 
     <div class="space-y-8">
-      {#if activeTab === 'macos'}
-        <div id="macos" class="glass-card p-8">
+      <section id="macos" class="glass-card p-8">
           <h2 class="text-xl font-black text-zinc-900 dark:text-white mb-2 flex items-center gap-2">
             <Icon path={mdiApple} size="24" />
             macOS
@@ -219,72 +165,20 @@
           <p class="text-zinc-500 dark:text-zinc-400 text-sm">
             For now you can use <a href={getTabHref('python')} class="text-blue-600 dark:text-blue-400 hover:underline font-bold">Python</a> or <a href={getTabHref('docker')} class="text-blue-600 dark:text-blue-400 hover:underline font-bold">Docker</a>.
           </p>
-        </div>
-      {/if}
+        </section>
 
-      {#if activeTab === 'linux'}
-        <div id="linux" class="glass-card p-8">
+      <section id="linux" class="glass-card p-8">
           <h2 class="text-xl font-black text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
             Linux
             <span class="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest ml-auto">AppImage and DEB: AMD64 / ARM64, RPM: AMD64</span>
           </h2>
 
-          <!-- Sub-tabs for Linux -->
-          <div class="flex flex-wrap gap-2 mb-8">
-            <button
-              type="button"
-              class="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all {linuxTab === 'appimage'
-                ? 'bg-blue-600 text-white'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'}"
-              onclick={() => (linuxTab = 'appimage')}
-            >
+          <details class="mb-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden" open>
+            <summary class="list-none px-4 py-3 font-bold text-sm cursor-pointer bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 [&::-webkit-details-marker]:hidden flex items-center gap-2">
               <Icon path={mdiPackageVariant} size="16" />
               AppImage
-            </button>
-            <button
-              type="button"
-              class="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all {linuxTab === 'debian'
-                ? 'bg-purple-600 text-white'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'}"
-              onclick={() => (linuxTab = 'debian')}
-            >
-              <Icon path={mdiCubeOutline} size="16" />
-              Debian (.deb)
-            </button>
-            <button
-              type="button"
-              class="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all {linuxTab === 'rpm'
-                ? 'bg-indigo-600 text-white'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'}"
-              onclick={() => (linuxTab = 'rpm')}
-            >
-              <Icon path={mdiPackageVariant} size="16" />
-              RPM (.rpm)
-            </button>
-            <button
-              type="button"
-              class="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all {linuxTab === 'arch'
-                ? 'bg-cyan-600 text-white'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'}"
-              onclick={() => (linuxTab = 'arch')}
-            >
-              <Icon path={mdiArch} size="16" />
-              Arch
-            </button>
-            <button
-              type="button"
-              class="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all {linuxTab === 'source'
-                ? 'bg-emerald-600 text-white'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'}"
-              onclick={() => (linuxTab = 'source')}
-            >
-              <Icon path={mdiSourceCommit} size="16" />
-              From Source
-            </button>
-          </div>
-
-          {#if linuxTab === 'appimage'}
-            <div class="space-y-6">
+            </summary>
+            <div class="p-4 pt-2 space-y-6 border-t border-zinc-200 dark:border-zinc-800">
               <p class="text-zinc-500 dark:text-zinc-400">Portable build, no package manager required. Download the architecture you need.</p>
               <div class="flex flex-wrap gap-4">
                 {#if selectedRelease.appImageAmd64Url}
@@ -313,8 +207,14 @@
 ./MeshChatX-*.AppImage</pre>
               </div>
             </div>
-          {:else if linuxTab === 'debian'}
-            <div class="space-y-6">
+          </details>
+
+          <details class="mb-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+            <summary class="list-none px-4 py-3 font-bold text-sm cursor-pointer bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 [&::-webkit-details-marker]:hidden flex items-center gap-2">
+              <Icon path={mdiCubeOutline} size="16" />
+              Debian (.deb)
+            </summary>
+            <div class="p-4 pt-2 space-y-6 border-t border-zinc-200 dark:border-zinc-800">
               <p class="text-zinc-500 dark:text-zinc-400">Debian and Ubuntu package builds for both AMD64 and ARM64.</p>
               <div class="flex flex-wrap gap-4">
                 {#if selectedRelease.debAmd64Url}
@@ -345,8 +245,14 @@ sudo dpkg -i MeshChatX-*.deb
 sudo apt -f install</pre>
               </div>
             </div>
-          {:else if linuxTab === 'rpm'}
-            <div class="space-y-6">
+          </details>
+
+          <details class="mb-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+            <summary class="list-none px-4 py-3 font-bold text-sm cursor-pointer bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 [&::-webkit-details-marker]:hidden flex items-center gap-2">
+              <Icon path={mdiPackageVariant} size="16" />
+              RPM (.rpm)
+            </summary>
+            <div class="p-4 pt-2 space-y-6 border-t border-zinc-200 dark:border-zinc-800">
               <p class="text-zinc-500 dark:text-zinc-400">RPM package for 64-bit x86 systems.</p>
               <div class="flex flex-wrap gap-4">
                 {#if selectedRelease.rpmAmd64Url}
@@ -365,8 +271,14 @@ sudo apt -f install</pre>
 sudo zypper install ./MeshChatX-*.rpm</pre>
               </div>
             </div>
-          {:else if linuxTab === 'arch'}
-            <div class="space-y-6">
+          </details>
+
+          <details class="mb-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+            <summary class="list-none px-4 py-3 font-bold text-sm cursor-pointer bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 [&::-webkit-details-marker]:hidden flex items-center gap-2">
+              <Icon path={mdiArch} size="16" />
+              Arch
+            </summary>
+            <div class="p-4 pt-2 space-y-6 border-t border-zinc-200 dark:border-zinc-800">
               <p class="text-zinc-500 dark:text-zinc-400">Build and install manually using our PKGBUILD. This method handles dependencies and integrates with <code>pacman</code>.</p>
               
               <div class="space-y-4">
@@ -388,8 +300,14 @@ cd MeshChatX/packaging/arch</pre>
                 </a>
               </div>
             </div>
-          {:else if linuxTab === 'source'}
-            <div class="space-y-6">
+          </details>
+
+          <details class="mb-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+            <summary class="list-none px-4 py-3 font-bold text-sm cursor-pointer bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 [&::-webkit-details-marker]:hidden flex items-center gap-2">
+              <Icon path={mdiSourceCommit} size="16" />
+              From Source
+            </summary>
+            <div class="p-4 pt-2 space-y-6 border-t border-zinc-200 dark:border-zinc-800">
               <p class="text-zinc-500 dark:text-zinc-400">If you want to run MeshChatX from the source code locally:</p>
               
               <div class="space-y-4">
@@ -414,12 +332,10 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
                 </div>
               </div>
             </div>
-          {/if}
-        </div>
-      {/if}
+          </details>
+        </section>
 
-      {#if activeTab === 'windows'}
-        <div id="windows" class="glass-card p-8">
+      <section id="windows" class="glass-card p-8">
           <h2 class="text-xl font-black text-zinc-900 dark:text-white mb-2 flex items-center gap-2">
             <Icon path={mdiMicrosoftWindows} size="24" />
             Windows 10 / 11
@@ -447,50 +363,19 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
           {#if !selectedRelease.winInstallerUrl && !selectedRelease.winPortableUrl}
             <span class="text-zinc-500 dark:text-zinc-400 text-sm">No Windows assets in latest release.</span>
           {/if}
-        </div>
-      {/if}
+        </section>
 
-      {#if activeTab === 'docker'}
-        <div id="docker" class="glass-card p-8">
+      <section id="docker" class="glass-card p-8">
           <h2 class="text-xl font-black text-zinc-900 dark:text-white mb-6 flex items-center gap-2">
             Containers
           </h2>
 
-          <!-- Sub-tabs for Docker/Podman/Compose -->
-          <div class="flex gap-2 mb-6">
-            <button
-              type="button"
-              class="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all {dockerPodmanTab === 'docker'
-                ? 'bg-blue-600 text-white'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'}"
-              onclick={() => (dockerPodmanTab = 'docker')}
-            >
-              <Icon path={mdiDocker} size="16" />
-              Docker
-            </button>
-            <button
-              type="button"
-              class="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all {dockerPodmanTab === 'podman'
-                ? 'bg-purple-600 text-white'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'}"
-              onclick={() => (dockerPodmanTab = 'podman')}
-            >
-              <Icon path={mdiCubeOutline} size="16" />
-              Podman
-            </button>
-            <button
-              type="button"
-              class="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all {dockerPodmanTab === 'compose'
-                ? 'bg-emerald-600 text-white'
-                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700'}"
-              onclick={() => (dockerPodmanTab = 'compose')}
-            >
+          <details class="mb-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+            <summary class="list-none px-4 py-3 font-bold text-sm cursor-pointer bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 [&::-webkit-details-marker]:hidden flex items-center gap-2">
               <Icon path={mdiScriptTextOutline} size="16" />
               Compose
-            </button>
-          </div>
-
-          {#if dockerPodmanTab === 'compose'}
+            </summary>
+            <div class="p-4 pt-2 border-t border-zinc-200 dark:border-zinc-800">
             <p class="text-zinc-500 dark:text-zinc-400 mb-6">
               Standard <code>docker-compose.yml</code> for easy deployment.
             </p>
@@ -505,59 +390,87 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
                 <Icon path={copied === 'docker-compose' ? mdiCheck : mdiContentCopy} size="16" />
               </button>
             </div>
-          {:else}
-            <p class="text-zinc-500 dark:text-zinc-400 mb-6 flex items-center gap-2">
-              Run using {dockerPodmanTab === 'docker' ? 'Docker' : 'Podman'}.
-              <span class="text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-400 font-bold tracking-widest uppercase ml-auto sm:ml-0">AMD64 / ARM64</span>
-            </p>
-            
-            <div class="space-y-6">
+            </div>
+          </details>
+
+          <details class="mb-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+            <summary class="list-none px-4 py-3 font-bold text-sm cursor-pointer bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 [&::-webkit-details-marker]:hidden flex items-center gap-2">
+              <Icon path={mdiDocker} size="16" />
+              Docker
+            </summary>
+            <div class="p-4 pt-2 space-y-6 border-t border-zinc-200 dark:border-zinc-800">
+              <p class="text-zinc-500 dark:text-zinc-400 mb-6 flex items-center gap-2">
+                Run using Docker.
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-400 font-bold tracking-widest uppercase ml-auto sm:ml-0">AMD64 / ARM64</span>
+              </p>
               <div>
                 <p class="text-sm font-black text-zinc-900 dark:text-white uppercase tracking-widest mb-3">Pull Image</p>
                 <div class="flex items-center gap-2 flex-wrap">
                   <code class="flex-1 min-w-0 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-950 rounded-xl text-xs font-mono text-zinc-900 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-900 break-all">
-                    {dockerPodmanTab} pull git.quad4.io/rns-things/meshchatx:latest
+                    docker pull git.quad4.io/rns-things/meshchatx:latest
                   </code>
-                  <button
-                    type="button"
-                    class="shrink-0 p-2.5 rounded-xl bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors border border-zinc-300 dark:border-zinc-700"
-                    onclick={() => copyToClipboard(`${dockerPodmanTab} pull git.quad4.io/rns-things/meshchatx:latest`, `${dockerPodmanTab}-pull`)}
-                    title="Copy Pull"
-                  >
-                    <Icon path={copied === `${dockerPodmanTab}-pull` ? mdiCheck : mdiContentCopy} size="16" />
+                  <button type="button" class="shrink-0 p-2.5 rounded-xl bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors border border-zinc-300 dark:border-zinc-700" onclick={() => copyToClipboard('docker pull git.quad4.io/rns-things/meshchatx:latest', 'docker-pull')} title="Copy Pull">
+                    <Icon path={copied === 'docker-pull' ? mdiCheck : mdiContentCopy} size="16" />
                   </button>
                 </div>
               </div>
-
               <div class="border-t border-zinc-200 dark:border-zinc-800 pt-6">
                 <p class="text-sm font-black text-zinc-900 dark:text-white uppercase tracking-widest mb-3">Run Command</p>
                 <div class="relative group">
-                  <code class="block px-4 py-4 bg-zinc-100 dark:bg-zinc-950 rounded-xl text-xs font-mono text-zinc-900 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-900 whitespace-pre">
-                    {getRunCommand(dockerPodmanTab)}
-                  </code>
-                  <button
-                    type="button"
-                    class="absolute top-3 right-3 p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors border border-zinc-300 dark:border-zinc-700"
-                    onclick={() => copyToClipboard(getRunCommand(dockerPodmanTab), 'docker-run')}
-                    title="Copy Run Command"
-                  >
+                  <code class="block px-4 py-4 bg-zinc-100 dark:bg-zinc-950 rounded-xl text-xs font-mono text-zinc-900 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-900 whitespace-pre">{getRunCommand('docker')}</code>
+                  <button type="button" class="absolute top-3 right-3 p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors border border-zinc-300 dark:border-zinc-700" onclick={() => copyToClipboard(getRunCommand('docker'), 'docker-run')} title="Copy Run Command">
                     <Icon path={copied === 'docker-run' ? mdiCheck : mdiContentCopy} size="16" />
                   </button>
                 </div>
               </div>
-
               <div class="pt-4 border-t border-zinc-200 dark:border-zinc-800">
                 <p class="text-xs text-zinc-500 dark:text-zinc-400">
                   Docker images are scanned using <a href="https://trivy.dev/" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">Trivy</a>.
                 </p>
               </div>
             </div>
-          {/if}
-        </div>
-      {/if}
+          </details>
 
-      {#if activeTab === 'python'}
-        <div id="python" class="glass-card p-8">
+          <details class="mb-6 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden">
+            <summary class="list-none px-4 py-3 font-bold text-sm cursor-pointer bg-zinc-100 dark:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-800 [&::-webkit-details-marker]:hidden flex items-center gap-2">
+              <Icon path={mdiCubeOutline} size="16" />
+              Podman
+            </summary>
+            <div class="p-4 pt-2 space-y-6 border-t border-zinc-200 dark:border-zinc-800">
+              <p class="text-zinc-500 dark:text-zinc-400 mb-6 flex items-center gap-2">
+                Run using Podman.
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-400 font-bold tracking-widest uppercase ml-auto sm:ml-0">AMD64 / ARM64</span>
+              </p>
+              <div>
+                <p class="text-sm font-black text-zinc-900 dark:text-white uppercase tracking-widest mb-3">Pull Image</p>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <code class="flex-1 min-w-0 px-4 py-2.5 bg-zinc-100 dark:bg-zinc-950 rounded-xl text-xs font-mono text-zinc-900 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-900 break-all">
+                    podman pull git.quad4.io/rns-things/meshchatx:latest
+                  </code>
+                  <button type="button" class="shrink-0 p-2.5 rounded-xl bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors border border-zinc-300 dark:border-zinc-700" onclick={() => copyToClipboard('podman pull git.quad4.io/rns-things/meshchatx:latest', 'podman-pull')} title="Copy Pull">
+                    <Icon path={copied === 'podman-pull' ? mdiCheck : mdiContentCopy} size="16" />
+                  </button>
+                </div>
+              </div>
+              <div class="border-t border-zinc-200 dark:border-zinc-800 pt-6">
+                <p class="text-sm font-black text-zinc-900 dark:text-white uppercase tracking-widest mb-3">Run Command</p>
+                <div class="relative group">
+                  <code class="block px-4 py-4 bg-zinc-100 dark:bg-zinc-950 rounded-xl text-xs font-mono text-zinc-900 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-900 whitespace-pre">{getRunCommand('podman')}</code>
+                  <button type="button" class="absolute top-3 right-3 p-2 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors border border-zinc-300 dark:border-zinc-700" onclick={() => copyToClipboard(getRunCommand('podman'), 'podman-run')} title="Copy Run Command">
+                    <Icon path={copied === 'podman-run' ? mdiCheck : mdiContentCopy} size="16" />
+                  </button>
+                </div>
+              </div>
+              <div class="pt-4 border-t border-zinc-200 dark:border-zinc-800">
+                <p class="text-xs text-zinc-500 dark:text-zinc-400">
+                  Docker images are scanned using <a href="https://trivy.dev/" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">Trivy</a>.
+                </p>
+              </div>
+            </div>
+          </details>
+        </section>
+
+      <section id="python" class="glass-card p-8">
           <h2 class="text-xl font-black text-zinc-900 dark:text-white mb-2 flex items-center gap-2">
             <Icon path={mdiLanguagePython} size="24" />
             Python
@@ -633,11 +546,9 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
           {:else}
             <span class="text-zinc-500 dark:text-zinc-400 text-sm">No wheel in latest release.</span>
           {/if}
-        </div>
-      {/if}
+        </section>
 
-      {#if activeTab === 'termux'}
-        <div id="termux" class="glass-card p-8">
+      <section id="termux" class="glass-card p-8">
           <h2 class="text-xl font-black text-zinc-900 dark:text-white mb-2 flex items-center gap-2">
             <Icon path={mdiAndroid} size="24" />
             Termux
@@ -685,8 +596,7 @@ pkg install build-essential</pre>
               </div>
             </div>
           </div>
-        </div>
-      {/if}
+        </section>
     </div>
   </div>
 </section>

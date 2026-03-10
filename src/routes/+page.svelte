@@ -371,9 +371,4 @@
   </div>
 </section>
 
-<style>
-  :global(html) {
-    scroll-behavior: smooth;
-  }
-</style>
 
