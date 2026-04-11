@@ -316,7 +316,7 @@
     'services:\n' +
     '    reticulum-meshchatx:\n' +
     '        container_name: reticulum-meshchatx\n' +
-    '        image: ${MESHCHAT_IMAGE:-git.meshchatx.com/rns-things/meshchatx:latest}\n' +
+    '        image: ${MESHCHAT_IMAGE:-git.quad4.io/rns-things/meshchatx:latest}\n' +
     '        restart: unless-stopped\n' +
     '        security_opt:\n' +
     '            - no-new-privileges:true\n' +
@@ -334,7 +334,7 @@
       '  --security-opt no-new-privileges:true \\\n' +
       '  -p 127.0.0.1:8000:8000 \\\n' +
       '  -v ./meshchat-config:/config \\\n' +
-      '  git.meshchatx.com/rns-things/meshchatx:latest'
+      '  git.quad4.io/rns-things/meshchatx:latest'
     );
   }
 
@@ -426,7 +426,7 @@
     const sbom = qs('#mcx-sbom-link');
     if (sbom) {
       sbom.href =
-        'https://git.meshchatx.com/RNS-Things/MeshChatX/releases/download/v' +
+        'https://git.quad4.io/RNS-Things/MeshChatX/releases/download/v' +
         sel.version +
         '/sbom.cyclonedx.json';
       sbom.classList.remove('hidden');
@@ -494,7 +494,7 @@
     }
 
     const termuxUrl =
-      'pip install https://git.meshchatx.com/RNS-Things/MeshChatX/releases/download/v' +
+      'pip install https://git.quad4.io/RNS-Things/MeshChatX/releases/download/v' +
       sel.version +
       '/reticulum_meshchatx-' +
       sel.version +
@@ -513,8 +513,8 @@
     const composeBtn = qs('#mcx-compose-copy');
     if (composeBtn) composeBtn.setAttribute('data-copy', COMPOSE_YAML);
 
-    const dockerPull = 'docker pull git.meshchatx.com/rns-things/meshchatx:latest';
-    const podmanPull = 'podman pull git.meshchatx.com/rns-things/meshchatx:latest';
+    const dockerPull = 'docker pull git.quad4.io/rns-things/meshchatx:latest';
+    const podmanPull = 'podman pull git.quad4.io/rns-things/meshchatx:latest';
     const dp = qs('#mcx-docker-pull-text');
     if (dp) dp.textContent = dockerPull;
     const pp = qs('#mcx-podman-pull-text');

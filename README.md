@@ -1,6 +1,6 @@
 # MeshChatX website
 
-Static site for [MeshChatX](https://git.meshchatx.com/RNS-Things/MeshChatX) project: hand-authored HTML partials, one CSS bundle, and a small Go generator that merges locales and emits `index.html`, `download.html`, and localized copies under `de/`, `ru/`, and `it/`.
+Static site for [MeshChatX](https://git.quad4.io/RNS-Things/MeshChatX) project: hand-authored HTML partials, one CSS bundle, and a small Go generator that merges locales and emits `index.html`, `download.html`, and localized copies under `de/`, `ru/`, and `it/`.
 
 ## Requirements
 
