@@ -75,7 +75,7 @@
   }
 
   window.MCX = {
-    GITEA_RELEASES: 'https://git.quad4.io/api/v1/repos/RNS-Things/MeshChatX/releases?limit=25',
+    GITEA_RELEASES: 'https://git.meshchatx.com/api/v1/repos/RNS-Things/MeshChatX/releases?limit=25',
     parseRelease,
     formatRelativeTime
   };

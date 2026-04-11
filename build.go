@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-const siteOrigin = "https://meshchatx.quad4.io"
+const siteOrigin = "https://meshchatx.com"
 
 var (
 	reT    = regexp.MustCompile(`\{\{T:([^}]+)\}\}`)
