@@ -1,0 +1,169 @@
+{
+  "a11y": {
+    "skip": "Перейти к содержимому"
+  },
+  "brand": {
+    "name": "MeshChatX"
+  },
+  "meta": {
+    "title": {
+      "home": "MeshChatX",
+      "download": "Скачать | MeshChatX",
+      "contact": "Контакты | MeshChatX",
+      "donate": "Поддержать | MeshChatX",
+      "license": "Лицензия | MeshChatX"
+    },
+    "og_image_alt": "Логотип MeshChatX",
+    "desc": {
+      "home": "Будущее децентрализованных коммуникаций. Безопасный, устойчивый и неостановимый обмен сообщениями через Reticulum.",
+      "download": "Скачайте MeshChatX для Windows, Linux, macOS, Docker или Python. Децентрализованный обмен через Reticulum.",
+      "contact": "Связь с разработчиком MeshChatX через LXMF (обмен Reticulum).",
+      "donate": "Поддержите разработку MeshChatX. Сейчас принимаем только Monero.",
+      "license": "Сведения о лицензии MeshChatX."
+    }
+  },
+  "nav": {
+    "primary": "Основное меню",
+    "features": "Возможности",
+    "showcase": "Обзор",
+    "donate": "Поддержать",
+    "contact": "Контакты",
+    "download": "Скачать",
+    "toggle_theme": "Переключить тему",
+    "mobile_menu": "Открыть меню",
+    "mobile_nav": "Мобильная версия"
+  },
+  "lang": {
+    "label": "Язык"
+  },
+  "footer": {
+    "tagline": "Безопасная, устойчивая и неостановимая связь в сети Reticulum.",
+    "community": "Сообщество",
+    "legal": "Правовая информация",
+    "source": "Исходный код (Gitea)",
+    "changelog": "Список изменений",
+    "license": "Лицензия",
+    "meta_copyright": "© 2026 MeshChatX. Безопасные децентрализованные сети.",
+    "meta_quad4": "MeshChatX — проект <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4</a>."
+  },
+  "contact": {
+    "h1": "Контакты",
+    "panel_title": "Связь через LXMF",
+    "copy_title": "Копировать LXMF-адрес"
+  },
+  "donate": {
+    "h1": "Поддержать MeshChatX",
+    "lead": "MeshChatX создаётся для сообщества. Ваш донат помогает разработке и инфраструктуре.",
+    "xmr_only": "Сейчас принимаем только Monero (XMR).",
+    "monero": "Monero",
+    "copy_xmr": "Копировать адрес Monero"
+  },
+  "license": {
+    "h1": "Лицензия",
+    "intro": "MeshChatX распространяется под лицензией MIT",
+    "body": "MIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+  },
+  "home": {
+    "hero": {
+      "h1": "Единый клиент Reticulum",
+      "lead_before": "MeshChatX — сильно доработанный форк оригинального ",
+      "lead_anchor": "MeshChat от Liam Cottle",
+      "lead_after": ". Мы добавили много функций и улучшений."
+    },
+    "platform": {
+      "macos": "macOS",
+      "linux": "Linux",
+      "windows": "Windows",
+      "docker": "Docker",
+      "python": "Python",
+      "termux": "Termux"
+    },
+    "showcase": {
+      "mobile": "Мобильный",
+      "desktop": "Настольный"
+    },
+    "cap": {
+      "messaging": "Сообщения",
+      "calls": "Звонки",
+      "browser": "Браузер",
+      "file_transfer": "Передача файлов",
+      "bots": "Боты",
+      "micron": "Редактор Micron",
+      "archiver": "Архиватор",
+      "mapping": "Карты",
+      "discovery": "Поиск интерфейсов",
+      "identities": "Несколько личностей",
+      "banishment": "Блокировка",
+      "backups": "Авто-резервные копии и снимки",
+      "customizable": "Настраиваемость",
+      "telemetry": "Телеметрия (LXMF)",
+      "tunnel": "Туннель",
+      "host_pages": "Страницы хоста",
+      "group_msgs": "Групповые сообщения",
+      "group_calls": "Групповые звонки",
+      "soon": "(скоро)",
+      "more": "+ и многое другое"
+    },
+    "cta": {
+      "download": "Скачать сейчас",
+      "source": "Исходный код"
+    },
+    "section": {
+      "infra_h2": "Децентрализованная инфраструктура",
+      "infra_lead": "Создано для mesh-сетей и устойчивости к цензуре."
+    },
+    "feature": {
+      "decentralized_h3": "Децентрализация",
+      "decentralized_p": "На базе Reticulum. Без центральных серверов и единой точки отказа. Полный контроль над данными.",
+      "crypto_h3": "Криптографические примитивы",
+      "crypto_p": "Reticulum использует эффективные и проверенные криптографические примитивы для безопасности на всех платформах.",
+      "crypto_link": "Читать спецификацию",
+      "mesh_h3": "Mesh-сеть",
+      "mesh_p": "Связь через любую среду. MeshChatX работает в интернете, по радио, LoRa и многим другим каналам!",
+      "platform_h3": "Поддержка платформ",
+      "platform_p": "Официально: Desktop (Electron) и Web (Docker/Python). Android через Termux."
+    },
+    "split": {
+      "h2_line1": "Устойчивая",
+      "h2_line2": "личность и синхронизация.",
+      "item1_h4": "Без обязательной личности",
+      "item1_p": "Создавайте несколько личностей мгновенно. Без телефона, почты или документов. Никогда.",
+      "item2_h4": "Узлы распространения",
+      "item2_p": "Сообщения синхронизируются в сети автоматически. Они ждут вас, даже если вы офлайн.",
+      "placeholder": "Личность и синхронизация"
+    }
+  },
+  "js": {
+    "theme": {
+      "toggle_dark": "Переключить на тёмную тему",
+      "toggle_light": "Переключить на светлую тему",
+      "mobile_dark": "Тёмная тема",
+      "mobile_light": "Светлая тема"
+    },
+    "showcase": {
+      "tab0": "Главная",
+      "tab1": "Звонки",
+      "tab2": "Сообщения",
+      "tab3": "Браузер",
+      "tab4": "Архивы",
+      "tab5": "Визуализатор",
+      "tab6": "Инструменты",
+      "desktop_fmt": "Настольный — %s — скриншот",
+      "mobile_fmt": "Мобильный — %s"
+    },
+    "home": {
+      "version_here": "Вышел MeshChatX v%s"
+    },
+    "download": {
+      "no_release": "Нет данных о релизе.",
+      "latest": "Последний",
+      "stable": "стабильный",
+      "prerelease": "пре-релиз",
+      "all_releases": "Все релизы",
+      "channel_stable": "Стабильный",
+      "channel_pre": "Пре-релиз",
+      "fetch_error": "Не удалось загрузить релизы",
+      "gitea_error": "Gitea API "
+    }
+  }
+}

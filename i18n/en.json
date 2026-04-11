@@ -1,0 +1,169 @@
+{
+  "a11y": {
+    "skip": "Skip to content"
+  },
+  "brand": {
+    "name": "MeshChatX"
+  },
+  "meta": {
+    "title": {
+      "home": "MeshChatX",
+      "download": "Download | MeshChatX",
+      "contact": "Contact | MeshChatX",
+      "donate": "Donate | MeshChatX",
+      "license": "License | MeshChatX"
+    },
+    "og_image_alt": "MeshChatX logo",
+    "desc": {
+      "home": "The future of decentralized communication. Secure, resilient, and unstoppable messaging over Reticulum.",
+      "download": "Download MeshChatX for Windows, Linux, macOS, Docker, or Python. Decentralized messaging over Reticulum.",
+      "contact": "Contact the MeshChatX dev via LXMF (Reticulum messaging).",
+      "donate": "Support MeshChatX development. We only accept Monero at this time.",
+      "license": "MeshChatX Licensing Information."
+    }
+  },
+  "nav": {
+    "primary": "Primary",
+    "features": "Features",
+    "showcase": "Showcase",
+    "donate": "Donate",
+    "contact": "Contact",
+    "download": "Download",
+    "toggle_theme": "Toggle theme",
+    "mobile_menu": "Toggle menu",
+    "mobile_nav": "Mobile"
+  },
+  "lang": {
+    "label": "Language"
+  },
+  "footer": {
+    "tagline": "Secure, resilient, and unstoppable communication over the Reticulum network.",
+    "community": "Community",
+    "legal": "Legal",
+    "source": "Source (Gitea)",
+    "changelog": "Changelog",
+    "license": "License",
+    "meta_copyright": "© 2026 MeshChatX. Secure Decentralized Networking.",
+    "meta_quad4": "MeshChatX is a <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4</a> project."
+  },
+  "contact": {
+    "h1": "Contact",
+    "panel_title": "Contact via LXMF",
+    "copy_title": "Copy LXMF address"
+  },
+  "donate": {
+    "h1": "Support MeshChatX",
+    "lead": "MeshChatX is built for the community. Your donation helps fund development and infrastructure costs.",
+    "xmr_only": "We only accept Monero (XMR) at this time.",
+    "monero": "Monero",
+    "copy_xmr": "Copy Monero Address"
+  },
+  "license": {
+    "h1": "License",
+    "intro": "MeshChatX is licensed under MIT",
+    "body": "MIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+  },
+  "home": {
+    "hero": {
+      "h1": "All-in-one Reticulum Client",
+      "lead_before": "MeshChatX is a highly custom fork of the original ",
+      "lead_anchor": "MeshChat by Liam Cottle",
+      "lead_after": ". We have added many features and improvements."
+    },
+    "platform": {
+      "macos": "macOS",
+      "linux": "Linux",
+      "windows": "Windows",
+      "docker": "Docker",
+      "python": "Python",
+      "termux": "Termux"
+    },
+    "showcase": {
+      "mobile": "Mobile",
+      "desktop": "Desktop"
+    },
+    "cap": {
+      "messaging": "Messaging",
+      "calls": "Calls",
+      "browser": "Browser",
+      "file_transfer": "File Transfer",
+      "bots": "Bots",
+      "micron": "Micron Editor",
+      "archiver": "Archiver",
+      "mapping": "Mapping",
+      "discovery": "Interface Discovery",
+      "identities": "Multiple Identities",
+      "banishment": "Banishment",
+      "backups": "Auto Backups and Snapshots",
+      "customizable": "Customizable",
+      "telemetry": "Telemetry (LXMF)",
+      "tunnel": "Tunnel",
+      "host_pages": "Host Pages",
+      "group_msgs": "Group Messages",
+      "group_calls": "Group Calls",
+      "soon": "(coming soon)",
+      "more": "+ so much more"
+    },
+    "cta": {
+      "download": "Download Now",
+      "source": "View Source Code"
+    },
+    "section": {
+      "infra_h2": "Decentralized Infrastructure",
+      "infra_lead": "Built for mesh networks and censorship resistance."
+    },
+    "feature": {
+      "decentralized_h3": "Decentralized",
+      "decentralized_p": "Built on Reticulum. No central servers, no single point of failure. Total ownership of your data.",
+      "crypto_h3": "Cryptographic Primitives",
+      "crypto_p": "Reticulum uses efficient, strong, and well-tested cryptographic primitives designed for safety and reliability across all platforms.",
+      "crypto_link": "Read Specification",
+      "mesh_h3": "Mesh Networking",
+      "mesh_p": "Communicate across any medium. MeshChatX works over the internet, radio, LoRa, and many other mediums!",
+      "platform_h3": "Platform Support",
+      "platform_p": "Officially supported on Desktop (Electron) and Web (Docker/Python). Android is available via Termux."
+    },
+    "split": {
+      "h2_line1": "Resilient",
+      "h2_line2": "Identity & Sync.",
+      "item1_h4": "No Identity Required",
+      "item1_p": "Generate multiple identities instantly. No phone number, email, or government ID needed. Ever.",
+      "item2_h4": "Propagation Nodes",
+      "item2_p": "Synchronize messages through the network automatically. Your messages wait for you, even when you're offline.",
+      "placeholder": "Identity & Sync"
+    }
+  },
+  "js": {
+    "theme": {
+      "toggle_dark": "Switch to dark mode",
+      "toggle_light": "Switch to light mode",
+      "mobile_dark": "Dark mode",
+      "mobile_light": "Light mode"
+    },
+    "showcase": {
+      "tab0": "Home",
+      "tab1": "Calls",
+      "tab2": "Messages",
+      "tab3": "Browser",
+      "tab4": "Archives",
+      "tab5": "Visualizer",
+      "tab6": "Tools",
+      "desktop_fmt": "Desktop — %s — Screenshot",
+      "mobile_fmt": "Mobile — %s"
+    },
+    "home": {
+      "version_here": "MeshChatX v%s is here"
+    },
+    "download": {
+      "no_release": "No release information available.",
+      "latest": "Latest",
+      "stable": "stable",
+      "prerelease": "pre-release",
+      "all_releases": "All releases",
+      "channel_stable": "Stable",
+      "channel_pre": "Pre-release",
+      "fetch_error": "Failed to fetch releases",
+      "gitea_error": "Gitea API "
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "dl": {
+    "h1": "Download",
+    "loading": "Caricamento informazioni sulla release...",
+    "sbom": "SBOM",
+    "tabs": {
+      "macos": "macOS",
+      "linux": "Linux",
+      "windows": "Windows",
+      "docker": "Docker / Podman",
+      "python": "Python",
+      "termux": "Termux"
+    },
+    "macos": {
+      "h2": "macOS",
+      "note": "Build Electron per macOS in arrivo.",
+      "badge": "In arrivo",
+      "hint_before": "Per ora puoi usare ",
+      "hint_python": "Python",
+      "hint_mid": " o ",
+      "hint_docker": "Docker",
+      "hint_after": "."
+    },
+    "linux": {
+      "h2": "Linux",
+      "arch_note": "AppImage e DEB: AMD64 / ARM64, RPM: AMD64",
+      "appimage": "AppImage",
+      "appimage_intro": "Build portatile, senza gestore pacchetti. Scarica l'architettura corretta.",
+      "btn_appimage_amd64": "AppImage (AMD64)",
+      "btn_appimage_arm64": "AppImage (ARM64)",
+      "no_appimage": "Nessun AppImage nell'ultima release.",
+      "install_run": "Installazione / avvio",
+      "deb": "Debian (.deb)",
+      "deb_intro": "Pacchetti Debian e Ubuntu per AMD64 e ARM64.",
+      "btn_deb_amd64": ".deb (AMD64)",
+      "btn_deb_arm64": ".deb (ARM64)",
+      "no_deb": "Nessun pacchetto Debian nell'ultima release.",
+      "install": "Installazione",
+      "rpm": "RPM (.rpm)",
+      "rpm_intro": "Pacchetto RPM per sistemi x86 a 64 bit.",
+      "btn_rpm_amd64": ".rpm (AMD64)",
+      "no_rpm": "Nessun RPM nell'ultima release.",
+      "arch": "Arch",
+      "arch_intro_before": "Compila e installa manualmente con il nostro PKGBUILD. Gestisce le dipendenze e si integra con ",
+      "arch_intro_after": ".",
+      "arch_step1": "1. Clona e vai nella cartella",
+      "arch_step2": "2. Compila e installa",
+      "view_pkgbuild": "Vedi PKGBUILD",
+      "source": "Dal sorgente",
+      "source_intro": "Se vuoi eseguire MeshChatX in locale dal codice sorgente:",
+      "source_step1": "1. Clona il repository",
+      "source_step2": "2. Compila il frontend (Node.js/pnpm)",
+      "source_step3": "3. Avvia il backend (Python 3.10+/Poetry)"
+    },
+    "windows": {
+      "h2": "Windows 10 / 11",
+      "badge_64": "solo 64 bit",
+      "intro": "Installer o build portatile.",
+      "btn_installer": "Installer",
+      "btn_portable": "Portatile",
+      "no_win": "Nessun asset Windows nell'ultima release."
+    },
+    "containers": {
+      "h2": "Container",
+      "compose": "Compose",
+      "compose_intro_before": "Standard ",
+      "compose_intro_after": " per un deployment semplice.",
+      "compose_filename": "docker-compose.yml",
+      "copy_compose": "Copia Compose",
+      "docker": "Docker",
+      "podman": "Podman",
+      "run_docker": "Esecuzione con Docker.",
+      "run_podman": "Esecuzione con Podman.",
+      "arch_badge": "AMD64 / ARM64",
+      "pull_image": "Scarica immagine",
+      "copy_pull": "Copia pull",
+      "run_cmd": "Comando di avvio",
+      "copy_run": "Copia comando di avvio",
+      "trivy_before": "Le immagini Docker sono analizzate con ",
+      "trivy_link": "Trivy"
+    },
+    "python": {
+      "h2": "Python",
+      "intro": "Pip, pipx, Poetry o uv (frontend già incluso nella build).",
+      "pip": "pip",
+      "pipx": "pipx",
+      "poetry": "Poetry",
+      "uv": "uv",
+      "copy": "Copia",
+      "no_wheel": "Nessun wheel nell'ultima release."
+    },
+    "termux": {
+      "h2": "Termux",
+      "intro_before": "Installazione su Android con Termux. Installa le dipendenze, poi il wheel Python. Esecuzione headless con ",
+      "intro_after": ".",
+      "step1": "1. Aggiorna e installa i pacchetti",
+      "step2": "2. Installa MeshChatX (versione più recente dalle release)",
+      "step3": "3. Avvio headless"
+    }
+  }
+}

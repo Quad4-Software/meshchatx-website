@@ -1,0 +1,344 @@
+<section class="mcx-page-head">
+  <div class="mcx-container mcx-container--md">
+    <h1>{{T:dl.h1}}</h1>
+    <div class="mb-10 space-y-1" style="margin-bottom:2.5rem">
+      <p class="mcx-muted" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem" id="mcx-download-meta">
+        <span class="mcx-muted">{{T:dl.loading}}</span>
+      </p>
+      <p>
+        <a
+          id="mcx-sbom-link"
+          class="mcx-link-blue hidden"
+          style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          >{{T:dl.sbom}}</a
+        >
+      </p>
+    </div>
+
+    <div class="mcx-download-tabs">
+      <a href="download.html#macos"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-apple" /></svg> {{T:dl.tabs.macos}}</a>
+      <a href="download.html#linux"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-linux" /></svg> {{T:dl.tabs.linux}}</a>
+      <a href="download.html#windows"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-microsoft-windows" /></svg> {{T:dl.tabs.windows}}</a>
+      <a href="download.html#docker"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-docker" /></svg> {{T:dl.tabs.docker}}</a>
+      <a href="download.html#python"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-language-python" /></svg> {{T:dl.tabs.python}}</a>
+      <a href="download.html#termux"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-android" /></svg> {{T:dl.tabs.termux}}</a>
+    </div>
+
+    <div class="mcx-stack">
+      <section id="macos" class="mcx-glass-card" style="padding:2rem">
+        <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 0.5rem;display:flex;align-items:center;gap:0.5rem">
+          <svg class="mcx-icon" aria-hidden="true"><use href="#i-apple" /></svg> {{T:dl.macos.h2}}
+        </h2>
+        <p class="mcx-muted" style="margin-bottom:1rem">{{T:dl.macos.note}}</p>
+        <span class="mcx-badge-status">{{T:dl.macos.badge}}</span>
+        <p class="mcx-muted mcx-text-sm">
+          {{T:dl.macos.hint_before}}<a href="download.html#python" class="mcx-link-blue" style="font-weight:700">{{T:dl.macos.hint_python}}</a>{{T:dl.macos.hint_mid}}<a href="download.html#docker" class="mcx-link-blue" style="font-weight:700">{{T:dl.macos.hint_docker}}</a>{{T:dl.macos.hint_after}}
+        </p>
+      </section>
+
+      <section id="linux" class="mcx-glass-card" style="padding:2rem">
+        <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 1.5rem;display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem">
+          {{T:dl.linux.h2}}
+          <span style="font-size:0.75rem;font-weight:700;color:var(--zinc-400);text-transform:uppercase;letter-spacing:0.1em;margin-left:auto"
+            >{{T:dl.linux.arch_note}}</span
+          >
+        </h2>
+
+        <details class="mcx-details" open>
+          <summary>
+            <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-package-variant" /></svg> {{T:dl.linux.appimage}}
+          </summary>
+          <div class="mcx-details-body">
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">{{T:dl.linux.appimage_intro}}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+              <a id="mcx-dl-appimage-amd64" class="mcx-btn-primary hidden" href="#" download
+                ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {{T:dl.linux.btn_appimage_amd64}}</a
+              >
+              <a
+                id="mcx-dl-appimage-arm64"
+                class="mcx-btn-secondary hidden"
+                href="#"
+                download
+                style="border-radius:1rem"
+                ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {{T:dl.linux.btn_appimage_arm64}}</a
+              >
+            </div>
+            <p id="mcx-no-appimage" class="mcx-muted mcx-text-sm hidden">{{T:dl.linux.no_appimage}}</p>
+            <div style="border-top:1px solid var(--border);padding-top:1.5rem">
+              <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 1rem">{{T:dl.linux.install_run}}</p>
+              <pre class="mcx-pre">chmod +x MeshChatX-*.AppImage
+./MeshChatX-*.AppImage</pre>
+            </div>
+          </div>
+        </details>
+
+        <details class="mcx-details">
+          <summary>
+            <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-cube-outline" /></svg> {{T:dl.linux.deb}}
+          </summary>
+          <div class="mcx-details-body">
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">{{T:dl.linux.deb_intro}}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+              <a id="mcx-dl-deb-amd64" class="mcx-btn-primary hidden" href="#" download
+                ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {{T:dl.linux.btn_deb_amd64}}</a
+              >
+              <a id="mcx-dl-deb-arm64" class="mcx-btn-secondary hidden" href="#" download>{{T:dl.linux.btn_deb_arm64}}</a>
+            </div>
+            <p id="mcx-no-deb" class="mcx-muted mcx-text-sm hidden">{{T:dl.linux.no_deb}}</p>
+            <div style="border-top:1px solid var(--border);padding-top:1.5rem">
+              <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 1rem">{{T:dl.linux.install}}</p>
+              <pre class="mcx-pre">sudo apt install ./MeshChatX-*.deb
+# fallback if apt cannot resolve dependencies:
+sudo dpkg -i MeshChatX-*.deb
+sudo apt -f install</pre>
+            </div>
+          </div>
+        </details>
+
+        <details class="mcx-details">
+          <summary>
+            <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-package-variant" /></svg> {{T:dl.linux.rpm}}
+          </summary>
+          <div class="mcx-details-body">
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">{{T:dl.linux.rpm_intro}}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+              <a id="mcx-dl-rpm-amd64" class="mcx-btn-primary hidden" href="#" download
+                ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {{T:dl.linux.btn_rpm_amd64}}</a
+              >
+            </div>
+            <p id="mcx-no-rpm" class="mcx-muted mcx-text-sm hidden">{{T:dl.linux.no_rpm}}</p>
+            <div style="border-top:1px solid var(--border);padding-top:1.5rem">
+              <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 1rem">{{T:dl.linux.install}}</p>
+              <pre class="mcx-pre">sudo dnf install ./MeshChatX-*.rpm
+# or on openSUSE:
+sudo zypper install ./MeshChatX-*.rpm</pre>
+            </div>
+          </div>
+        </details>
+
+        <details class="mcx-details">
+          <summary>
+            <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-arch" /></svg> {{T:dl.linux.arch}}
+          </summary>
+          <div class="mcx-details-body">
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">
+              {{T:dl.linux.arch_intro_before}}<code class="mcx-code-inline">pacman</code>{{T:dl.linux.arch_intro_after}}
+            </p>
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.linux.arch_step1}}</p>
+            <pre class="mcx-pre" style="margin-bottom:1.5rem">git clone https://git.quad4.io/RNS-Things/MeshChatX
+cd MeshChatX/packaging/arch</pre>
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.linux.arch_step2}}</p>
+            <pre class="mcx-pre" style="margin-bottom:1rem">makepkg -si</pre>
+            <a href="https://git.quad4.io/RNS-Things/MeshChatX/src/branch/master/packaging/arch/PKGBUILD" target="_blank" rel="noopener noreferrer" class="mcx-link-blue" style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase">{{T:dl.linux.view_pkgbuild}}</a>
+          </div>
+        </details>
+
+        <details class="mcx-details">
+          <summary>
+            <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-source-commit" /></svg> {{T:dl.linux.source}}
+          </summary>
+          <div class="mcx-details-body">
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">{{T:dl.linux.source_intro}}</p>
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.linux.source_step1}}</p>
+            <pre class="mcx-pre" style="margin-bottom:1.5rem">git clone https://git.quad4.io/RNS-Things/MeshChatX
+cd MeshChatX</pre>
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.linux.source_step2}}</p>
+            <pre class="mcx-pre" style="margin-bottom:1.5rem">corepack enable
+pnpm install
+pnpm run build-frontend</pre>
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.linux.source_step3}}</p>
+            <pre class="mcx-pre">pip install poetry
+poetry install
+poetry run meshchat --headless --host 127.0.0.1</pre>
+          </div>
+        </details>
+      </section>
+
+      <section id="windows" class="mcx-glass-card" style="padding:2rem">
+        <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 0.5rem;display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem">
+          <svg class="mcx-icon" aria-hidden="true"><use href="#i-microsoft-windows" /></svg> {{T:dl.windows.h2}}
+          <span style="font-size:0.75rem;font-weight:700;color:var(--zinc-400);text-transform:uppercase;letter-spacing:0.1em;margin-left:auto">{{T:dl.windows.badge_64}}</span>
+        </h2>
+        <p class="mcx-muted" style="margin-bottom:1.5rem">{{T:dl.windows.intro}}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:1rem">
+          <a id="mcx-dl-win-inst" class="mcx-btn-primary hidden" href="#" download
+            ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {{T:dl.windows.btn_installer}}</a
+          >
+          <a id="mcx-dl-win-port" class="mcx-btn-secondary hidden" href="#" download
+            ><svg class="mcx-icon" aria-hidden="true"><use href="#i-package-variant" /></svg> {{T:dl.windows.btn_portable}}</a
+          >
+        </div>
+        <p id="mcx-no-win" class="mcx-muted mcx-text-sm hidden" style="margin-top:1rem">{{T:dl.windows.no_win}}</p>
+      </section>
+
+      <section id="docker" class="mcx-glass-card" style="padding:2rem">
+        <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 1.5rem">{{T:dl.containers.h2}}</h2>
+
+        <details class="mcx-details">
+          <summary>
+            <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-script-text-outline" /></svg> {{T:dl.containers.compose}}
+          </summary>
+          <div class="mcx-details-body">
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">{{T:dl.containers.compose_intro_before}}<code class="mcx-code-inline">{{T:dl.containers.compose_filename}}</code>{{T:dl.containers.compose_intro_after}}</p>
+            <div class="mcx-pre-wrap">
+              <pre class="mcx-pre" id="mcx-compose-yaml"></pre>
+              <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-compose-copy" title="{{T:dl.containers.copy_compose}}">
+                <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+              </button>
+            </div>
+          </div>
+        </details>
+
+        <details class="mcx-details">
+          <summary>
+            <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-docker" /></svg> {{T:dl.containers.docker}}
+          </summary>
+          <div class="mcx-details-body">
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem;display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem">
+              {{T:dl.containers.run_docker}}
+              <span class="mcx-badge-pill mcx-badge-pill--end">{{T:dl.containers.arch_badge}}</span>
+            </p>
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.containers.pull_image}}</p>
+            <div class="mcx-code-row" style="margin-bottom:1.5rem">
+              <code id="mcx-docker-pull-text">docker pull git.quad4.io/rns-things/meshchatx:latest</code>
+              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-docker-pull-copy" data-copy="" title="{{T:dl.containers.copy_pull}}">
+                <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+              </button>
+            </div>
+            <div style="border-top:1px solid var(--border);padding-top:1.5rem">
+              <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.containers.run_cmd}}</p>
+              <div class="mcx-pre-wrap">
+                <pre class="mcx-pre" id="mcx-docker-run"></pre>
+                <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-docker-run-copy" data-copy="" title="{{T:dl.containers.copy_run}}">
+                  <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                </button>
+              </div>
+            </div>
+            <p class="mcx-muted mcx-text-sm" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+              {{T:dl.containers.trivy_before}}<a href="https://trivy.dev/" target="_blank" rel="noopener noreferrer" class="mcx-link-blue">{{T:dl.containers.trivy_link}}</a>.
+            </p>
+          </div>
+        </details>
+
+        <details class="mcx-details">
+          <summary>
+            <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-cube-outline" /></svg> {{T:dl.containers.podman}}
+          </summary>
+          <div class="mcx-details-body">
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem;display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem">
+              {{T:dl.containers.run_podman}}
+              <span class="mcx-badge-pill mcx-badge-pill--end">{{T:dl.containers.arch_badge}}</span>
+            </p>
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.containers.pull_image}}</p>
+            <div class="mcx-code-row" style="margin-bottom:1.5rem">
+              <code id="mcx-podman-pull-text">podman pull git.quad4.io/rns-things/meshchatx:latest</code>
+              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-podman-pull-copy" data-copy="" title="{{T:dl.containers.copy_pull}}">
+                <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+              </button>
+            </div>
+            <div style="border-top:1px solid var(--border);padding-top:1.5rem">
+              <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.containers.run_cmd}}</p>
+              <div class="mcx-pre-wrap">
+                <pre class="mcx-pre" id="mcx-podman-run"></pre>
+                <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-podman-run-copy" data-copy="" title="{{T:dl.containers.copy_run}}">
+                  <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                </button>
+              </div>
+            </div>
+            <p class="mcx-muted mcx-text-sm" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+              {{T:dl.containers.trivy_before}}<a href="https://trivy.dev/" target="_blank" rel="noopener noreferrer" class="mcx-link-blue">{{T:dl.containers.trivy_link}}</a>.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section id="python" class="mcx-glass-card" style="padding:2rem">
+        <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 0.5rem;display:flex;align-items:center;gap:0.5rem">
+          <svg class="mcx-icon" aria-hidden="true"><use href="#i-language-python" /></svg> {{T:dl.python.h2}}
+        </h2>
+        <p class="mcx-muted" style="margin-bottom:1rem">{{T:dl.python.intro}}</p>
+        <div id="mcx-python-block">
+          <div style="display:flex;flex-direction:column;gap:1rem">
+            <div>
+              <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{{T:dl.python.pip}}</p>
+              <div class="mcx-code-row">
+                <code data-wheel-cmd="pip">pip install </code>
+                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{{T:dl.python.copy}}">
+                  <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                </button>
+              </div>
+            </div>
+            <div>
+              <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{{T:dl.python.pipx}}</p>
+              <div class="mcx-code-row">
+                <code data-wheel-cmd="pipx">pipx install </code>
+                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{{T:dl.python.copy}}">
+                  <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                </button>
+              </div>
+            </div>
+            <div>
+              <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{{T:dl.python.poetry}}</p>
+              <div class="mcx-code-row">
+                <code data-wheel-cmd="poetry">poetry add </code>
+                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{{T:dl.python.copy}}">
+                  <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                </button>
+              </div>
+            </div>
+            <div>
+              <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{{T:dl.python.uv}}</p>
+              <div class="mcx-code-row">
+                <code data-wheel-cmd="uv">uv pip install </code>
+                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{{T:dl.python.copy}}">
+                  <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p id="mcx-python-empty" class="mcx-muted mcx-text-sm hidden">{{T:dl.python.no_wheel}}</p>
+      </section>
+
+      <section id="termux" class="mcx-glass-card" style="padding:2rem">
+        <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 0.5rem;display:flex;align-items:center;gap:0.5rem">
+          <svg class="mcx-icon" aria-hidden="true"><use href="#i-android" /></svg> {{T:dl.termux.h2}}
+        </h2>
+        <p class="mcx-muted" style="margin-bottom:1.5rem">
+          {{T:dl.termux.intro_before}}<code class="mcx-code-inline">meshchat --headless</code>{{T:dl.termux.intro_after}}
+        </p>
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <div>
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.5rem">{{T:dl.termux.step1}}</p>
+            <pre class="mcx-pre">pkg upgrade
+pkg install python
+pkg install rust
+pkg install binutils
+pkg install build-essential</pre>
+          </div>
+          <div>
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.5rem">{{T:dl.termux.step2}}</p>
+            <div class="mcx-code-row">
+              <code id="mcx-termux-pip" style="font-size:0.75rem">pip install </code>
+              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-termux-pip-copy" data-copy="" title="{{T:dl.python.copy}}">
+                <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+              </button>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.5rem">{{T:dl.termux.step3}}</p>
+            <div class="mcx-code-row">
+              <code>meshchat --headless</code>
+              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="meshchat --headless" title="{{T:dl.python.copy}}">
+                <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>

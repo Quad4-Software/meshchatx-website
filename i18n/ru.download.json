@@ -1,0 +1,101 @@
+{
+  "dl": {
+    "h1": "Скачать",
+    "loading": "Загрузка данных о релизе...",
+    "sbom": "SBOM",
+    "tabs": {
+      "macos": "macOS",
+      "linux": "Linux",
+      "windows": "Windows",
+      "docker": "Docker / Podman",
+      "python": "Python",
+      "termux": "Termux"
+    },
+    "macos": {
+      "h2": "macOS",
+      "note": "Сборка Electron для macOS скоро появится.",
+      "badge": "Скоро",
+      "hint_before": "Пока можно использовать ",
+      "hint_python": "Python",
+      "hint_mid": " или ",
+      "hint_docker": "Docker",
+      "hint_after": "."
+    },
+    "linux": {
+      "h2": "Linux",
+      "arch_note": "AppImage и DEB: AMD64 / ARM64, RPM: AMD64",
+      "appimage": "AppImage",
+      "appimage_intro": "Портативная сборка без менеджера пакетов. Скачайте нужную архитектуру.",
+      "btn_appimage_amd64": "AppImage (AMD64)",
+      "btn_appimage_arm64": "AppImage (ARM64)",
+      "no_appimage": "В последнем релизе нет AppImage.",
+      "install_run": "Установка / запуск",
+      "deb": "Debian (.deb)",
+      "deb_intro": "Пакеты Debian и Ubuntu для AMD64 и ARM64.",
+      "btn_deb_amd64": ".deb (AMD64)",
+      "btn_deb_arm64": ".deb (ARM64)",
+      "no_deb": "В последнем релизе нет пакетов Debian.",
+      "install": "Установка",
+      "rpm": "RPM (.rpm)",
+      "rpm_intro": "RPM-пакет для 64-бит x86.",
+      "btn_rpm_amd64": ".rpm (AMD64)",
+      "no_rpm": "В последнем релизе нет RPM.",
+      "arch": "Arch",
+      "arch_intro_before": "Сборка и установка вручную через наш PKGBUILD. Разрешает зависимости и интегрируется с ",
+      "arch_intro_after": ".",
+      "arch_step1": "1. Клонировать и перейти",
+      "arch_step2": "2. Собрать и установить",
+      "view_pkgbuild": "Открыть PKGBUILD",
+      "source": "Из исходников",
+      "source_intro": "Если хотите запускать MeshChatX локально из исходного кода:",
+      "source_step1": "1. Клонировать репозиторий",
+      "source_step2": "2. Собрать фронтенд (Node.js/pnpm)",
+      "source_step3": "3. Запустить бэкенд (Python 3.10+/Poetry)"
+    },
+    "windows": {
+      "h2": "Windows 10 / 11",
+      "badge_64": "только 64-бит",
+      "intro": "Установщик или портативная сборка.",
+      "btn_installer": "Установщик",
+      "btn_portable": "Портативная",
+      "no_win": "В последнем релизе нет файлов Windows."
+    },
+    "containers": {
+      "h2": "Контейнеры",
+      "compose": "Compose",
+      "compose_intro_before": "Стандартный ",
+      "compose_intro_after": " для простого развёртывания.",
+      "compose_filename": "docker-compose.yml",
+      "copy_compose": "Копировать Compose",
+      "docker": "Docker",
+      "podman": "Podman",
+      "run_docker": "Запуск через Docker.",
+      "run_podman": "Запуск через Podman.",
+      "arch_badge": "AMD64 / ARM64",
+      "pull_image": "Скачать образ",
+      "copy_pull": "Копировать pull",
+      "run_cmd": "Команда запуска",
+      "copy_run": "Копировать команду запуска",
+      "trivy_before": "Образы Docker проверяются с помощью ",
+      "trivy_link": "Trivy"
+    },
+    "python": {
+      "h2": "Python",
+      "intro": "Pip, pipx, Poetry или uv (с собранным фронтендом).",
+      "pip": "pip",
+      "pipx": "pipx",
+      "poetry": "Poetry",
+      "uv": "uv",
+      "copy": "Копировать",
+      "no_wheel": "В последнем релизе нет wheel."
+    },
+    "termux": {
+      "h2": "Termux",
+      "intro_before": "Установка на Android через Termux. Установите зависимости, затем Python wheel. Без интерфейса с ",
+      "intro_after": ".",
+      "step1": "1. Обновить и установить пакеты",
+      "step2": "2. Установить MeshChatX (актуальная версия из релизов)",
+      "step3": "3. Запуск без интерфейса"
+    }
+  }
+}

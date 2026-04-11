@@ -1,32 +1,12 @@
 version: "3"
 
 tasks:
-    dev:
-        desc: Start the development server
-        cmds:
-            - pnpm dev
+  build:
+    desc: Generate static HTML (i18n)
+    cmds:
+      - go run build.go
 
-    build:
-        desc: Build the production application
-        cmds:
-            - pnpm build
-
-    preview:
-        desc: Preview the production build
-        cmds:
-            - pnpm preview
-
-    check:
-        desc: Run svelte-check to verify code health
-        cmds:
-            - pnpm check
-
-    install:
-        desc: Install dependencies
-        cmds:
-            - pnpm install
-
-    clean:
-        desc: Clean build artifacts
-        cmds:
-            - rm -rf .svelte-kit build
+  docker-build:
+    desc: Build production container image
+    cmds:
+      - docker build -t meshchatx-website:latest .

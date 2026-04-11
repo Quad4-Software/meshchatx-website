@@ -2,13 +2,14 @@ services:
   web:
     build: .
     image: meshchatx-website:latest
-    user: "65532:65532"
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     read_only: true
     tmpfs:
       - /tmp
+      - /var/cache/nginx
+      - /var/run
     cap_drop:
       - ALL
     deploy:
@@ -20,12 +21,25 @@ services:
           cpus: "0.25"
           memory: 128M
     environment:
-      - NODE_ENV=production
-      - PORT=8080
-      - HOST=0.0.0.0
       - DOMAIN=${DOMAIN:-meshchatx.io}
     labels:
       - traefik.enable=true
       - "traefik.http.routers.meshchatx-web.rule=Host(`${DOMAIN:-meshchatx.io}`) && PathPrefix(`/`)"
       - traefik.http.routers.meshchatx-web.entrypoints=web
+      - traefik.http.routers.meshchatx-web.middlewares=meshchatx-sec@docker
       - traefik.http.services.meshchatx-web.loadbalancer.server.port=8080
+
+      - traefik.http.middlewares.meshchatx-sec.headers.stsSeconds=31536000
+      - traefik.http.middlewares.meshchatx-sec.headers.stsIncludeSubdomains=true
+      - traefik.http.middlewares.meshchatx-sec.headers.stsPreload=true
+      - traefik.http.middlewares.meshchatx-sec.headers.forceSTSHeader=false
+
+      - "traefik.http.middlewares.meshchatx-sec.headers.contentSecurityPolicy=default-src 'self'; base-uri 'self'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://git.quad4.io; upgrade-insecure-requests"
+
+      - traefik.http.middlewares.meshchatx-sec.headers.referrerPolicy=strict-origin-when-cross-origin
+      - traefik.http.middlewares.meshchatx-sec.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.meshchatx-sec.headers.browserXssFilter=true
+      - traefik.http.middlewares.meshchatx-sec.headers.frameDeny=true
+
+      - "traefik.http.middlewares.meshchatx-sec.headers.customResponseHeaders.Permissions-Policy=accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+      - "traefik.http.middlewares.meshchatx-sec.headers.customResponseHeaders.X-Permitted-Cross-Domain-Policies=none"

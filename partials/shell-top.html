@@ -1,0 +1,60 @@
+<div class="mcx-shell">
+  <header class="mcx-site-header">
+    <a class="mcx-brand" href="index.html">
+      <img
+        class="mcx-brand__logo"
+        src="{{BASE}}static/logo-navbar.png"
+        alt="{{T:brand.name}}"
+        width="120"
+        height="40"
+        decoding="async"
+      />
+      <span class="mcx-brand__text">{{T:brand.name}}</span>
+    </a>
+    <nav class="mcx-nav-desktop" aria-label="{{T:nav.primary}}">
+      <a href="index.html#features">{{T:nav.features}}</a>
+      <a href="index.html#showcase">{{T:nav.showcase}}</a>
+      <a href="donate.html">{{T:nav.donate}}</a>
+      <a href="contact.html">{{T:nav.contact}}</a>
+    </nav>
+    <div class="mcx-header-actions">
+      <div class="mcx-lang" role="navigation" aria-label="{{T:lang.label}}">
+        <a class="mcx-lang__link" href="{{LANG_HREF_EN}}" hreflang="en" lang="en"{{LANG_ACTIVE_EN}}>EN</a>
+        <a class="mcx-lang__link" href="{{LANG_HREF_DE}}" hreflang="de" lang="de"{{LANG_ACTIVE_DE}}>DE</a>
+        <a class="mcx-lang__link" href="{{LANG_HREF_RU}}" hreflang="ru" lang="ru"{{LANG_ACTIVE_RU}}>RU</a>
+        <a class="mcx-lang__link" href="{{LANG_HREF_IT}}" hreflang="it" lang="it"{{LANG_ACTIVE_IT}}>IT</a>
+      </div>
+      <button type="button" class="mcx-theme-btn" data-theme-toggle aria-label="{{T:nav.toggle_theme}}">
+        <svg class="mcx-icon mcx-icon--md" aria-hidden="true"><use href="#i-weather-night" /></svg>
+      </button>
+      <a class="mcx-btn-primary mcx-btn-header" href="download.html">{{T:nav.download}}</a>
+      <details class="mcx-nav-mobile">
+        <summary aria-label="{{T:nav.mobile_menu}}">
+          <svg class="mcx-icon" aria-hidden="true"><use href="#i-menu" /></svg>
+        </summary>
+        <div class="mcx-nav-mobile__panel">
+          <nav aria-label="{{T:nav.mobile_nav}}">
+            <a href="index.html#features">{{T:nav.features}}</a>
+            <a href="index.html#showcase">{{T:nav.showcase}}</a>
+            <a href="donate.html">{{T:nav.donate}}</a>
+            <a href="contact.html">{{T:nav.contact}}</a>
+          </nav>
+          <div class="mcx-lang mcx-lang--mobile" role="navigation" aria-label="{{T:lang.label}}">
+            <a class="mcx-lang__link" href="{{LANG_HREF_EN}}" hreflang="en" lang="en"{{LANG_ACTIVE_EN}}>EN</a>
+            <a class="mcx-lang__link" href="{{LANG_HREF_DE}}" hreflang="de" lang="de"{{LANG_ACTIVE_DE}}>DE</a>
+            <a class="mcx-lang__link" href="{{LANG_HREF_RU}}" hreflang="ru" lang="ru"{{LANG_ACTIVE_RU}}>RU</a>
+            <a class="mcx-lang__link" href="{{LANG_HREF_IT}}" hreflang="it" lang="it"{{LANG_ACTIVE_IT}}>IT</a>
+          </div>
+          <div class="mcx-nav-mobile__footer">
+            <button type="button" class="mcx-theme-btn" data-theme-toggle>
+              <svg class="mcx-icon mcx-icon--md" id="mcx-mobile-theme-icon" aria-hidden="true"><use href="#i-weather-night" /></svg>
+              <span id="mcx-mobile-theme-label"></span>
+            </button>
+            <a class="mcx-btn-primary" href="download.html">{{T:nav.download}}</a>
+          </div>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main id="main" class="mcx-main">
