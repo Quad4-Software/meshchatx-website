@@ -76,7 +76,7 @@
       "windows": "Windows",
       "docker": "Docker",
       "python": "Python",
-      "termux": "Termux"
+      "android": "Android"
     },
     "showcase": {
       "mobile": "Mobile",
@@ -124,13 +124,14 @@
       "platform_p": "Supporto ufficiale su Desktop (Electron) e Web (Docker/Python). Android tramite Termux."
     },
     "split": {
-      "h2_line1": "Resilienti",
-      "h2_line2": "identità e sincronizzazione.",
-      "item1_h4": "Nessuna identità obbligatoria",
+      "h2_line1": "Privata,",
+      "h2_line2": "Sincronizzata e Persistente",
+      "item1_h4": "Nessuna verifica dell'età o documento d'identità governativo richiesto",
       "item1_p": "Crea più identità all'istante. Niente numero di telefono, email o documento. Mai.",
       "item2_h4": "Nodi di propagazione",
       "item2_p": "Sincronizza i messaggi automaticamente nella rete. I messaggi ti aspettano anche se sei offline.",
-      "placeholder": "Identità e sync"
+      "item3_h4": "Archivio su disco",
+      "item3_p": "Le pagine Nomadnet sono archiviate in locale. Se un nodo cade, la tua copia resta - senza dipendere da un singolo host che può sparire."
     }
   },
   "js": {
@@ -142,14 +143,19 @@
     },
     "showcase": {
       "tab0": "Home",
-      "tab1": "Chiamate",
-      "tab2": "Messaggi",
-      "tab3": "Browser",
-      "tab4": "Archivi",
-      "tab5": "Visualizzatore",
-      "tab6": "Strumenti",
-      "desktop_fmt": "Desktop — %s — Screenshot",
-      "mobile_fmt": "Mobile — %s"
+      "tab1": "Messaggi",
+      "tab2": "Contatti",
+      "tab3": "Chiamate",
+      "tab4": "Interfacce",
+      "tab5": "Mappa",
+      "tab6": "Nomadnet",
+      "tab7": "Visualizzatore",
+      "tab8": "Utilità",
+      "tab9": "Impostazioni",
+      "tab10": "Identità",
+      "tab11": "Info",
+      "desktop_fmt": "Desktop - %s - Screenshot",
+      "mobile_fmt": "Mobile - %s"
     },
     "home": {
       "version_here": "È disponibile MeshChatX v%s"

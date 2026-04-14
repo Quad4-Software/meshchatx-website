@@ -16,8 +16,8 @@
     "og_image_alt": "MeshChatX logo",
     "desc": {
       "home": "The future of decentralized communication. Secure, resilient, and unstoppable messaging over Reticulum.",
-      "download": "Download MeshChatX for Windows, Linux, macOS, Docker, or Python. Decentralized messaging over Reticulum.",
-      "contact": "Contact the MeshChatX dev via LXMF (Reticulum messaging).",
+      "download": "Download MeshChatX for Windows, Linux, macOS, Docker, and Python. Decentralized messaging over Reticulum.",
+      "contact": "Contact the MeshChatX developer via LXMF (Reticulum messaging).",
       "donate": "Support MeshChatX development. We only accept Monero at this time.",
       "license": "MeshChatX Licensing Information."
     }
@@ -43,7 +43,7 @@
     "source": "Source (Gitea)",
     "changelog": "Changelog",
     "license": "License",
-    "meta_copyright": "© 2026 MeshChatX. Secure Decentralized Networking.",
+    "meta_copyright": "© 2026 MeshChatX. Secure, Decentralized Networking.",
     "meta_site": "MeshChatX is a <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a> project."
   },
   "contact": {
@@ -68,7 +68,7 @@
       "h1": "All-in-one Reticulum Client",
       "lead_before": "MeshChatX is a highly custom fork of the original ",
       "lead_anchor": "MeshChat by Liam Cottle",
-      "lead_after": ". We have added many features and improvements."
+      "lead_after": ". It includes many new features and improvements."
     },
     "platform": {
       "macos": "macOS",
@@ -76,7 +76,7 @@
       "windows": "Windows",
       "docker": "Docker",
       "python": "Python",
-      "termux": "Termux"
+      "android": "Android"
     },
     "showcase": {
       "mobile": "Mobile",
@@ -124,13 +124,14 @@
       "platform_p": "Officially supported on Desktop (Electron) and Web (Docker/Python). Android is available via Termux."
     },
     "split": {
-      "h2_line1": "Resilient",
-      "h2_line2": "Identity & Sync.",
-      "item1_h4": "No Identity Required",
+      "h2_line1": "Private,",
+      "h2_line2": "Synced & Persistent",
+      "item1_h4": "No age verification or government ID required",
       "item1_p": "Generate multiple identities instantly. No phone number, email, or government ID needed. Ever.",
       "item2_h4": "Propagation Nodes",
       "item2_p": "Synchronize messages through the network automatically. Your messages wait for you, even when you're offline.",
-      "placeholder": "Identity & Sync"
+      "item3_h4": "Archive on disk",
+      "item3_p": "Nomadnet pages are archived locally. If a node goes offline, your copy stays with you, so you aren't stuck with a single host that can disappear."
     }
   },
   "js": {
@@ -142,14 +143,19 @@
     },
     "showcase": {
       "tab0": "Home",
-      "tab1": "Calls",
-      "tab2": "Messages",
-      "tab3": "Browser",
-      "tab4": "Archives",
-      "tab5": "Visualizer",
-      "tab6": "Tools",
-      "desktop_fmt": "Desktop — %s — Screenshot",
-      "mobile_fmt": "Mobile — %s"
+      "tab1": "Messages",
+      "tab2": "Contacts",
+      "tab3": "Calls",
+      "tab4": "Interfaces",
+      "tab5": "Map",
+      "tab6": "Nomadnet",
+      "tab7": "Visualizer",
+      "tab8": "Utilities",
+      "tab9": "Settings",
+      "tab10": "Identity",
+      "tab11": "About",
+      "desktop_fmt": "Desktop - %s - Screenshot",
+      "mobile_fmt": "Mobile - %s"
     },
     "home": {
       "version_here": "MeshChatX v%s is here"

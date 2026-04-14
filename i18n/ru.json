@@ -44,7 +44,7 @@
     "changelog": "Список изменений",
     "license": "Лицензия",
     "meta_copyright": "© 2026 MeshChatX. Безопасные децентрализованные сети.",
-    "meta_site": "MeshChatX — проект <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>."
+    "meta_site": "MeshChatX - проект <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>."
   },
   "contact": {
     "h1": "Контакты",
@@ -66,7 +66,7 @@
   "home": {
     "hero": {
       "h1": "Единый клиент Reticulum",
-      "lead_before": "MeshChatX — сильно доработанный форк оригинального ",
+      "lead_before": "MeshChatX - сильно доработанный форк оригинального ",
       "lead_anchor": "MeshChat от Liam Cottle",
       "lead_after": ". Мы добавили много функций и улучшений."
     },
@@ -76,7 +76,7 @@
       "windows": "Windows",
       "docker": "Docker",
       "python": "Python",
-      "termux": "Termux"
+      "android": "Android"
     },
     "showcase": {
       "mobile": "Мобильный",
@@ -124,13 +124,14 @@
       "platform_p": "Официально: Desktop (Electron) и Web (Docker/Python). Android через Termux."
     },
     "split": {
-      "h2_line1": "Устойчивая",
-      "h2_line2": "личность и синхронизация.",
-      "item1_h4": "Без обязательной личности",
+      "h2_line1": "Приватность,",
+      "h2_line2": "Синхронность и Постоянство",
+      "item1_h4": "Без проверки возраста и государственного удостоверения",
       "item1_p": "Создавайте несколько личностей мгновенно. Без телефона, почты или документов. Никогда.",
       "item2_h4": "Узлы распространения",
       "item2_p": "Сообщения синхронизируются в сети автоматически. Они ждут вас, даже если вы офлайн.",
-      "placeholder": "Личность и синхронизация"
+      "item3_h4": "Архив на диске",
+      "item3_p": "Страницы Nomadnet хранятся локально. Если узел недоступен, копия остаётся у вас - без зависимости от одного хоста, который может исчезнуть."
     }
   },
   "js": {
@@ -142,14 +143,19 @@
     },
     "showcase": {
       "tab0": "Главная",
-      "tab1": "Звонки",
-      "tab2": "Сообщения",
-      "tab3": "Браузер",
-      "tab4": "Архивы",
-      "tab5": "Визуализатор",
-      "tab6": "Инструменты",
-      "desktop_fmt": "Настольный — %s — скриншот",
-      "mobile_fmt": "Мобильный — %s"
+      "tab1": "Сообщения",
+      "tab2": "Контакты",
+      "tab3": "Звонки",
+      "tab4": "Интерфейсы",
+      "tab5": "Карта",
+      "tab6": "Nomadnet",
+      "tab7": "Визуализатор",
+      "tab8": "Утилиты",
+      "tab9": "Настройки",
+      "tab10": "Личность",
+      "tab11": "О программе",
+      "desktop_fmt": "Настольный - %s - скриншот",
+      "mobile_fmt": "Мобильный - %s"
     },
     "home": {
       "version_here": "Вышел MeshChatX v%s"

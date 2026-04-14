@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#18181b" />
 <meta name="color-scheme" content="light dark" />
-<link rel="icon" href="../static/favicon.png" type="image/png" />
+<link rel="icon" href="../static/favicon.webp" type="image/webp" />
 <title>MeshChatX</title>
 <meta name="description" content="Die Zukunft dezentraler Kommunikation. Sichere, widerstandsfähige und nicht zu stoppen Nachrichten über Reticulum." />
 <link rel="canonical" href="https://meshchatx.com/de/" />
@@ -20,7 +20,7 @@
 <meta property="og:title" content="MeshChatX" />
 <meta property="og:description" content="Die Zukunft dezentraler Kommunikation. Sichere, widerstandsfähige und nicht zu stoppen Nachrichten über Reticulum." />
 <meta property="og:url" content="https://meshchatx.com/de/" />
-<meta property="og:image" content="https://meshchatx.com/static/logo.png" />
+<meta property="og:image" content="https://meshchatx.com/static/logo.webp" />
 <meta property="og:image:alt" content="MeshChatX-Logo" />
 <meta property="og:locale" content="de_DE" />
 <meta property="og:locale:alternate" content="en_US" />
@@ -29,12 +29,12 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="MeshChatX" />
 <meta name="twitter:description" content="Die Zukunft dezentraler Kommunikation. Sichere, widerstandsfähige und nicht zu stoppen Nachrichten über Reticulum." />
-<meta name="twitter:image" content="https://meshchatx.com/static/logo.png" />
+<meta name="twitter:image" content="https://meshchatx.com/static/logo.webp" />
 <meta name="twitter:image:alt" content="MeshChatX-Logo" />
 <script>
 (function(){var c=document.documentElement.classList,t=localStorage.getItem('theme');if(t==='light'){c.add('light')}else if(t==='dark'||window.matchMedia('(prefers-color-scheme:dark)').matches){c.add('dark')}else{c.add('light')}})();
 </script>
-<script>window.MCX_I18N={"download.all_releases":"Alle Releases","download.channel_pre":"Vorabversion","download.channel_stable":"Stabil","download.fetch_error":"Releases konnten nicht geladen werden","download.gitea_error":"Gitea-API ","download.latest":"Neuestes","download.no_release":"Keine Release-Informationen verfügbar.","download.prerelease":"Vorabversion","download.stable":"stabil","home.version_here":"MeshChatX v%s ist da","showcase.desktop_fmt":"Desktop — %s — Screenshot","showcase.mobile_fmt":"Mobil — %s","showcase.tab0":"Start","showcase.tab1":"Anrufe","showcase.tab2":"Nachrichten","showcase.tab3":"Browser","showcase.tab4":"Archive","showcase.tab5":"Visualisierer","showcase.tab6":"Werkzeuge","theme.mobile_dark":"Dunkelmodus","theme.mobile_light":"Hellmodus","theme.toggle_dark":"Zum Dunkelmodus wechseln","theme.toggle_light":"Zum Hellmodus wechseln"}</script>
+<script>window.MCX_I18N={"download.all_releases":"Alle Releases","download.channel_pre":"Vorabversion","download.channel_stable":"Stabil","download.fetch_error":"Releases konnten nicht geladen werden","download.gitea_error":"Gitea-API ","download.latest":"Neuestes","download.no_release":"Keine Release-Informationen verfügbar.","download.prerelease":"Vorabversion","download.stable":"stabil","home.version_here":"MeshChatX v%s ist da","showcase.desktop_fmt":"Desktop - %s - Screenshot","showcase.mobile_fmt":"Mobil - %s","showcase.tab0":"Start","showcase.tab1":"Nachrichten","showcase.tab10":"Identität","showcase.tab11":"Über","showcase.tab2":"Kontakte","showcase.tab3":"Anrufe","showcase.tab4":"Interfaces","showcase.tab5":"Karte","showcase.tab6":"Nomadnet","showcase.tab7":"Visualisierer","showcase.tab8":"Dienstprogramme","showcase.tab9":"Einstellungen","theme.mobile_dark":"Dunkelmodus","theme.mobile_light":"Hellmodus","theme.toggle_dark":"Zum Dunkelmodus wechseln","theme.toggle_light":"Zum Hellmodus wechseln"}</script>
 <link rel="stylesheet" href="../css/main.css" />
 </head>
 <body data-page="home" data-locale="de">
@@ -85,13 +85,14 @@
   <symbol id="i-wallet" viewBox="0 0 24 24"><path fill="currentColor" d="M21,18V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V6H12C10.89,6 10,6.9 10,8V16A2,2 0 0,0 12,18M12,16H22V8H12M16,13.5A1.5,1.5 0 0,1 14.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,12A1.5,1.5 0 0,1 16,13.5Z"/></symbol>
   <symbol id="i-alert-circle-outline" viewBox="0 0 24 24"><path fill="currentColor" d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z"/></symbol>
+  <symbol id="i-raspberry-pi" viewBox="0 0 24 24"><path fill="currentColor" d="M20,8H22V10H20V8M4,5H20A2,2 0 0,1 22,7H19V9H5V13H8V16H19V17H22A2,2 0 0,1 20,19H16V20H14V19H11V20H7V19H4A2,2 0 0,1 2,17V7A2,2 0 0,1 4,5M19,15H9V10H19V11H22V13H19V15M13,12V14H15V12H13M5,6V8H6V6H5M7,6V8H8V6H7M9,6V8H10V6H9M11,6V8H12V6H11M13,6V8H14V6H13M15,6V8H16V6H15M20,14H22V16H20V14Z"/></symbol>
 </svg></div>
 <div class="mcx-shell">
   <header class="mcx-site-header">
     <a class="mcx-brand" href="index.html">
       <img
         class="mcx-brand__logo"
-        src="../static/logo-navbar.png"
+        src="../static/logo-navbar.webp"
         alt="MeshChatX"
         width="120"
         height="40"
@@ -187,23 +188,23 @@
             <svg class="mcx-icon mcx-icon--xl" aria-hidden="true"><use href="#i-language-python" /></svg>
             <span>Python</span>
           </a>
-          <a data-plat="termux" class="mcx-disabled" href="download.html#termux" title="Termux">
+          <a data-plat="android" class="mcx-disabled" href="download.html#android" title="Android">
             <svg class="mcx-icon mcx-icon--xl" aria-hidden="true"><use href="#i-android" /></svg>
-            <span>Termux</span>
+            <span>Android</span>
           </a>
         </div>
 
-        <div id="showcase" class="mcx-showcase-wrap" data-mcx-showcase>
-          <div class="mcx-toggle-pair">
-            <button type="button" class="mcx-toggle is-active" data-view="mobile" title="Mobil" aria-label="Mobil">
+        <div id="showcase" class="mcx-showcase-wrap" data-mcx-showcase data-showcase-assets="../static/showcase/" data-showcase-desktop-only="true">
+          <div class="mcx-toggle-pair hidden" aria-hidden="true">
+            <button type="button" class="mcx-toggle is-active" data-view="mobile" title="Mobil" aria-label="Mobil" tabindex="-1">
               <svg class="mcx-icon mcx-icon--md" aria-hidden="true"><use href="#i-cellphone" /></svg>
             </button>
-            <button type="button" class="mcx-toggle" data-view="desktop" title="Desktop" aria-label="Desktop">
+            <button type="button" class="mcx-toggle" data-view="desktop" title="Desktop" aria-label="Desktop" tabindex="-1">
               <svg class="mcx-icon mcx-icon--md" aria-hidden="true"><use href="#i-monitor" /></svg>
             </button>
           </div>
 
-          <div data-showcase-mobile>
+          <div data-showcase-mobile class="hidden">
             <div class="mcx-flex-center">
               <div class="mcx-showcase-phone">
                 <div class="mcx-phone-notch"><span></span></div>
@@ -214,28 +215,35 @@
                     </summary>
                     <div class="mcx-menu-popover" style="position:absolute;top:100%;left:0;right:0;margin-top:2px;z-index:20;border-radius:0 0 0.5rem 0.5rem">
                       <button type="button" class="touch-manipulation" data-showcase-mobile-item="0" role="menuitem">Start</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="1" role="menuitem">Anrufe</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="2" role="menuitem">Nachrichten</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="3" role="menuitem">Browser</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="4" role="menuitem">Archive</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="5" role="menuitem">Visualisierer</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="6" role="menuitem">Werkzeuge</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="1" role="menuitem">Nachrichten</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="2" role="menuitem">Kontakte</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="3" role="menuitem">Anrufe</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="4" role="menuitem">Interfaces</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="5" role="menuitem">Karte</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="6" role="menuitem">Nomadnet</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="7" role="menuitem">Visualisierer</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="8" role="menuitem">Dienstprogramme</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="9" role="menuitem">Einstellungen</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="10" role="menuitem">Identität</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="11" role="menuitem">Über</button>
                     </div>
                   </details>
                   <span class="mcx-phone-bar-title" data-showcase-label>Start</span>
                   <span style="width:1.5rem;flex-shrink:0"></span>
                 </div>
                 <div class="mcx-phone-screen" data-showcase-screen role="presentation">
-                  <div class="mcx-screen-placeholder">
-                    <svg class="mcx-icon mcx-icon--2xl mcx-muted-icon" aria-hidden="true"><use href="#i-message-text-outline" /></svg>
-                    <small data-showcase-mobile-label></small>
+                  <div class="mcx-showcase-frame" data-showcase-frame>
+                    <img class="mcx-showcase-shot hidden" alt="" data-showcase-img decoding="async" loading="lazy" />
+                    <div class="mcx-showcase-placeholder" data-showcase-placeholder aria-hidden="true">
+                      <svg class="mcx-icon mcx-icon--2xl mcx-muted-icon" aria-hidden="true"><use href="#i-message-text-outline" /></svg>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div data-showcase-desktop class="hidden">
+          <div data-showcase-desktop>
             <div class="mcx-showcase-desktop mcx-glass-card">
               <div class="mcx-browser-chrome">
                 <div class="mcx-dots" aria-hidden="true">
@@ -247,12 +255,17 @@
               </div>
               <div class="mcx-tabs-row">
                 <button type="button" class="mcx-tab is-active" data-showcase-tab="0">Start</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="1">Anrufe</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="2">Nachrichten</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="3">Browser</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="4">Archive</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="5">Visualisierer</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="6">Werkzeuge</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="1">Nachrichten</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="2">Kontakte</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="3">Anrufe</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="4">Interfaces</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="5">Karte</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="6">Nomadnet</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="7">Visualisierer</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="8">Dienstprogramme</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="9">Einstellungen</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="10">Identität</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="11">Über</button>
               </div>
               <div class="mcx-tabs-mobile">
                 <details data-showcase-menu>
@@ -261,20 +274,27 @@
                   </summary>
                   <div class="mcx-menu-popover" style="position:absolute;top:100%;left:0;right:0;margin-top:2px;z-index:10">
                     <button type="button" data-showcase-mobile-item="0" role="menuitem">Start</button>
-                    <button type="button" data-showcase-mobile-item="1" role="menuitem">Anrufe</button>
-                    <button type="button" data-showcase-mobile-item="2" role="menuitem">Nachrichten</button>
-                    <button type="button" data-showcase-mobile-item="3" role="menuitem">Browser</button>
-                    <button type="button" data-showcase-mobile-item="4" role="menuitem">Archive</button>
-                    <button type="button" data-showcase-mobile-item="5" role="menuitem">Visualisierer</button>
-                    <button type="button" data-showcase-mobile-item="6" role="menuitem">Werkzeuge</button>
+                    <button type="button" data-showcase-mobile-item="1" role="menuitem">Nachrichten</button>
+                    <button type="button" data-showcase-mobile-item="2" role="menuitem">Kontakte</button>
+                    <button type="button" data-showcase-mobile-item="3" role="menuitem">Anrufe</button>
+                    <button type="button" data-showcase-mobile-item="4" role="menuitem">Interfaces</button>
+                    <button type="button" data-showcase-mobile-item="5" role="menuitem">Karte</button>
+                    <button type="button" data-showcase-mobile-item="6" role="menuitem">Nomadnet</button>
+                    <button type="button" data-showcase-mobile-item="7" role="menuitem">Visualisierer</button>
+                    <button type="button" data-showcase-mobile-item="8" role="menuitem">Dienstprogramme</button>
+                    <button type="button" data-showcase-mobile-item="9" role="menuitem">Einstellungen</button>
+                    <button type="button" data-showcase-mobile-item="10" role="menuitem">Identität</button>
+                    <button type="button" data-showcase-mobile-item="11" role="menuitem">Über</button>
                   </div>
                 </details>
                 <span data-showcase-label>Start</span>
               </div>
               <div class="mcx-desktop-screen" data-showcase-screen role="presentation">
-                <div class="mcx-screen-placeholder">
-                  <svg class="mcx-icon mcx-muted-icon" style="width:3rem;height:3rem" aria-hidden="true"><use href="#i-message-text-outline" /></svg>
-                  <span class="mcx-desktop-label" data-showcase-desktop-label></span>
+                <div class="mcx-showcase-frame" data-showcase-frame>
+                  <img class="mcx-showcase-shot mcx-showcase-shot--desktop hidden" alt="" data-showcase-img decoding="async" loading="lazy" />
+                  <div class="mcx-showcase-placeholder" data-showcase-placeholder aria-hidden="true">
+                    <svg class="mcx-icon mcx-muted-icon" style="width:3rem;height:3rem" aria-hidden="true"><use href="#i-message-text-outline" /></svg>
+                  </div>
                 </div>
               </div>
             </div>
@@ -297,7 +317,7 @@
           <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-cog" /></svg></div><span>Anpassbar</span></div>
           <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-chart-line" /></svg></div><span>Telemetrie (LXMF)</span></div>
           <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-tunnel" /></svg></div><span>Tunnel<span class="mcx-cap-soon-note">(demnächst)</span></span></div>
-          <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-file-document" /></svg></div><span>Host-Seiten<span class="mcx-cap-soon-note">(demnächst)</span></span></div>
+          <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-file-document" /></svg></div><span>Host-Seiten</span></div>
           <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-message-bulleted" /></svg></div><span>Gruppennachrichten<span class="mcx-cap-soon-note">(demnächst)</span></span></div>
           <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-account-group" /></svg></div><span>Gruppenanrufe<span class="mcx-cap-soon-note">(demnächst)</span></span></div>
         </div>
@@ -342,14 +362,14 @@
     </section>
 
     <section class="mcx-section">
-      <div class="mcx-container mcx-split">
+      <div class="mcx-container mcx-split mcx-split--single">
         <div>
-          <h2>Widerstandsfähige<br />Identität & Sync.</h2>
+          <h2>Privat,<br />Synchron & Beständig</h2>
           <div class="mcx-split-list">
             <div class="mcx-split-item">
               <div class="mcx-split-icon"><svg class="mcx-icon mcx-icon--lg" aria-hidden="true"><use href="#i-security" /></svg></div>
               <div>
-                <h4>Keine Identität nötig</h4>
+                <h4>Keine Altersverifizierung oder staatlicher Ausweis erforderlich</h4>
                 <p>Erzeuge sofort mehrere Identitäten. Keine Telefonnummer, E-Mail oder Ausweis. Nie.</p>
               </div>
             </div>
@@ -360,13 +380,12 @@
                 <p>Nachrichten werden automatisch im Netz synchronisiert. Sie warten auf dich, auch wenn du offline bist.</p>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="mcx-flex-center">
-          <div class="mcx-aspect-card mcx-glass-card">
-            <div class="mcx-screen-placeholder" style="padding:1rem">
-              <svg class="mcx-icon mcx-muted-icon" style="width:3rem;height:3rem" aria-hidden="true"><use href="#i-security" /></svg>
-              <small>Identität & Sync</small>
+            <div class="mcx-split-item">
+              <div class="mcx-split-icon"><svg class="mcx-icon mcx-icon--lg" aria-hidden="true"><use href="#i-archive" /></svg></div>
+              <div>
+                <h4>Archiv auf dem Datenträger</h4>
+                <p>Nomadnet-Seiten werden lokal archiviert. Fällt ein Knoten aus, bleibt deine Kopie erhalten - du hängst nicht an einem einzelnen Host, der verschwinden kann.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -380,7 +399,7 @@
         <div class="mcx-brand mcx-brand--footer">
           <img
             class="mcx-brand__logo mcx-brand__logo--footer"
-            src="../static/logo-navbar.png"
+            src="../static/logo-navbar.webp"
             alt="MeshChatX"
             width="96"
             height="32"
@@ -421,7 +440,7 @@
   </footer>
 </div>
 
-<script src="../js/releases.js"></script>
-<script src="../js/app.js"></script>
+<script src="../js/releases.js?v=3"></script>
+<script src="../js/app.js?v=3"></script>
 </body>
 </html>

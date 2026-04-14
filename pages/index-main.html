@@ -39,23 +39,23 @@
             <svg class="mcx-icon mcx-icon--xl" aria-hidden="true"><use href="#i-language-python" /></svg>
             <span>{{T:home.platform.python}}</span>
           </a>
-          <a data-plat="termux" class="mcx-disabled" href="download.html#termux" title="{{T:home.platform.termux}}">
+          <a data-plat="android" class="mcx-disabled" href="download.html#android" title="{{T:home.platform.android}}">
             <svg class="mcx-icon mcx-icon--xl" aria-hidden="true"><use href="#i-android" /></svg>
-            <span>{{T:home.platform.termux}}</span>
+            <span>{{T:home.platform.android}}</span>
           </a>
         </div>
 
-        <div id="showcase" class="mcx-showcase-wrap" data-mcx-showcase>
-          <div class="mcx-toggle-pair">
-            <button type="button" class="mcx-toggle is-active" data-view="mobile" title="{{T:home.showcase.mobile}}" aria-label="{{T:home.showcase.mobile}}">
+        <div id="showcase" class="mcx-showcase-wrap" data-mcx-showcase data-showcase-assets="{{BASE}}static/showcase/" data-showcase-desktop-only="true">
+          <div class="mcx-toggle-pair hidden" aria-hidden="true">
+            <button type="button" class="mcx-toggle is-active" data-view="mobile" title="{{T:home.showcase.mobile}}" aria-label="{{T:home.showcase.mobile}}" tabindex="-1">
               <svg class="mcx-icon mcx-icon--md" aria-hidden="true"><use href="#i-cellphone" /></svg>
             </button>
-            <button type="button" class="mcx-toggle" data-view="desktop" title="{{T:home.showcase.desktop}}" aria-label="{{T:home.showcase.desktop}}">
+            <button type="button" class="mcx-toggle" data-view="desktop" title="{{T:home.showcase.desktop}}" aria-label="{{T:home.showcase.desktop}}" tabindex="-1">
               <svg class="mcx-icon mcx-icon--md" aria-hidden="true"><use href="#i-monitor" /></svg>
             </button>
           </div>
 
-          <div data-showcase-mobile>
+          <div data-showcase-mobile class="hidden">
             <div class="mcx-flex-center">
               <div class="mcx-showcase-phone">
                 <div class="mcx-phone-notch"><span></span></div>
@@ -72,22 +72,29 @@
                       <button type="button" class="touch-manipulation" data-showcase-mobile-item="4" role="menuitem">{{T:js.showcase.tab4}}</button>
                       <button type="button" class="touch-manipulation" data-showcase-mobile-item="5" role="menuitem">{{T:js.showcase.tab5}}</button>
                       <button type="button" class="touch-manipulation" data-showcase-mobile-item="6" role="menuitem">{{T:js.showcase.tab6}}</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="7" role="menuitem">{{T:js.showcase.tab7}}</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="8" role="menuitem">{{T:js.showcase.tab8}}</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="9" role="menuitem">{{T:js.showcase.tab9}}</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="10" role="menuitem">{{T:js.showcase.tab10}}</button>
+                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="11" role="menuitem">{{T:js.showcase.tab11}}</button>
                     </div>
                   </details>
                   <span class="mcx-phone-bar-title" data-showcase-label>{{T:js.showcase.tab0}}</span>
                   <span style="width:1.5rem;flex-shrink:0"></span>
                 </div>
                 <div class="mcx-phone-screen" data-showcase-screen role="presentation">
-                  <div class="mcx-screen-placeholder">
-                    <svg class="mcx-icon mcx-icon--2xl mcx-muted-icon" aria-hidden="true"><use href="#i-message-text-outline" /></svg>
-                    <small data-showcase-mobile-label></small>
+                  <div class="mcx-showcase-frame" data-showcase-frame>
+                    <img class="mcx-showcase-shot hidden" alt="" data-showcase-img decoding="async" loading="lazy" />
+                    <div class="mcx-showcase-placeholder" data-showcase-placeholder aria-hidden="true">
+                      <svg class="mcx-icon mcx-icon--2xl mcx-muted-icon" aria-hidden="true"><use href="#i-message-text-outline" /></svg>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div data-showcase-desktop class="hidden">
+          <div data-showcase-desktop>
             <div class="mcx-showcase-desktop mcx-glass-card">
               <div class="mcx-browser-chrome">
                 <div class="mcx-dots" aria-hidden="true">
@@ -105,6 +112,11 @@
                 <button type="button" class="mcx-tab" data-showcase-tab="4">{{T:js.showcase.tab4}}</button>
                 <button type="button" class="mcx-tab" data-showcase-tab="5">{{T:js.showcase.tab5}}</button>
                 <button type="button" class="mcx-tab" data-showcase-tab="6">{{T:js.showcase.tab6}}</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="7">{{T:js.showcase.tab7}}</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="8">{{T:js.showcase.tab8}}</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="9">{{T:js.showcase.tab9}}</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="10">{{T:js.showcase.tab10}}</button>
+                <button type="button" class="mcx-tab" data-showcase-tab="11">{{T:js.showcase.tab11}}</button>
               </div>
               <div class="mcx-tabs-mobile">
                 <details data-showcase-menu>
@@ -119,14 +131,21 @@
                     <button type="button" data-showcase-mobile-item="4" role="menuitem">{{T:js.showcase.tab4}}</button>
                     <button type="button" data-showcase-mobile-item="5" role="menuitem">{{T:js.showcase.tab5}}</button>
                     <button type="button" data-showcase-mobile-item="6" role="menuitem">{{T:js.showcase.tab6}}</button>
+                    <button type="button" data-showcase-mobile-item="7" role="menuitem">{{T:js.showcase.tab7}}</button>
+                    <button type="button" data-showcase-mobile-item="8" role="menuitem">{{T:js.showcase.tab8}}</button>
+                    <button type="button" data-showcase-mobile-item="9" role="menuitem">{{T:js.showcase.tab9}}</button>
+                    <button type="button" data-showcase-mobile-item="10" role="menuitem">{{T:js.showcase.tab10}}</button>
+                    <button type="button" data-showcase-mobile-item="11" role="menuitem">{{T:js.showcase.tab11}}</button>
                   </div>
                 </details>
                 <span data-showcase-label>{{T:js.showcase.tab0}}</span>
               </div>
               <div class="mcx-desktop-screen" data-showcase-screen role="presentation">
-                <div class="mcx-screen-placeholder">
-                  <svg class="mcx-icon mcx-muted-icon" style="width:3rem;height:3rem" aria-hidden="true"><use href="#i-message-text-outline" /></svg>
-                  <span class="mcx-desktop-label" data-showcase-desktop-label></span>
+                <div class="mcx-showcase-frame" data-showcase-frame>
+                  <img class="mcx-showcase-shot mcx-showcase-shot--desktop hidden" alt="" data-showcase-img decoding="async" loading="lazy" />
+                  <div class="mcx-showcase-placeholder" data-showcase-placeholder aria-hidden="true">
+                    <svg class="mcx-icon mcx-muted-icon" style="width:3rem;height:3rem" aria-hidden="true"><use href="#i-message-text-outline" /></svg>
+                  </div>
                 </div>
               </div>
             </div>
@@ -149,7 +168,7 @@
           <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-cog" /></svg></div><span>{{T:home.cap.customizable}}</span></div>
           <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-chart-line" /></svg></div><span>{{T:home.cap.telemetry}}</span></div>
           <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-tunnel" /></svg></div><span>{{T:home.cap.tunnel}}<span class="mcx-cap-soon-note">{{T:home.cap.soon}}</span></span></div>
-          <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-file-document" /></svg></div><span>{{T:home.cap.host_pages}}<span class="mcx-cap-soon-note">{{T:home.cap.soon}}</span></span></div>
+          <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-file-document" /></svg></div><span>{{T:home.cap.host_pages}}</span></div>
           <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-message-bulleted" /></svg></div><span>{{T:home.cap.group_msgs}}<span class="mcx-cap-soon-note">{{T:home.cap.soon}}</span></span></div>
           <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-account-group" /></svg></div><span>{{T:home.cap.group_calls}}<span class="mcx-cap-soon-note">{{T:home.cap.soon}}</span></span></div>
         </div>
@@ -194,7 +213,7 @@
     </section>
 
     <section class="mcx-section">
-      <div class="mcx-container mcx-split">
+      <div class="mcx-container mcx-split mcx-split--single">
         <div>
           <h2>{{T:home.split.h2_line1}}<br />{{T:home.split.h2_line2}}</h2>
           <div class="mcx-split-list">
@@ -212,13 +231,12 @@
                 <p>{{T:home.split.item2_p}}</p>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="mcx-flex-center">
-          <div class="mcx-aspect-card mcx-glass-card">
-            <div class="mcx-screen-placeholder" style="padding:1rem">
-              <svg class="mcx-icon mcx-muted-icon" style="width:3rem;height:3rem" aria-hidden="true"><use href="#i-security" /></svg>
-              <small>{{T:home.split.placeholder}}</small>
+            <div class="mcx-split-item">
+              <div class="mcx-split-icon"><svg class="mcx-icon mcx-icon--lg" aria-hidden="true"><use href="#i-archive" /></svg></div>
+              <div>
+                <h4>{{T:home.split.item3_h4}}</h4>
+                <p>{{T:home.split.item3_p}}</p>
+              </div>
             </div>
           </div>
         </div>

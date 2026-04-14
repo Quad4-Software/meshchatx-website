@@ -9,13 +9,14 @@
       "windows": "Windows",
       "docker": "Docker / Podman",
       "python": "Python",
-      "termux": "Termux"
+      "android": "Android"
     },
     "macos": {
       "h2": "macOS",
       "note": "Electron-Build für macOS folgt demnächst.",
       "badge": "Demnächst",
-      "hint_before": "Vorerst kannst du ",
+      "btn_dmg": ".dmg herunterladen",
+      "hint_before": "Du kannst auch ",
       "hint_python": "Python",
       "hint_mid": " oder ",
       "hint_docker": "Docker",
@@ -88,6 +89,13 @@
       "uv": "uv",
       "copy": "Kopieren",
       "no_wheel": "Kein Wheel im neuesten Release."
+    },
+    "android": {
+      "h2": "Android",
+      "apk_h3": "APK",
+      "termux_h3": "Termux",
+      "intro": "Ein eigenständiges Android-APK ist noch nicht verfügbar.",
+      "badge": "Demnächst"
     },
     "termux": {
       "h2": "Termux",

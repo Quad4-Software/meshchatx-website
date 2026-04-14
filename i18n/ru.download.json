@@ -9,13 +9,14 @@
       "windows": "Windows",
       "docker": "Docker / Podman",
       "python": "Python",
-      "termux": "Termux"
+      "android": "Android"
     },
     "macos": {
       "h2": "macOS",
       "note": "Сборка Electron для macOS скоро появится.",
       "badge": "Скоро",
-      "hint_before": "Пока можно использовать ",
+      "btn_dmg": "Скачать .dmg",
+      "hint_before": "Также можно использовать ",
       "hint_python": "Python",
       "hint_mid": " или ",
       "hint_docker": "Docker",
@@ -88,6 +89,13 @@
       "uv": "uv",
       "copy": "Копировать",
       "no_wheel": "В последнем релизе нет wheel."
+    },
+    "android": {
+      "h2": "Android",
+      "apk_h3": "APK",
+      "termux_h3": "Termux",
+      "intro": "Отдельный APK для Android ещё не доступен.",
+      "badge": "Скоро"
     },
     "termux": {
       "h2": "Termux",

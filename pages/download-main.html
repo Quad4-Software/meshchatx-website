@@ -24,7 +24,7 @@
       <a href="download.html#windows"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-microsoft-windows" /></svg> {{T:dl.tabs.windows}}</a>
       <a href="download.html#docker"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-docker" /></svg> {{T:dl.tabs.docker}}</a>
       <a href="download.html#python"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-language-python" /></svg> {{T:dl.tabs.python}}</a>
-      <a href="download.html#termux"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-android" /></svg> {{T:dl.tabs.termux}}</a>
+      <a href="download.html#android"><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-android" /></svg> {{T:dl.tabs.android}}</a>
     </div>
 
     <div class="mcx-stack">
@@ -32,8 +32,15 @@
         <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 0.5rem;display:flex;align-items:center;gap:0.5rem">
           <svg class="mcx-icon" aria-hidden="true"><use href="#i-apple" /></svg> {{T:dl.macos.h2}}
         </h2>
-        <p class="mcx-muted" style="margin-bottom:1rem">{{T:dl.macos.note}}</p>
-        <span class="mcx-badge-status">{{T:dl.macos.badge}}</span>
+        <div id="mcx-macos-pending">
+          <p class="mcx-muted" style="margin-bottom:1rem">{{T:dl.macos.note}}</p>
+          <span class="mcx-badge-status">{{T:dl.macos.badge}}</span>
+        </div>
+        <div style="margin-bottom:1rem">
+          <a id="mcx-dl-macos-dmg" class="mcx-btn-primary hidden" href="#" download
+            ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {{T:dl.macos.btn_dmg}}</a
+          >
+        </div>
         <p class="mcx-muted mcx-text-sm">
           {{T:dl.macos.hint_before}}<a href="download.html#python" class="mcx-link-blue" style="font-weight:700">{{T:dl.macos.hint_python}}</a>{{T:dl.macos.hint_mid}}<a href="download.html#docker" class="mcx-link-blue" style="font-weight:700">{{T:dl.macos.hint_docker}}</a>{{T:dl.macos.hint_after}}
         </p>
@@ -63,7 +70,7 @@
                 href="#"
                 download
                 style="border-radius:1rem"
-                ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {{T:dl.linux.btn_appimage_arm64}}</a
+                ><svg class="mcx-icon" aria-hidden="true"><use href="#i-raspberry-pi" /></svg> {{T:dl.linux.btn_appimage_arm64}}</a
               >
             </div>
             <p id="mcx-no-appimage" class="mcx-muted mcx-text-sm hidden">{{T:dl.linux.no_appimage}}</p>
@@ -85,7 +92,9 @@
               <a id="mcx-dl-deb-amd64" class="mcx-btn-primary hidden" href="#" download
                 ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {{T:dl.linux.btn_deb_amd64}}</a
               >
-              <a id="mcx-dl-deb-arm64" class="mcx-btn-secondary hidden" href="#" download>{{T:dl.linux.btn_deb_arm64}}</a>
+              <a id="mcx-dl-deb-arm64" class="mcx-btn-secondary hidden" href="#" download
+                ><svg class="mcx-icon" aria-hidden="true"><use href="#i-raspberry-pi" /></svg> {{T:dl.linux.btn_deb_arm64}}</a
+              >
             </div>
             <p id="mcx-no-deb" class="mcx-muted mcx-text-sm hidden">{{T:dl.linux.no_deb}}</p>
             <div style="border-top:1px solid var(--border);padding-top:1.5rem">
@@ -303,10 +312,14 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
         <p id="mcx-python-empty" class="mcx-muted mcx-text-sm hidden">{{T:dl.python.no_wheel}}</p>
       </section>
 
-      <section id="termux" class="mcx-glass-card" style="padding:2rem">
+      <section id="android" class="mcx-glass-card" style="padding:2rem">
         <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 0.5rem;display:flex;align-items:center;gap:0.5rem">
-          <svg class="mcx-icon" aria-hidden="true"><use href="#i-android" /></svg> {{T:dl.termux.h2}}
+          <svg class="mcx-icon" aria-hidden="true"><use href="#i-android" /></svg> {{T:dl.android.h2}}
         </h2>
+        <h3 style="font-size:1rem;font-weight:800;margin:1.25rem 0 0.5rem">{{T:dl.android.apk_h3}}</h3>
+        <p class="mcx-muted" style="margin-bottom:1rem">{{T:dl.android.intro}}</p>
+        <span class="mcx-badge-status">{{T:dl.android.badge}}</span>
+        <h3 style="font-size:1rem;font-weight:800;margin:1.75rem 0 0.5rem">{{T:dl.android.termux_h3}}</h3>
         <p class="mcx-muted" style="margin-bottom:1.5rem">
           {{T:dl.termux.intro_before}}<code class="mcx-code-inline">meshchat --headless</code>{{T:dl.termux.intro_after}}
         </p>

@@ -7,14 +7,19 @@
     'theme.mobile_dark': 'Dark mode',
     'theme.mobile_light': 'Light mode',
     'showcase.tab0': 'Home',
-    'showcase.tab1': 'Calls',
-    'showcase.tab2': 'Messages',
-    'showcase.tab3': 'Browser',
-    'showcase.tab4': 'Archives',
-    'showcase.tab5': 'Visualizer',
-    'showcase.tab6': 'Tools',
-    'showcase.desktop_fmt': 'Desktop — %s — Screenshot',
-    'showcase.mobile_fmt': 'Mobile — %s',
+    'showcase.tab1': 'Messages',
+    'showcase.tab2': 'Contacts',
+    'showcase.tab3': 'Calls',
+    'showcase.tab4': 'Interfaces',
+    'showcase.tab5': 'Map',
+    'showcase.tab6': 'Nomadnet',
+    'showcase.tab7': 'Visualizer',
+    'showcase.tab8': 'Utilities',
+    'showcase.tab9': 'Settings',
+    'showcase.tab10': 'Identity',
+    'showcase.tab11': 'About',
+    'showcase.desktop_fmt': 'Desktop - %s - Screenshot',
+    'showcase.mobile_fmt': 'Mobile - %s',
     'home.version_here': 'MeshChatX v%s is here',
     'download.no_release': 'No release information available.',
     'download.latest': 'Latest',
@@ -85,6 +90,10 @@
     if (mobileUse) {
       mobileUse.setAttribute('href', isDark() ? '#i-weather-sunny' : '#i-weather-night');
     }
+    qsa('[data-mcx-showcase]').forEach(function (showcase) {
+      var t = parseInt(showcase.dataset.activeTab, 10);
+      if (!isNaN(t)) updateShowcaseImages(showcase, t);
+    });
   }
 
   function initThemeToggle() {
@@ -125,28 +134,70 @@
     });
   }
 
+  var MCX_SHOWCASE_TAB_FILES = [
+    'tab-11-home.webp',
+    'tab-0-messages.webp',
+    'tab-1-contacts.webp',
+    'tab-2-calls.webp',
+    'tab-3-interfaces.webp',
+    'tab-4-map.webp',
+    'tab-5-nomadnet.webp',
+    'tab-6-visualizer.webp',
+    'tab-7-utilities.webp',
+    'tab-8-settings.webp',
+    'tab-9-identity.webp',
+    'tab-10-about.webp'
+  ];
+
+  function getShowcaseMaxTab(root) {
+    var max = 0;
+    root.querySelectorAll('[data-showcase-tab]').forEach(function (btn) {
+      var idx = parseInt(btn.getAttribute('data-showcase-tab'), 10);
+      if (!isNaN(idx)) max = Math.max(max, idx);
+    });
+    return max;
+  }
+
+  function getShowcaseAssetBase(root) {
+    var b = root.getAttribute('data-showcase-assets');
+    if (!b) return 'static/showcase/';
+    return b;
+  }
+
+  function showcaseShotUrl(root, index) {
+    var base = getShowcaseAssetBase(root);
+    var sub = isDark() ? 'dark/' : 'light/';
+    return base + sub + MCX_SHOWCASE_TAB_FILES[index];
+  }
+
+  function updateShowcaseImages(root, tabIndex) {
+    root.querySelectorAll('[data-showcase-img]').forEach(function (img) {
+      var frame = img.closest('[data-showcase-frame]');
+      var ph = frame ? frame.querySelector('[data-showcase-placeholder]') : null;
+      if (ph) ph.classList.add('hidden');
+      img.classList.remove('hidden');
+      img.src = showcaseShotUrl(root, tabIndex);
+      img.alt = '';
+    });
+  }
+
   function setShowcaseTab(index, root) {
-    const maxTab = 6;
-    const i = Math.max(0, Math.min(index, maxTab));
-    const label = mcxT('showcase.tab' + i);
+    var maxTab = getShowcaseMaxTab(root);
+    var i = Math.max(0, Math.min(index, maxTab));
+    var label = mcxT('showcase.tab' + i);
     root.querySelectorAll('[data-showcase-label]').forEach(function (el) {
       el.textContent = label;
     });
     root.querySelectorAll('[data-showcase-tab]').forEach(function (btn) {
-      const idx = parseInt(btn.getAttribute('data-showcase-tab'), 10);
+      var idx = parseInt(btn.getAttribute('data-showcase-tab'), 10);
       btn.classList.toggle('is-active', idx === i);
     });
     root.querySelectorAll('[data-showcase-mobile-item]').forEach(function (btn) {
-      const idx = parseInt(btn.getAttribute('data-showcase-mobile-item'), 10);
+      var idx = parseInt(btn.getAttribute('data-showcase-mobile-item'), 10);
       btn.classList.toggle('is-active', idx === i);
     });
-    root.querySelectorAll('[data-showcase-desktop-label]').forEach(function (el) {
-      el.textContent = mcxT('showcase.desktop_fmt').replace('%s', label);
-    });
-    root.querySelectorAll('[data-showcase-mobile-label]').forEach(function (el) {
-      el.textContent = mcxT('showcase.mobile_fmt').replace('%s', label);
-    });
     root.dataset.activeTab = String(i);
+    updateShowcaseImages(root, i);
   }
 
   function resetShowcaseMenuIcons(root) {
@@ -202,10 +253,15 @@
   }
 
   function initViewToggle(root) {
-    const mobileBtn = qs('[data-view="mobile"]', root);
-    const desktopBtn = qs('[data-view="desktop"]', root);
     const mobileEl = qs('[data-showcase-mobile]', root);
     const desktopEl = qs('[data-showcase-desktop]', root);
+    if (root.getAttribute('data-showcase-desktop-only') === 'true') {
+      if (mobileEl) mobileEl.classList.add('hidden');
+      if (desktopEl) desktopEl.classList.remove('hidden');
+      return;
+    }
+    const mobileBtn = qs('[data-view="mobile"]', root);
+    const desktopBtn = qs('[data-view="desktop"]', root);
     if (!mobileBtn || !desktopBtn) return;
 
     function setView(v) {
@@ -235,6 +291,28 @@
     return res.json();
   }
 
+  async function fetchGiteaReleaseById(id) {
+    if (id == null || id === '') return null;
+    try {
+      const res = await fetch(window.MCX.releaseByIdUrl(id), {
+        headers: { Accept: 'application/json' }
+      });
+      if (!res.ok) return null;
+      return res.json();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function releaseRawHasDmg(r) {
+    if (!r) return false;
+    const assets = Array.isArray(r.assets) && r.assets.length ? r.assets : r.attachments;
+    if (!Array.isArray(assets)) return false;
+    return assets.some(function (a) {
+      return a.name && /\.dmg$/i.test(a.name);
+    });
+  }
+
   async function loadHomeVersion() {
     const badge = qs('[data-version-badge]');
     if (!badge) return;
@@ -244,9 +322,10 @@
       const published = list.filter(function (r) {
         return !r.draft;
       });
-      const rel = published.find(function (r) {
-        return !r.prerelease;
-      }) || published[0];
+      const rel =
+        published.find(function (r) {
+          return r && !window.MCX.isLikelyPrereleaseRelease(r);
+        }) || published[0];
       const v = rel && rel.tag_name ? String(rel.tag_name).replace(/^v/, '') : null;
       if (!v) {
         badge.classList.add('hidden');
@@ -267,7 +346,7 @@
       windows: '[data-plat="windows"]',
       docker: '[data-plat="docker"]',
       python: '[data-plat="python"]',
-      termux: '[data-plat="termux"]'
+      android: '[data-plat="android"]'
     };
     Object.keys(map).forEach(function (key) {
       const el = qs(map[key]);
@@ -284,9 +363,15 @@
       const published = list.filter(function (r) {
         return !r.draft;
       });
-      const rel = published.find(function (r) {
-        return !r.prerelease;
-      }) || published[0];
+      const stableRel = published.find(function (r) {
+        return r && !window.MCX.isLikelyPrereleaseRelease(r);
+      });
+      const preRows = published.filter(window.MCX.isLikelyPrereleaseRelease);
+      preRows.sort(function (a, b) {
+        return new Date(b.published_at || 0) - new Date(a.published_at || 0);
+      });
+      const preRel = preRows.length ? preRows[0] : null;
+      const rel = stableRel || preRel || published[0];
       if (!rel) return;
       const assets = rel.assets || [];
       const hasAppImage = assets.some(function (a) {
@@ -301,13 +386,18 @@
           (/win.*installer\.exe$/i.test(a.name) || /win.*portable\.exe$/i.test(a.name))
         );
       });
+      let macFromPre = releaseRawHasDmg(preRel);
+      if (!releaseRawHasDmg(stableRel) && !macFromPre && preRel && preRel.id) {
+        const fullPre = await fetchGiteaReleaseById(preRel.id);
+        macFromPre = releaseRawHasDmg(fullPre);
+      }
       setPlatformClasses({
-        macos: false,
+        macos: releaseRawHasDmg(stableRel) || macFromPre,
         linux: !!hasAppImage,
         windows: !!hasWin,
         docker: true,
         python: !!hasWheel,
-        termux: !!hasWheel
+        android: !!hasWheel
       });
     } catch (_) {}
   }
@@ -451,6 +541,17 @@
     setHref('#mcx-dl-win-inst', sel.winInstallerUrl);
     setHref('#mcx-dl-win-port', sel.winPortableUrl);
 
+    var macDmgUrl = sel.macDmgUrl;
+    if (!macDmgUrl && data.preRelease && data.preRelease.macDmgUrl) {
+      macDmgUrl = data.preRelease.macDmgUrl;
+    }
+    setHref('#mcx-dl-macos-dmg', macDmgUrl);
+
+    const macPending = qs('#mcx-macos-pending');
+    if (macPending) {
+      macPending.classList.toggle('hidden', !!macDmgUrl);
+    }
+
     const noApp = qs('#mcx-no-appimage');
     if (noApp) {
       noApp.classList.toggle('hidden', !!(sel.appImageAmd64Url || sel.appImageArm64Url));
@@ -546,13 +647,29 @@
         return !r.draft;
       });
       const latestStable = publishedReleases.find(function (r) {
-        return !r.prerelease;
+        return r && !window.MCX.isLikelyPrereleaseRelease(r);
       });
-      const latestPrerelease = publishedReleases.find(function (r) {
-        return r.prerelease;
+      const prereleases = publishedReleases.filter(window.MCX.isLikelyPrereleaseRelease);
+      prereleases.sort(function (a, b) {
+        return new Date(b.published_at || 0) - new Date(a.published_at || 0);
       });
+      const latestPrerelease = prereleases.length ? prereleases[0] : null;
       stableRelease = window.MCX.parseRelease(latestStable);
       preRelease = window.MCX.parseRelease(latestPrerelease);
+      if (latestStable && latestStable.id && stableRelease && !stableRelease.macDmgUrl) {
+        const fullStable = await fetchGiteaReleaseById(latestStable.id);
+        const reparsedStable = fullStable ? window.MCX.parseRelease(fullStable) : null;
+        if (reparsedStable && reparsedStable.macDmgUrl) {
+          stableRelease = reparsedStable;
+        }
+      }
+      if (latestPrerelease && latestPrerelease.id && preRelease && !preRelease.macDmgUrl) {
+        const fullPre = await fetchGiteaReleaseById(latestPrerelease.id);
+        const reparsed = fullPre ? window.MCX.parseRelease(fullPre) : null;
+        if (reparsed && reparsed.macDmgUrl) {
+          preRelease = Object.assign({}, preRelease, { macDmgUrl: reparsed.macDmgUrl });
+        }
+      }
 
       const params = new URLSearchParams(window.location.search);
       const wantsPrerelease = params.get('channel') === 'prerelease';

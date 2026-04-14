@@ -1,15 +1,85 @@
 (function () {
   'use strict';
 
+  var GITEA_DL_BASE = 'https://git.quad4.io/RNS-Things/MeshChatX/releases/download';
+
+  function attachmentUrl(a) {
+    if (!a) return null;
+    var u = a.browser_download_url || a.download_url;
+    return u && String(u).trim() ? u : null;
+  }
+
+  function buildReleaseAssetUrl(release, filename) {
+    if (!release || !release.tag_name || !filename) return null;
+    return (
+      GITEA_DL_BASE +
+      '/' +
+      encodeURIComponent(release.tag_name) +
+      '/' +
+      encodeURIComponent(filename)
+    );
+  }
+
+  function guessMacDmgFilenameFromWheel(assets) {
+    var wheel = assets.find(function (a) {
+      return a.name && a.name.endsWith('-py3-none-any.whl');
+    });
+    if (!wheel || !wheel.name) return null;
+    var m = wheel.name.match(/^reticulum_meshchatx-([\d.]+)-py3-none-any\.whl$/i);
+    if (!m) return null;
+    return 'ReticulumMeshChatX-v' + m[1] + '-mac-universal.dmg';
+  }
+
+  function guessMacDmgFilenameFromTag(release) {
+    if (!release || !release.tag_name) return null;
+    var rest = String(release.tag_name).replace(/^v/i, '');
+    var m = rest.match(/^(\d+\.\d+\.\d+)/);
+    if (!m) return null;
+    return 'ReticulumMeshChatX-v' + m[1] + '-mac-universal.dmg';
+  }
+
+  function isLikelyPrereleaseRelease(release) {
+    if (!release) return false;
+    if (/-(rc|alpha|beta|pre)/i.test(String(release.tag_name || ''))) return true;
+    if (release.prerelease === true) return true;
+    if (release.prerelease === false) return false;
+    return false;
+  }
+
+  function macDmgUrlFromRelease(release, assets) {
+    var macDmg = assets.find(function (a) {
+      return a.name && /\.dmg$/i.test(a.name) && !/\.dmg\.sha256$/i.test(a.name);
+    });
+    if (macDmg) {
+      var direct = attachmentUrl(macDmg);
+      if (direct) return direct;
+      return buildReleaseAssetUrl(release, macDmg.name);
+    }
+    if (!isLikelyPrereleaseRelease(release)) return null;
+    var guessedName = guessMacDmgFilenameFromWheel(assets);
+    if (guessedName) return buildReleaseAssetUrl(release, guessedName);
+    guessedName = guessMacDmgFilenameFromTag(release);
+    if (guessedName) return buildReleaseAssetUrl(release, guessedName);
+    return null;
+  }
+
+  function collectAssets(release) {
+    const a = release.assets;
+    const b = release.attachments;
+    if (Array.isArray(a) && a.length > 0) return a;
+    if (Array.isArray(b) && b.length > 0) return b;
+    return Array.isArray(a) ? a : [];
+  }
+
   function getAssetUrl(assets, matcher) {
     const asset = assets.find((a) => a.name && matcher(a.name));
-    return asset?.browser_download_url ?? null;
+    return attachmentUrl(asset);
   }
 
   function parseRelease(release) {
     if (!release) return null;
 
-    const assets = release.assets ?? [];
+    const assets = collectAssets(release);
     const appImageAmd64 = getAssetUrl(
       assets,
       (name) =>
@@ -35,7 +105,6 @@
     const wheel = assets.find((a) => a.name && a.name.endsWith('-py3-none-any.whl'));
     const winInstaller = assets.find((a) => a.name && /win.*installer\.exe$/i.test(a.name));
     const winPortable = assets.find((a) => a.name && /win.*portable\.exe$/i.test(a.name));
-
     return {
       version: release.tag_name?.replace(/^v/, '') ?? null,
       releaseUrl: release.html_url ?? null,
@@ -46,9 +115,10 @@
       debAmd64Url: debAmd64,
       debArm64Url: debArm64,
       rpmAmd64Url: rpmAmd64,
-      wheelUrl: wheel?.browser_download_url ?? null,
-      winInstallerUrl: winInstaller?.browser_download_url ?? null,
-      winPortableUrl: winPortable?.browser_download_url ?? null
+      wheelUrl: attachmentUrl(wheel),
+      winInstallerUrl: attachmentUrl(winInstaller),
+      winPortableUrl: attachmentUrl(winPortable),
+      macDmgUrl: macDmgUrlFromRelease(release, assets)
     };
   }
 
@@ -76,6 +146,12 @@
 
   window.MCX = {
     GITEA_RELEASES: 'https://git.quad4.io/api/v1/repos/RNS-Things/MeshChatX/releases?limit=25',
+    releaseByIdUrl: function (id) {
+      return (
+        'https://git.quad4.io/api/v1/repos/RNS-Things/MeshChatX/releases/' + encodeURIComponent(id)
+      );
+    },
+    isLikelyPrereleaseRelease: isLikelyPrereleaseRelease,
     parseRelease,
     formatRelativeTime
   };

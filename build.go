@@ -118,7 +118,7 @@ func main() {
 				PageID:      p.pageID,
 				SkipText:    tr["a11y.skip"],
 				SiteName:    siteName,
-				OGImageURL:  siteOrigin + "/static/logo.png",
+				OGImageURL:  siteOrigin + "/static/logo.webp",
 				OGImageAlt:  ogAlt,
 			})
 
@@ -164,7 +164,7 @@ func buildHead(o buildHeadOpts) string {
 	b.WriteString("<meta name=\"color-scheme\" content=\"light dark\" />\n")
 	b.WriteString("<link rel=\"icon\" href=\"")
 	b.WriteString(o.Base)
-	b.WriteString("static/favicon.png\" type=\"image/png\" />\n")
+	b.WriteString("static/favicon.webp\" type=\"image/webp\" />\n")
 	b.WriteString("<title>")
 	b.WriteString(htmlEsc(o.Title))
 	b.WriteString("</title>\n<meta name=\"description\" content=\"")
@@ -283,8 +283,8 @@ func htmlEsc(s string) string {
 
 func buildFoot(base string) string {
 	return fmt.Sprintf(`
-<script src="%sjs/releases.js"></script>
-<script src="%sjs/app.js"></script>
+<script src="%sjs/releases.js?v=3"></script>
+<script src="%sjs/app.js?v=3"></script>
 </body>
 </html>
 `, base, base)

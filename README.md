@@ -18,7 +18,7 @@ This regenerates all HTML at the project root. Source templates live under `page
 
 ### SEO and social previews
 
-Each page includes `title`, `meta name="description"`, `link rel="canonical"`, `hreflang` alternates, `meta name="robots"`, Open Graph (`og:title`, `og:description`, `og:url`, `og:image`, `og:locale`, alternates), and Twitter Card tags (`twitter:card`, title, description, image). The shared preview image is `https://meshchatx.com/static/logo.png` (see `siteOrigin` in `build.go`). There is no `sitemap.xml` generator yet; `robots.txt` allows crawlers.
+Each page includes `title`, `meta name="description"`, `link rel="canonical"`, `hreflang` alternates, `meta name="robots"`, Open Graph (`og:title`, `og:description`, `og:url`, `og:image`, `og:locale`, alternates), and Twitter Card tags (`twitter:card`, title, description, image). The shared preview image is `https://meshchatx.com/static/logo.webp` (see `siteOrigin` in `build.go`). There is no `sitemap.xml` generator yet; `robots.txt` allows crawlers.
 
 ## Container image
 
