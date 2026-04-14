@@ -1,9 +1,18 @@
 <section class="mcx-page-head">
   <div class="mcx-container mcx-container--md">
     <h1>{{T:dl.h1}}</h1>
+    <noscript>
+      <div class="mcx-nojs-download-banner" role="status">
+        <p class="mcx-nojs-download-banner__title">{{T:dl.nojs_banner_title}}</p>
+        <p class="mcx-nojs-download-banner__text">{{T:dl.nojs_banner_text}}</p>
+      </div>
+    </noscript>
     <div class="mb-10 space-y-1" style="margin-bottom:2.5rem">
       <p class="mcx-muted" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem" id="mcx-download-meta">
-        <span class="mcx-muted">{{T:dl.loading}}</span>
+        <span class="mcx-js-only">{{T:dl.loading}}</span>
+        <noscript>
+          <span>{{T:dl.meta_noscript}} <a href="https://git.quad4.io/RNS-Things/MeshChatX/releases" class="mcx-link-blue" target="_blank" rel="noopener noreferrer">git.quad4.io/RNS-Things/MeshChatX/releases</a></span>
+        </noscript>
       </p>
       <p>
         <a
@@ -193,7 +202,17 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
           <div class="mcx-details-body">
             <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">{{T:dl.containers.compose_intro_before}}<code class="mcx-code-inline">{{T:dl.containers.compose_filename}}</code>{{T:dl.containers.compose_intro_after}}</p>
             <div class="mcx-pre-wrap">
-              <pre class="mcx-pre" id="mcx-compose-yaml"></pre>
+              <pre class="mcx-pre" id="mcx-compose-yaml">services:
+    reticulum-meshchatx:
+        container_name: reticulum-meshchatx
+        image: ${MESHCHAT_IMAGE:-git.quad4.io/rns-things/meshchatx:latest}
+        restart: unless-stopped
+        security_opt:
+            - no-new-privileges:true
+        ports:
+            - 127.0.0.1:8000:8000
+        volumes:
+            - ./meshchat-config:/config</pre>
               <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-compose-copy" title="{{T:dl.containers.copy_compose}}">
                 <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
               </button>
@@ -220,7 +239,13 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             <div style="border-top:1px solid var(--border);padding-top:1.5rem">
               <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.containers.run_cmd}}</p>
               <div class="mcx-pre-wrap">
-                <pre class="mcx-pre" id="mcx-docker-run"></pre>
+                <pre class="mcx-pre" id="mcx-docker-run">docker run -d \
+  --name reticulum-meshchatx \
+  --restart unless-stopped \
+  --security-opt no-new-privileges:true \
+  -p 127.0.0.1:8000:8000 \
+  -v ./meshchat-config:/config \
+  git.quad4.io/rns-things/meshchatx:latest</pre>
                 <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-docker-run-copy" data-copy="" title="{{T:dl.containers.copy_run}}">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
                 </button>
@@ -251,7 +276,13 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             <div style="border-top:1px solid var(--border);padding-top:1.5rem">
               <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{{T:dl.containers.run_cmd}}</p>
               <div class="mcx-pre-wrap">
-                <pre class="mcx-pre" id="mcx-podman-run"></pre>
+                <pre class="mcx-pre" id="mcx-podman-run">podman run -d \
+  --name reticulum-meshchatx \
+  --restart unless-stopped \
+  --security-opt no-new-privileges:true \
+  -p 127.0.0.1:8000:8000 \
+  -v ./meshchat-config:/config \
+  git.quad4.io/rns-things/meshchatx:latest</pre>
                 <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-podman-run-copy" data-copy="" title="{{T:dl.containers.copy_run}}">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
                 </button>

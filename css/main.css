@@ -50,6 +50,7 @@ html {
   }
 }
 
+html,
 html.light {
   color-scheme: light;
   --bg: #ffffff;
@@ -1603,6 +1604,35 @@ html.dark .mcx-split-icon {
 
 .mcx-page-head {
   padding: 0 1.5rem 6rem;
+}
+
+.mcx-nojs-download-banner {
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--amber-500) 32%, var(--border));
+  background: color-mix(in srgb, var(--amber-500) 10%, var(--bg-muted));
+}
+
+html.dark .mcx-nojs-download-banner {
+  background: color-mix(in srgb, var(--amber-500) 14%, transparent);
+  border-color: color-mix(in srgb, var(--amber-500) 26%, var(--border));
+}
+
+.mcx-nojs-download-banner__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--amber-500);
+}
+
+.mcx-nojs-download-banner__text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--text-muted);
 }
 
 .mcx-page-head h1 {

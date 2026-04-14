@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html class="dark" lang="ru">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#18181b" />
+<meta name="theme-color" content="#09090b" />
 <meta name="color-scheme" content="light dark" />
 <link rel="icon" href="../static/favicon.webp" type="image/webp" />
 <title>Скачать | MeshChatX</title>
@@ -32,10 +32,11 @@
 <meta name="twitter:image" content="https://meshchatx.com/static/logo.webp" />
 <meta name="twitter:image:alt" content="Логотип MeshChatX" />
 <script>
-(function(){var c=document.documentElement.classList,t=localStorage.getItem('theme');if(t==='light'){c.add('light')}else if(t==='dark'||window.matchMedia('(prefers-color-scheme:dark)').matches){c.add('dark')}else{c.add('light')}})();
+(function(){var c=document.documentElement.classList;c.remove('dark','light');var t=localStorage.getItem('theme');if(t==='light'){c.add('light')}else if(t==='dark'||window.matchMedia('(prefers-color-scheme:dark)').matches){c.add('dark')}else{c.add('light')}})();
 </script>
 <script>window.MCX_I18N={"download.all_releases":"Все релизы","download.channel_pre":"Пре-релиз","download.channel_stable":"Стабильный","download.fetch_error":"Не удалось загрузить релизы","download.gitea_error":"Gitea API ","download.latest":"Последний","download.no_release":"Нет данных о релизе.","download.prerelease":"пре-релиз","download.stable":"стабильный","home.version_here":"Вышел MeshChatX v%s","showcase.desktop_fmt":"Настольный - %s - скриншот","showcase.mobile_fmt":"Мобильный - %s","showcase.tab0":"Главная","showcase.tab1":"Сообщения","showcase.tab10":"Личность","showcase.tab11":"О программе","showcase.tab2":"Контакты","showcase.tab3":"Звонки","showcase.tab4":"Интерфейсы","showcase.tab5":"Карта","showcase.tab6":"Nomadnet","showcase.tab7":"Визуализатор","showcase.tab8":"Утилиты","showcase.tab9":"Настройки","theme.mobile_dark":"Тёмная тема","theme.mobile_light":"Светлая тема","theme.toggle_dark":"Переключить на тёмную тему","theme.toggle_light":"Переключить на светлую тему"}</script>
 <link rel="stylesheet" href="../css/main.css" />
+<noscript><style>.mcx-js-only{display:none!important}</style></noscript>
 </head>
 <body data-page="download" data-locale="ru">
 <a class="mcx-skip" href="#main">Перейти к содержимому</a>
@@ -152,9 +153,18 @@
 <section class="mcx-page-head">
   <div class="mcx-container mcx-container--md">
     <h1>Скачать</h1>
+    <noscript>
+      <div class="mcx-nojs-download-banner" role="status">
+        <p class="mcx-nojs-download-banner__title">JavaScript отключён</p>
+        <p class="mcx-nojs-download-banner__text">Прямые ссылки на загрузки и актуальные метаданные релизов подгружаются при включённом JavaScript. Команды Docker и Podman ниже работают как указано. Ссылку на страницу релизов для установщиков и wheel см. в следующем блоке.</p>
+      </div>
+    </noscript>
     <div class="mb-10 space-y-1" style="margin-bottom:2.5rem">
       <p class="mcx-muted" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem" id="mcx-download-meta">
-        <span class="mcx-muted">Загрузка данных о релизе...</span>
+        <span class="mcx-js-only">Загрузка данных о релизе...</span>
+        <noscript>
+          <span>Без JavaScript используйте страницу релизов для скачивания конкретных версий: <a href="https://git.quad4.io/RNS-Things/MeshChatX/releases" class="mcx-link-blue" target="_blank" rel="noopener noreferrer">git.quad4.io/RNS-Things/MeshChatX/releases</a></span>
+        </noscript>
       </p>
       <p>
         <a
@@ -344,7 +354,17 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
           <div class="mcx-details-body">
             <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">Стандартный <code class="mcx-code-inline">docker-compose.yml</code> для простого развёртывания.</p>
             <div class="mcx-pre-wrap">
-              <pre class="mcx-pre" id="mcx-compose-yaml"></pre>
+              <pre class="mcx-pre" id="mcx-compose-yaml">services:
+    reticulum-meshchatx:
+        container_name: reticulum-meshchatx
+        image: ${MESHCHAT_IMAGE:-git.quad4.io/rns-things/meshchatx:latest}
+        restart: unless-stopped
+        security_opt:
+            - no-new-privileges:true
+        ports:
+            - 127.0.0.1:8000:8000
+        volumes:
+            - ./meshchat-config:/config</pre>
               <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-compose-copy" title="Копировать Compose">
                 <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
               </button>
@@ -371,7 +391,13 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             <div style="border-top:1px solid var(--border);padding-top:1.5rem">
               <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">Команда запуска</p>
               <div class="mcx-pre-wrap">
-                <pre class="mcx-pre" id="mcx-docker-run"></pre>
+                <pre class="mcx-pre" id="mcx-docker-run">docker run -d \
+  --name reticulum-meshchatx \
+  --restart unless-stopped \
+  --security-opt no-new-privileges:true \
+  -p 127.0.0.1:8000:8000 \
+  -v ./meshchat-config:/config \
+  git.quad4.io/rns-things/meshchatx:latest</pre>
                 <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-docker-run-copy" data-copy="" title="Копировать команду запуска">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
                 </button>
@@ -402,7 +428,13 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             <div style="border-top:1px solid var(--border);padding-top:1.5rem">
               <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">Команда запуска</p>
               <div class="mcx-pre-wrap">
-                <pre class="mcx-pre" id="mcx-podman-run"></pre>
+                <pre class="mcx-pre" id="mcx-podman-run">podman run -d \
+  --name reticulum-meshchatx \
+  --restart unless-stopped \
+  --security-opt no-new-privileges:true \
+  -p 127.0.0.1:8000:8000 \
+  -v ./meshchat-config:/config \
+  git.quad4.io/rns-things/meshchatx:latest</pre>
                 <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-podman-run-copy" data-copy="" title="Копировать команду запуска">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
                 </button>

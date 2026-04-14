@@ -156,11 +156,11 @@ type buildHeadOpts struct {
 
 func buildHead(o buildHeadOpts) string {
 	var b strings.Builder
-	b.WriteString("<!DOCTYPE html>\n<html lang=\"")
+	b.WriteString("<!DOCTYPE html>\n<html class=\"dark\" lang=\"")
 	b.WriteString(htmlEsc(o.Lang))
 	b.WriteString("\">\n<head>\n<meta charset=\"utf-8\" />\n")
 	b.WriteString("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n")
-	b.WriteString("<meta name=\"theme-color\" content=\"#18181b\" />\n")
+	b.WriteString("<meta name=\"theme-color\" content=\"#09090b\" />\n")
 	b.WriteString("<meta name=\"color-scheme\" content=\"light dark\" />\n")
 	b.WriteString("<link rel=\"icon\" href=\"")
 	b.WriteString(o.Base)
@@ -233,11 +233,11 @@ func buildHead(o buildHeadOpts) string {
 	b.WriteString(htmlEsc(o.OGImageAlt))
 	b.WriteString("\" />\n")
 
-	b.WriteString("<script>\n(function(){var c=document.documentElement.classList,t=localStorage.getItem('theme');if(t==='light'){c.add('light')}else if(t==='dark'||window.matchMedia('(prefers-color-scheme:dark)').matches){c.add('dark')}else{c.add('light')}})();\n</script>\n")
+	b.WriteString("<script>\n(function(){var c=document.documentElement.classList;c.remove('dark','light');var t=localStorage.getItem('theme');if(t==='light'){c.add('light')}else if(t==='dark'||window.matchMedia('(prefers-color-scheme:dark)').matches){c.add('dark')}else{c.add('light')}})();\n</script>\n")
 	b.WriteString(o.I18nScript)
 	b.WriteString("<link rel=\"stylesheet\" href=\"")
 	b.WriteString(o.Base)
-	b.WriteString("css/main.css\" />\n</head>\n<body data-page=\"")
+	b.WriteString("css/main.css\" />\n<noscript><style>.mcx-js-only{display:none!important}</style></noscript>\n</head>\n<body data-page=\"")
 	b.WriteString(htmlEsc(o.Page))
 	b.WriteString("\" data-locale=\"")
 	b.WriteString(htmlEsc(o.Lang))

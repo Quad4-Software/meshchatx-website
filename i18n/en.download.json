@@ -2,6 +2,9 @@
   "dl": {
     "h1": "Download",
     "loading": "Loading release info...",
+    "meta_noscript": "Without JavaScript, use the releases page for versioned downloads:",
+    "nojs_banner_title": "JavaScript is off",
+    "nojs_banner_text": "Direct download links and live release metadata load when JavaScript is enabled. Docker and Podman commands further down work as shown. Use the releases link in the next section for versioned installers and wheels.",
     "sbom": "SBOM",
     "tabs": {
       "macos": "macOS",
