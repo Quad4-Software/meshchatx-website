@@ -124,14 +124,14 @@
       "platform_p": "Officially supported on Desktop (Electron) and Web (Docker/Python). Android is available via Termux."
     },
     "split": {
-      "h2_line1": "Private,",
-      "h2_line2": "Synced & Persistent",
-      "item1_h4": "No age verification or government ID required",
-      "item1_p": "Generate multiple identities instantly. No phone number, email, or government ID needed. Ever.",
-      "item2_h4": "Propagation Nodes",
-      "item2_p": "Synchronize messages through the network automatically. Your messages wait for you, even when you're offline.",
-      "item3_h4": "Archive on disk",
-      "item3_p": "Nomadnet pages are archived locally. If a node goes offline, your copy stays with you, so you aren't stuck with a single host that can disappear."
+      "h2_line1": "Truly Anonymous",
+      "h2_line2": "& Unstoppable",
+      "item1_h4": "Multiple Identities",
+      "item1_p": "Create and manage as many identities as you need. Switch between personas seamlessly while keeping your data private and compartmentalized.",
+      "item2_h4": "No Age Verification",
+      "item2_p": "No government ID, phone number, or email required. Access the network anonymously without any third-party verification or hurdles.",
+      "item3_h4": "No Censorship",
+      "item3_p": "Built for mesh networks and censorship resistance. Your messages propagate automatically and local archiving ensures your data is always available."
     }
   },
   "js": {
