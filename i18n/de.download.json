@@ -27,7 +27,7 @@
     },
     "linux": {
       "h2": "Linux",
-      "arch_note": "AppImage und DEB: AMD64 / ARM64, RPM: AMD64",
+      "arch_note": "AppImage und DEB: AMD64 / ARM64, RPM: AMD64, Flatpak: Bundle",
       "appimage": "AppImage",
       "appimage_intro": "Portable Version, kein Paketmanager nötig. Lade die passende Architektur herunter.",
       "btn_appimage_amd64": "AppImage (AMD64)",
@@ -44,6 +44,10 @@
       "rpm_intro": "RPM-Paket für 64-Bit-x86-Systeme.",
       "btn_rpm_amd64": ".rpm (AMD64)",
       "no_rpm": "Kein RPM-Paket im neuesten Release.",
+      "flatpak": "Flatpak (.flatpak)",
+      "flatpak_intro": "Einzeldatei-Bundle für Systeme mit installiertem Flatpak.",
+      "btn_flatpak": ".flatpak herunterladen",
+      "no_flatpak": "Kein Flatpak-Bundle im neuesten Release.",
       "arch": "Arch",
       "arch_intro_before": "Manuell bauen und installieren mit unserem PKGBUILD. Diese Methode löst Abhängigkeiten und integriert sich mit ",
       "arch_intro_after": ".",
@@ -98,7 +102,8 @@
       "apk_h3": "APK",
       "termux_h3": "Termux",
       "intro": "Ein eigenständiges Android-APK ist noch nicht verfügbar.",
-      "badge": "Demnächst"
+      "badge": "Demnächst",
+      "btn_apk": ".apk herunterladen"
     },
     "termux": {
       "h2": "Termux",

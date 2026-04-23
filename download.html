@@ -211,7 +211,7 @@
         <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 1.5rem;display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem">
           Linux
           <span style="font-size:0.75rem;font-weight:700;color:var(--zinc-400);text-transform:uppercase;letter-spacing:0.1em;margin-left:auto"
-            >AppImage and DEB: AMD64 / ARM64, RPM: AMD64</span
+            >AppImage and DEB: AMD64 / ARM64, RPM: AMD64, Flatpak: bundle</span
           >
         </h2>
 
@@ -285,6 +285,25 @@ sudo apt -f install</pre>
               <pre class="mcx-pre">sudo dnf install ./MeshChatX-*.rpm
 # or on openSUSE:
 sudo zypper install ./MeshChatX-*.rpm</pre>
+            </div>
+          </div>
+        </details>
+
+        <details class="mcx-details">
+          <summary>
+            <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-package-variant" /></svg> Flatpak (.flatpak)
+          </summary>
+          <div class="mcx-details-body">
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">Single-file bundle for systems with Flatpak installed.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+              <a id="mcx-dl-flatpak" class="mcx-btn-primary hidden" href="#" download
+                ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> Download .flatpak</a
+              >
+            </div>
+            <p id="mcx-no-flatpak" class="mcx-muted mcx-text-sm hidden">No Flatpak bundle in latest release.</p>
+            <div style="border-top:1px solid var(--border);padding-top:1.5rem">
+              <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 1rem">Install</p>
+              <pre class="mcx-pre">flatpak install --user ./MeshChatX-*.flatpak</pre>
             </div>
           </div>
         </details>
@@ -500,8 +519,15 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
           <svg class="mcx-icon" aria-hidden="true"><use href="#i-android" /></svg> Android
         </h2>
         <h3 style="font-size:1rem;font-weight:800;margin:1.25rem 0 0.5rem">APK</h3>
-        <p class="mcx-muted" style="margin-bottom:1rem">A standalone Android APK is not yet available.</p>
-        <span class="mcx-badge-status">Coming soon</span>
+        <div id="mcx-android-apk-pending">
+          <p class="mcx-muted" style="margin-bottom:1rem">A standalone Android APK is not yet available.</p>
+          <span class="mcx-badge-status">Coming soon</span>
+        </div>
+        <div style="margin-bottom:1rem">
+          <a id="mcx-dl-apk" class="mcx-btn-primary hidden" href="#" download
+            ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> Download .apk</a
+          >
+        </div>
         <h3 style="font-size:1rem;font-weight:800;margin:1.75rem 0 0.5rem">Termux</h3>
         <p class="mcx-muted" style="margin-bottom:1.5rem">
           Install on Android via Termux. Install dependencies, then the Python wheel. Run headless with <code class="mcx-code-inline">meshchat --headless</code>.

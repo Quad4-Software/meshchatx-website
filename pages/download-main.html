@@ -139,6 +139,25 @@ sudo zypper install ./MeshChatX-*.rpm</pre>
 
         <details class="mcx-details">
           <summary>
+            <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-package-variant" /></svg> {{T:dl.linux.flatpak}}
+          </summary>
+          <div class="mcx-details-body">
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">{{T:dl.linux.flatpak_intro}}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+              <a id="mcx-dl-flatpak" class="mcx-btn-primary hidden" href="#" download
+                ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {{T:dl.linux.btn_flatpak}}</a
+              >
+            </div>
+            <p id="mcx-no-flatpak" class="mcx-muted mcx-text-sm hidden">{{T:dl.linux.no_flatpak}}</p>
+            <div style="border-top:1px solid var(--border);padding-top:1.5rem">
+              <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 1rem">{{T:dl.linux.install}}</p>
+              <pre class="mcx-pre">flatpak install --user ./MeshChatX-*.flatpak</pre>
+            </div>
+          </div>
+        </details>
+
+        <details class="mcx-details">
+          <summary>
             <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-arch" /></svg> {{T:dl.linux.arch}}
           </summary>
           <div class="mcx-details-body">
@@ -348,8 +367,15 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
           <svg class="mcx-icon" aria-hidden="true"><use href="#i-android" /></svg> {{T:dl.android.h2}}
         </h2>
         <h3 style="font-size:1rem;font-weight:800;margin:1.25rem 0 0.5rem">{{T:dl.android.apk_h3}}</h3>
-        <p class="mcx-muted" style="margin-bottom:1rem">{{T:dl.android.intro}}</p>
-        <span class="mcx-badge-status">{{T:dl.android.badge}}</span>
+        <div id="mcx-android-apk-pending">
+          <p class="mcx-muted" style="margin-bottom:1rem">{{T:dl.android.intro}}</p>
+          <span class="mcx-badge-status">{{T:dl.android.badge}}</span>
+        </div>
+        <div style="margin-bottom:1rem">
+          <a id="mcx-dl-apk" class="mcx-btn-primary hidden" href="#" download
+            ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {{T:dl.android.btn_apk}}</a
+          >
+        </div>
         <h3 style="font-size:1rem;font-weight:800;margin:1.75rem 0 0.5rem">{{T:dl.android.termux_h3}}</h3>
         <p class="mcx-muted" style="margin-bottom:1.5rem">
           {{T:dl.termux.intro_before}}<code class="mcx-code-inline">meshchat --headless</code>{{T:dl.termux.intro_after}}

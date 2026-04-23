@@ -105,6 +105,8 @@
     const wheel = assets.find((a) => a.name && a.name.endsWith('-py3-none-any.whl'));
     const winInstaller = assets.find((a) => a.name && /win.*installer\.exe$/i.test(a.name));
     const winPortable = assets.find((a) => a.name && /win.*portable\.exe$/i.test(a.name));
+    const apk = getAssetUrl(assets, (name) => /\.apk$/i.test(name));
+    const flatpak = getAssetUrl(assets, (name) => /\.flatpak$/i.test(name));
     return {
       version: release.tag_name?.replace(/^v/, '') ?? null,
       releaseUrl: release.html_url ?? null,
@@ -118,7 +120,9 @@
       wheelUrl: attachmentUrl(wheel),
       winInstallerUrl: attachmentUrl(winInstaller),
       winPortableUrl: attachmentUrl(winPortable),
-      macDmgUrl: macDmgUrlFromRelease(release, assets)
+      macDmgUrl: macDmgUrlFromRelease(release, assets),
+      apkUrl: apk,
+      flatpakUrl: flatpak
     };
   }
 

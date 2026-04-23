@@ -27,7 +27,7 @@
     },
     "linux": {
       "h2": "Linux",
-      "arch_note": "AppImage и DEB: AMD64 / ARM64, RPM: AMD64",
+      "arch_note": "AppImage и DEB: AMD64 / ARM64, RPM: AMD64, Flatpak: bundle",
       "appimage": "AppImage",
       "appimage_intro": "Портативная сборка без менеджера пакетов. Скачайте нужную архитектуру.",
       "btn_appimage_amd64": "AppImage (AMD64)",
@@ -44,6 +44,10 @@
       "rpm_intro": "RPM-пакет для 64-бит x86.",
       "btn_rpm_amd64": ".rpm (AMD64)",
       "no_rpm": "В последнем релизе нет RPM.",
+      "flatpak": "Flatpak (.flatpak)",
+      "flatpak_intro": "Одиночный файл для систем с установленным Flatpak.",
+      "btn_flatpak": "Скачать .flatpak",
+      "no_flatpak": "В последнем релизе нет Flatpak bundle.",
       "arch": "Arch",
       "arch_intro_before": "Сборка и установка вручную через наш PKGBUILD. Разрешает зависимости и интегрируется с ",
       "arch_intro_after": ".",
@@ -98,7 +102,8 @@
       "apk_h3": "APK",
       "termux_h3": "Termux",
       "intro": "Отдельный APK для Android ещё не доступен.",
-      "badge": "Скоро"
+      "badge": "Скоро",
+      "btn_apk": "Скачать .apk"
     },
     "termux": {
       "h2": "Termux",

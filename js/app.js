@@ -377,6 +377,12 @@
       const hasAppImage = assets.some(function (a) {
         return a.name && a.name.endsWith('.AppImage') && /linux/i.test(a.name);
       });
+      const hasFlatpak = assets.some(function (a) {
+        return a.name && /\.flatpak$/i.test(a.name);
+      });
+      const hasApk = assets.some(function (a) {
+        return a.name && /\.apk$/i.test(a.name);
+      });
       const hasWheel = assets.some(function (a) {
         return a.name && a.name.endsWith('-py3-none-any.whl');
       });
@@ -393,11 +399,11 @@
       }
       setPlatformClasses({
         macos: releaseRawHasDmg(stableRel) || macFromPre,
-        linux: !!hasAppImage,
+        linux: !!hasAppImage || hasFlatpak,
         windows: !!hasWin,
         docker: true,
         python: !!hasWheel,
-        android: !!hasWheel
+        android: !!hasWheel || hasApk
       });
     } catch (_) {}
   }
@@ -538,6 +544,7 @@
     setHref('#mcx-dl-deb-amd64', sel.debAmd64Url);
     setHref('#mcx-dl-deb-arm64', sel.debArm64Url);
     setHref('#mcx-dl-rpm-amd64', sel.rpmAmd64Url);
+    setHref('#mcx-dl-flatpak', sel.flatpakUrl);
     setHref('#mcx-dl-win-inst', sel.winInstallerUrl);
     setHref('#mcx-dl-win-port', sel.winPortableUrl);
 
@@ -546,6 +553,12 @@
       macDmgUrl = data.preRelease.macDmgUrl;
     }
     setHref('#mcx-dl-macos-dmg', macDmgUrl);
+
+    setHref('#mcx-dl-apk', sel.apkUrl);
+    const apkPending = qs('#mcx-android-apk-pending');
+    if (apkPending) {
+      apkPending.classList.toggle('hidden', !!sel.apkUrl);
+    }
 
     const macPending = qs('#mcx-macos-pending');
     if (macPending) {
@@ -563,6 +576,10 @@
     const noRpm = qs('#mcx-no-rpm');
     if (noRpm) {
       noRpm.classList.toggle('hidden', !!sel.rpmAmd64Url);
+    }
+    const noFlatpak = qs('#mcx-no-flatpak');
+    if (noFlatpak) {
+      noFlatpak.classList.toggle('hidden', !!sel.flatpakUrl);
     }
     const noWin = qs('#mcx-no-win');
     if (noWin) {
