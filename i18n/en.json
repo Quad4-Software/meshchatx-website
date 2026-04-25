@@ -67,9 +67,7 @@
   "home": {
     "hero": {
       "h1": "All-in-one Reticulum Client",
-      "lead_before": "MeshChatX is a highly custom fork of the original ",
-      "lead_anchor": "MeshChat by Liam Cottle",
-      "lead_after": ". It includes many new features and improvements."
+      "lead": "MeshChatX is a all-in-one Reticulum client featuring messaging, calling, and a nomadnet browser."
     },
     "platform": {
       "macos": "macOS",

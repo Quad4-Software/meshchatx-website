@@ -67,9 +67,7 @@
   "home": {
     "hero": {
       "h1": "Единый клиент Reticulum",
-      "lead_before": "MeshChatX - сильно доработанный форк оригинального ",
-      "lead_anchor": "MeshChat от Liam Cottle",
-      "lead_after": ". Мы добавили много функций и улучшений."
+      "lead": "MeshChatX — клиент Reticulum «всё в одном»: обмен сообщениями, звонки и браузер Nomadnet."
     },
     "platform": {
       "macos": "macOS",

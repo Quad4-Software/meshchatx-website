@@ -67,9 +67,7 @@
   "home": {
     "hero": {
       "h1": "Alles-in-einem-Reticulum-Client",
-      "lead_before": "MeshChatX ist ein stark angepasster Fork des Originals ",
-      "lead_anchor": "MeshChat von Liam Cottle",
-      "lead_after": ". Wir haben viele Funktionen und Verbesserungen hinzugefügt."
+      "lead": "MeshChatX ist ein All-in-One-Reticulum-Client mit Messaging, Anrufen und einem Nomadnet-Browser."
     },
     "platform": {
       "macos": "macOS",
