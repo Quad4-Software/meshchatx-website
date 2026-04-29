@@ -18,7 +18,7 @@
       "home": "Il futuro della comunicazione decentralizzata. Messaggistica sicura, resiliente e inarrestabile su Reticulum.",
       "download": "Scarica MeshChatX per Windows, Linux, macOS, Docker o Python. Messaggistica decentralizzata su Reticulum.",
       "contact": "Contatta lo sviluppatore MeshChatX via LXMF (messaggistica Reticulum).",
-      "donate": "Sostieni lo sviluppo di MeshChatX. Al momento accettiamo solo Monero.",
+      "donate": "Sostieni MeshChatX su Ko-fi, Buy Me a Coffee o con Monero (XMR).",
       "license": "Informazioni sulla licenza di MeshChatX."
     }
   },
@@ -55,9 +55,12 @@
   "donate": {
     "h1": "Sostieni MeshChatX",
     "lead": "MeshChatX è costruito per la community. La tua donazione aiuta sviluppo e infrastruttura.",
-    "xmr_only": "Accettiamo solo Monero (XMR) al momento.",
+    "xmr_only": "Criptovaluta: solo Monero (XMR).",
     "monero": "Monero",
-    "copy_xmr": "Copia indirizzo Monero"
+    "copy_xmr": "Copia indirizzo Monero",
+    "platforms_title": "Ko-fi e Buy Me a Coffee",
+    "kofi": "Ko-fi",
+    "bmac": "Buy Me a Coffee"
   },
   "license": {
     "h1": "Licenza",
