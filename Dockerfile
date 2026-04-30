@@ -1,6 +1,7 @@
 # syntax=docker.io/docker/dockerfile:1
-FROM docker.io/library/node:24-alpine AS build
+FROM cgr.dev/chainguard/node:latest-dev AS build
 
+USER root
 RUN corepack enable pnpm
 
 WORKDIR /site
@@ -10,13 +11,16 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm run build
 
-FROM docker.io/nginxinc/nginx-unprivileged:stable-alpine
+FROM cgr.dev/chainguard/node:latest AS prod
 
-USER root
-COPY docker/nginx.default.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /site/build/ /usr/share/nginx/html/
-RUN chown -R nginx:nginx /usr/share/nginx/html
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=8080
 
-USER nginx
+COPY --from=build --chown=node:node /site/build ./build
+
+USER node
 
 EXPOSE 8080
+
+CMD ["build"]

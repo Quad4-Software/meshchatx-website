@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -17,44 +17,15 @@ const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter({
-      pages: 'build',
-      assets: 'build',
-      strict: true,
-      fallback: undefined
+      out: 'build',
+      precompress: false
     }),
     prerender: {
       handleHttpError: 'warn',
       handleMissingId: 'warn',
       handleUnseenRoutes: 'ignore',
       origin: 'https://meshchatx.com',
-      entries: [
-        '/',
-        '/download',
-        '/contact',
-        '/donate',
-        '/license',
-        '/privacy',
-        '/sitemap.xml',
-        '/robots.txt',
-        '/de/',
-        '/de/download',
-        '/de/contact',
-        '/de/donate',
-        '/de/license',
-        '/de/privacy',
-        '/ru/',
-        '/ru/download',
-        '/ru/contact',
-        '/ru/donate',
-        '/ru/license',
-        '/ru/privacy',
-        '/it/',
-        '/it/download',
-        '/it/contact',
-        '/it/donate',
-        '/it/license',
-        '/it/privacy'
-      ]
+      entries: ['/sitemap.xml', '/robots.txt']
     }
   }
 };

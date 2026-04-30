@@ -11,3 +11,5 @@ pnpm-debug.log*
 node_modules
 build
 .svelte-kit
+coverage
+

@@ -25,10 +25,17 @@
   const mcxI18NHead = $derived(
     '<script>window.MCX_I18N=' + data.mcxI18NJson + '<' + '/script>'
   );
+  const mcxReleasesHead = $derived(
+    '<script>window.MCX_RELEASES_BUNDLE=' +
+      data.releasesBundleLiteral +
+      ';<' +
+      '/script>'
+  );
 </script>
 
 <svelte:head>
   {@html mcxI18NHead}
+  {@html mcxReleasesHead}
   <script src="/js/releases.js" defer></script>
   <script src="/js/app.js" defer></script>
 </svelte:head>

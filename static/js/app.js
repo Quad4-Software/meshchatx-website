@@ -283,10 +283,95 @@
     setView(mq.matches ? 'desktop' : 'mobile');
   }
 
-  async function fetchReleasesJson() {
-    const res = await fetch('/data/gitea-releases.json', { credentials: 'same-origin' });
+  function normalizeReleasesBundle(raw) {
+    if (!raw || typeof raw !== 'object') return null;
+    return {
+      gitea: Array.isArray(raw.gitea) ? raw.gitea : [],
+      github: Array.isArray(raw.github) ? raw.github : []
+    };
+  }
+
+  async function fetchStaticBundleSnapshot() {
+    var res = await fetch('/data/releases-bundle.json', { credentials: 'same-origin' });
+    if (!res.ok) return null;
+    var data = await res.json();
+    if (Array.isArray(data)) return { gitea: data, github: [] };
+    return {
+      gitea: Array.isArray(data.gitea) ? data.gitea : [],
+      github: Array.isArray(data.github) ? data.github : []
+    };
+  }
+
+  async function fetchStaticLegacyGiteaOnly() {
+    var res = await fetch('/data/gitea-releases.json', { credentials: 'same-origin' });
     if (!res.ok) throw new Error(mcxT('download.gitea_error') + res.status);
-    return res.json();
+    var list = await res.json();
+    return {
+      gitea: Array.isArray(list) ? list : [],
+      github: []
+    };
+  }
+
+  async function fetchReleasesData() {
+    var fromSsr = normalizeReleasesBundle(window.MCX_RELEASES_BUNDLE);
+    if (fromSsr) return fromSsr;
+
+    var snap = await fetchStaticBundleSnapshot();
+    if (snap) return snap;
+    return await fetchStaticLegacyGiteaOnly();
+  }
+
+  function publishedOnly(list) {
+    return list.filter(function (r) {
+      return !r.draft;
+    });
+  }
+
+  function sortPublishedDesc(a, b) {
+    return new Date(b.published_at || 0) - new Date(a.published_at || 0);
+  }
+
+  function pickStableRelease(giteaList, githubList) {
+    var gp = publishedOnly(giteaList);
+    var s = gp.find(function (r) {
+      return r && !window.MCX.isLikelyPrereleaseRelease(r);
+    });
+    if (s) return s;
+    var hp = publishedOnly(githubList);
+    return (
+      hp.find(function (r) {
+        return r && !window.MCX.isLikelyPrereleaseRelease(r);
+      }) || null
+    );
+  }
+
+  function pickPrereleaseRelease(giteaList, githubList) {
+    var hp = publishedOnly(githubList).filter(window.MCX.isLikelyPrereleaseRelease);
+    hp.sort(sortPublishedDesc);
+    if (hp.length) return hp[0];
+    var gp = publishedOnly(giteaList).filter(window.MCX.isLikelyPrereleaseRelease);
+    gp.sort(sortPublishedDesc);
+    return gp.length ? gp[0] : null;
+  }
+
+  function releaseAssets(r) {
+    if (!r) return [];
+    if (Array.isArray(r.assets) && r.assets.length) return r.assets;
+    if (Array.isArray(r.attachments) && r.attachments.length) return r.attachments;
+    return [];
+  }
+
+  function someAssetInReleases(releases, pred) {
+    var i;
+    var j;
+    for (i = 0; i < releases.length; i++) {
+      var assets = releaseAssets(releases[i]);
+      for (j = 0; j < assets.length; j++) {
+        var a = assets[j];
+        if (a && pred(a)) return true;
+      }
+    }
+    return false;
   }
 
   function releaseRawHasDmg(r) {
@@ -302,15 +387,14 @@
     const badge = qs('[data-version-badge]');
     if (!badge) return;
     try {
-      const releases = await fetchReleasesJson();
-      const list = Array.isArray(releases) ? releases : [];
-      const published = list.filter(function (r) {
-        return !r.draft;
-      });
+      const { gitea, github } = await fetchReleasesData();
+      const stableRel = pickStableRelease(gitea, github);
+      const preRel = pickPrereleaseRelease(gitea, github);
       const rel =
-        published.find(function (r) {
-          return r && !window.MCX.isLikelyPrereleaseRelease(r);
-        }) || published[0];
+        stableRel ||
+        preRel ||
+        publishedOnly(gitea)[0] ||
+        publishedOnly(github)[0];
       const v = rel && rel.tag_name ? String(rel.tag_name).replace(/^v/, '') : null;
       if (!v) {
         badge.classList.add('hidden');
@@ -343,35 +427,25 @@
 
   async function loadHomePlatforms() {
     try {
-      const releases = await fetchReleasesJson();
-      const list = Array.isArray(releases) ? releases : [];
-      const published = list.filter(function (r) {
-        return !r.draft;
-      });
-      const stableRel = published.find(function (r) {
-        return r && !window.MCX.isLikelyPrereleaseRelease(r);
-      });
-      const preRows = published.filter(window.MCX.isLikelyPrereleaseRelease);
-      preRows.sort(function (a, b) {
-        return new Date(b.published_at || 0) - new Date(a.published_at || 0);
-      });
-      const preRel = preRows.length ? preRows[0] : null;
-      const rel = stableRel || preRel || published[0];
+      const { gitea, github } = await fetchReleasesData();
+      const stableRel = pickStableRelease(gitea, github);
+      const preRel = pickPrereleaseRelease(gitea, github);
+      const rel = stableRel || preRel || publishedOnly(gitea)[0] || publishedOnly(github)[0];
       if (!rel) return;
-      const assets = rel.assets || [];
-      const hasAppImage = assets.some(function (a) {
+      const forPlatforms = [stableRel, preRel].filter(Boolean);
+      const hasAppImage = someAssetInReleases(forPlatforms, function (a) {
         return a.name && a.name.endsWith('.AppImage') && /linux/i.test(a.name);
       });
-      const hasFlatpak = assets.some(function (a) {
+      const hasFlatpak = someAssetInReleases(forPlatforms, function (a) {
         return a.name && /\.flatpak$/i.test(a.name);
       });
-      const hasApk = assets.some(function (a) {
+      const hasApk = someAssetInReleases(forPlatforms, function (a) {
         return a.name && /\.apk$/i.test(a.name);
       });
-      const hasWheel = assets.some(function (a) {
+      const hasWheel = someAssetInReleases(forPlatforms, function (a) {
         return a.name && a.name.endsWith('-py3-none-any.whl');
       });
-      const hasWin = assets.some(function (a) {
+      const hasWin = someAssetInReleases(forPlatforms, function (a) {
         return (
           a.name &&
           (/win.*installer\.exe$/i.test(a.name) || /win.*portable\.exe$/i.test(a.name))
@@ -393,7 +467,7 @@
     'services:\n' +
     '    reticulum-meshchatx:\n' +
     '        container_name: reticulum-meshchatx\n' +
-    '        image: ${MESHCHAT_IMAGE:-git.quad4.io/rns-things/meshchatx:latest}\n' +
+    '        image: ${MESHCHAT_IMAGE:-quad4io/meshchatx:latest}\n' +
     '        restart: unless-stopped\n' +
     '        security_opt:\n' +
     '            - no-new-privileges:true\n' +
@@ -411,7 +485,7 @@
       '  --security-opt no-new-privileges:true \\\n' +
       '  -p 127.0.0.1:8000:8000 \\\n' +
       '  -v ./meshchat-config:/config \\\n' +
-      '  git.quad4.io/rns-things/meshchatx:latest'
+      '  quad4io/meshchatx:latest'
     );
   }
 
@@ -502,11 +576,12 @@
 
     const sbom = qs('#mcx-sbom-link');
     if (sbom) {
-      sbom.href =
-        'https://git.quad4.io/RNS-Things/MeshChatX/releases/download/v' +
-        sel.version +
-        '/sbom.cyclonedx.json';
-      sbom.classList.remove('hidden');
+      if (sel.sbomUrl) {
+        sbom.href = sel.sbomUrl;
+        sbom.classList.remove('hidden');
+      } else {
+        sbom.classList.add('hidden');
+      }
     }
 
     function setHref(id, url) {
@@ -592,12 +667,13 @@
       }
     }
 
-    const termuxUrl =
-      'pip install https://git.quad4.io/RNS-Things/MeshChatX/releases/download/v' +
-      sel.version +
-      '/reticulum_meshchatx-' +
-      sel.version +
-      '-py3-none-any.whl';
+    const termuxUrl = wheelUrl
+      ? 'pip install ' + wheelUrl
+      : 'pip install https://git.quad4.io/RNS-Things/MeshChatX/releases/download/v' +
+        sel.version +
+        '/reticulum_meshchatx-' +
+        sel.version +
+        '-py3-none-any.whl';
     const termuxPre = qs('#mcx-termux-pip');
     if (termuxPre) {
       termuxPre.textContent = termuxUrl;
@@ -612,16 +688,28 @@
     const composeBtn = qs('#mcx-compose-copy');
     if (composeBtn) composeBtn.setAttribute('data-copy', COMPOSE_YAML);
 
-    const dockerPull = 'docker pull git.quad4.io/rns-things/meshchatx:latest';
-    const podmanPull = 'podman pull git.quad4.io/rns-things/meshchatx:latest';
-    const dp = qs('#mcx-docker-pull-text');
-    if (dp) dp.textContent = dockerPull;
-    const pp = qs('#mcx-podman-pull-text');
-    if (pp) pp.textContent = podmanPull;
-    const dpb = qs('#mcx-docker-pull-copy');
-    if (dpb) dpb.setAttribute('data-copy', dockerPull);
-    const ppb = qs('#mcx-podman-pull-copy');
-    if (ppb) ppb.setAttribute('data-copy', podmanPull);
+    const hubImg = 'quad4io/meshchatx:latest';
+    const ghcrImg = 'ghcr.io/quad4-software/meshchatx:latest';
+    const dockerPullHub = 'docker pull ' + hubImg;
+    const dockerPullGhcr = 'docker pull ' + ghcrImg;
+    const podmanPullHub = 'podman pull ' + hubImg;
+    const podmanPullGhcr = 'podman pull ' + ghcrImg;
+    const dph = qs('#mcx-docker-pull-hub-text');
+    if (dph) dph.textContent = dockerPullHub;
+    const dpg = qs('#mcx-docker-pull-ghcr-text');
+    if (dpg) dpg.textContent = dockerPullGhcr;
+    const pph = qs('#mcx-podman-pull-hub-text');
+    if (pph) pph.textContent = podmanPullHub;
+    const ppg = qs('#mcx-podman-pull-ghcr-text');
+    if (ppg) ppg.textContent = podmanPullGhcr;
+    const dphb = qs('#mcx-docker-pull-hub-copy');
+    if (dphb) dphb.setAttribute('data-copy', dockerPullHub);
+    const dpgb = qs('#mcx-docker-pull-ghcr-copy');
+    if (dpgb) dpgb.setAttribute('data-copy', dockerPullGhcr);
+    const pphb = qs('#mcx-podman-pull-hub-copy');
+    if (pphb) pphb.setAttribute('data-copy', podmanPullHub);
+    const ppgb = qs('#mcx-podman-pull-ghcr-copy');
+    if (ppgb) ppgb.setAttribute('data-copy', podmanPullGhcr);
 
     const dr = qs('#mcx-docker-run');
     if (dr) dr.textContent = runCmd('docker');
@@ -639,19 +727,9 @@
     let error = null;
 
     try {
-      const releases = await fetchReleasesJson();
-      const releaseList = Array.isArray(releases) ? releases : [];
-      const publishedReleases = releaseList.filter(function (r) {
-        return !r.draft;
-      });
-      const latestStable = publishedReleases.find(function (r) {
-        return r && !window.MCX.isLikelyPrereleaseRelease(r);
-      });
-      const prereleases = publishedReleases.filter(window.MCX.isLikelyPrereleaseRelease);
-      prereleases.sort(function (a, b) {
-        return new Date(b.published_at || 0) - new Date(a.published_at || 0);
-      });
-      const latestPrerelease = prereleases.length ? prereleases[0] : null;
+      const { gitea, github } = await fetchReleasesData();
+      const latestStable = pickStableRelease(gitea, github);
+      const latestPrerelease = pickPrereleaseRelease(gitea, github);
       stableRelease = window.MCX.parseRelease(latestStable);
       preRelease = window.MCX.parseRelease(latestPrerelease);
 

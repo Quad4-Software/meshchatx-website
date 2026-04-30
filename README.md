@@ -1,6 +1,8 @@
 # MeshChatX website
 
-Marketing site for [MeshChatX](https://git.quad4.io/RNS-Things/MeshChatX): [SvelteKit](https://kit.svelte.dev/) with [`@sveltejs/adapter-static`](https://github.com/sveltejs/kit/tree/main/packages/adapter-static), prerendered HTML under `build/`, locales **en**, **de**, **ru**, **it** (strings in `i18n/`).
+Marketing site for [MeshChatX](https://git.quad4.io/RNS-Things/MeshChatX): [SvelteKit](https://kit.svelte.dev/) with [`@sveltejs/adapter-node`](https://github.com/sveltejs/kit/tree/main/packages/adapter-node). Pages are **server-rendered** (releases from Gitea/GitHub are fetched on the server with a short in-memory cache; `static/data/` snapshots are used if an API fails). `sitemap.xml` and `robots.txt` stay build-prerendered. Locales **en**, **de**, **ru**, **it** (strings in `i18n/`).
+
+**PWA:** Installable web app via `@vite-pwa/sveltekit`. The service worker **does not cache HTML navigations or `/data/*`** (always network), so SSR pages and embedded release payloads stay fresh; static assets use a separate stale-while-revalidate cache.
 
 ## Requirements
 
@@ -16,9 +18,9 @@ pnpm install
 pnpm run build
 ```
 
-Output is written to **`build/`** (nginx and the Docker image expect that directory).
+Output is written to **`build/`** (run **`pnpm start`** / `node build` after `pnpm run build`; the Docker image runs this).
 
-Useful scripts: `pnpm run dev` (Vite dev server), `pnpm run preview` (serve last `build/`), `pnpm run check` (svelte-check), `pnpm run lint`, `pnpm test`. Release data for the download page is snapshotted in `static/data/gitea-releases.json`; refresh it with `pnpm run fetch:releases` when you publish new GitHub/Gitea releases (runs on your machine, not in the browser).
+Useful scripts: `pnpm run dev` (Vite dev server), `pnpm run preview`, `pnpm run check` (svelte-check), `pnpm run lint`, `pnpm test`, **`pnpm run test:coverage`**. Snapshot files under **`static/data/`** (`releases-bundle.json`, `gitea-releases.json`) back the site when live APIs are unreachable; refresh them with **`pnpm run fetch:releases`** before shipping or from CI. Optional env **`RELEASES_CACHE_SECONDS`** (default 120, max 3600) tunes server-side release cache TTL.
 
 ### SEO and social
 
@@ -26,7 +28,7 @@ Pages ship with `title`, meta description, canonical and `hreflang` alternates, 
 
 ## Container image
 
-Build a production image (multi-stage: Node runs `pnpm run build`, then static files are copied into **nginx unprivileged**):
+Build a production image locally (multi-stage: Node builds the app, final stage runs **`node build`** only):
 
 ```bash
 docker build -t meshchatx-website:latest .
@@ -38,13 +40,11 @@ With Podman:
 podman build -t meshchatx-website:latest .
 ```
 
-The container listens on **8080** (see `Dockerfile` / `docker/nginx.default.conf`). Quick local check after a build:
+The container listens on **8080** (`PORT`, see `Dockerfile`). Quick local check after a build:
 
 ```bash
 docker run --rm -p 8080:8080 meshchatx-website:latest
 ```
-
-Then open `http://127.0.0.1:8080/`. Optional orchestration and Traefik labels live in `docker-compose.yml`.
 
 ## Task runner
 

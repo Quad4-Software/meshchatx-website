@@ -2,6 +2,14 @@
   'use strict';
 
   var GITEA_DL_BASE = 'https://git.quad4.io/RNS-Things/MeshChatX/releases/download';
+  var GITHUB_DL_BASE = 'https://github.com/Quad4-Software/MeshChatX/releases/download';
+
+  function downloadBaseForRelease(release) {
+    if (!release) return GITEA_DL_BASE;
+    var u = String(release.html_url || '');
+    if (/github\.com/i.test(u)) return GITHUB_DL_BASE;
+    return GITEA_DL_BASE;
+  }
 
   function attachmentUrl(a) {
     if (!a) return null;
@@ -11,8 +19,9 @@
 
   function buildReleaseAssetUrl(release, filename) {
     if (!release || !release.tag_name || !filename) return null;
+    var base = downloadBaseForRelease(release);
     return (
-      GITEA_DL_BASE +
+      base +
       '/' +
       encodeURIComponent(release.tag_name) +
       '/' +
@@ -107,6 +116,7 @@
     const winPortable = assets.find((a) => a.name && /win.*portable\.exe$/i.test(a.name));
     const apk = getAssetUrl(assets, (name) => /\.apk$/i.test(name));
     const flatpak = getAssetUrl(assets, (name) => /\.flatpak$/i.test(name));
+    const sbom = getAssetUrl(assets, (name) => /sbom\.cyclonedx\.json$/i.test(name));
     return {
       version: release.tag_name?.replace(/^v/, '') ?? null,
       releaseUrl: release.html_url ?? null,
@@ -122,7 +132,8 @@
       winPortableUrl: attachmentUrl(winPortable),
       macDmgUrl: macDmgUrlFromRelease(release, assets),
       apkUrl: apk,
-      flatpakUrl: flatpak
+      flatpakUrl: flatpak,
+      sbomUrl: sbom
     };
   }
 

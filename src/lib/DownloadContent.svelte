@@ -7,7 +7,7 @@
   const COMPOSE_YAML = `services:
     reticulum-meshchatx:
         container_name: reticulum-meshchatx
-        image: \${MESHCHAT_IMAGE:-git.quad4.io/rns-things/meshchatx:latest}
+        image: \${MESHCHAT_IMAGE:-quad4io/meshchatx:latest}
         restart: unless-stopped
         security_opt:
             - no-new-privileges:true
@@ -258,9 +258,18 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
               <span class="mcx-badge-pill mcx-badge-pill--end">{$_('dl.containers.arch_badge')}</span>
             </p>
             <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{$_('dl.containers.pull_image')}</p>
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1rem">{$_('dl.containers.registries_note')}</p>
+            <p style="font-size:0.75rem;font-weight:700;color:var(--zinc-400);letter-spacing:0.05em;text-transform:uppercase;margin:0 0 0.5rem">{$_('dl.containers.registry_label_dockerhub')}</p>
+            <div class="mcx-code-row" style="margin-bottom:1rem">
+              <code id="mcx-docker-pull-hub-text">docker pull quad4io/meshchatx:latest</code>
+              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-docker-pull-hub-copy" data-copy="docker pull quad4io/meshchatx:latest" title="{$_('dl.containers.copy_pull')}">
+                <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+              </button>
+            </div>
+            <p style="font-size:0.75rem;font-weight:700;color:var(--zinc-400);letter-spacing:0.05em;text-transform:uppercase;margin:0 0 0.5rem">{$_('dl.containers.registry_label_ghcr')}</p>
             <div class="mcx-code-row" style="margin-bottom:1.5rem">
-              <code id="mcx-docker-pull-text">docker pull git.quad4.io/rns-things/meshchatx:latest</code>
-              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-docker-pull-copy" data-copy="" title="{$_('dl.containers.copy_pull')}">
+              <code id="mcx-docker-pull-ghcr-text">docker pull ghcr.io/quad4-software/meshchatx:latest</code>
+              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-docker-pull-ghcr-copy" data-copy="docker pull ghcr.io/quad4-software/meshchatx:latest" title="{$_('dl.containers.copy_pull')}">
                 <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
               </button>
             </div>
@@ -273,7 +282,7 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
   --security-opt no-new-privileges:true \
   -p 127.0.0.1:8000:8000 \
   -v ./meshchat-config:/config \
-  git.quad4.io/rns-things/meshchatx:latest</pre>
+  quad4io/meshchatx:latest</pre>
                 <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-docker-run-copy" data-copy="" title="{$_('dl.containers.copy_run')}">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
                 </button>
@@ -295,9 +304,18 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
               <span class="mcx-badge-pill mcx-badge-pill--end">{$_('dl.containers.arch_badge')}</span>
             </p>
             <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{$_('dl.containers.pull_image')}</p>
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1rem">{$_('dl.containers.registries_note')}</p>
+            <p style="font-size:0.75rem;font-weight:700;color:var(--zinc-400);letter-spacing:0.05em;text-transform:uppercase;margin:0 0 0.5rem">{$_('dl.containers.registry_label_dockerhub')}</p>
+            <div class="mcx-code-row" style="margin-bottom:1rem">
+              <code id="mcx-podman-pull-hub-text">podman pull quad4io/meshchatx:latest</code>
+              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-podman-pull-hub-copy" data-copy="podman pull quad4io/meshchatx:latest" title="{$_('dl.containers.copy_pull')}">
+                <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+              </button>
+            </div>
+            <p style="font-size:0.75rem;font-weight:700;color:var(--zinc-400);letter-spacing:0.05em;text-transform:uppercase;margin:0 0 0.5rem">{$_('dl.containers.registry_label_ghcr')}</p>
             <div class="mcx-code-row" style="margin-bottom:1.5rem">
-              <code id="mcx-podman-pull-text">podman pull git.quad4.io/rns-things/meshchatx:latest</code>
-              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-podman-pull-copy" data-copy="" title="{$_('dl.containers.copy_pull')}">
+              <code id="mcx-podman-pull-ghcr-text">podman pull ghcr.io/quad4-software/meshchatx:latest</code>
+              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-podman-pull-ghcr-copy" data-copy="podman pull ghcr.io/quad4-software/meshchatx:latest" title="{$_('dl.containers.copy_pull')}">
                 <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
               </button>
             </div>
@@ -310,7 +328,7 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
   --security-opt no-new-privileges:true \
   -p 127.0.0.1:8000:8000 \
   -v ./meshchat-config:/config \
-  git.quad4.io/rns-things/meshchatx:latest</pre>
+  quad4io/meshchatx:latest</pre>
                 <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-podman-run-copy" data-copy="" title="{$_('dl.containers.copy_run')}">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
                 </button>

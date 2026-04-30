@@ -11,7 +11,7 @@ tasks:
       - task -l
 
   build:
-    desc: Build static site (Svelte)
+    desc: Build production site (SvelteKit SSR bundle)
     cmds:
       - pnpm run build
 
@@ -21,11 +21,11 @@ tasks:
       - pnpm run check
 
   ci:
-    desc: check, lint, test, and build
+    desc: check, lint, test with coverage, and build
     cmds:
       - pnpm run check
       - pnpm run lint
-      - pnpm test
+      - pnpm run test:coverage
       - pnpm run build
 
   clean:

@@ -1,3 +1,4 @@
+# Web image: multi-stage build on Chainguard Node (Wolfi), see Dockerfile.
 services:
   web:
     build: .
@@ -8,15 +9,13 @@ services:
     read_only: true
     tmpfs:
       - /tmp
-      - /var/cache/nginx
-      - /var/run
     cap_drop:
       - ALL
     deploy:
       resources:
         limits:
-          cpus: "0.5"
-          memory: 256M
+          cpus: "1.0"
+          memory: 384M
         reservations:
           cpus: "0.25"
           memory: 128M
@@ -34,7 +33,7 @@ services:
       - traefik.http.middlewares.meshchatx-sec.headers.stsPreload=true
       - traefik.http.middlewares.meshchatx-sec.headers.forceSTSHeader=false
 
-      - "traefik.http.middlewares.meshchatx-sec.headers.contentSecurityPolicy=default-src 'self'; base-uri 'self'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://goat.meshchatx.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://goat.meshchatx.com; font-src 'self'; connect-src 'self' https://goat.meshchatx.com; upgrade-insecure-requests"
+      - "traefik.http.middlewares.meshchatx-sec.headers.contentSecurityPolicy=default-src 'self'; base-uri 'self'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://goat.meshchatx.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://goat.meshchatx.com; font-src 'self'; worker-src 'self'; connect-src 'self' https://goat.meshchatx.com; upgrade-insecure-requests"
 
       - traefik.http.middlewares.meshchatx-sec.headers.referrerPolicy=strict-origin-when-cross-origin
       - traefik.http.middlewares.meshchatx-sec.headers.contentTypeNosniff=true
