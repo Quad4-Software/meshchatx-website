@@ -11,7 +11,8 @@
       "download": "Скачать | MeshChatX",
       "contact": "Контакты | MeshChatX",
       "donate": "Поддержать | MeshChatX",
-      "license": "Лицензия | MeshChatX"
+      "license": "Лицензия | MeshChatX",
+      "privacy": "Политика конфиденциальности | MeshChatX"
     },
     "og_image_alt": "Логотип MeshChatX",
     "desc": {
@@ -19,7 +20,8 @@
       "download": "Скачайте MeshChatX для Windows, Linux, macOS, Docker или Python. Децентрализованный обмен через Reticulum.",
       "contact": "Связь с разработчиком MeshChatX через LXMF (обмен Reticulum).",
       "donate": "Поддержите MeshChatX через Ko-fi, Buy Me a Coffee или Monero (XMR).",
-      "license": "Сведения о лицензии MeshChatX."
+      "license": "Сведения о лицензии MeshChatX.",
+      "privacy": "Как meshchatx.com обрабатывает данные, включая аналитику с учётом конфиденциальности (GoatCounter)."
     }
   },
   "nav": {
@@ -44,6 +46,7 @@
     "source": "Исходный код (Gitea)",
     "changelog": "Список изменений",
     "license": "Лицензия",
+    "privacy": "Конфиденциальность",
     "meta_copyright": "© 2026 MeshChatX. Безопасные децентрализованные сети.",
     "meta_site": "MeshChatX - проект <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>."
   },
@@ -66,6 +69,18 @@
     "h1": "Лицензия",
     "intro": "MeshChatX распространяется под лицензиями 0BSD и MIT.",
     "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+  },
+  "privacy": {
+    "h1": "Политика конфиденциальности",
+    "updated": "Обновлено: 29 апреля 2026 г.",
+    "p_scope": "В этом документе описано, как публичный маркетинговый сайт meshchatx.com («Сайт») обрабатывает информацию при просмотре страниц. Он не распространяется на приложение MeshChatX, сеть Reticulum или сторонние сервисы, которые вы используете отдельно.",
+    "h2_analytics": "Аналитика (GoatCounter)",
+    "p_analytics": "Мы используем GoatCounter — инструмент веб-аналитики с упором на конфиденциальность — на собственном хосте goat.meshchatx.com. Это помогает понимать суммарный трафик (например, какие страницы просматриваются и приблизительный регион по IP), чтобы улучшать Сайт.",
+    "p_analytics_detail": "GoatCounter рассчитан на совместимость с GDPR: без отслеживающих cookie для аналитики, без кросс-сайтовых рекламных профилей, собираются только данные, нужные для базовой статистики. Подробнее о подходе GoatCounter к конфиденциальности и GDPR см. официальную документацию GoatCounter. Загрузку скрипта аналитики можно отключить стандартными средствами браузера или расширениями.",
+    "h2_rights": "Ваши права (ЕЭЗ и Великобритания)",
+    "p_rights": "В зависимости от страны проживания у вас могут быть права на доступ, исправление, удаление или ограничение обработки персональных данных, а также на жалобу в надзорный орган. Объём данных GoatCounter ограничен; по конкретным запросам, касающимся данных этого Сайта, свяжитесь с нами указанным ниже способом — ответим в соответствии с применимым правом.",
+    "h2_contact": "Контакты",
+    "p_contact": "По вопросам конфиденциальности этого Сайта см. <a href=\"contact.html\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">страницу контактов</a>."
   },
   "home": {
     "hero": {

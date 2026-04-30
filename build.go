@@ -68,6 +68,7 @@ func main() {
 		{"contact.html", "pages/contact-main.html", "contact"},
 		{"donate.html", "pages/donate-main.html", "donate"},
 		{"license.html", "pages/license-main.html", "license"},
+		{"privacy.html", "pages/privacy-main.html", "privacy"},
 	}
 
 	for _, loc := range locales {
@@ -237,7 +238,7 @@ func buildHead(o buildHeadOpts) string {
 	b.WriteString(o.I18nScript)
 	b.WriteString("<link rel=\"stylesheet\" href=\"")
 	b.WriteString(o.Base)
-	b.WriteString("css/main.css\" />\n<noscript><style>.mcx-js-only{display:none!important}</style></noscript>\n</head>\n<body data-page=\"")
+	b.WriteString("css/main.css\" />\n<noscript><style>.mcx-js-only{display:none!important}</style></noscript>\n<script data-goatcounter=\"https://goat.meshchatx.com/count\" async src=\"//goat.meshchatx.com/count.js\"></script>\n</head>\n<body data-page=\"")
 	b.WriteString(htmlEsc(o.Page))
 	b.WriteString("\" data-locale=\"")
 	b.WriteString(htmlEsc(o.Lang))
@@ -330,6 +331,8 @@ func pageSlug(pageID string) string {
 		return "donate"
 	case "license":
 		return "license"
+	case "privacy":
+		return "privacy"
 	default:
 		return ""
 	}
@@ -478,6 +481,8 @@ func pageFile(pageID string) string {
 		return "donate.html"
 	case "license":
 		return "license.html"
+	case "privacy":
+		return "privacy.html"
 	default:
 		return "index.html"
 	}

@@ -11,7 +11,8 @@
       "download": "Download | MeshChatX",
       "contact": "Kontakt | MeshChatX",
       "donate": "Spenden | MeshChatX",
-      "license": "Lizenz | MeshChatX"
+      "license": "Lizenz | MeshChatX",
+      "privacy": "Datenschutz | MeshChatX"
     },
     "og_image_alt": "MeshChatX-Logo",
     "desc": {
@@ -19,7 +20,8 @@
       "download": "MeshChatX für Windows, Linux, macOS, Docker oder Python herunterladen. Dezentrale Kommunikation über Reticulum.",
       "contact": "Kontakt zum MeshChatX-Entwickler per LXMF (Reticulum-Messaging).",
       "donate": "Unterstütze MeshChatX über Ko-fi, Buy Me a Coffee oder mit Monero (XMR).",
-      "license": "Lizenzinformationen zu MeshChatX."
+      "license": "Lizenzinformationen zu MeshChatX.",
+      "privacy": "Wie meshchatx.com mit Daten umgeht, einschließlich datenschutzfreundlicher Analyse mit GoatCounter."
     }
   },
   "nav": {
@@ -44,6 +46,7 @@
     "source": "Quellcode (Gitea)",
     "changelog": "Änderungsprotokoll",
     "license": "Lizenz",
+    "privacy": "Datenschutz",
     "meta_copyright": "© 2026 MeshChatX. Sicheres dezentrales Networking.",
     "meta_site": "MeshChatX ist ein <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>-Projekt."
   },
@@ -66,6 +69,18 @@
     "h1": "Lizenz",
     "intro": "MeshChatX steht unter 0BSD und MIT.",
     "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+  },
+  "privacy": {
+    "h1": "Datenschutz",
+    "updated": "Stand: 29. April 2026",
+    "p_scope": "Diese Erklärung beschreibt, wie die öffentliche Marketing-Website unter meshchatx.com (die \"Website\") Informationen verarbeitet, wenn Sie Seiten der Website besuchen. Sie gilt nicht für die MeshChatX-Anwendung, Reticulum oder Drittanbieterdienste, die Sie separat nutzen.",
+    "h2_analytics": "Analyse (GoatCounter)",
+    "p_analytics": "Wir nutzen GoatCounter, ein datenschutzorientiertes Webanalyse-Tool, in einer selbst gehosteten Instanz unter goat.meshchatx.com. So erfassen wir aggregierten Traffic (z. B. welche Seiten aufgerufen werden und eine ungefähre geografische Zuordnung aus der IP-Adresse), um die Website zu verbessern.",
+    "p_analytics_detail": "GoatCounter ist so konzipiert, dass es mit der DSGVO vereinbar ist: keine Tracking-Cookies für die Analyse, keine werblichen Nutzerprofile über Websites hinweg, und nur die für einfache Statistiken nötigen Daten. Weitere Hinweise zu Datenschutz und DSGVO finden Sie in der offiziellen GoatCounter-Dokumentation. Sie können den Analyse-Script-Laden auch mit üblichen Browser-Einstellungen oder Erweiterungen unterbinden.",
+    "h2_rights": "Ihre Rechte (EWR und UK)",
+    "p_rights": "Je nach Wohnsitz können Sie Rechte auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung personenbezogener Daten sowie auf Beschwerde bei einer Aufsichtsbehörde haben. Die von GoatCounter erfassten Daten sind begrenzt; bei konkreten Anfragen zu Daten dieser Website kontaktieren Sie uns wie unten angegeben. Wir antworten im Rahmen des geltenden Rechts.",
+    "h2_contact": "Kontakt",
+    "p_contact": "Bei Datenschutzfragen zu dieser Website nutzen Sie bitte die <a href=\"contact.html\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">Kontaktseite</a>."
   },
   "home": {
     "hero": {
