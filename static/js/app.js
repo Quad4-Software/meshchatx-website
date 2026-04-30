@@ -136,6 +136,8 @@
     });
   }
 
+  var mcxDownloadInitSeq = 0;
+
   var MCX_SHOWCASE_TAB_FILES = [
     'tab-11-home.webp',
     'tab-0-messages.webp',
@@ -562,10 +564,14 @@
 
     if (data.hasPreRelease) {
       const wrap = el('span', { class: 'mcx-channel-pill' });
-      const aStable = el('a', { href: '/download' });
+      const dlPath =
+        typeof window !== 'undefined' && window.location && window.location.pathname
+          ? window.location.pathname
+          : '/download';
+      const aStable = el('a', { href: dlPath });
       aStable.textContent = mcxT('download.channel_stable');
       if (channel === 'stable') aStable.classList.add('is-active-stable');
-      const aPre = el('a', { href: '/download?channel=prerelease' });
+      const aPre = el('a', { href: dlPath + '?channel=prerelease' });
       aPre.textContent = mcxT('download.channel_pre');
       if (channel === 'prerelease') aPre.classList.add('is-active-pre');
       wrap.appendChild(aStable);
@@ -685,6 +691,7 @@
   }
 
   async function initDownloadPage() {
+    var seq = ++mcxDownloadInitSeq;
     const composePre = qs('#mcx-compose-yaml');
     if (composePre) composePre.textContent = COMPOSE_YAML;
     const composeBtn = qs('#mcx-compose-copy');
@@ -750,6 +757,8 @@
     } catch (e) {
       error = e && e.message ? e.message : mcxT('download.fetch_error');
     }
+
+    if (seq !== mcxDownloadInitSeq) return;
 
     const publishedAtRelative = selectedRelease
       ? window.MCX.formatRelativeTime(selectedRelease.publishedAt)

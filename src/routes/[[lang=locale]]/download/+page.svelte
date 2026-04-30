@@ -3,12 +3,14 @@
   import MetaTags from '$lib/MetaTags.svelte';
   import type { PageData } from './$types';
   import { browser } from '$app/environment';
-  import { onMount } from 'svelte';
+  import { page } from '$app/state';
 
   const { data } = $props() as { data: PageData };
 
-  onMount(() => {
+  $effect(() => {
     if (!browser) return;
+    page.url.pathname;
+    page.url.search;
     void window.MCX?.initDownloadPage?.();
   });
 </script>
