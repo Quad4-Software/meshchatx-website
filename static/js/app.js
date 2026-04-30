@@ -128,6 +128,8 @@
 
   function initCopyButtons() {
     qsa('[data-copy]').forEach((btn) => {
+      if (btn.getAttribute('data-mcx-copy-bound')) return;
+      btn.setAttribute('data-mcx-copy-bound', '1');
       btn.addEventListener('click', function () {
         copyText(btn.getAttribute('data-copy'), btn);
       });
@@ -781,11 +783,9 @@
       loadHomeVersion();
       loadHomePlatforms();
     }
-
-    if (document.body.getAttribute('data-page') === 'download') {
-      initDownloadPage();
-    }
   }
+
+  window.MCX.initDownloadPage = initDownloadPage;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);

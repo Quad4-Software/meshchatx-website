@@ -2,7 +2,15 @@
   import DownloadContent from '$lib/DownloadContent.svelte';
   import MetaTags from '$lib/MetaTags.svelte';
   import type { PageData } from './$types';
+  import { browser } from '$app/environment';
+  import { onMount } from 'svelte';
+
   const { data } = $props() as { data: PageData };
+
+  onMount(() => {
+    if (!browser) return;
+    void window.MCX?.initDownloadPage?.();
+  });
 </script>
 
 <MetaTags page="download" locale={data.locale} />
