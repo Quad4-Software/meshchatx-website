@@ -49,20 +49,3 @@ Then open `http://127.0.0.1:8080/`. Optional orchestration and Traefik labels li
 ## Task runner
 
 If you use [Task](https://taskfile.dev/), common tasks are defined in `Taskfile.yml` (for example `task build` runs `pnpm run build`, `task docker-build` runs `docker build`).
-
-## License for the website
-
-This repository (the meshchatx.com marketing site) is **0BSD**, copyright Quad4. See `LICENSE`.
-
-The MeshChatX application is licensed separately in its own repository (**0BSD + MIT**).
-
-## Access over I2P
-
-The production image serves **HTTP** on nginx (for example **8080** on `127.0.0.1`). **SAM** (Simple Anonymous Messaging) is an **application API** for code that opens I2P streams or datagrams. It is **not** the usual way to expose an existing static site.
-
-To make this site reachable over I2P:
-
-1. **Java I2P:** In the router console, add an **HTTP Server** / **I2P Web Server** tunnel (I2PTunnel) whose target is `127.0.0.1:8080` (or your container port). Publish the tunnel **base32** `.b32.i2p` address.
-2. **i2pd:** Add a **server tunnel** (HTTP or TCP) with `host = 127.0.0.1` and `port = 8080` toward the same upstream.
-
-Use SAM only when your own program must talk to I2P from a socket API.
