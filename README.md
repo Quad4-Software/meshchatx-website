@@ -1,28 +1,32 @@
 # MeshChatX website
 
-Static site for [MeshChatX](https://git.quad4.io/RNS-Things/MeshChatX) project: hand-authored HTML partials, one CSS bundle, and a small Go generator that merges locales and emits `index.html`, `download.html`, and localized copies under `de/`, `ru/`, and `it/`.
+Marketing site for [MeshChatX](https://git.quad4.io/RNS-Things/MeshChatX): [SvelteKit](https://kit.svelte.dev/) with [`@sveltejs/adapter-static`](https://github.com/sveltejs/kit/tree/main/packages/adapter-static), prerendered HTML under `build/`, locales **en**, **de**, **ru**, **it** (strings in `i18n/`).
 
 ## Requirements
 
-- Go 1.26 or newer (see `go.mod`)
+- **Node.js** 24 or newer (see `package.json` `engines`)
+- **pnpm** 10.33 or newer (`corepack enable pnpm` if you use Corepack)
 
-## Build
+## Install and build
 
 From the repository root:
 
 ```bash
-go run build.go
+pnpm install
+pnpm run build
 ```
 
-This regenerates all HTML at the project root. Source templates live under `pages/`, `partials/`, and `i18n/`; strings are merged from JSON per locale.
+Output is written to **`build/`** (nginx and the Docker image expect that directory).
 
-### SEO and social previews
+Useful scripts: `pnpm run dev` (Vite dev server), `pnpm run preview` (serve last `build/`), `pnpm run check` (svelte-check), `pnpm run lint`, `pnpm test`. Release data for the download page is snapshotted in `static/data/gitea-releases.json`; refresh it with `pnpm run fetch:releases` when you publish new GitHub/Gitea releases (runs on your machine, not in the browser).
 
-Each page includes `title`, `meta name="description"`, `link rel="canonical"`, `hreflang` alternates, `meta name="robots"`, Open Graph (`og:title`, `og:description`, `og:url`, `og:image`, `og:locale`, alternates), and Twitter Card tags (`twitter:card`, title, description, image). The shared preview image is `https://meshchatx.com/static/logo.webp` (see `siteOrigin` in `build.go`). There is no `sitemap.xml` generator yet; `robots.txt` allows crawlers.
+### SEO and social
+
+Pages ship with `title`, meta description, canonical and `hreflang` alternates, Open Graph and Twitter Card fields. The default social image URL is `https://meshchatx.com/logo.webp` (see `SITE_ORIGIN` in `src/lib/paths.ts` and `MetaTags.svelte`). **Sitemap:** `https://meshchatx.com/sitemap.xml` (generated at build time). **Robots:** `https://meshchatx.com/robots.txt`. **Security contact:** `https://meshchatx.com/.well-known/security.txt` (also `security.txt` in repo root for reference).
 
 ## Container image
 
-Build a production image (nginx serves the generated static files):
+Build a production image (multi-stage: Node runs `pnpm run build`, then static files are copied into **nginx unprivileged**):
 
 ```bash
 docker build -t meshchatx-website:latest .
@@ -34,12 +38,31 @@ With Podman:
 podman build -t meshchatx-website:latest .
 ```
 
-The image runs nginx unprivileged on port **8080**. Optional Compose and Traefik labels are in `docker-compose.yml`.
+The container listens on **8080** (see `Dockerfile` / `docker/nginx.default.conf`). Quick local check after a build:
+
+```bash
+docker run --rm -p 8080:8080 meshchatx-website:latest
+```
+
+Then open `http://127.0.0.1:8080/`. Optional orchestration and Traefik labels live in `docker-compose.yml`.
 
 ## Task runner
 
-If you use [Task](https://taskfile.dev/), `task build` runs `go run build.go`; `task docker-build` runs `docker build`.
+If you use [Task](https://taskfile.dev/), common tasks are defined in `Taskfile.yml` (for example `task build` runs `pnpm run build`, `task docker-build` runs `docker build`).
 
 ## License for the website
 
-See `LICENSE`.
+This repository (the meshchatx.com marketing site) is **0BSD**, copyright Quad4. See `LICENSE`.
+
+The MeshChatX application is licensed separately in its own repository (**0BSD + MIT**).
+
+## Access over I2P
+
+The production image serves **HTTP** on nginx (for example **8080** on `127.0.0.1`). **SAM** (Simple Anonymous Messaging) is an **application API** for code that opens I2P streams or datagrams. It is **not** the usual way to expose an existing static site.
+
+To make this site reachable over I2P:
+
+1. **Java I2P:** In the router console, add an **HTTP Server** / **I2P Web Server** tunnel (I2PTunnel) whose target is `127.0.0.1:8080` (or your container port). Publish the tunnel **base32** `.b32.i2p` address.
+2. **i2pd:** Add a **server tunnel** (HTTP or TCP) with `host = 127.0.0.1` and `port = 8080` toward the same upstream.
+
+Use SAM only when your own program must talk to I2P from a socket API.

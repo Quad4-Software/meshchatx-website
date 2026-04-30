@@ -12,17 +12,28 @@
       "contact": "Контакты | MeshChatX",
       "donate": "Поддержать | MeshChatX",
       "license": "Лицензия | MeshChatX",
-      "privacy": "Политика конфиденциальности | MeshChatX"
+      "privacy": "Политика конфиденциальности | MeshChatX",
+      "error": "Ошибка | MeshChatX"
     },
     "og_image_alt": "Логотип MeshChatX",
     "desc": {
       "home": "Будущее децентрализованных коммуникаций. Безопасный, устойчивый и неостановимый обмен сообщениями через Reticulum.",
       "download": "Скачайте MeshChatX для Windows, Linux, macOS, Docker или Python. Децентрализованный обмен через Reticulum.",
-      "contact": "Связь с разработчиком MeshChatX через LXMF (обмен Reticulum).",
+      "contact": "Связь с MeshChatX через LXMF (Reticulum) или по почте team@quad4.io.",
       "donate": "Поддержите MeshChatX через Ko-fi, Buy Me a Coffee или Monero (XMR).",
-      "license": "Сведения о лицензии MeshChatX.",
-      "privacy": "Как meshchatx.com обрабатывает данные, включая аналитику с учётом конфиденциальности (GoatCounter)."
+      "license": "Лицензирование сайта meshchatx.com (0BSD) и приложения MeshChatX (0BSD + MIT).",
+      "privacy": "Как meshchatx.com обрабатывает данные при посещении Сайта.",
+      "error": "Страница не может быть показана так, как вы запрашивали."
     }
+  },
+  "error": {
+    "title_404": "Страница не найдена",
+    "lead_404": "Запрошенная страница отсутствует, перенесена либо ссылка неверна. Кнопка ниже ведёт на главную страницу.",
+    "title_4xx": "Запрос не удалось выполнить",
+    "lead_4xx": "Сервер не смог обработать такой запрос.",
+    "title_5xx": "Что-то пошло не так",
+    "lead_5xx": "Произошла непредвиденная ошибка. Попробуйте позже.",
+    "cta_home": "На главную"
   },
   "nav": {
     "primary": "Основное меню",
@@ -47,13 +58,18 @@
     "changelog": "Список изменений",
     "license": "Лицензия",
     "privacy": "Конфиденциальность",
+    "license_badge": "MIT + 0BSD",
     "meta_copyright": "© 2026 MeshChatX. Безопасные децентрализованные сети.",
     "meta_site": "MeshChatX - проект <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>."
   },
   "contact": {
     "h1": "Контакты",
     "panel_title": "Связь через LXMF",
-    "copy_title": "Копировать LXMF-адрес"
+    "copy_title": "Копировать LXMF-адрес",
+    "panel_email": "Электронная почта",
+    "email_lead": "По общим вопросам пишите команде Quad4.",
+    "email": "team@quad4.io",
+    "copy_email": "Скопировать адрес"
   },
   "donate": {
     "h1": "Поддержать MeshChatX",
@@ -67,20 +83,24 @@
   },
   "license": {
     "h1": "Лицензия",
-    "intro": "MeshChatX распространяется под лицензиями 0BSD и MIT.",
-    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+    "intro": "Публичный сайт meshchatx.com и код этой веб-площадки распространяются под лицензией 0BSD (авторские права Quad4). Приложение MeshChatX распространяется под лицензиями 0BSD и MIT; полные тексты лицензий приложения приведены ниже.",
+    "h2_website": "Сайт",
+    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+    "h2_app": "Приложение MeshChatX",
+    "app_intro": "Эти условия относятся к исходному коду и распространяемым сборкам MeshChatX.",
+    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "privacy": {
     "h1": "Политика конфиденциальности",
     "updated": "Обновлено: 29 апреля 2026 г.",
     "p_scope": "В этом документе описано, как публичный маркетинговый сайт meshchatx.com («Сайт») обрабатывает информацию при просмотре страниц. Он не распространяется на приложение MeshChatX, сеть Reticulum или сторонние сервисы, которые вы используете отдельно.",
-    "h2_analytics": "Аналитика (GoatCounter)",
-    "p_analytics": "Мы используем GoatCounter — инструмент веб-аналитики с упором на конфиденциальность — на собственном хосте goat.meshchatx.com. Это помогает понимать суммарный трафик (например, какие страницы просматриваются и приблизительный регион по IP), чтобы улучшать Сайт.",
-    "p_analytics_detail": "GoatCounter рассчитан на совместимость с GDPR: без отслеживающих cookie для аналитики, без кросс-сайтовых рекламных профилей, собираются только данные, нужные для базовой статистики. Подробнее о подходе GoatCounter к конфиденциальности и GDPR см. официальную документацию GoatCounter. Загрузку скрипта аналитики можно отключить стандартными средствами браузера или расширениями.",
+    "h2_analytics": "Аналитика и обращения по данным",
+    "p_analytics": "Публичный Сайт не подключает сторонние скрипты аналитики или трекинга в вашем браузере и не вызывает внешние веб-API. При обычной загрузке страниц запросы остаются в рамках этого хоста.",
+    "p_analytics_detail": "Главная и раздел скачивания читают сведения о версиях из статического файла, отдаваемого с того же Сайта и обновляемого при публикации сборок. Сайт не отправляет ваше поведение в Gitea, сервисы аналитики или третьим сторонам в фоне. Ссылки на скачивание и исходный код ведут на тот хост, который вы открываете, когда нажимаете ссылку.",
     "h2_rights": "Ваши права (ЕЭЗ и Великобритания)",
-    "p_rights": "В зависимости от страны проживания у вас могут быть права на доступ, исправление, удаление или ограничение обработки персональных данных, а также на жалобу в надзорный орган. Объём данных GoatCounter ограничен; по конкретным запросам, касающимся данных этого Сайта, свяжитесь с нами указанным ниже способом — ответим в соответствии с применимым правом.",
+    "p_rights": "В зависимости от страны проживания у вас могут быть права на доступ, исправление, удаление или ограничение обработки персональных данных, а также на жалобу в надзорный орган. Этот маркетинговый Сайт рассчитан на минимальную обработку данных. По конкретным вопросам, касающимся этого Сайта, свяжитесь с нами, как указано ниже; ответим в соответствии с применимым правом.",
     "h2_contact": "Контакты",
-    "p_contact": "По вопросам конфиденциальности этого Сайта см. <a href=\"contact.html\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">страницу контактов</a>."
+    "p_contact": "По вопросам конфиденциальности этого Сайта см. <a href=\"/ru/contact\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">страницу контактов</a>."
   },
   "home": {
     "hero": {

@@ -1,12 +1,84 @@
 version: "3"
 
+vars:
+  IMAGE: meshchatx-website:latest
+
 tasks:
-  build:
-    desc: Generate static HTML (i18n)
+  default:
+    desc: List tasks
+    silent: true
     cmds:
-      - go run build.go
+      - task -l
+
+  build:
+    desc: Build static site (Svelte)
+    cmds:
+      - pnpm run build
+
+  check:
+    desc: Svelte/TypeScript check (svelte-check)
+    cmds:
+      - pnpm run check
+
+  ci:
+    desc: check, lint, test, and build
+    cmds:
+      - pnpm run check
+      - pnpm run lint
+      - pnpm test
+      - pnpm run build
+
+  clean:
+    desc: Remove build and .svelte-kit
+    cmds:
+      - rm -rf build .svelte-kit
+
+  dev:
+    desc: Vite dev server
+    cmds:
+      - pnpm run dev
 
   docker-build:
     desc: Build production container image
     cmds:
-      - docker build -t meshchatx-website:latest .
+      - docker build -t {{.IMAGE}} .
+
+  docker-up:
+    desc: Start stack (docker compose up)
+    cmds:
+      - docker compose up
+
+  docker-down:
+    desc: Stop stack
+    cmds:
+      - docker compose down
+
+  format:
+    desc: Prettier write
+    cmds:
+      - pnpm run format
+
+  install:
+    desc: pnpm install
+    cmds:
+      - pnpm install
+
+  lint:
+    desc: ESLint
+    cmds:
+      - pnpm run lint
+
+  preview:
+    desc: Preview the last `task build` output
+    cmds:
+      - pnpm run preview
+
+  test:
+    desc: Vitest
+    cmds:
+      - pnpm test
+
+  "test:watch":
+    desc: Vitest watch
+    cmds:
+      - pnpm exec vitest

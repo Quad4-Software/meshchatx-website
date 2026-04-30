@@ -12,17 +12,28 @@
       "contact": "Contatti | MeshChatX",
       "donate": "Donazioni | MeshChatX",
       "license": "Licenza | MeshChatX",
-      "privacy": "Privacy | MeshChatX"
+      "privacy": "Privacy | MeshChatX",
+      "error": "Errore | MeshChatX"
     },
     "og_image_alt": "Logo MeshChatX",
     "desc": {
       "home": "Il futuro della comunicazione decentralizzata. Messaggistica sicura, resiliente e inarrestabile su Reticulum.",
       "download": "Scarica MeshChatX per Windows, Linux, macOS, Docker o Python. Messaggistica decentralizzata su Reticulum.",
-      "contact": "Contatta lo sviluppatore MeshChatX via LXMF (messaggistica Reticulum).",
+      "contact": "Contatta MeshChatX via LXMF (Reticulum) o email team@quad4.io.",
       "donate": "Sostieni MeshChatX su Ko-fi, Buy Me a Coffee o con Monero (XMR).",
-      "license": "Informazioni sulla licenza di MeshChatX.",
-      "privacy": "Come meshchatx.com tratta i dati, inclusa un'analitica rispettosa della privacy con GoatCounter."
+      "license": "Licenze del sito meshchatx.com (0BSD) e dell'applicazione MeshChatX (0BSD + MIT).",
+      "privacy": "Come meshchatx.com tratta i dati durante la visita al Sito.",
+      "error": "Questa pagina non può essere mostrata come richiesto."
     }
+  },
+  "error": {
+    "title_404": "Pagina non trovata",
+    "lead_404": "La pagina che cerchi non c'è, è stata spostata o il collegamento non è valido. Usa il pulsante qui sotto per tornare alla home.",
+    "title_4xx": "Impossibile completare la richiesta",
+    "lead_4xx": "Il server non ha potuto elaborare la richiesta così com'è arrivata.",
+    "title_5xx": "Qualcosa non ha funzionato",
+    "lead_5xx": "Si è verificato un errore imprevisto. Riprova più tardi.",
+    "cta_home": "Torna alla home"
   },
   "nav": {
     "primary": "Principale",
@@ -47,13 +58,18 @@
     "changelog": "Changelog",
     "license": "Licenza",
     "privacy": "Privacy",
+    "license_badge": "MIT + 0BSD",
     "meta_copyright": "© 2026 MeshChatX. Reti decentralizzate sicure.",
     "meta_site": "MeshChatX è un progetto <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>."
   },
   "contact": {
     "h1": "Contatti",
     "panel_title": "Contatto via LXMF",
-    "copy_title": "Copia indirizzo LXMF"
+    "copy_title": "Copia indirizzo LXMF",
+    "panel_email": "Email",
+    "email_lead": "Per domande generali, contatta il team Quad4 via email.",
+    "email": "team@quad4.io",
+    "copy_email": "Copia indirizzo email"
   },
   "donate": {
     "h1": "Sostieni MeshChatX",
@@ -67,20 +83,24 @@
   },
   "license": {
     "h1": "Licenza",
-    "intro": "MeshChatX è rilasciato sotto licenze 0BSD e MIT.",
-    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+    "intro": "Il sito pubblico meshchatx.com e il codice di questo sito sono rilasciati sotto licenza 0BSD (copyright Quad4). L'applicazione MeshChatX è rilasciata sotto 0BSD e MIT; i testi completi delle licenze dell'applicazione seguono sotto.",
+    "h2_website": "Sito web",
+    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+    "h2_app": "Applicazione MeshChatX",
+    "app_intro": "Questi termini si applicano al codice sorgente e alle build distribuite di MeshChatX.",
+    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "privacy": {
     "h1": "Informativa sulla privacy",
     "updated": "Ultimo aggiornamento: 29 aprile 2026",
     "p_scope": "Questa informativa descrive come il sito di marketing pubblico meshchatx.com (il \"Sito\") tratta le informazioni quando visiti le pagine del Sito. Non si applica all'applicazione MeshChatX, a Reticulum o ai servizi di terze parti che usi separatamente.",
-    "h2_analytics": "Analitica (GoatCounter)",
-    "p_analytics": "Usiamo GoatCounter, uno strumento di analisi web orientato alla privacy, su un'istanza self-hosted su goat.meshchatx.com. Ci aiuta a capire il traffico aggregato (ad esempio quali pagine vengono viste e una regione geografica approssimativa derivata dall'IP) per migliorare il Sito.",
-    "p_analytics_detail": "GoatCounter è progettato per essere compatibile con il GDPR: niente cookie di tracciamento per l'analitica, niente profili pubblicitari cross-sito, solo i dati necessari per statistiche di base. Per maggiori dettagli su privacy e GDPR, vedi la documentazione ufficiale di GoatCounter. Puoi evitare il caricamento dello script con le impostazioni del browser o estensioni che bloccano gli script.",
+    "h2_analytics": "Analitica e richieste sui dati",
+    "p_analytics": "Questo Sito pubblico non carica script di analitica o tracciamento di terze parti nel browser e le pagine non chiamano API esterne. Per le viste di pagina abituali le richieste restano verso la stessa origine.",
+    "p_analytics_detail": "L'home e la pagina download leggono le informazioni sulle versioni da un file statico servito dallo stesso Sito, aggiornato quando pubblichiamo nuove build. Il Sito non invia la tua navigazione in background a Gitea, servizi di analitica o terze parti. Se usi i link a download o al codice sorgente, le richieste vanno all'host che apri cliccando.",
     "h2_rights": "I tuoi diritti (SEE e Regno Unito)",
-    "p_rights": "A seconda del luogo in cui vivi, potresti avere diritti di accesso, rettifica, cancellazione o limitazione del trattamento dei dati personali, e di reclamo presso un'autorità di controllo. I dati raccolti da GoatCounter sono limitati; per richieste specifiche sui dati di questo Sito contattaci come indicato di seguito e risponderemo secondo la legge applicabile.",
+    "p_rights": "A seconda del luogo in cui vivi, potresti avere diritti di accesso, rettifica, cancellazione o limitazione del trattamento dei dati personali, e di reclamo presso un'autorità di controllo. Questo Sito di marketing è impostato per trattare pochi dati. Per richieste specifiche su questo Sito contattaci come indicato di seguito; risponderemo secondo la legge applicabile.",
     "h2_contact": "Contatti",
-    "p_contact": "Per domande sulla privacy di questo Sito vedi la <a href=\"contact.html\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">pagina contatti</a>."
+    "p_contact": "Per domande sulla privacy di questo Sito vedi la <a href=\"/it/contact\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">pagina contatti</a>."
   },
   "home": {
     "hero": {

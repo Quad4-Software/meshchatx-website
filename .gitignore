@@ -8,3 +8,6 @@ pnpm-debug.log*
 .idea
 .vscode
 *.local
+node_modules
+build
+.svelte-kit

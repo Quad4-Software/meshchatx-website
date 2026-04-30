@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.webp" type="image/webp" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#09090b" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      (function () {
+        var c = document.documentElement.classList;
+        c.remove('dark', 'light');
+        var t = localStorage.getItem('theme');
+        if (t === 'light') {
+          c.add('light');
+        } else if (t === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          c.add('dark');
+        } else {
+          c.add('light');
+        }
+      })();
+    </script>
+    <script
+      data-goatcounter="https://goat.meshchatx.com/count"
+      async
+      src="//goat.meshchatx.com/count.js"
+    ></script>
+    <noscript><style>.mcx-js-only { display: none !important; }</style></noscript>
+    %sveltekit.head%
+  </head>
+  <body>
+    <div class="mcx-sveltekit-root" style="display: contents">%sveltekit.body%</div>
+  </body>
+</html>

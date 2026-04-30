@@ -1,0 +1,55 @@
+<script lang="ts">
+  import { _ } from "svelte-i18n";
+</script>
+
+<section class="mcx-page-head mcx-page-head--center">
+  <div class="mcx-container mcx-container--narrow">
+    <div class="mcx-page-icon-wrap mcx-page-icon-wrap--orange">
+      <svg class="mcx-icon mcx-icon--2xl" aria-hidden="true"><use href="#i-heart" /></svg>
+    </div>
+    <h1>{$_('donate.h1')}</h1>
+    <p class="mcx-muted" style="font-size:1.125rem;margin-bottom:3rem;line-height:1.625;max-width:36rem;margin-left:auto;margin-right:auto">
+      {$_('donate.lead')}
+      <br />
+      <span style="font-weight:700;color:var(--text);display:inline-block;margin-top:0.5rem">{$_('donate.xmr_only')}</span>
+    </p>
+    <div class="mcx-glass-card mcx-glass-panel mcx-glass-panel--orange">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+        <div class="mcx-page-icon-wrap mcx-page-icon-wrap--orange" style="margin:0;width:3rem;height:3rem;padding:0">
+          <svg class="mcx-icon" style="width:1.75rem;height:1.75rem" aria-hidden="true"><use href="#i-wallet" /></svg>
+        </div>
+        <h2 style="font-size:1.25rem;font-weight:900;margin:0">{$_('donate.monero')}</h2>
+      </div>
+      <div class="mcx-copy-field">
+        <div class="mcx-mono-block" style="font-size:0.75rem" id="mcx-xmr-addr">
+          8AfDSLVeTSt1oku5ifK4jkbJ94fp5kW6y5RWxuP1FYmyZmLHYRVSrPXJJaX7mK1n7MQUzwYE15uVdQVeAuWWnR5pDkN52xU
+        </div>
+        <button
+          type="button"
+          class="mcx-copy-btn"
+          data-copy="8AfDSLVeTSt1oku5ifK4jkbJ94fp5kW6y5RWxuP1FYmyZmLHYRVSrPXJJaX7mK1n7MQUzwYE15uVdQVeAuWWnR5pDkN52xU"
+          title="{$_('donate.copy_xmr')}"
+        >
+          <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+        </button>
+      </div>
+    </div>
+    <div class="mcx-glass-card mcx-glass-panel mcx-glass-panel--orange" style="margin-top:1.5rem">
+      <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 1rem 0">{$_('donate.platforms_title')}</h2>
+      <div style="display:flex;flex-direction:column;gap:0.75rem">
+        <a
+          class="mcx-btn-secondary"
+          href="https://ko-fi.com/quad4"
+          target="_blank"
+          rel="noopener noreferrer"
+          >{$_('donate.kofi')}</a>
+        <a
+          class="mcx-btn-secondary"
+          href="https://buymeacoffee.com/quad4"
+          target="_blank"
+          rel="noopener noreferrer"
+          >{$_('donate.bmac')}</a>
+      </div>
+    </div>
+  </div>
+</section>
