@@ -1,0 +1,212 @@
+{
+  "a11y": {
+    "skip": "跳到正文"
+  },
+  "brand": {
+    "name": "MeshChatX"
+  },
+  "meta": {
+    "title": {
+      "home": "MeshChatX",
+      "download": "下载 | MeshChatX",
+      "contact": "联系 | MeshChatX",
+      "donate": "捐赠 | MeshChatX",
+      "license": "许可 | MeshChatX",
+      "privacy": "隐私政策 | MeshChatX",
+      "error": "错误 | MeshChatX"
+    },
+    "og_image_alt": "MeshChatX 标志",
+    "desc": {
+      "home": "去中心化通信的未来。通过 Reticulum 实现安全、韧性强且难以封锁的消息传递。",
+      "download": "下载适用于 Windows、Linux、macOS、Docker 与 Python 的 MeshChatX。基于 Reticulum 的去中心化消息。",
+      "contact": "通过 LXMF（Reticulum）或电子邮件 team@quad4.io 联系 MeshChatX。",
+      "donate": "在 Ko-fi、Buy Me a Coffee 或使用门罗币（XMR）支持 MeshChatX。",
+      "license": "meshchatx.com 网站（0BSD）与 MeshChatX 应用（0BSD + MIT）的许可说明。",
+      "privacy": "meshchatx.com 在您访问本站时如何处理数据。",
+      "error": "无法按请求显示此页面。"
+    }
+  },
+  "error": {
+    "title_404": "页面未找到",
+    "lead_404": "您请求的页面不存在、已移动或链接有误。请使用下方按钮返回首页。",
+    "title_4xx": "无法完成请求",
+    "lead_4xx": "服务器无法按发送的方式处理此请求。",
+    "title_5xx": "出了点问题",
+    "lead_5xx": "发生意外错误。请稍后再试。",
+    "cta_home": "返回首页"
+  },
+  "nav": {
+    "primary": "主导航",
+    "features": "功能",
+    "showcase": "展示",
+    "donate": "捐赠",
+    "contact": "联系",
+    "git": "Git",
+    "download": "下载",
+    "toggle_theme": "切换主题",
+    "mobile_menu": "打开菜单",
+    "mobile_nav": "移动端"
+  },
+  "lang": {
+    "label": "语言"
+  },
+  "footer": {
+    "tagline": "通过 Reticulum 网络实现安全、韧性强且难以封锁的通信。",
+    "community": "社区",
+    "legal": "法律信息",
+    "source": "源代码（GitHub）",
+    "changelog": "更新日志",
+    "license": "许可",
+    "privacy": "隐私政策",
+    "license_badge": "MIT + 0BSD",
+    "meta_copyright": "© 2026 MeshChatX。安全、去中心化网络。",
+    "meta_site": "MeshChatX 是 <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a> 的项目。"
+  },
+  "contact": {
+    "h1": "联系",
+    "panel_title": "通过 LXMF 联系",
+    "copy_title": "复制 LXMF 地址",
+    "panel_email": "电子邮件",
+    "email_lead": "如有一般问题，请通过电子邮件联系 Quad4 团队。",
+    "email": "team@quad4.io",
+    "copy_email": "复制邮箱地址"
+  },
+  "donate": {
+    "h1": "支持 MeshChatX",
+    "lead": "MeshChatX 为社区而构建。您的捐赠有助于开发与基础设施成本。",
+    "xmr_only": "加密货币：仅支持门罗币（XMR）。",
+    "monero": "门罗币",
+    "copy_xmr": "复制门罗地址",
+    "platforms_title": "Ko-fi 与 Buy Me a Coffee",
+    "kofi": "Ko-fi",
+    "bmac": "Buy Me a Coffee"
+  },
+  "license": {
+    "h1": "许可",
+    "intro": "meshchatx.com 公开网站及本站代码在 0BSD 许可下发布（版权 Quad4）。MeshChatX 应用在 0BSD 与 MIT 下发布；完整应用许可文本见下文。",
+    "h2_website": "网站",
+    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+    "h2_app": "MeshChatX 应用",
+    "app_intro": "以下条款适用于 MeshChatX 应用源代码与分发构建。",
+    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+  },
+  "privacy": {
+    "h1": "隐私政策",
+    "updated": "最近更新：2026 年 4 月 29 日",
+    "p_scope": "本政策说明当您访问 meshchatx.com（「本站」）上的页面时，该公开营销网站如何处理信息。它不约束 MeshChatX 应用、Reticulum 或您另行使用的第三方服务。",
+    "h2_analytics": "分析与数据请求",
+    "p_analytics": "本公开站点不会在浏览器中加载第三方分析或跟踪脚本，页面也不会调用外部 Web API。正常浏览时，您对本站的请求均保留在同一源。",
+    "p_analytics_detail": "首页与下载区从本站提供的静态文件读取版本信息，该文件在我们发布新构建时更新。本站不会在后台将您的浏览行为发送到 GitHub、Gitea、分析服务或其他第三方。若您使用下载或源码链接，相关请求将发往您点击跳转的主机。",
+    "h2_rights": "您的权利（欧洲经济区与英国）",
+    "p_rights": "根据您所在地区，您可能有权访问、更正、删除或限制处理个人数据，并向监管机构投诉。本营销站点的数据处理设计为尽量少。若您对本站有具体请求，请按下方方式联系我们，我们将在适用法律要求的范围内回复。",
+    "h2_contact": "联系",
+    "p_contact": "若对本站隐私有疑问，请参阅<a href=\"/zh/contact\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">联系页面</a>。"
+  },
+  "home": {
+    "hero": {
+      "h1": "一体化 Reticulum 客户端",
+      "lead": "MeshChatX 是一体化 Reticulum 客户端，具备消息、通话与 nomadnet 浏览器。"
+    },
+    "platform": {
+      "macos": "macOS",
+      "linux": "Linux",
+      "windows": "Windows",
+      "docker": "Docker",
+      "python": "Python",
+      "android": "Android"
+    },
+    "showcase": {
+      "mobile": "移动",
+      "desktop": "桌面"
+    },
+    "cap": {
+      "messaging": "消息",
+      "calls": "通话",
+      "browser": "浏览器",
+      "file_transfer": "文件传输",
+      "bots": "机器人",
+      "micron": "Micron 编辑器",
+      "archiver": "归档",
+      "mapping": "地图",
+      "discovery": "接口发现",
+      "identities": "多身份",
+      "banishment": "封禁",
+      "backups": "自动备份与快照",
+      "customizable": "可定制",
+      "telemetry": "遥测（LXMF）",
+      "tunnel": "隧道",
+      "host_pages": "托管页面",
+      "group_msgs": "群消息",
+      "group_calls": "群通话",
+      "soon": "（即将推出）",
+      "more": "+ 更多"
+    },
+    "cta": {
+      "download": "立即下载",
+      "source": "查看源代码"
+    },
+    "section": {
+      "infra_h2": "去中心化基础设施",
+      "infra_lead": "为网状网络与抗审查而构建。"
+    },
+    "feature": {
+      "decentralized_h3": "去中心化",
+      "decentralized_p": "基于 Reticulum。无中心服务器，无单点故障。数据完全由您掌控。",
+      "crypto_h3": "密码学原语",
+      "crypto_p": "Reticulum 采用高效、强健且经过充分测试的密码学原语，旨在各平台上安全、可靠。",
+      "crypto_link": "阅读规范",
+      "mesh_h3": "网状网络",
+      "mesh_p": "跨任意媒介通信。MeshChatX 支持互联网、无线电、LoRa 及多种其他媒介！",
+      "platform_h3": "平台支持",
+      "platform_p": "官方支持桌面（Electron）与 Web（Docker/Python）。Android 可通过 Termux 使用。"
+    },
+    "split": {
+      "h2_line1": "真正匿名",
+      "h2_line2": "且难以封锁",
+      "item1_h4": "多身份",
+      "item1_p": "按需创建并管理多个身份。在不同身份之间无缝切换，同时保持数据私密与隔离。",
+      "item2_h4": "无需年龄验证",
+      "item2_p": "无需政府证件、手机号或邮箱。匿名接入网络，无第三方验证障碍。",
+      "item3_h4": "无审查",
+      "item3_p": "为网状网络与抗审查而构建。消息自动传播，本地归档确保数据始终可用。"
+    }
+  },
+  "js": {
+    "theme": {
+      "toggle_dark": "切换到深色模式",
+      "toggle_light": "切换到浅色模式",
+      "mobile_dark": "深色模式",
+      "mobile_light": "浅色模式"
+    },
+    "showcase": {
+      "tab0": "首页",
+      "tab1": "消息",
+      "tab2": "联系人",
+      "tab3": "通话",
+      "tab4": "接口",
+      "tab5": "地图",
+      "tab6": "Nomadnet",
+      "tab7": "可视化",
+      "tab8": "工具",
+      "tab9": "设置",
+      "tab10": "身份",
+      "tab11": "关于",
+      "desktop_fmt": "桌面 - %s - 截图",
+      "mobile_fmt": "移动 - %s"
+    },
+    "home": {
+      "version_here": "MeshChatX v%s 已发布"
+    },
+    "download": {
+      "no_release": "暂无版本信息。",
+      "latest": "最新",
+      "stable": "稳定版",
+      "prerelease": "预发布",
+      "all_releases": "所有版本",
+      "channel_stable": "稳定",
+      "channel_pre": "预发布",
+      "fetch_error": "获取版本失败",
+      "gitea_error": "Gitea API "
+    }
+  }
+}

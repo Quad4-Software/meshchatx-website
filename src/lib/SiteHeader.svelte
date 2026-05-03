@@ -39,6 +39,7 @@
       <a class="mcx-lang__link" href={hrefL('de')} hreflang="de" lang="de" aria-current={act('de')}>DE</a>
       <a class="mcx-lang__link" href={hrefL('ru')} hreflang="ru" lang="ru" aria-current={act('ru')}>RU</a>
       <a class="mcx-lang__link" href={hrefL('it')} hreflang="it" lang="it" aria-current={act('it')}>IT</a>
+      <a class="mcx-lang__link" href={hrefL('zh')} hreflang="zh" lang="zh" aria-current={act('zh')}>ZH</a>
     </div>
     <button type="button" class="mcx-theme-btn" data-theme-toggle aria-label={$_('nav.toggle_theme')}>
       <svg class="mcx-icon mcx-icon--md" aria-hidden="true"><use href="#i-weather-night" /></svg>
@@ -64,6 +65,9 @@
           <a class="mcx-lang__link" href={hrefL('ru')} hreflang="ru" lang="ru" aria-current={act('ru')}>RU</a
           >
           <a class="mcx-lang__link" href={hrefL('it')} hreflang="it" lang="it" aria-current={act('it')}>IT</a
+          >
+          <a class="mcx-lang__link" href={hrefL('zh')} hreflang="zh" lang="zh" aria-current={act('zh')}
+            >ZH</a
           >
         </div>
         <div class="mcx-nav-mobile__footer">

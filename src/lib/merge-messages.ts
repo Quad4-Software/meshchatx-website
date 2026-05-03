@@ -6,8 +6,10 @@ import itDownload from "../../i18n/it.download.json" with { type: "json" };
 import it from "../../i18n/it.json" with { type: "json" };
 import ruDownload from "../../i18n/ru.download.json" with { type: "json" };
 import ru from "../../i18n/ru.json" with { type: "json" };
+import zhDownload from "../../i18n/zh.download.json" with { type: "json" };
+import zh from "../../i18n/zh.json" with { type: "json" };
 
-export type AppLocale = "en" | "de" | "ru" | "it";
+export type AppLocale = "en" | "de" | "ru" | "it" | "zh";
 
 type Json = string | number | boolean | null | { [k: string]: Json } | Json[];
 
@@ -111,16 +113,19 @@ const enFromFiles = mergeLocaleJson(mergeJsonObjects(en, enDownload));
 const deFromFiles = mergeLocaleJson(mergeJsonObjects(de, deDownload));
 const ruFromFiles = mergeLocaleJson(mergeJsonObjects(ru, ruDownload));
 const itFromFiles = mergeLocaleJson(mergeJsonObjects(it, itDownload));
+const zhFromFiles = mergeLocaleJson(mergeJsonObjects(zh, zhDownload));
 
 const deFlat = mergeFallback(deFromFiles, enFromFiles);
 const ruFlat = mergeFallback(ruFromFiles, enFromFiles);
 const itFlat = mergeFallback(itFromFiles, enFromFiles);
+const zhFlat = mergeFallback(zhFromFiles, enFromFiles);
 
 const NESTED: Record<AppLocale, I18nMessages> = {
   en: toNestedI18n(enFromFiles),
   de: toNestedI18n(deFlat),
   ru: toNestedI18n(ruFlat),
   it: toNestedI18n(itFlat),
+  zh: toNestedI18n(zhFlat),
 };
 
 const FLAT: Record<AppLocale, Record<string, string>> = {
@@ -128,6 +133,7 @@ const FLAT: Record<AppLocale, Record<string, string>> = {
   de: deFlat,
   ru: ruFlat,
   it: itFlat,
+  zh: zhFlat,
 };
 
 export {
@@ -140,7 +146,7 @@ export {
 };
 
 export function isAppLocale(s: string | undefined): s is AppLocale {
-  return s === "en" || s === "de" || s === "ru" || s === "it";
+  return s === "en" || s === "de" || s === "ru" || s === "it" || s === "zh";
 }
 
-export const LOCALES: AppLocale[] = ["en", "de", "ru", "it"];
+export const LOCALES: AppLocale[] = ["en", "de", "ru", "it", "zh"];

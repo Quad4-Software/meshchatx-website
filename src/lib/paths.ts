@@ -2,10 +2,11 @@ import type { AppLocale } from "./merge-messages";
 
 export const SITE_ORIGIN = "https://meshchatx.com";
 
-/** BCP47 primary subtag for `<html lang>` / SSR shell: first segment de|ru|it, else en. */
+/** BCP47 primary subtag for `<html lang>` / SSR shell: first segment de|ru|it|zh, else en. */
 export function localeFromPathname(pathname: string): AppLocale {
   const first = pathname.split("/").filter(Boolean)[0];
-  if (first === "de" || first === "ru" || first === "it") return first;
+  if (first === "de" || first === "ru" || first === "it" || first === "zh")
+    return first;
   return "en";
 }
 
@@ -44,7 +45,7 @@ function isPageSlug(s: string): s is Exclude<PageId, "home"> {
 
 /**
  * Public path for links and the browser (Vite dev + prerendered static).
- * English: `/`, `/download`, `/#features`, `/de/`, `/de/download#x`
+ * English: `/`, `/download`, `/#features`, `/de/`, `/zh/download#x`
  */
 export function appPath(
   loc: AppLocale,
@@ -90,12 +91,24 @@ export function pageIdFromPathname(path: string) {
   ) {
     return "home" as const;
   }
-  if (p.endsWith("de.html") || p.endsWith("ru.html") || p.endsWith("it.html")) {
+  if (
+    p.endsWith("de.html") ||
+    p.endsWith("ru.html") ||
+    p.endsWith("it.html") ||
+    p.endsWith("zh.html")
+  ) {
     return "home" as const;
   }
   if (parts.length === 1) {
     const a = parts[0]!;
-    if (a === "de" || a === "ru" || a === "it" || a === "en" || a === "index") {
+    if (
+      a === "de" ||
+      a === "ru" ||
+      a === "it" ||
+      a === "zh" ||
+      a === "en" ||
+      a === "index"
+    ) {
       return "home" as const;
     }
     if (isPageSlug(a)) {
@@ -105,7 +118,7 @@ export function pageIdFromPathname(path: string) {
   }
   if (parts.length === 2) {
     const [a, b] = parts;
-    if ((a === "de" || a === "ru" || a === "it") && isPageSlug(b!)) {
+    if ((a === "de" || a === "ru" || a === "it" || a === "zh") && isPageSlug(b!)) {
       return b;
     }
   }

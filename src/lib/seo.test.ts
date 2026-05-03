@@ -8,6 +8,7 @@ describe("seo", () => {
     expect(xml).toContain("<urlset ");
     expect(xml).toContain("meshchatx.com/download");
     expect(xml).toContain('hreflang="de"');
+    expect(xml).toContain('hreflang="zh"');
     expect(xml).toContain("x-default");
   });
 

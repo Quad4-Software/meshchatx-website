@@ -20,6 +20,8 @@ describe("paths", () => {
     expect(appPath("de", "home")).toBe("/de/");
     expect(appPath("de", "download")).toBe("/de/download");
     expect(appPath("de", "download", "macos")).toBe("/de/download#macos");
+    expect(appPath("zh", "home")).toBe("/zh/");
+    expect(appPath("zh", "download")).toBe("/zh/download");
   });
 
   it("canonicalForLocale", () => {
@@ -31,6 +33,7 @@ describe("paths", () => {
     expect(canonicalForLocale("de", "download")).toBe(
       `${SITE_ORIGIN}/de/download`,
     );
+    expect(canonicalForLocale("zh", "home")).toBe(`${SITE_ORIGIN}/zh/`);
   });
 
   it("pageIdFromPathname", () => {
@@ -41,6 +44,8 @@ describe("paths", () => {
     expect(pageIdFromPathname("/contact")).toBe("contact");
     expect(pageIdFromPathname("/download.html")).toBe("download");
     expect(pageIdFromPathname("/de.html")).toBe("home");
+    expect(pageIdFromPathname("/zh.html")).toBe("home");
+    expect(pageIdFromPathname("/zh/download")).toBe("download");
     expect(pageIdFromPathname("/privacy?q=1")).toBe("privacy");
   });
 
@@ -55,6 +60,7 @@ describe("paths", () => {
     expect(localeFromPathname("/de/download")).toBe("de");
     expect(localeFromPathname("/ru/contact")).toBe("ru");
     expect(localeFromPathname("/it/")).toBe("it");
+    expect(localeFromPathname("/zh/contact")).toBe("zh");
     expect(localeFromPathname("/sitemap.xml")).toBe("en");
   });
 });

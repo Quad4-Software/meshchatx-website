@@ -1,7 +1,5 @@
-import type { AppLocale } from "$lib/merge-messages";
+import { LOCALES, type AppLocale } from "$lib/merge-messages";
 import { canonicalForLocale, SITE_ORIGIN, type PageId } from "$lib/paths";
-
-const LOCALES: AppLocale[] = ["en", "de", "ru", "it"];
 const SITEMAP_PAGE_ORDER: PageId[] = [
   "home",
   "download",
@@ -71,6 +69,7 @@ const ISO6391: Record<AppLocale, string> = {
   de: "de",
   ru: "ru",
   it: "it",
+  zh: "zh",
 };
 
 export function buildPageJsonLd(opts: {
@@ -102,7 +101,7 @@ export function buildPageJsonLd(opts: {
       "@id": siteId,
       name: opts.brand,
       url: SITE_ORIGIN,
-      inLanguage: ["en", "de", "ru", "it"],
+      inLanguage: [...LOCALES],
       publisher: { "@id": orgId },
     },
     {

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { FLAT, type AppLocale } from '$lib/merge-messages';
+  import { FLAT, LOCALES, type AppLocale } from '$lib/merge-messages';
   import { buildPageJsonLd } from '$lib/seo';
   import { canonicalForLocale, SITE_ORIGIN, type PageId } from '$lib/paths';
   const { page, locale: loc } = $props<{
@@ -12,8 +12,15 @@
   const tBrand = $derived(d['brand.name'] ?? 'brand.name');
   const tOg = $derived(d['meta.og_image_alt'] ?? 'meta.og_image_alt');
   const can = $derived(canonicalForLocale(loc, page));
+  const locKey = $derived(loc as AppLocale);
   const img = `${SITE_ORIGIN}/logo.webp`;
-  const ogL = (l: AppLocale) => (l === 'en' ? 'en_US' : l === 'de' ? 'de_DE' : l === 'ru' ? 'ru_RU' : 'it_IT');
+  const OG_LOCALE: Record<AppLocale, string> = {
+    en: 'en_US',
+    de: 'de_DE',
+    ru: 'ru_RU',
+    it: 'it_IT',
+    zh: 'zh_CN',
+  };
   const jsonLd = $derived(
     buildPageJsonLd({
       page,
@@ -32,10 +39,9 @@
   <meta name="description" content={tDesc} />
   <link rel="sitemap" type="application/xml" title="Sitemap" href={`${SITE_ORIGIN}/sitemap.xml`} />
   <link rel="canonical" href={can} />
-  <link rel="alternate" hreflang="en" href={canonicalForLocale('en', page)} />
-  <link rel="alternate" hreflang="de" href={canonicalForLocale('de', page)} />
-  <link rel="alternate" hreflang="ru" href={canonicalForLocale('ru', page)} />
-  <link rel="alternate" hreflang="it" href={canonicalForLocale('it', page)} />
+  {#each LOCALES as l}
+    <link rel="alternate" hreflang={l} href={canonicalForLocale(l, page)} />
+  {/each}
   <link rel="alternate" hreflang="x-default" href={canonicalForLocale('en', page)} />
   <meta
     name="robots"
@@ -48,19 +54,12 @@
   <meta property="og:url" content={can} />
   <meta property="og:image" content={img} />
   <meta property="og:image:alt" content={tOg} />
-  <meta property="og:locale" content={ogL(loc)} />
-  {#if loc !== 'en'}
-    <meta property="og:locale:alternate" content="en_US" />
-  {/if}
-  {#if loc !== 'de'}
-    <meta property="og:locale:alternate" content="de_DE" />
-  {/if}
-  {#if loc !== 'ru'}
-    <meta property="og:locale:alternate" content="ru_RU" />
-  {/if}
-  {#if loc !== 'it'}
-    <meta property="og:locale:alternate" content="it_IT" />
-  {/if}
+  <meta property="og:locale" content={OG_LOCALE[locKey]} />
+  {#each LOCALES as l}
+    {#if l !== locKey}
+      <meta property="og:locale:alternate" content={OG_LOCALE[l]} />
+    {/if}
+  {/each}
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={tTitle} />
   <meta name="twitter:description" content={tDesc} />

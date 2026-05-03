@@ -9,6 +9,7 @@ import {
 describe("merge-messages", () => {
   it("isAppLocale", () => {
     expect(isAppLocale("en")).toBe(true);
+    expect(isAppLocale("zh")).toBe(true);
     expect(isAppLocale("xx")).toBe(false);
     expect(isAppLocale(undefined)).toBe(false);
   });
@@ -26,5 +27,6 @@ describe("merge-messages", () => {
   it("FLAT has expected locales", () => {
     expect(FLAT.en["home.hero.h1"]).toBeDefined();
     expect(FLAT.de["home.hero.h1"]).toBeDefined();
+    expect(FLAT.zh["home.hero.h1"]).toBeDefined();
   });
 });
