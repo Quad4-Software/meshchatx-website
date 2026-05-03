@@ -23,8 +23,8 @@ let cache: { at: number; bundle: ReleasesBundle } | null = null;
 function cacheTtlMs(): number {
   const s = Number(process.env.RELEASES_CACHE_SECONDS);
   if (Number.isFinite(s) && s >= 0)
-    return Math.min(Math.max(s, 0), 3600) * 1000;
-  return 120_000;
+    return Math.min(Math.max(s, 0), 86400) * 1000;
+  return 3600_000;
 }
 
 async function fetchJsonArray(
@@ -100,17 +100,23 @@ export async function getReleasesBundle(): Promise<ReleasesBundle> {
     return cache.bundle;
   }
 
-  const fallback = readFallbackBundle();
+  let bundle: ReleasesBundle =
+    readFallbackBundle() ??
+    ({ gitea: [], github: [] } satisfies ReleasesBundle);
 
-  const [giteaLive, githubLive] = await Promise.all([
-    fetchJsonArray(GITEA_URL, { Accept: "application/json" }),
-    fetchJsonArray(GITHUB_URL, ghHeaders),
-  ]);
-
-  const bundle: ReleasesBundle = {
-    gitea: giteaLive !== null ? giteaLive : (fallback?.gitea ?? []),
-    github: githubLive !== null ? githubLive : (fallback?.github ?? []),
-  };
+  const live =
+    process.env.RELEASES_FETCH_LIVE === "1" ||
+    process.env.RELEASES_FETCH_LIVE === "true";
+  if (live) {
+    const [giteaLive, githubLive] = await Promise.all([
+      fetchJsonArray(GITEA_URL, { Accept: "application/json" }),
+      fetchJsonArray(GITHUB_URL, ghHeaders),
+    ]);
+    bundle = {
+      gitea: giteaLive !== null ? giteaLive : bundle.gitea,
+      github: githubLive !== null ? githubLive : bundle.github,
+    };
+  }
 
   cache = { at: now, bundle };
   return bundle;

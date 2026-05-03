@@ -1,6 +1,6 @@
 # MeshChatX website
 
-Marketing site for [MeshChatX](https://git.quad4.io/RNS-Things/MeshChatX): [SvelteKit](https://kit.svelte.dev/) with [`@sveltejs/adapter-node`](https://github.com/sveltejs/kit/tree/main/packages/adapter-node). Pages are **server-rendered** (releases from Gitea/GitHub are fetched on the server with a short in-memory cache; `static/data/` snapshots are used if an API fails). `sitemap.xml` and `robots.txt` stay build-prerendered. Locales **en**, **de**, **ru**, **it** (strings in `i18n/`).
+Marketing site for [MeshChatX](https://github.com/Quad4-Software/MeshChatX): [SvelteKit](https://kit.svelte.dev/) with [`@sveltejs/adapter-node`](https://github.com/sveltejs/kit/tree/main/packages/adapter-node). Pages are **server-rendered** (releases from Gitea/GitHub are fetched on the server with a short in-memory cache; `static/data/` snapshots are used if an API fails). `sitemap.xml` and `robots.txt` stay build-prerendered. Locales **en**, **de**, **ru**, **it** (strings in `i18n/`).
 
 **PWA:** Installable web app via `@vite-pwa/sveltekit`. The service worker **does not cache HTML navigations or `/data/*`** (always network), so SSR pages and embedded release payloads stay fresh; static assets use a separate stale-while-revalidate cache.
 

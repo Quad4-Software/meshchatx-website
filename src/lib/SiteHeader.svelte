@@ -78,7 +78,14 @@
             >
             <span id="mcx-mobile-theme-label"></span>
           </button>
-          <a class="mcx-btn-primary" href={appPath(loc, 'download')}>{$_('nav.download')}</a>
+          <a
+            class="mcx-btn-primary"
+            href={appPath(loc, 'download', 'android')}
+            onclick={(e) => {
+              const det = e.currentTarget.closest('details');
+              if (det) det.open = false;
+            }}>{$_('nav.download')}</a
+          >
         </div>
       </div>
     </details>

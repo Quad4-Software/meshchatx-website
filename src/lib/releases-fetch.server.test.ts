@@ -44,32 +44,9 @@ describe("releases-fetch.server", () => {
     expect(parseBundleFile("not-json")).toBeNull();
   });
 
-  it("getReleasesBundle uses live fetch when both APIs ok", async () => {
-    const fg = [{ tag_name: "v-gitea" }] as Record<string, unknown>[];
-    const fgh = [{ tag_name: "v-gh" }] as Record<string, unknown>[];
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async (url: string) => {
-        if (url.includes("git.quad4.io")) {
-          return { ok: true, json: async () => fg };
-        }
-        if (url.includes("api.github.com")) {
-          return { ok: true, json: async () => fgh };
-        }
-        return { ok: false, json: async () => null };
-      }),
-    );
-
-    const b = await getReleasesBundle();
-    expect(b.gitea).toEqual(fg);
-    expect(b.github).toEqual(fgh);
-  });
-
-  it("getReleasesBundle merges disk fallback when live fails", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async () => ({ ok: false, json: async () => [] })),
-    );
+  it("getReleasesBundle reads static releases-bundle.json (no live fetch by default)", async () => {
+    const fetchSpy = vi.fn();
+    vi.stubGlobal("fetch", fetchSpy);
     mockedExists.mockImplementation((p: PathLike) =>
       String(p).includes("releases-bundle.json"),
     );
@@ -80,35 +57,59 @@ describe("releases-fetch.server", () => {
     const b = await getReleasesBundle();
     expect(b.gitea).toEqual([{ tag_name: "snap" }]);
     expect(b.github).toEqual([{ tag_name: "pre" }]);
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
+
+  it("getReleasesBundle uses live fetch when RELEASES_FETCH_LIVE=1", async () => {
+    vi.stubEnv("RELEASES_FETCH_LIVE", "1");
+    const fg = [{ tag_name: "v-gitea" }] as Record<string, unknown>[];
+    const fgh = [{ tag_name: "v-gh" }] as Record<string, unknown>[];
+    const fetchSpy = vi.fn(async (url: string) => {
+      if (url.includes("git.quad4.io")) {
+        return { ok: true, json: async () => fg };
+      }
+      if (url.includes("api.github.com")) {
+        return { ok: true, json: async () => fgh };
+      }
+      return { ok: false, json: async () => [] };
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+
+    const b = await getReleasesBundle();
+    expect(b.gitea).toEqual(fg);
+    expect(b.github).toEqual(fgh);
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 
   it("getReleasesBundle uses in-memory cache when TTL allows", async () => {
     resetReleasesBundleCacheForTests();
     vi.stubEnv("RELEASES_CACHE_SECONDS", "3600");
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async () => ({
-        ok: true,
-        json: async () => [{ tag_name: "live" }],
-      })),
+    const fetchSpy = vi.fn();
+    vi.stubGlobal("fetch", fetchSpy);
+    mockedExists.mockImplementation((p: PathLike) =>
+      String(p).includes("releases-bundle.json"),
     );
+    mockedRead.mockReturnValue('{"gitea":[{"tag_name":"a"}],"github":[]}');
+
     await getReleasesBundle();
     await getReleasesBundle();
-    expect(vi.mocked(fetch)).toHaveBeenCalledTimes(2);
+    expect(mockedRead).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).not.toHaveBeenCalled();
   });
 
   it("getReleasesBundle reads legacy gitea-only JSON when bundle files absent", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async () => ({ ok: false, json: async () => [] })),
-    );
-    mockedExists.mockImplementation((p: PathLike) =>
-      String(p).includes("gitea-releases.json"),
-    );
+    const fetchSpy = vi.fn();
+    vi.stubGlobal("fetch", fetchSpy);
+    mockedExists.mockImplementation((p: PathLike) => {
+      const s = String(p);
+      if (s.includes("releases-bundle.json")) return false;
+      return s.includes("gitea-releases.json");
+    });
     mockedRead.mockReturnValue('[{"tag_name":"legacy"}]');
 
     const b = await getReleasesBundle();
     expect(b.gitea).toEqual([{ tag_name: "legacy" }]);
     expect(b.github).toEqual([]);
+    expect(fetchSpy).not.toHaveBeenCalled();
   });
 });

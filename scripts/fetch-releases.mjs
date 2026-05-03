@@ -1,4 +1,12 @@
-import { writeFileSync } from "node:fs";
+/**
+ * Writes static/data/releases-bundle.json from Gitea + GitHub release APIs.
+ * Run before deploy or in CI (`pnpm run fetch:releases`). The site reads this
+ * file only unless RELEASES_FETCH_LIVE=1 on the server.
+ *
+ * By default skips network if the bundle file is newer than 30 minutes (use
+ * `--force` to always fetch).
+ */
+import { existsSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -15,12 +23,26 @@ const ghHeaders = {
   "User-Agent": "meshchatx-website-release-fetch",
 };
 
+const MAX_AGE_MS = 30 * 60 * 1000;
+const force = process.argv.includes("--force");
+
 async function fetchJson(url, headers = {}) {
   const res = await fetch(url, { headers });
   if (!res.ok) {
     throw new Error(url + " HTTP " + res.status);
   }
   return res.json();
+}
+
+if (
+  !force &&
+  existsSync(outBundle) &&
+  Date.now() - statSync(outBundle).mtimeMs < MAX_AGE_MS
+) {
+  process.stdout.write(
+    "fetch-releases: bundle is fresh (<30m), skip network (use --force)\n",
+  );
+  process.exit(0);
 }
 
 let gitea = [];

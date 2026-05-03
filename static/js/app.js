@@ -396,37 +396,6 @@
     return gp.length ? gp[0] : null;
   }
 
-  function releaseAssets(r) {
-    if (!r) return [];
-    if (Array.isArray(r.assets) && r.assets.length) return r.assets;
-    if (Array.isArray(r.attachments) && r.attachments.length)
-      return r.attachments;
-    return [];
-  }
-
-  function someAssetInReleases(releases, pred) {
-    var i;
-    var j;
-    for (i = 0; i < releases.length; i++) {
-      var assets = releaseAssets(releases[i]);
-      for (j = 0; j < assets.length; j++) {
-        var a = assets[j];
-        if (a && pred(a)) return true;
-      }
-    }
-    return false;
-  }
-
-  function releaseRawHasDmg(r) {
-    if (!r) return false;
-    const assets =
-      Array.isArray(r.assets) && r.assets.length ? r.assets : r.attachments;
-    if (!Array.isArray(assets)) return false;
-    return assets.some(function (a) {
-      return a.name && /\.dmg$/i.test(a.name);
-    });
-  }
-
   async function loadHomeVersion() {
     const badge = qs("[data-version-badge]");
     if (!badge) return;
@@ -451,66 +420,6 @@
     } catch {
       badge.classList.add("hidden");
     }
-  }
-
-  function setPlatformClasses(platforms) {
-    const map = {
-      macos: '[data-plat="macos"]',
-      linux: '[data-plat="linux"]',
-      windows: '[data-plat="windows"]',
-      docker: '[data-plat="docker"]',
-      python: '[data-plat="python"]',
-      android: '[data-plat="android"]',
-    };
-    Object.keys(map).forEach(function (key) {
-      const el = qs(map[key]);
-      if (!el) return;
-      if (platforms[key]) el.classList.remove("mcx-disabled");
-      else el.classList.add("mcx-disabled");
-    });
-  }
-
-  async function loadHomePlatforms() {
-    try {
-      const { gitea, github } = await fetchReleasesData();
-      const stableRel = pickStableRelease(gitea, github);
-      const preRel = pickPrereleaseRelease(gitea, github);
-      const rel =
-        stableRel ||
-        preRel ||
-        publishedOnly(gitea)[0] ||
-        publishedOnly(github)[0];
-      if (!rel) return;
-      const forPlatforms = [stableRel, preRel].filter(Boolean);
-      const hasAppImage = someAssetInReleases(forPlatforms, function (a) {
-        return a.name && a.name.endsWith(".AppImage") && /linux/i.test(a.name);
-      });
-      const hasFlatpak = someAssetInReleases(forPlatforms, function (a) {
-        return a.name && /\.flatpak$/i.test(a.name);
-      });
-      const hasApk = someAssetInReleases(forPlatforms, function (a) {
-        return a.name && /\.apk$/i.test(a.name);
-      });
-      const hasWheel = someAssetInReleases(forPlatforms, function (a) {
-        return a.name && a.name.endsWith("-py3-none-any.whl");
-      });
-      const hasWin = someAssetInReleases(forPlatforms, function (a) {
-        return (
-          a.name &&
-          (/win.*installer\.exe$/i.test(a.name) ||
-            /win.*portable\.exe$/i.test(a.name))
-        );
-      });
-      let macFromPre = releaseRawHasDmg(preRel);
-      setPlatformClasses({
-        macos: releaseRawHasDmg(stableRel) || macFromPre,
-        linux: !!hasAppImage || hasFlatpak,
-        windows: !!hasWin,
-        docker: true,
-        python: !!hasWheel,
-        android: !!hasWheel || hasApk,
-      });
-    } catch {}
   }
 
   const COMPOSE_YAML =
@@ -849,7 +758,6 @@
 
     if (document.body.getAttribute("data-page") === "home") {
       loadHomeVersion();
-      loadHomePlatforms();
     }
   }
 

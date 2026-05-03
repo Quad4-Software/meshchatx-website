@@ -28,15 +28,15 @@
           {$_('home.hero.lead')}
         </p>
         <div class="mcx-platform-row">
-          <a data-plat="macos" class="mcx-disabled" href={appPath(loc, "download", "macos")} title="{$_('home.platform.macos')}">
+          <a data-plat="macos" href={appPath(loc, "download", "macos")} title="{$_('home.platform.macos')}">
             <svg class="mcx-icon mcx-icon--xl" aria-hidden="true"><use href="#i-apple" /></svg>
             <span>{$_('home.platform.macos')}</span>
           </a>
-          <a data-plat="linux" class="mcx-disabled" href={appPath(loc, "download", "linux")} title="{$_('home.platform.linux')}">
+          <a data-plat="linux" href={appPath(loc, "download", "linux")} title="{$_('home.platform.linux')}">
             <svg class="mcx-icon mcx-icon--xl" aria-hidden="true"><use href="#i-linux" /></svg>
             <span>{$_('home.platform.linux')}</span>
           </a>
-          <a data-plat="windows" class="mcx-disabled" href={appPath(loc, "download", "windows")} title="{$_('home.platform.windows')}">
+          <a data-plat="windows" href={appPath(loc, "download", "windows")} title="{$_('home.platform.windows')}">
             <svg class="mcx-icon mcx-icon--xl" aria-hidden="true"><use href="#i-microsoft-windows" /></svg>
             <span>{$_('home.platform.windows')}</span>
           </a>
@@ -44,11 +44,11 @@
             <svg class="mcx-icon mcx-icon--xl" aria-hidden="true"><use href="#i-docker" /></svg>
             <span>{$_('home.platform.docker')}</span>
           </a>
-          <a data-plat="python" class="mcx-disabled" href={appPath(loc, "download", "python")} title="{$_('home.platform.python')}">
+          <a data-plat="python" href={appPath(loc, "download", "python")} title="{$_('home.platform.python')}">
             <svg class="mcx-icon mcx-icon--xl" aria-hidden="true"><use href="#i-language-python" /></svg>
             <span>{$_('home.platform.python')}</span>
           </a>
-          <a data-plat="android" class="mcx-disabled" href={appPath(loc, "download", "android")} title="{$_('home.platform.android')}">
+          <a data-plat="android" href={appPath(loc, "download", "android")} title="{$_('home.platform.android')}">
             <svg class="mcx-icon mcx-icon--xl" aria-hidden="true"><use href="#i-android" /></svg>
             <span>{$_('home.platform.android')}</span>
           </a>

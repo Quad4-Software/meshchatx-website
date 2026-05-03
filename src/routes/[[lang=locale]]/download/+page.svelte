@@ -13,6 +13,17 @@
     void page.url.search;
     void window.MCX?.initDownloadPage?.();
   });
+
+  $effect(() => {
+    if (!browser) return;
+    const hash = page.url.hash;
+    if (!hash.startsWith('#')) return;
+    const id = hash.slice(1);
+    if (!id) return;
+    queueMicrotask(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 </script>
 
 <MetaTags page="download" locale={data.locale} />
