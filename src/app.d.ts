@@ -9,7 +9,7 @@ declare global {
     };
     MCX?: {
       initDownloadPage?: () => void | Promise<void>;
-      formatRelativeTime?: (
+      formatPublishedAgo?: (
         publishedAt: string | null | undefined,
       ) => string | null;
     };

@@ -107,6 +107,24 @@ a {
   text-decoration-skip-ink: auto;
 }
 
+a.mcx-link-blue {
+  color: var(--blue-600);
+  text-decoration: underline;
+  text-underline-offset: 0.125em;
+}
+
+html.dark a.mcx-link-blue {
+  color: var(--blue-400);
+}
+
+.mcx-muted a.mcx-link-blue {
+  color: var(--blue-600);
+}
+
+html.dark .mcx-muted a.mcx-link-blue {
+  color: var(--blue-400);
+}
+
 a.mcx-link-blue:hover {
   color: var(--blue-600);
 }

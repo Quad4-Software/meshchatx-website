@@ -47,17 +47,22 @@ volumes:
           >
         </noscript>
       </p>
-      <noscript>
-        <p class="mcx-muted mcx-text-sm" style="margin-top:0.5rem">
-          <a href={MESHCHATX_RELEASES} class="mcx-link-blue" target="_blank" rel="noopener noreferrer"
-            >{$_('dl.github_fallback')}</a
-          >
-        </p>
-      </noscript>
-      <p>
+      <p class="mcx-muted mcx-text-sm" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.375rem;margin-top:0.25rem">
+        <a
+          href={MESHCHATX_RELEASES}
+          class="mcx-link-blue"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="display:inline-flex;align-items:center;gap:0.375rem;font-weight:600"
+        >
+          <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-github" /></svg>
+          {$_('dl.github_releases')}
+        </a>
+      </p>
+      <p id="mcx-sbom-wrap" class="mcx-text-sm hidden" style="margin-top:0.35rem">
         <a
           id="mcx-sbom-link"
-          class="mcx-link-blue hidden"
+          class="mcx-link-blue"
           style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase"
           href="#"
           target="_blank"
@@ -429,8 +434,9 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             rel="noopener noreferrer"
           >
             <img
-              src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png"
+              src="/vendor/obtainium-badge.png"
               height="60"
+              width="200"
               alt={$_('dl.android.obtainium_alt')}
             />
           </a>
@@ -469,5 +475,6 @@ pkg install build-essential</pre>
         </div>
       </section>
     </div>
+    <p class="mcx-muted mcx-text-sm" style="margin-top:2rem">{$_('dl.cdn_attrib')}</p>
   </div>
 </section>

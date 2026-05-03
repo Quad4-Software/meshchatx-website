@@ -7,6 +7,8 @@
     "nojs_banner_text": "直接下载链接与实时版本元数据在启用 JavaScript 后加载。下方的 Docker 与 Podman 命令可按所示使用。下一节中的发布链接用于获取带版本号的安装包与 wheel。",
     "sbom": "SBOM",
     "github_fallback": "GitHub 发布",
+    "github_releases": "GitHub 发布",
+    "cdn_attrib": "本页的安装包与构建产物通过 Bunny.net CDN 加速分发。",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",
@@ -103,7 +105,7 @@
     },
     "android": {
       "h2": "Android",
-      "apk_h3": "APK",
+      "apk_h3": "通用 APK",
       "termux_h3": "Termux",
       "intro": "独立 Android APK 尚未提供。",
       "badge": "即将推出",

@@ -206,7 +206,9 @@
       "channel_stable": "Stabil",
       "channel_pre": "Vorabversion",
       "fetch_error": "Releases konnten nicht geladen werden",
-      "github_fallback": "GitHub-Releases"
+      "github_fallback": "GitHub-Releases",
+      "published_prefix": "veröffentlicht",
+      "published_just_now": "gerade veröffentlicht"
     }
   }
 }

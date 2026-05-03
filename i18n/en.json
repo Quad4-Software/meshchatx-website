@@ -206,7 +206,9 @@
       "channel_stable": "Stable",
       "channel_pre": "Pre-release",
       "fetch_error": "Failed to load download index",
-      "github_fallback": "GitHub releases"
+      "github_fallback": "GitHub releases",
+      "published_prefix": "published",
+      "published_just_now": "published just now"
     }
   }
 }

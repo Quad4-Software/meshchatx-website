@@ -7,6 +7,8 @@
     "nojs_banner_text": "Direkte Download-Links und aktuelle Release-Metadaten werden mit JavaScript geladen. Die Docker- und Podman-Befehle weiter unten funktionieren wie angegeben. Nutzen Sie den Releases-Link im nächsten Abschnitt für Installer und Wheels.",
     "sbom": "SBOM",
     "github_fallback": "GitHub-Releases",
+    "github_releases": "GitHub-Releases",
+    "cdn_attrib": "Installer und Artefakte auf dieser Seite werden über das Bunny.net-CDN ausgeliefert.",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",
@@ -103,7 +105,7 @@
     },
     "android": {
       "h2": "Android",
-      "apk_h3": "APK",
+      "apk_h3": "Universelles APK",
       "termux_h3": "Termux",
       "intro": "Ein eigenständiges Android-APK ist noch nicht verfügbar.",
       "badge": "Demnächst",

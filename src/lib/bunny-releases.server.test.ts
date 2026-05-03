@@ -47,9 +47,7 @@ describe("bunny-releases.server", () => {
       if (url.endsWith("/meshchatx/master/v3.0.0/linux/")) {
         return {
           ok: true,
-          json: async () => [
-            { ObjectName: "stable.apk", IsDirectory: false },
-          ],
+          json: async () => [{ ObjectName: "stable.apk", IsDirectory: false }],
         };
       }
       if (url.endsWith("/meshchatx/master/v3.0.0/")) {
@@ -61,9 +59,7 @@ describe("bunny-releases.server", () => {
       if (url.endsWith("/meshchatx/dev/v4.0.0-rc.1/linux/")) {
         return {
           ok: true,
-          json: async () => [
-            { ObjectName: "pre.apk", IsDirectory: false },
-          ],
+          json: async () => [{ ObjectName: "pre.apk", IsDirectory: false }],
         };
       }
       if (url.endsWith("/meshchatx/dev/v4.0.0-rc.1/")) {
@@ -97,9 +93,7 @@ describe("bunny-releases.server", () => {
       if (url.endsWith("/meshchatx/dev/v1.0.0-rc.1/linux/")) {
         return {
           ok: true,
-          json: async () => [
-            { ObjectName: "only.apk", IsDirectory: false },
-          ],
+          json: async () => [{ ObjectName: "only.apk", IsDirectory: false }],
         };
       }
       if (url.endsWith("/meshchatx/dev/v1.0.0-rc.1/")) {
@@ -135,9 +129,7 @@ describe("bunny-releases.server", () => {
       if (url.endsWith("/meshchatx/master/v2.1.0/linux/")) {
         return {
           ok: true,
-          json: async () => [
-            { ObjectName: "solo.apk", IsDirectory: false },
-          ],
+          json: async () => [{ ObjectName: "solo.apk", IsDirectory: false }],
         };
       }
       if (url.endsWith("/meshchatx/master/v2.1.0/")) {
@@ -258,9 +250,7 @@ describe("bunny-releases.server", () => {
       if (url.endsWith("/meshchatx/dev/")) {
         return {
           ok: true,
-          json: async () => [
-            { ObjectName: "v4.6.0rc.5", IsDirectory: true },
-          ],
+          json: async () => [{ ObjectName: "v4.6.0rc.5", IsDirectory: true }],
         };
       }
       if (url.endsWith("/meshchatx/dev/v4.6.0rc.5/linux/")) {
@@ -296,9 +286,7 @@ describe("bunny-releases.server", () => {
       if (url.endsWith("/meshchatx/master/")) {
         return {
           ok: true,
-          json: async () => [
-            { ObjectName: "readme.txt", IsDirectory: false },
-          ],
+          json: async () => [{ ObjectName: "readme.txt", IsDirectory: false }],
         };
       }
       if (url.endsWith("/meshchatx/dev/")) {

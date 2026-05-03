@@ -308,6 +308,125 @@ function maxIso(dates: (string | undefined)[]): string | null {
   return best;
 }
 
+const GITHUB_REPO_PATH = "Quad4-Software/MeshChatX";
+const GITHUB_RELEASES_API_URL = `https://api.github.com/repos/${GITHUB_REPO_PATH}/releases?per_page=100`;
+const GITHUB_RELEASES_ATOM_URL = `https://github.com/${GITHUB_REPO_PATH}/releases.atom`;
+
+function githubReleaseTagKey(versionOrTag: string): string {
+  return versionOrTag.replace(/^v/i, "").trim().toLowerCase();
+}
+
+function wantGithubReleaseTimes(): boolean {
+  if (process.env.VITEST === "true") return false;
+  if (process.env.MCX_SKIP_GITHUB_RELEASE_TIMES === "1") return false;
+  return true;
+}
+
+async function fetchGithubPublishedAtMapFromApi(): Promise<
+  Map<string, string>
+> {
+  const out = new Map<string, string>();
+  const headers: Record<string, string> = {
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "meshchatx-website-release-times",
+  };
+  const token = process.env.GITHUB_TOKEN?.trim();
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const ac = new AbortController();
+  const t = setTimeout(() => ac.abort(), 15_000);
+  let res: Response;
+  try {
+    res = await fetch(GITHUB_RELEASES_API_URL, {
+      headers,
+      signal: ac.signal,
+    });
+  } finally {
+    clearTimeout(t);
+  }
+  if (!res.ok) return out;
+  const data = (await res.json()) as unknown;
+  if (!Array.isArray(data)) return out;
+  for (const item of data) {
+    if (!item || typeof item !== "object") continue;
+    const o = item as Record<string, unknown>;
+    const tag = o.tag_name;
+    const published = o.published_at;
+    if (typeof tag !== "string" || typeof published !== "string") continue;
+    const ms = new Date(published).getTime();
+    if (!Number.isFinite(ms)) continue;
+    out.set(githubReleaseTagKey(tag), published);
+  }
+  return out;
+}
+
+async function fetchGithubPublishedAtMapFromAtom(): Promise<
+  Map<string, string>
+> {
+  const out = new Map<string, string>();
+  const headers: Record<string, string> = {
+    Accept: "application/atom+xml",
+    "User-Agent": "meshchatx-website-release-times",
+  };
+  const ac = new AbortController();
+  const t = setTimeout(() => ac.abort(), 15_000);
+  let res: Response;
+  try {
+    res = await fetch(GITHUB_RELEASES_ATOM_URL, {
+      headers,
+      signal: ac.signal,
+    });
+  } finally {
+    clearTimeout(t);
+  }
+  if (!res.ok) return out;
+  const xml = await res.text();
+  const entryRe = /<entry>([\s\S]*?)<\/entry>/g;
+  let m: RegExpExecArray | null;
+  while ((m = entryRe.exec(xml)) !== null) {
+    const block = m[1];
+    const updated = /<updated>([^<]+)<\/updated>/.exec(block);
+    const href = /\/releases\/tag\/([^"]+)/.exec(block);
+    if (!updated || !href) continue;
+    const iso = updated[1].trim();
+    const ms = new Date(iso).getTime();
+    if (!Number.isFinite(ms)) continue;
+    out.set(githubReleaseTagKey(href[1]), iso);
+  }
+  return out;
+}
+
+async function fetchGithubReleasePublishedAtMap(): Promise<
+  Map<string, string>
+> {
+  const fromApi = await fetchGithubPublishedAtMapFromApi();
+  if (fromApi.size > 0) return fromApi;
+  return fetchGithubPublishedAtMapFromAtom();
+}
+
+async function applyGithubPublishedAtToPayload(
+  payload: McxReleasesPayload,
+): Promise<void> {
+  if (!wantGithubReleaseTimes()) return;
+  const rows = [payload.stable, payload.prerelease].filter(
+    (r): r is McxDownloadRow => r != null && Boolean(r.version),
+  );
+  if (rows.length === 0) return;
+  let map: Map<string, string>;
+  try {
+    map = await fetchGithubReleasePublishedAtMap();
+  } catch {
+    return;
+  }
+  if (map.size === 0) return;
+  for (const row of rows) {
+    const k = githubReleaseTagKey(row.version ?? "");
+    if (!k) continue;
+    const iso = map.get(k);
+    if (iso) row.publishedAt = iso;
+  }
+}
+
 function matchFileUrls(
   files: FileRow[],
   versionDisplay: string,
@@ -346,9 +465,7 @@ function matchFileUrls(
   const appImageArm64 =
     byBase(
       (n) =>
-        n.endsWith(".appimage") &&
-        /linux/.test(n) &&
-        /(arm64|aarch64)/.test(n),
+        n.endsWith(".appimage") && /linux/.test(n) && /(arm64|aarch64)/.test(n),
     ) ||
     byBase(
       (n) =>
@@ -453,7 +570,10 @@ export async function buildMcxReleasesPayload(): Promise<McxReleasesPayload> {
   if (!key) {
     if (!releasesSyncMode()) {
       const fb = embeddedStaticPayload();
-      if (fb) return fb;
+      if (fb) {
+        await applyGithubPublishedAtToPayload(fb);
+        return fb;
+      }
     }
     return { stable: null, prerelease: null, githubFallbackUrl };
   }
@@ -501,23 +621,25 @@ export async function buildMcxReleasesPayload(): Promise<McxReleasesPayload> {
           : null;
       prerelease =
         preFolder !== null
-          ? await buildRowForVersion(
-              host,
-              zone,
-              key,
-              prefix,
-              preFolder,
-              true,
-            )
+          ? await buildRowForVersion(host, zone, key, prefix, preFolder, true)
           : null;
     }
   }
 
   if (!stable && !prerelease && !releasesSyncMode()) {
     const fb = embeddedStaticPayload();
-    if (fb) return fb;
+    if (fb) {
+      await applyGithubPublishedAtToPayload(fb);
+      return fb;
+    }
   }
-  return { stable, prerelease, githubFallbackUrl };
+  const out: McxReleasesPayload = {
+    stable,
+    prerelease,
+    githubFallbackUrl,
+  };
+  await applyGithubPublishedAtToPayload(out);
+  return out;
 }
 
 export async function getMcxReleasesPayload(): Promise<McxReleasesPayload> {

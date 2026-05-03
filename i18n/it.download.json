@@ -7,6 +7,8 @@
     "nojs_banner_text": "I link di download diretti e i metadati delle release in tempo reale richiedono JavaScript. I comandi Docker e Podman più sotto funzionano come indicato. Usa il link alle release nella sezione seguente per installer e wheel versionati.",
     "sbom": "SBOM",
     "github_fallback": "Release su GitHub",
+    "github_releases": "Release su GitHub",
+    "cdn_attrib": "Installer e artefatti in questa pagina sono serviti tramite la CDN Bunny.net.",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",
@@ -103,7 +105,7 @@
     },
     "android": {
       "h2": "Android",
-      "apk_h3": "APK",
+      "apk_h3": "APK universale",
       "termux_h3": "Termux",
       "intro": "L'APK Android autonomo non è ancora disponibile.",
       "badge": "In arrivo",

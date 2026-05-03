@@ -7,6 +7,8 @@
     "nojs_banner_text": "Прямые ссылки на загрузки и актуальные метаданные релизов подгружаются при включённом JavaScript. Команды Docker и Podman ниже работают как указано. Ссылку на страницу релизов для установщиков и wheel см. в следующем блоке.",
     "sbom": "SBOM",
     "github_fallback": "Релизы на GitHub",
+    "github_releases": "Релизы на GitHub",
+    "cdn_attrib": "Установщики и артефакты на этой странице отдаются через CDN Bunny.net.",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",
@@ -103,7 +105,7 @@
     },
     "android": {
       "h2": "Android",
-      "apk_h3": "APK",
+      "apk_h3": "Универсальный APK",
       "termux_h3": "Termux",
       "intro": "Отдельный APK для Android ещё не доступен.",
       "badge": "Скоро",

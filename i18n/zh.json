@@ -206,7 +206,9 @@
       "channel_stable": "稳定",
       "channel_pre": "预发布",
       "fetch_error": "获取版本失败",
-      "github_fallback": "GitHub 发布"
+      "github_fallback": "GitHub 发布",
+      "published_prefix": "发布于",
+      "published_just_now": "刚刚发布"
     }
   }
 }

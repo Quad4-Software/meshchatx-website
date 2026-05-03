@@ -30,6 +30,8 @@
     "download.channel_pre": "Pre-release",
     "download.fetch_error": "Failed to load download index",
     "download.github_fallback": "GitHub releases",
+    "download.published_prefix": "published",
+    "download.published_just_now": "published just now",
   };
 
   function mcxT(key) {
@@ -41,26 +43,42 @@
     return key;
   }
 
-  function formatRelativeTime(publishedAt) {
+  function formatPublishedAgo(publishedAt) {
     if (!publishedAt) return null;
     const date = new Date(publishedAt);
     const now = new Date();
+    if (Number.isNaN(date.getTime())) return null;
     const locale = document.documentElement.lang || "en";
-    const diffSec = Math.round((date.getTime() - now.getTime()) / 1000);
-    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
-    if (Math.abs(diffSec) < 60) return rtf.format(diffSec, "second");
-    const diffMin = Math.round(diffSec / 60);
-    if (Math.abs(diffMin) < 60) return rtf.format(diffMin, "minute");
-    const diffHour = Math.round(diffSec / 3600);
-    if (Math.abs(diffHour) < 24) return rtf.format(diffHour, "hour");
-    const diffDay = Math.round(diffSec / 86400);
-    if (Math.abs(diffDay) < 7) return rtf.format(diffDay, "day");
-    const diffWeek = Math.round(diffSec / 604800);
-    if (Math.abs(diffWeek) < 5) return rtf.format(diffWeek, "week");
-    const diffMonth = Math.round(diffSec / 2628000);
-    if (Math.abs(diffMonth) < 12) return rtf.format(diffMonth, "month");
-    const diffYear = Math.round(diffSec / 31536000);
-    return rtf.format(diffYear, "year");
+    let pastSec = (now.getTime() - date.getTime()) / 1000;
+    if (pastSec < 0) pastSec = 0;
+    if (pastSec < 2) {
+      return mcxT("download.published_just_now");
+    }
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "always" });
+    const sec = Math.round(pastSec);
+    let n;
+    let unit;
+    if (sec < 60) {
+      n = -sec;
+      unit = "second";
+    } else if (sec < 3600) {
+      n = -Math.round(sec / 60);
+      unit = "minute";
+    } else if (sec < 86400) {
+      n = -Math.round(sec / 3600);
+      unit = "hour";
+    } else if (sec < 2628000) {
+      n = -Math.round(sec / 86400);
+      unit = "day";
+    } else if (sec < 31536000) {
+      n = -Math.round(sec / 2628000);
+      unit = "month";
+    } else {
+      n = -Math.round(sec / 31536000);
+      unit = "year";
+    }
+    const agoPart = rtf.format(n, unit);
+    return mcxT("download.published_prefix") + " " + agoPart;
   }
 
   function qs(sel, root) {
@@ -412,23 +430,6 @@
     return e;
   }
 
-  function appendGithubFallbackLink(meta, ghUrl) {
-    if (!meta || !ghUrl) return;
-    meta.appendChild(document.createElement("br"));
-    const a = el(
-      "a",
-      {
-        href: ghUrl,
-        target: "_blank",
-        rel: "noopener noreferrer",
-        class: "mcx-link-blue",
-      },
-      null,
-    );
-    a.textContent = mcxT("download.github_fallback");
-    meta.appendChild(a);
-  }
-
   function setDownloadPage(data) {
     const meta = qs("#mcx-download-meta");
     if (!meta) return;
@@ -440,9 +441,11 @@
 
     meta.textContent = "";
 
+    const sbomWrapEarly = qs("#mcx-sbom-wrap");
+    if (sbomWrapEarly) sbomWrapEarly.classList.add("hidden");
+
     if (err) {
       meta.appendChild(el("span", { class: "mcx-muted" }, err));
-      appendGithubFallbackLink(meta, ghFallback);
       return;
     }
 
@@ -450,7 +453,6 @@
       meta.appendChild(
         el("span", { class: "mcx-muted" }, mcxT("download.no_release")),
       );
-      appendGithubFallbackLink(meta, ghFallback);
       return;
     }
 
@@ -475,20 +477,24 @@
     line.appendChild(pill);
     line.appendChild(document.createTextNode(" "));
 
-    if (sel.releaseUrl) {
+    const releasesHref =
+      sel.releaseUrl ||
+      ghFallback ||
+      "https://github.com/Quad4-Software/MeshChatX/releases";
+    if (releasesHref) {
       const a = el("a", {
-        href: sel.releaseUrl,
+        href: releasesHref,
         target: "_blank",
         rel: "noopener noreferrer",
         class: "mcx-link-blue",
       });
       a.textContent = mcxT("download.all_releases");
       line.appendChild(a);
-      line.appendChild(document.createTextNode(" "));
     }
 
     if (data.publishedAtRelative) {
-      const rel = el("span", { class: "mcx-rel-emerald mcx-text-sm" });
+      line.appendChild(document.createTextNode(" \u00b7 "));
+      const rel = el("span", { class: "mcx-muted mcx-text-sm" });
       rel.textContent = data.publishedAtRelative;
       line.appendChild(rel);
     }
@@ -524,13 +530,14 @@
 
     meta.appendChild(line);
 
+    const sbomWrap = qs("#mcx-sbom-wrap");
     const sbom = qs("#mcx-sbom-link");
-    if (sbom) {
+    if (sbomWrap && sbom) {
       if (sel.sbomUrl) {
         sbom.href = sel.sbomUrl;
-        sbom.classList.remove("hidden");
+        sbomWrap.classList.remove("hidden");
       } else {
-        sbom.classList.add("hidden");
+        sbomWrap.classList.add("hidden");
       }
     }
 
@@ -750,9 +757,9 @@
       if (
         selectedRelease &&
         window.MCX &&
-        typeof window.MCX.formatRelativeTime === "function"
+        typeof window.MCX.formatPublishedAgo === "function"
       ) {
-        publishedAtRelative = window.MCX.formatRelativeTime(
+        publishedAtRelative = window.MCX.formatPublishedAgo(
           selectedRelease.publishedAt,
         );
       }
@@ -789,7 +796,7 @@
   }
 
   window.MCX = window.MCX || {};
-  window.MCX.formatRelativeTime = formatRelativeTime;
+  window.MCX.formatPublishedAgo = formatPublishedAgo;
   window.MCX.initDownloadPage = initDownloadPage;
 
   if (document.readyState === "loading") {

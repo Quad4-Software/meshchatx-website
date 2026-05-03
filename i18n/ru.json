@@ -206,7 +206,9 @@
       "channel_stable": "Стабильный",
       "channel_pre": "Пре-релиз",
       "fetch_error": "Не удалось загрузить релизы",
-      "github_fallback": "Релизы на GitHub"
+      "github_fallback": "Релизы на GitHub",
+      "published_prefix": "опубликовано",
+      "published_just_now": "только что опубликовано"
     }
   }
 }

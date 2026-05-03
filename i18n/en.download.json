@@ -7,6 +7,8 @@
     "nojs_banner_text": "Direct download links and live release metadata load when JavaScript is enabled. Docker and Podman commands further down work as shown. Use the releases link in the next section for versioned installers and wheels.",
     "sbom": "SBOM",
     "github_fallback": "GitHub releases",
+    "github_releases": "GitHub releases",
+    "cdn_attrib": "Installers and artifacts on this page are delivered over the Bunny.net CDN.",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",
@@ -103,7 +105,7 @@
     },
     "android": {
       "h2": "Android",
-      "apk_h3": "APK",
+      "apk_h3": "Universal APK",
       "termux_h3": "Termux",
       "intro": "A standalone Android APK is not yet available.",
       "badge": "Coming soon",
