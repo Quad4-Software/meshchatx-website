@@ -736,7 +736,7 @@
 
     const termuxUrl = wheelUrl
       ? "pip install " + wheelUrl
-      : "pip install https://git.quad4.io/RNS-Things/MeshChatX/releases/download/v" +
+      : "pip install https://github.com/Quad4-Software/MeshChatX/releases/download/v" +
         sel.version +
         "/reticulum_meshchatx-" +
         sel.version +

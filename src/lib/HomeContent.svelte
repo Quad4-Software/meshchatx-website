@@ -1,6 +1,7 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import type { AppLocale } from "$lib/merge-messages";
+  import { MESHCHATX_CHANGELOG, MESHCHATX_GITHUB } from "$lib/meshchatx-repo";
   import { appPath } from "$lib/paths";
 
   const { locale: loc } = $props<{ locale: AppLocale }>();
@@ -15,7 +16,7 @@
         <a
           class="mcx-version-pill mcx-badge-enter hidden"
           data-version-badge
-          href="https://git.quad4.io/RNS-Things/MeshChatX/src/branch/master/CHANGELOG.md"
+          href={MESHCHATX_CHANGELOG}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -190,7 +191,9 @@
         <p class="mcx-more">{$_('home.cap.more')}</p>
         <div class="mcx-hero-cta">
           <a class="mcx-btn-primary" href={appPath(loc, "download")}>{$_('home.cta.download')}</a>
-          <a class="mcx-btn-ghost" href="https://git.quad4.io/RNS-Things/MeshChatX">{$_('home.cta.source')}</a>
+          <a class="mcx-btn-ghost" href={MESHCHATX_GITHUB} target="_blank" rel="noopener noreferrer"
+            >{$_('home.cta.source')}</a
+          >
         </div>
       </div>
     </section>

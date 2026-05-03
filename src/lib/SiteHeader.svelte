@@ -2,6 +2,7 @@
   import { _ } from 'svelte-i18n';
   import { page } from '$app/state';
   import type { AppLocale } from '$lib/merge-messages';
+  import { MESHCHATX_GITHUB } from '$lib/meshchatx-repo';
   import { appPath, crossLangHref, pageIdFromPathname, type PageId } from '$lib/paths';
 
   let { locale: loc } = $props<{ locale: AppLocale }>();
@@ -30,11 +31,7 @@
     <a href={homeShowcase}>{$_('nav.showcase')}</a>
     <a href={appPath(loc, 'donate')}>{$_('nav.donate')}</a>
     <a href={appPath(loc, 'contact')}>{$_('nav.contact')}</a>
-    <a
-      href="https://git.quad4.io/RNS-Things/MeshChatX"
-      target="_blank"
-      rel="noopener noreferrer">{$_('nav.git')}</a
-    >
+    <a href={MESHCHATX_GITHUB} target="_blank" rel="noopener noreferrer">{$_('nav.git')}</a>
   </nav>
   <div class="mcx-header-actions">
     <div class="mcx-lang" role="navigation" aria-label={$_('lang.label')}>
@@ -57,11 +54,7 @@
           <a href={homeShowcase}>{$_('nav.showcase')}</a>
           <a href={appPath(loc, 'donate')}>{$_('nav.donate')}</a>
           <a href={appPath(loc, 'contact')}>{$_('nav.contact')}</a>
-          <a
-            href="https://git.quad4.io/RNS-Things/MeshChatX"
-            target="_blank"
-            rel="noopener noreferrer">{$_('nav.git')}</a
-          >
+          <a href={MESHCHATX_GITHUB} target="_blank" rel="noopener noreferrer">{$_('nav.git')}</a>
         </nav>
         <div class="mcx-lang mcx-lang--mobile" role="navigation" aria-label={$_('lang.label')}>
           <a class="mcx-lang__link" href={hrefL('en')} hreflang="en" lang="en" aria-current={act('en')}>EN</a

@@ -1,6 +1,11 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import type { AppLocale } from "$lib/merge-messages";
+  import {
+    MESHCHATX_CLONE_URL,
+    MESHCHATX_PKGBUILD,
+    MESHCHATX_RELEASES,
+  } from "$lib/meshchatx-repo";
   import { appPath } from "$lib/paths";
 
   const { locale: loc } = $props<{ locale: AppLocale }>();
@@ -30,7 +35,12 @@
       <p class="mcx-muted" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem" id="mcx-download-meta">
         <span class="mcx-js-only">{$_('dl.loading')}</span>
         <noscript>
-          <span>{$_('dl.meta_noscript')} <a href="https://git.quad4.io/RNS-Things/MeshChatX/releases" class="mcx-link-blue" target="_blank" rel="noopener noreferrer">git.quad4.io/RNS-Things/MeshChatX/releases</a></span>
+          <span
+            >{$_('dl.meta_noscript')}
+            <a href={MESHCHATX_RELEASES} class="mcx-link-blue" target="_blank" rel="noopener noreferrer"
+              >github.com/Quad4-Software/MeshChatX/releases</a
+            ></span
+          >
         </noscript>
       </p>
       <p>
@@ -184,11 +194,11 @@ sudo zypper install ./MeshChatX-*.rpm</pre>
               {$_('dl.linux.arch_intro_before')}<code class="mcx-code-inline">pacman</code>{$_('dl.linux.arch_intro_after')}
             </p>
             <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{$_('dl.linux.arch_step1')}</p>
-            <pre class="mcx-pre" style="margin-bottom:1.5rem">git clone https://git.quad4.io/RNS-Things/MeshChatX
+            <pre class="mcx-pre" style="margin-bottom:1.5rem">git clone {MESHCHATX_CLONE_URL}
 cd MeshChatX/packaging/arch</pre>
             <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{$_('dl.linux.arch_step2')}</p>
             <pre class="mcx-pre" style="margin-bottom:1rem">makepkg -si</pre>
-            <a href="https://git.quad4.io/RNS-Things/MeshChatX/src/branch/master/packaging/arch/PKGBUILD" target="_blank" rel="noopener noreferrer" class="mcx-link-blue" style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase">{$_('dl.linux.view_pkgbuild')}</a>
+            <a href={MESHCHATX_PKGBUILD} target="_blank" rel="noopener noreferrer" class="mcx-link-blue" style="font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase">{$_('dl.linux.view_pkgbuild')}</a>
           </div>
         </details>
 
@@ -199,7 +209,7 @@ cd MeshChatX/packaging/arch</pre>
           <div class="mcx-details-body">
             <p class="mcx-muted mcx-text-sm" style="margin-bottom:1.5rem">{$_('dl.linux.source_intro')}</p>
             <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{$_('dl.linux.source_step1')}</p>
-            <pre class="mcx-pre" style="margin-bottom:1.5rem">git clone https://git.quad4.io/RNS-Things/MeshChatX
+            <pre class="mcx-pre" style="margin-bottom:1.5rem">git clone {MESHCHATX_CLONE_URL}
 cd MeshChatX</pre>
             <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{$_('dl.linux.source_step2')}</p>
             <pre class="mcx-pre" style="margin-bottom:1.5rem">corepack enable

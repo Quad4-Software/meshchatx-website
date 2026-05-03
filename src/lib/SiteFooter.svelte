@@ -1,6 +1,7 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
   import type { AppLocale } from '$lib/merge-messages';
+  import { MESHCHATX_CHANGELOG, MESHCHATX_GITHUB } from '$lib/meshchatx-repo';
   import { appPath } from '$lib/paths';
 
   const { locale: loc } = $props<{ locale: AppLocale }>();
@@ -26,13 +27,11 @@
     <div>
       <h4>{$_('footer.community')}</h4>
       <ul>
-        <li><a href="https://git.quad4.io/RNS-Things/MeshChatX">{$_('footer.source')}</a></li>
         <li>
-          <a
-            href="https://git.quad4.io/RNS-Things/MeshChatX/src/branch/master/CHANGELOG.md"
-            target="_blank"
-            rel="noopener noreferrer">{$_('footer.changelog')}</a
-          >
+          <a href={MESHCHATX_GITHUB} target="_blank" rel="noopener noreferrer">{$_('footer.source')}</a>
+        </li>
+        <li>
+          <a href={MESHCHATX_CHANGELOG} target="_blank" rel="noopener noreferrer">{$_('footer.changelog')}</a>
         </li>
         <li><a href={appPath(loc, 'donate')}>{$_('nav.donate')}</a></li>
         <li><a href={appPath(loc, 'contact')}>{$_('nav.contact')}</a></li>
