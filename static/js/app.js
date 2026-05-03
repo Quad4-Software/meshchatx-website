@@ -357,6 +357,17 @@
     setView(mq.matches ? "desktop" : "mobile");
   }
 
+  function bindShowcaseRoot(root) {
+    if (!root || root.getAttribute("data-mcx-showcase-bound") === "1") return;
+    root.setAttribute("data-mcx-showcase-bound", "1");
+    initViewToggle(root);
+    initShowcase(root);
+  }
+
+  function initShowcaseRoots() {
+    qsa("[data-mcx-showcase]").forEach(bindShowcaseRoot);
+  }
+
   function releasesPayloadFromWindow() {
     var p = window.MCX_RELEASES_PAYLOAD;
     if (p && typeof p === "object") return p;
@@ -784,11 +795,7 @@
     initThemeToggle();
     initCopyButtons();
 
-    const showcase = qs("[data-mcx-showcase]");
-    if (showcase) {
-      initViewToggle(showcase);
-      initShowcase(showcase);
-    }
+    initShowcaseRoots();
 
     if (document.body.getAttribute("data-page") === "home") {
       loadHomeVersion();
@@ -798,6 +805,7 @@
   window.MCX = window.MCX || {};
   window.MCX.formatPublishedAgo = formatPublishedAgo;
   window.MCX.initDownloadPage = initDownloadPage;
+  window.MCX.initShowcaseRoots = initShowcaseRoots;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);

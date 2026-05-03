@@ -54,3 +54,19 @@ describe("download SPA release init", () => {
     expect(src).toContain("if (seq !== mcxDownloadInitSeq) return");
   });
 });
+
+describe("showcase SPA tab init", () => {
+  it("home +page re-runs showcase bind when URL changes ($effect + page.url)", () => {
+    const src = readUtf8("src/routes/[[lang=locale]]/+page.svelte");
+    expect(src).toMatch(/\$effect\b/);
+    expect(src).toMatch(/\bbrowser\b/);
+    expect(src).toMatch(/\bpage\.url\.(pathname|search|hash)\b/);
+    expect(src).toMatch(/window\.MCX\?\.initShowcaseRoots\?\.\(/);
+  });
+
+  it("app.js exposes initShowcaseRoots and idempotent data-mcx-showcase-bound", () => {
+    const src = readUtf8("static/js/app.js");
+    expect(src).toContain("window.MCX.initShowcaseRoots = initShowcaseRoots");
+    expect(src).toContain("data-mcx-showcase-bound");
+  });
+});

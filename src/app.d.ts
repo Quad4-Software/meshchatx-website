@@ -9,6 +9,7 @@ declare global {
     };
     MCX?: {
       initDownloadPage?: () => void | Promise<void>;
+      initShowcaseRoots?: () => void;
       formatPublishedAgo?: (
         publishedAt: string | null | undefined,
       ) => string | null;
