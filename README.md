@@ -27,7 +27,10 @@ Artifacts: `build/`. Run locally: `pnpm start` (or `node build`). Dev: `pnpm run
 | `BUNNY_PRERELEASE_PREFIX` | Directory whose subfolders are pre-releases (RC, beta, etc.). Default **`dev`**. |
 | `BUNNY_VERSIONS_PREFIX` | Legacy alias for **`BUNNY_STABLE_PREFIX`** when the latter is unset. |
 | `BUNNY_PUBLIC_BASE_URL` | Base URL for asset links in the browser. Default `https://meshchatx.b-cdn.net`. Override for another CDN or raw storage origin. |
+| `BUNNY_FILE_WALK_MAX_DEPTH` | Max recursion when scanning a version folder (default **12**). |
 | `RELEASES_CACHE_SECONDS` | In-memory cache for release listing (default `300`, max `86400`). |
+
+**GET `/api/mcx-releases`** returns the same JSON as embedded in HTML (handy for `curl`). The download page requests it when the embed has no version (e.g. stale cached HTML). Pull-zone asset URLs must match this shape: `{BUNNY_PUBLIC_BASE_URL}/{prefix}/{versionFolder}/...` (no extra `/{zone}/` unless your CDN origin is configured that way).
 
 ## Deployment
 

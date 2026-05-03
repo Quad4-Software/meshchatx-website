@@ -50,6 +50,11 @@ export default defineConfig({
             handler: "NetworkOnly",
           },
           {
+            urlPattern: ({ sameOrigin, url }) =>
+              sameOrigin && url.pathname.startsWith("/api/"),
+            handler: "NetworkOnly",
+          },
+          {
             urlPattern: ({ request, sameOrigin, url }) =>
               sameOrigin &&
               request.destination !== "document" &&

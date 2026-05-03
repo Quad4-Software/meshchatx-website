@@ -700,8 +700,29 @@
     let githubFallbackUrl =
       "https://github.com/Quad4-Software/MeshChatX/releases";
 
+    let payload = releasesPayloadFromWindow();
+    if (
+      !(payload.stable && payload.stable.version) &&
+      !(payload.prerelease && payload.prerelease.version)
+    ) {
+      try {
+        const r = await fetch("/api/mcx-releases", { cache: "no-store" });
+        if (r.ok) {
+          const j = await r.json();
+          if (
+            j &&
+            typeof j === "object" &&
+            ((j.stable && j.stable.version) ||
+              (j.prerelease && j.prerelease.version))
+          ) {
+            window.MCX_RELEASES_PAYLOAD = j;
+            payload = j;
+          }
+        }
+      } catch (_) {}
+    }
+
     try {
-      var payload = releasesPayloadFromWindow();
       githubFallbackUrl = payload.githubFallbackUrl || githubFallbackUrl;
       stableRelease = payload.stable || null;
       preRelease = payload.prerelease || null;

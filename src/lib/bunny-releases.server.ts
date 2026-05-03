@@ -52,6 +52,12 @@ function storageAccessKey(): string {
   return process.env.BUNNY_STORAGE_ACCESS_KEY?.trim() || "";
 }
 
+function fileWalkMaxDepth(): number {
+  const n = Number(process.env.BUNNY_FILE_WALK_MAX_DEPTH);
+  if (Number.isFinite(n) && n >= 1 && n <= 40) return Math.floor(n);
+  return 12;
+}
+
 /** Base URL for browser downloads (Pull Zone or public storage URL). Trailing slashes stripped. */
 function publicFilesBase(): string {
   const fromEnv = process.env.BUNNY_PUBLIC_BASE_URL?.trim();
@@ -420,7 +426,7 @@ async function buildRowForVersion(
     zone,
     accessKey,
     versionRoot,
-    5,
+    fileWalkMaxDepth(),
   );
   if (!files.length) return null;
   const versionDisplay = versionFolder.replace(/^v/i, "");
