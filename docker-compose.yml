@@ -21,6 +21,12 @@ services:
           memory: 128M
     environment:
       - DOMAIN=${DOMAIN:-meshchatx.io}
+      - BUNNY_STORAGE_HOST=${BUNNY_STORAGE_HOST:-la.storage.bunnycdn.com}
+      - BUNNY_STORAGE_ZONE=${BUNNY_STORAGE_ZONE:-meshchatx}
+      - BUNNY_VERSIONS_PREFIX=${BUNNY_VERSIONS_PREFIX:-master}
+      - BUNNY_STORAGE_ACCESS_KEY=${BUNNY_STORAGE_ACCESS_KEY:-}
+      - BUNNY_PUBLIC_BASE_URL=${BUNNY_PUBLIC_BASE_URL:-https://meshchatx.b-cdn.net}
+      - RELEASES_CACHE_SECONDS=${RELEASES_CACHE_SECONDS:-300}
     labels:
       - traefik.enable=true
       - "traefik.http.routers.meshchatx-web.rule=Host(`${DOMAIN:-meshchatx.io}`) && PathPrefix(`/`)"
