@@ -59,13 +59,21 @@ function publicFilesBase(): string {
   return DEFAULT_BUNNY_PUBLIC_BASE_URL;
 }
 
-/** Directory under the zone listing version folders (e.g. `master` for `master/v1.0.0/win/...`). */
-function versionsPrefix(): string {
+/** Legacy: used when `BUNNY_STABLE_PREFIX` is unset. Same role as stable tree. */
+function stableListPrefix(): string {
   return (
+    process.env.BUNNY_STABLE_PREFIX?.trim() ||
     process.env.BUNNY_VERSIONS_PREFIX?.trim() ||
     process.env.BUNNY_RELEASES_PREFIX?.trim() ||
     "master"
   ).replace(/^\/+|\/+$/g, "");
+}
+
+function prereleaseListPrefix(): string {
+  return (process.env.BUNNY_PRERELEASE_PREFIX?.trim() || "dev").replace(
+    /^\/+|\/+$/g,
+    "",
+  );
 }
 
 function entryName(e: BunnyEntry): string {
@@ -189,6 +197,40 @@ function pickLatest(names: string[], prerelease: boolean): string | null {
   if (!filtered.length) return null;
   filtered.sort(compareVersionDesc);
   return filtered[0]!;
+}
+
+async function versionDirNamesAt(
+  host: string,
+  zone: string,
+  accessKey: string,
+  prefix: string,
+): Promise<string[] | null> {
+  const list = await listBunnyDirectory(host, zone, accessKey, prefix);
+  if (!list?.length) return null;
+  const dirs = list.filter(entryIsDir).map(entryName).filter(Boolean);
+  const names = dirs.filter(looksLikeVersionFolder);
+  return names.length ? names : null;
+}
+
+async function buildRowFromPrefix(
+  host: string,
+  zone: string,
+  accessKey: string,
+  prefix: string,
+  wantPrerelease: boolean,
+): Promise<McxDownloadRow | null> {
+  const names = await versionDirNamesAt(host, zone, accessKey, prefix);
+  if (!names) return null;
+  const folder = pickLatest(names, wantPrerelease);
+  if (folder === null) return null;
+  return buildRowForVersion(
+    host,
+    zone,
+    accessKey,
+    prefix,
+    folder,
+    wantPrerelease,
+  );
 }
 
 function publicUrlForRelativePath(rel: string): string {
@@ -394,27 +436,58 @@ export async function buildMcxReleasesPayload(): Promise<McxReleasesPayload> {
 
   const host = storageHost();
   const zone = storageZone();
-  const preferred = versionsPrefix();
+  const pStable = stableListPrefix();
+  const pPre = prereleaseListPrefix();
 
-  const resolved = await resolveReleaseListingPrefix(host, zone, key, preferred);
-  if (!resolved) {
-    return { stable: null, prerelease: null, githubFallbackUrl };
+  let stable = await buildRowFromPrefix(host, zone, key, pStable, false);
+  let prerelease = await buildRowFromPrefix(host, zone, key, pPre, true);
+
+  if (!prerelease && pPre !== pStable) {
+    prerelease = await buildRowFromPrefix(host, zone, key, pStable, true);
   }
-  const { prefix, rootList } = resolved;
+  if (!stable && pPre !== pStable) {
+    stable = await buildRowFromPrefix(host, zone, key, pPre, false);
+  }
 
-  const dirNames = rootList.filter(entryIsDir).map(entryName).filter(Boolean);
-
-  const stableFolder = pickLatest(dirNames, false);
-  const preFolder = pickLatest(dirNames, true);
-
-  const stable =
-    stableFolder !== null
-      ? await buildRowForVersion(host, zone, key, prefix, stableFolder, false)
-      : null;
-  const prerelease =
-    preFolder !== null
-      ? await buildRowForVersion(host, zone, key, prefix, preFolder, true)
-      : null;
+  if (!stable && !prerelease) {
+    const resolved = await resolveReleaseListingPrefix(
+      host,
+      zone,
+      key,
+      pStable,
+    );
+    if (resolved) {
+      const { prefix, rootList } = resolved;
+      const dirNames = rootList
+        .filter(entryIsDir)
+        .map(entryName)
+        .filter(Boolean);
+      const stableFolder = pickLatest(dirNames, false);
+      const preFolder = pickLatest(dirNames, true);
+      stable =
+        stableFolder !== null
+          ? await buildRowForVersion(
+              host,
+              zone,
+              key,
+              prefix,
+              stableFolder,
+              false,
+            )
+          : null;
+      prerelease =
+        preFolder !== null
+          ? await buildRowForVersion(
+              host,
+              zone,
+              key,
+              prefix,
+              preFolder,
+              true,
+            )
+          : null;
+    }
+  }
 
   return { stable, prerelease, githubFallbackUrl };
 }

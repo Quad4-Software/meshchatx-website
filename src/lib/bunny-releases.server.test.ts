@@ -29,6 +29,59 @@ describe("bunny-releases.server", () => {
     expect(p.githubFallbackUrl).toContain("github.com");
   });
 
+  it("loads stable from master and prerelease from dev when both trees exist", async () => {
+    const fetchSpy = vi.fn(async (...args: unknown[]) => {
+      const url = String(args[0]);
+      if (url.endsWith("/meshchatx/master/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "v3.0.0", IsDirectory: true }],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "v4.0.0-rc.1", IsDirectory: true }],
+        };
+      }
+      if (url.endsWith("/meshchatx/master/v3.0.0/linux/")) {
+        return {
+          ok: true,
+          json: async () => [
+            { ObjectName: "stable.apk", IsDirectory: false },
+          ],
+        };
+      }
+      if (url.endsWith("/meshchatx/master/v3.0.0/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "linux", IsDirectory: true }],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/v4.0.0-rc.1/linux/")) {
+        return {
+          ok: true,
+          json: async () => [
+            { ObjectName: "pre.apk", IsDirectory: false },
+          ],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/v4.0.0-rc.1/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "linux", IsDirectory: true }],
+        };
+      }
+      return { ok: false, json: async () => [] };
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+    const p = await getMcxReleasesPayload();
+    expect(p.stable?.version).toBe("3.0.0");
+    expect(p.stable?.apkUrl).toContain("stable.apk");
+    expect(p.prerelease?.version).toBe("4.0.0-rc.1");
+    expect(p.prerelease?.apkUrl).toContain("pre.apk");
+  });
+
   it("lists master, picks stable and prerelease, maps asset URLs", async () => {
     const fetchSpy = vi.fn(async (...args: unknown[]) => {
       const url = String(args[0]);
@@ -97,6 +150,9 @@ describe("bunny-releases.server", () => {
             },
           ],
         };
+      }
+      if (url.endsWith("/meshchatx/dev/")) {
+        return { ok: true, json: async () => [] };
       }
       return { ok: false, json: async () => [] };
     });
@@ -232,6 +288,9 @@ describe("bunny-releases.server", () => {
           json: async () => [{ ObjectName: "win", IsDirectory: true }],
         };
       }
+      if (url.endsWith("/meshchatx/dev/")) {
+        return { ok: true, json: async () => [] };
+      }
       return { ok: false, json: async () => [] };
     });
     vi.stubGlobal("fetch", fetchSpy);
@@ -243,10 +302,16 @@ describe("bunny-releases.server", () => {
 
   it("uses in-memory cache when TTL allows", async () => {
     vi.stubEnv("RELEASES_CACHE_SECONDS", "3600");
-    const fetchSpy = vi.fn(async () => ({
-      ok: true,
-      json: async () => [{ ObjectName: "v1.0.0", IsDirectory: true }],
-    }));
+    const fetchSpy = vi.fn(async (...args: unknown[]) => {
+      const url = String(args[0]);
+      if (url.endsWith("/meshchatx/dev/")) {
+        return { ok: true, json: async () => [] };
+      }
+      return {
+        ok: true,
+        json: async () => [{ ObjectName: "v1.0.0", IsDirectory: true }],
+      };
+    });
     vi.stubGlobal("fetch", fetchSpy);
     await getMcxReleasesPayload();
     const n = fetchSpy.mock.calls.length;
