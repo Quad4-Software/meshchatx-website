@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import './styles/legacy.css';
+@import "tailwindcss";
+@import "./styles/legacy.css";
 
 @theme {
   --color-mcx-foreground: #fafafa;

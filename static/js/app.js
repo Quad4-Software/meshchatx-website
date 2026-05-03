@@ -1,42 +1,43 @@
 (function () {
-  'use strict';
+  "use strict";
 
   var MCX_DEFAULTS = {
-    'theme.toggle_dark': 'Switch to dark mode',
-    'theme.toggle_light': 'Switch to light mode',
-    'theme.mobile_dark': 'Dark mode',
-    'theme.mobile_light': 'Light mode',
-    'showcase.tab0': 'Home',
-    'showcase.tab1': 'Messages',
-    'showcase.tab2': 'Contacts',
-    'showcase.tab3': 'Calls',
-    'showcase.tab4': 'Interfaces',
-    'showcase.tab5': 'Map',
-    'showcase.tab6': 'Nomadnet',
-    'showcase.tab7': 'Visualizer',
-    'showcase.tab8': 'Utilities',
-    'showcase.tab9': 'Settings',
-    'showcase.tab10': 'Identity',
-    'showcase.tab11': 'About',
-    'showcase.desktop_fmt': 'Desktop - %s - Screenshot',
-    'showcase.mobile_fmt': 'Mobile - %s',
-    'home.version_here': 'MeshChatX v%s is here',
-    'download.no_release': 'No release information available.',
-    'download.latest': 'Latest',
-    'download.stable': 'stable',
-    'download.prerelease': 'pre-release',
-    'download.all_releases': 'All releases',
-    'download.channel_stable': 'Stable',
-    'download.channel_pre': 'Pre-release',
-    'download.fetch_error': 'Failed to fetch releases',
-    'download.gitea_error': 'Gitea API '
+    "theme.toggle_dark": "Switch to dark mode",
+    "theme.toggle_light": "Switch to light mode",
+    "theme.mobile_dark": "Dark mode",
+    "theme.mobile_light": "Light mode",
+    "showcase.tab0": "Home",
+    "showcase.tab1": "Messages",
+    "showcase.tab2": "Contacts",
+    "showcase.tab3": "Calls",
+    "showcase.tab4": "Interfaces",
+    "showcase.tab5": "Map",
+    "showcase.tab6": "Nomadnet",
+    "showcase.tab7": "Visualizer",
+    "showcase.tab8": "Utilities",
+    "showcase.tab9": "Settings",
+    "showcase.tab10": "Identity",
+    "showcase.tab11": "About",
+    "showcase.desktop_fmt": "Desktop - %s - Screenshot",
+    "showcase.mobile_fmt": "Mobile - %s",
+    "home.version_here": "MeshChatX v%s is here",
+    "download.no_release": "No release information available.",
+    "download.latest": "Latest",
+    "download.stable": "stable",
+    "download.prerelease": "pre-release",
+    "download.all_releases": "All releases",
+    "download.channel_stable": "Stable",
+    "download.channel_pre": "Pre-release",
+    "download.fetch_error": "Failed to fetch releases",
+    "download.gitea_error": "Gitea API ",
   };
 
   function mcxT(key) {
     var o = window.MCX_I18N || {};
-    var k = key.indexOf('js.') === 0 ? key.slice(3) : key;
+    var k = key.indexOf("js.") === 0 ? key.slice(3) : key;
     if (Object.prototype.hasOwnProperty.call(o, k)) return o[k];
-    if (Object.prototype.hasOwnProperty.call(MCX_DEFAULTS, k)) return MCX_DEFAULTS[k];
+    if (Object.prototype.hasOwnProperty.call(MCX_DEFAULTS, k))
+      return MCX_DEFAULTS[k];
     return key;
   }
 
@@ -48,90 +49,111 @@
   }
 
   function isDark() {
-    return document.documentElement.classList.contains('dark');
+    return document.documentElement.classList.contains("dark");
+  }
+
+  function syncThemeColor() {
+    var meta = document.getElementById("mcx-theme-color");
+    if (!meta) return;
+    meta.setAttribute("content", isDark() ? "#09090b" : "#ffffff");
   }
 
   function setThemeIcon(btn) {
     if (!btn) return;
-    const use = btn.querySelector('use');
+    const use = btn.querySelector("use");
     if (!use) return;
-    use.setAttribute('href', isDark() ? '#i-weather-sunny' : '#i-weather-night');
+    use.setAttribute(
+      "href",
+      isDark() ? "#i-weather-sunny" : "#i-weather-night",
+    );
     btn.setAttribute(
-      'aria-label',
-      isDark() ? mcxT('theme.toggle_light') : mcxT('theme.toggle_dark')
+      "aria-label",
+      isDark() ? mcxT("theme.toggle_light") : mcxT("theme.toggle_dark"),
     );
   }
 
   function toggleDarkMode() {
     const root = document.documentElement;
     const wantDark = !(
-      root.classList.contains('dark') ||
-      (!root.classList.contains('light') &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches)
+      root.classList.contains("dark") ||
+      (!root.classList.contains("light") &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
     );
-    root.classList.remove('dark', 'light');
+    root.classList.remove("dark", "light");
     if (wantDark) {
-      root.classList.add('dark');
+      root.classList.add("dark");
       try {
-        localStorage.setItem('theme', 'dark');
-      } catch (_) {}
+        localStorage.setItem("theme", "dark");
+      } catch {}
     } else {
-      root.classList.add('light');
+      root.classList.add("light");
       try {
-        localStorage.setItem('theme', 'light');
-      } catch (_) {}
+        localStorage.setItem("theme", "light");
+      } catch {}
     }
-    qsa('[data-theme-toggle]').forEach(setThemeIcon);
-    const mobileLabel = qs('#mcx-mobile-theme-label');
+    qsa("[data-theme-toggle]").forEach(setThemeIcon);
+    const mobileLabel = qs("#mcx-mobile-theme-label");
     if (mobileLabel) {
-      mobileLabel.textContent = isDark() ? mcxT('theme.mobile_light') : mcxT('theme.mobile_dark');
+      mobileLabel.textContent = isDark()
+        ? mcxT("theme.mobile_light")
+        : mcxT("theme.mobile_dark");
     }
-    const mobileUse = qs('#mcx-mobile-theme-icon');
+    const mobileUse = qs("#mcx-mobile-theme-icon");
     if (mobileUse) {
-      mobileUse.setAttribute('href', isDark() ? '#i-weather-sunny' : '#i-weather-night');
+      mobileUse.setAttribute(
+        "href",
+        isDark() ? "#i-weather-sunny" : "#i-weather-night",
+      );
     }
-    qsa('[data-mcx-showcase]').forEach(function (showcase) {
+    qsa("[data-mcx-showcase]").forEach(function (showcase) {
       var t = parseInt(showcase.dataset.activeTab, 10);
       if (!isNaN(t)) updateShowcaseImages(showcase, t);
     });
+    syncThemeColor();
   }
 
   function initThemeToggle() {
-    qsa('[data-theme-toggle]').forEach((btn) => {
-      btn.addEventListener('click', toggleDarkMode);
+    qsa("[data-theme-toggle]").forEach((btn) => {
+      btn.addEventListener("click", toggleDarkMode);
       setThemeIcon(btn);
     });
-    const mobileLabel = qs('#mcx-mobile-theme-label');
+    const mobileLabel = qs("#mcx-mobile-theme-label");
     if (mobileLabel) {
-      mobileLabel.textContent = isDark() ? mcxT('theme.mobile_light') : mcxT('theme.mobile_dark');
+      mobileLabel.textContent = isDark()
+        ? mcxT("theme.mobile_light")
+        : mcxT("theme.mobile_dark");
     }
-    const mobileUse = qs('#mcx-mobile-theme-icon');
+    const mobileUse = qs("#mcx-mobile-theme-icon");
     if (mobileUse) {
-      mobileUse.setAttribute('href', isDark() ? '#i-weather-sunny' : '#i-weather-night');
+      mobileUse.setAttribute(
+        "href",
+        isDark() ? "#i-weather-sunny" : "#i-weather-night",
+      );
     }
+    syncThemeColor();
   }
 
   function copyText(text, btn) {
     if (!text || !navigator.clipboard) return;
     navigator.clipboard.writeText(text).then(function () {
       if (!btn) return;
-      const use = btn.querySelector('use');
+      const use = btn.querySelector("use");
       if (use) {
-        const prev = use.getAttribute('href');
-        use.setAttribute('href', '#i-check');
+        const prev = use.getAttribute("href");
+        use.setAttribute("href", "#i-check");
         setTimeout(function () {
-          use.setAttribute('href', prev);
+          use.setAttribute("href", prev);
         }, 2000);
       }
     });
   }
 
   function initCopyButtons() {
-    qsa('[data-copy]').forEach((btn) => {
-      if (btn.getAttribute('data-mcx-copy-bound')) return;
-      btn.setAttribute('data-mcx-copy-bound', '1');
-      btn.addEventListener('click', function () {
-        copyText(btn.getAttribute('data-copy'), btn);
+    qsa("[data-copy]").forEach((btn) => {
+      if (btn.getAttribute("data-mcx-copy-bound")) return;
+      btn.setAttribute("data-mcx-copy-bound", "1");
+      btn.addEventListener("click", function () {
+        copyText(btn.getAttribute("data-copy"), btn);
       });
     });
   }
@@ -139,75 +161,81 @@
   var mcxDownloadInitSeq = 0;
 
   var MCX_SHOWCASE_TAB_FILES = [
-    'tab-11-home.webp',
-    'tab-0-messages.webp',
-    'tab-1-contacts.webp',
-    'tab-2-calls.webp',
-    'tab-3-interfaces.webp',
-    'tab-4-map.webp',
-    'tab-5-nomadnet.webp',
-    'tab-6-visualizer.webp',
-    'tab-7-utilities.webp',
-    'tab-8-settings.webp',
-    'tab-9-identity.webp',
-    'tab-10-about.webp'
+    "tab-11-home.webp",
+    "tab-0-messages.webp",
+    "tab-1-contacts.webp",
+    "tab-2-calls.webp",
+    "tab-3-interfaces.webp",
+    "tab-4-map.webp",
+    "tab-5-nomadnet.webp",
+    "tab-6-visualizer.webp",
+    "tab-7-utilities.webp",
+    "tab-8-settings.webp",
+    "tab-9-identity.webp",
+    "tab-10-about.webp",
   ];
 
   function getShowcaseMaxTab(root) {
     var max = 0;
-    root.querySelectorAll('[data-showcase-tab]').forEach(function (btn) {
-      var idx = parseInt(btn.getAttribute('data-showcase-tab'), 10);
+    root.querySelectorAll("[data-showcase-tab]").forEach(function (btn) {
+      var idx = parseInt(btn.getAttribute("data-showcase-tab"), 10);
       if (!isNaN(idx)) max = Math.max(max, idx);
     });
     return max;
   }
 
   function getShowcaseAssetBase(root) {
-    var b = root.getAttribute('data-showcase-assets');
-    if (!b) return 'static/showcase/';
+    var b = root.getAttribute("data-showcase-assets");
+    if (!b) return "static/showcase/";
     return b;
   }
 
   function showcaseShotUrl(root, index) {
     var base = getShowcaseAssetBase(root);
-    var sub = isDark() ? 'dark/' : 'light/';
+    var sub = isDark() ? "dark/" : "light/";
     return base + sub + MCX_SHOWCASE_TAB_FILES[index];
   }
 
   function updateShowcaseImages(root, tabIndex) {
-    root.querySelectorAll('[data-showcase-img]').forEach(function (img) {
-      var frame = img.closest('[data-showcase-frame]');
-      var ph = frame ? frame.querySelector('[data-showcase-placeholder]') : null;
-      if (ph) ph.classList.add('hidden');
-      img.classList.remove('hidden');
+    root.querySelectorAll("[data-showcase-img]").forEach(function (img) {
+      var frame = img.closest("[data-showcase-frame]");
+      var ph = frame
+        ? frame.querySelector("[data-showcase-placeholder]")
+        : null;
+      if (ph) ph.classList.add("hidden");
+      img.classList.remove("hidden");
       img.src = showcaseShotUrl(root, tabIndex);
-      img.alt = '';
+      img.alt = "";
     });
   }
 
   function setShowcaseTab(index, root) {
     var maxTab = getShowcaseMaxTab(root);
     var i = Math.max(0, Math.min(index, maxTab));
-    var label = mcxT('showcase.tab' + i);
-    root.querySelectorAll('[data-showcase-label]').forEach(function (el) {
+    var label = mcxT("showcase.tab" + i);
+    root.querySelectorAll("[data-showcase-label]").forEach(function (el) {
       el.textContent = label;
     });
-    root.querySelectorAll('[data-showcase-tab]').forEach(function (btn) {
-      var idx = parseInt(btn.getAttribute('data-showcase-tab'), 10);
-      btn.classList.toggle('is-active', idx === i);
+    root.querySelectorAll("[data-showcase-tab]").forEach(function (btn) {
+      var idx = parseInt(btn.getAttribute("data-showcase-tab"), 10);
+      btn.classList.toggle("is-active", idx === i);
     });
-    root.querySelectorAll('[data-showcase-mobile-item]').forEach(function (btn) {
-      var idx = parseInt(btn.getAttribute('data-showcase-mobile-item'), 10);
-      btn.classList.toggle('is-active', idx === i);
-    });
+    root
+      .querySelectorAll("[data-showcase-mobile-item]")
+      .forEach(function (btn) {
+        var idx = parseInt(btn.getAttribute("data-showcase-mobile-item"), 10);
+        btn.classList.toggle("is-active", idx === i);
+      });
     root.dataset.activeTab = String(i);
     updateShowcaseImages(root, i);
   }
 
   function resetShowcaseMenuIcons(root) {
-    root.querySelectorAll('[data-showcase-menu] summary use').forEach(function (use) {
-      use.setAttribute('href', '#i-menu');
-    });
+    root
+      .querySelectorAll("[data-showcase-menu] summary use")
+      .forEach(function (use) {
+        use.setAttribute("href", "#i-menu");
+      });
   }
 
   function initShowcase(root) {
@@ -215,53 +243,55 @@
 
     setShowcaseTab(0, root);
 
-    root.querySelectorAll('[data-showcase-tab]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        active = parseInt(btn.getAttribute('data-showcase-tab'), 10);
+    root.querySelectorAll("[data-showcase-tab]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        active = parseInt(btn.getAttribute("data-showcase-tab"), 10);
         setShowcaseTab(active, root);
       });
     });
 
-    root.querySelectorAll('[data-showcase-mobile-item]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        active = parseInt(btn.getAttribute('data-showcase-mobile-item'), 10);
-        setShowcaseTab(active, root);
-        const det = btn.closest('[data-showcase-menu]');
-        if (det) {
-          det.open = false;
-          resetShowcaseMenuIcons(root);
-        }
+    root
+      .querySelectorAll("[data-showcase-mobile-item]")
+      .forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          active = parseInt(btn.getAttribute("data-showcase-mobile-item"), 10);
+          setShowcaseTab(active, root);
+          const det = btn.closest("[data-showcase-menu]");
+          if (det) {
+            det.open = false;
+            resetShowcaseMenuIcons(root);
+          }
+        });
       });
-    });
 
-    root.querySelectorAll('[data-showcase-screen]').forEach(function (el) {
-      el.addEventListener('click', function () {
-        root.querySelectorAll('[data-showcase-menu]').forEach(function (d) {
+    root.querySelectorAll("[data-showcase-screen]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        root.querySelectorAll("[data-showcase-menu]").forEach(function (d) {
           d.open = false;
         });
         resetShowcaseMenuIcons(root);
       });
     });
 
-    root.querySelectorAll('[data-showcase-menu]').forEach(function (d) {
-      d.addEventListener('toggle', function () {
+    root.querySelectorAll("[data-showcase-menu]").forEach(function (d) {
+      d.addEventListener("toggle", function () {
         if (d.open) {
-          root.querySelectorAll('[data-showcase-menu]').forEach(function (o) {
+          root.querySelectorAll("[data-showcase-menu]").forEach(function (o) {
             if (o !== d) o.open = false;
           });
         }
-        const use = d.querySelector('summary use');
-        if (use) use.setAttribute('href', d.open ? '#i-close' : '#i-menu');
+        const use = d.querySelector("summary use");
+        if (use) use.setAttribute("href", d.open ? "#i-close" : "#i-menu");
       });
     });
   }
 
   function initViewToggle(root) {
-    const mobileEl = qs('[data-showcase-mobile]', root);
-    const desktopEl = qs('[data-showcase-desktop]', root);
-    if (root.getAttribute('data-showcase-desktop-only') === 'true') {
-      if (mobileEl) mobileEl.classList.add('hidden');
-      if (desktopEl) desktopEl.classList.remove('hidden');
+    const mobileEl = qs("[data-showcase-mobile]", root);
+    const desktopEl = qs("[data-showcase-desktop]", root);
+    if (root.getAttribute("data-showcase-desktop-only") === "true") {
+      if (mobileEl) mobileEl.classList.add("hidden");
+      if (desktopEl) desktopEl.classList.remove("hidden");
       return;
     }
     const mobileBtn = qs('[data-view="mobile"]', root);
@@ -269,50 +299,54 @@
     if (!mobileBtn || !desktopBtn) return;
 
     function setView(v) {
-      const isMobile = v === 'mobile';
-      mobileBtn.classList.toggle('is-active', isMobile);
-      desktopBtn.classList.toggle('is-active', !isMobile);
-      if (mobileEl) mobileEl.classList.toggle('hidden', !isMobile);
-      if (desktopEl) desktopEl.classList.toggle('hidden', isMobile);
+      const isMobile = v === "mobile";
+      mobileBtn.classList.toggle("is-active", isMobile);
+      desktopBtn.classList.toggle("is-active", !isMobile);
+      if (mobileEl) mobileEl.classList.toggle("hidden", !isMobile);
+      if (desktopEl) desktopEl.classList.toggle("hidden", isMobile);
     }
 
-    mobileBtn.addEventListener('click', function () {
-      setView('mobile');
+    mobileBtn.addEventListener("click", function () {
+      setView("mobile");
     });
-    desktopBtn.addEventListener('click', function () {
-      setView('desktop');
+    desktopBtn.addEventListener("click", function () {
+      setView("desktop");
     });
 
-    const mq = window.matchMedia('(min-width: 768px)');
-    setView(mq.matches ? 'desktop' : 'mobile');
+    const mq = window.matchMedia("(min-width: 768px)");
+    setView(mq.matches ? "desktop" : "mobile");
   }
 
   function normalizeReleasesBundle(raw) {
-    if (!raw || typeof raw !== 'object') return null;
+    if (!raw || typeof raw !== "object") return null;
     return {
       gitea: Array.isArray(raw.gitea) ? raw.gitea : [],
-      github: Array.isArray(raw.github) ? raw.github : []
+      github: Array.isArray(raw.github) ? raw.github : [],
     };
   }
 
   async function fetchStaticBundleSnapshot() {
-    var res = await fetch('/data/releases-bundle.json', { credentials: 'same-origin' });
+    var res = await fetch("/data/releases-bundle.json", {
+      credentials: "same-origin",
+    });
     if (!res.ok) return null;
     var data = await res.json();
     if (Array.isArray(data)) return { gitea: data, github: [] };
     return {
       gitea: Array.isArray(data.gitea) ? data.gitea : [],
-      github: Array.isArray(data.github) ? data.github : []
+      github: Array.isArray(data.github) ? data.github : [],
     };
   }
 
   async function fetchStaticLegacyGiteaOnly() {
-    var res = await fetch('/data/gitea-releases.json', { credentials: 'same-origin' });
-    if (!res.ok) throw new Error(mcxT('download.gitea_error') + res.status);
+    var res = await fetch("/data/gitea-releases.json", {
+      credentials: "same-origin",
+    });
+    if (!res.ok) throw new Error(mcxT("download.gitea_error") + res.status);
     var list = await res.json();
     return {
       gitea: Array.isArray(list) ? list : [],
-      github: []
+      github: [],
     };
   }
 
@@ -350,10 +384,14 @@
   }
 
   function pickPrereleaseRelease(giteaList, githubList) {
-    var hp = publishedOnly(githubList).filter(window.MCX.isLikelyPrereleaseRelease);
+    var hp = publishedOnly(githubList).filter(
+      window.MCX.isLikelyPrereleaseRelease,
+    );
     hp.sort(sortPublishedDesc);
     if (hp.length) return hp[0];
-    var gp = publishedOnly(giteaList).filter(window.MCX.isLikelyPrereleaseRelease);
+    var gp = publishedOnly(giteaList).filter(
+      window.MCX.isLikelyPrereleaseRelease,
+    );
     gp.sort(sortPublishedDesc);
     return gp.length ? gp[0] : null;
   }
@@ -361,7 +399,8 @@
   function releaseAssets(r) {
     if (!r) return [];
     if (Array.isArray(r.assets) && r.assets.length) return r.assets;
-    if (Array.isArray(r.attachments) && r.attachments.length) return r.attachments;
+    if (Array.isArray(r.attachments) && r.attachments.length)
+      return r.attachments;
     return [];
   }
 
@@ -380,7 +419,8 @@
 
   function releaseRawHasDmg(r) {
     if (!r) return false;
-    const assets = Array.isArray(r.assets) && r.assets.length ? r.assets : r.attachments;
+    const assets =
+      Array.isArray(r.assets) && r.assets.length ? r.assets : r.attachments;
     if (!Array.isArray(assets)) return false;
     return assets.some(function (a) {
       return a.name && /\.dmg$/i.test(a.name);
@@ -388,7 +428,7 @@
   }
 
   async function loadHomeVersion() {
-    const badge = qs('[data-version-badge]');
+    const badge = qs("[data-version-badge]");
     if (!badge) return;
     try {
       const { gitea, github } = await fetchReleasesData();
@@ -399,16 +439,17 @@
         preRel ||
         publishedOnly(gitea)[0] ||
         publishedOnly(github)[0];
-      const v = rel && rel.tag_name ? String(rel.tag_name).replace(/^v/, '') : null;
+      const v =
+        rel && rel.tag_name ? String(rel.tag_name).replace(/^v/, "") : null;
       if (!v) {
-        badge.classList.add('hidden');
+        badge.classList.add("hidden");
         return;
       }
-      const span = badge.querySelector('[data-version-text]');
-      if (span) span.textContent = mcxT('home.version_here').replace('%s', v);
-      badge.classList.remove('hidden');
-    } catch (_) {
-      badge.classList.add('hidden');
+      const span = badge.querySelector("[data-version-text]");
+      if (span) span.textContent = mcxT("home.version_here").replace("%s", v);
+      badge.classList.remove("hidden");
+    } catch {
+      badge.classList.add("hidden");
     }
   }
 
@@ -419,13 +460,13 @@
       windows: '[data-plat="windows"]',
       docker: '[data-plat="docker"]',
       python: '[data-plat="python"]',
-      android: '[data-plat="android"]'
+      android: '[data-plat="android"]',
     };
     Object.keys(map).forEach(function (key) {
       const el = qs(map[key]);
       if (!el) return;
-      if (platforms[key]) el.classList.remove('mcx-disabled');
-      else el.classList.add('mcx-disabled');
+      if (platforms[key]) el.classList.remove("mcx-disabled");
+      else el.classList.add("mcx-disabled");
     });
   }
 
@@ -434,11 +475,15 @@
       const { gitea, github } = await fetchReleasesData();
       const stableRel = pickStableRelease(gitea, github);
       const preRel = pickPrereleaseRelease(gitea, github);
-      const rel = stableRel || preRel || publishedOnly(gitea)[0] || publishedOnly(github)[0];
+      const rel =
+        stableRel ||
+        preRel ||
+        publishedOnly(gitea)[0] ||
+        publishedOnly(github)[0];
       if (!rel) return;
       const forPlatforms = [stableRel, preRel].filter(Boolean);
       const hasAppImage = someAssetInReleases(forPlatforms, function (a) {
-        return a.name && a.name.endsWith('.AppImage') && /linux/i.test(a.name);
+        return a.name && a.name.endsWith(".AppImage") && /linux/i.test(a.name);
       });
       const hasFlatpak = someAssetInReleases(forPlatforms, function (a) {
         return a.name && /\.flatpak$/i.test(a.name);
@@ -447,12 +492,13 @@
         return a.name && /\.apk$/i.test(a.name);
       });
       const hasWheel = someAssetInReleases(forPlatforms, function (a) {
-        return a.name && a.name.endsWith('-py3-none-any.whl');
+        return a.name && a.name.endsWith("-py3-none-any.whl");
       });
       const hasWin = someAssetInReleases(forPlatforms, function (a) {
         return (
           a.name &&
-          (/win.*installer\.exe$/i.test(a.name) || /win.*portable\.exe$/i.test(a.name))
+          (/win.*installer\.exe$/i.test(a.name) ||
+            /win.*portable\.exe$/i.test(a.name))
         );
       });
       let macFromPre = releaseRawHasDmg(preRel);
@@ -462,34 +508,34 @@
         windows: !!hasWin,
         docker: true,
         python: !!hasWheel,
-        android: !!hasWheel || hasApk
+        android: !!hasWheel || hasApk,
       });
-    } catch (_) {}
+    } catch {}
   }
 
   const COMPOSE_YAML =
-    'services:\n' +
-    '    reticulum-meshchatx:\n' +
-    '        container_name: reticulum-meshchatx\n' +
-    '        image: ${MESHCHAT_IMAGE:-quad4io/meshchatx:latest}\n' +
-    '        restart: unless-stopped\n' +
-    '        security_opt:\n' +
-    '            - no-new-privileges:true\n' +
-    '        ports:\n' +
-    '            - 127.0.0.1:8000:8000\n' +
-    '        volumes:\n' +
-    '            - ./meshchat-config:/config';
+    "services:\n" +
+    "    reticulum-meshchatx:\n" +
+    "        container_name: reticulum-meshchatx\n" +
+    "        image: ${MESHCHAT_IMAGE:-quad4io/meshchatx:latest}\n" +
+    "        restart: unless-stopped\n" +
+    "        security_opt:\n" +
+    "            - no-new-privileges:true\n" +
+    "        ports:\n" +
+    "            - 127.0.0.1:8000:8000\n" +
+    "        volumes:\n" +
+    "            - ./meshchat-config:/config";
 
   function runCmd(engine) {
     return (
       engine +
-      ' run -d \\\n' +
-      '  --name reticulum-meshchatx \\\n' +
-      '  --restart unless-stopped \\\n' +
-      '  --security-opt no-new-privileges:true \\\n' +
-      '  -p 127.0.0.1:8000:8000 \\\n' +
-      '  -v ./meshchat-config:/config \\\n' +
-      '  quad4io/meshchatx:latest'
+      " run -d \\\n" +
+      "  --name reticulum-meshchatx \\\n" +
+      "  --restart unless-stopped \\\n" +
+      "  --security-opt no-new-privileges:true \\\n" +
+      "  -p 127.0.0.1:8000:8000 \\\n" +
+      "  -v ./meshchat-config:/config \\\n" +
+      "  quad4io/meshchatx:latest"
     );
   }
 
@@ -497,8 +543,8 @@
     const e = document.createElement(tag);
     if (attrs) {
       Object.keys(attrs).forEach(function (k) {
-        if (k === 'class') e.className = attrs[k];
-        else if (k === 'html') e.innerHTML = attrs[k];
+        if (k === "class") e.className = attrs[k];
+        else if (k === "html") e.innerHTML = attrs[k];
         else e.setAttribute(k, attrs[k]);
       });
     }
@@ -507,88 +553,95 @@
   }
 
   function setDownloadPage(data) {
-    const meta = qs('#mcx-download-meta');
+    const meta = qs("#mcx-download-meta");
     if (!meta) return;
 
     const sel = data.selectedRelease;
-    const channel = data.selectedChannel || 'stable';
+    const channel = data.selectedChannel || "stable";
     const err = data.error;
 
-    meta.textContent = '';
+    meta.textContent = "";
 
     if (err) {
-      meta.appendChild(el('span', { class: 'mcx-muted' }, err));
+      meta.appendChild(el("span", { class: "mcx-muted" }, err));
       return;
     }
 
     if (!sel || !sel.version) {
       meta.appendChild(
-        el('span', { class: 'mcx-muted' }, mcxT('download.no_release'))
+        el("span", { class: "mcx-muted" }, mcxT("download.no_release")),
       );
       return;
     }
 
-    const line = el('span', { class: 'mcx-muted' });
+    const line = el("span", { class: "mcx-muted" });
     line.appendChild(
       document.createTextNode(
-        mcxT('download.latest') +
-          ' ' +
-          (channel === 'prerelease' ? mcxT('download.prerelease') : mcxT('download.stable')) +
-          ': v' +
+        mcxT("download.latest") +
+          " " +
+          (channel === "prerelease"
+            ? mcxT("download.prerelease")
+            : mcxT("download.stable")) +
+          ": v" +
           sel.version +
-          ' '
-      )
+          " ",
+      ),
     );
-    const pill = el('span', { class: 'mcx-badge-pill' });
-    pill.textContent = channel === 'prerelease' ? mcxT('download.prerelease') : mcxT('download.stable');
+    const pill = el("span", { class: "mcx-badge-pill" });
+    pill.textContent =
+      channel === "prerelease"
+        ? mcxT("download.prerelease")
+        : mcxT("download.stable");
     line.appendChild(pill);
-    line.appendChild(document.createTextNode(' '));
+    line.appendChild(document.createTextNode(" "));
 
     if (sel.releaseUrl) {
-      const a = el('a', {
+      const a = el("a", {
         href: sel.releaseUrl,
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        class: 'mcx-link-blue'
+        target: "_blank",
+        rel: "noopener noreferrer",
+        class: "mcx-link-blue",
       });
-      a.textContent = mcxT('download.all_releases');
+      a.textContent = mcxT("download.all_releases");
       line.appendChild(a);
-      line.appendChild(document.createTextNode(' '));
+      line.appendChild(document.createTextNode(" "));
     }
 
     if (data.publishedAtRelative) {
-      const rel = el('span', { class: 'mcx-rel-emerald mcx-text-sm' });
+      const rel = el("span", { class: "mcx-rel-emerald mcx-text-sm" });
       rel.textContent = data.publishedAtRelative;
       line.appendChild(rel);
     }
 
     if (data.hasPreRelease) {
-      const wrap = el('span', { class: 'mcx-channel-pill' });
+      const wrap = el("span", { class: "mcx-channel-pill" });
       const dlPath =
-        typeof window !== 'undefined' && window.location && window.location.pathname
+        typeof window !== "undefined" &&
+        window.location &&
+        window.location.pathname
           ? window.location.pathname
-          : '/download';
-      const aStable = el('a', { href: dlPath });
-      aStable.textContent = mcxT('download.channel_stable');
-      if (channel === 'stable') aStable.classList.add('is-active-stable');
-      const aPre = el('a', { href: dlPath + '?channel=prerelease' });
-      aPre.textContent = mcxT('download.channel_pre');
-      if (channel === 'prerelease') aPre.classList.add('is-active-pre');
+          : "/download";
+      const aStable = el("a", { href: dlPath });
+      aStable.textContent = mcxT("download.channel_stable");
+      if (channel === "stable") aStable.classList.add("is-active-stable");
+      const aPre = el("a", { href: dlPath + "?channel=prerelease" });
+      aPre.textContent = mcxT("download.channel_pre");
+      if (channel === "prerelease") aPre.classList.add("is-active-pre");
       wrap.appendChild(aStable);
       wrap.appendChild(aPre);
-      line.appendChild(document.createTextNode(' '));
+      line.appendChild(document.createTextNode(" "));
       line.appendChild(wrap);
     }
 
     meta.appendChild(line);
 
-    const sbom = qs('#mcx-sbom-link');
+    const sbom = qs("#mcx-sbom-link");
     if (sbom) {
       if (sel.sbomUrl) {
         sbom.href = sel.sbomUrl;
-        sbom.classList.remove('hidden');
+        sbom.classList.remove("hidden");
       } else {
-        sbom.classList.add('hidden');
+        sbom.classList.add("hidden");
       }
     }
 
@@ -596,143 +649,149 @@
       const node = qs(id);
       if (!node) return;
       if (url) {
-        node.setAttribute('href', url);
-        node.classList.remove('hidden');
+        node.setAttribute("href", url);
+        node.classList.remove("hidden");
       } else {
-        node.classList.add('hidden');
+        node.classList.add("hidden");
       }
     }
 
-    setHref('#mcx-dl-appimage-amd64', sel.appImageAmd64Url);
-    setHref('#mcx-dl-appimage-arm64', sel.appImageArm64Url);
-    setHref('#mcx-dl-deb-amd64', sel.debAmd64Url);
-    setHref('#mcx-dl-deb-arm64', sel.debArm64Url);
-    setHref('#mcx-dl-rpm-amd64', sel.rpmAmd64Url);
-    setHref('#mcx-dl-flatpak', sel.flatpakUrl);
-    setHref('#mcx-dl-win-inst', sel.winInstallerUrl);
-    setHref('#mcx-dl-win-port', sel.winPortableUrl);
+    setHref("#mcx-dl-appimage-amd64", sel.appImageAmd64Url);
+    setHref("#mcx-dl-appimage-arm64", sel.appImageArm64Url);
+    setHref("#mcx-dl-deb-amd64", sel.debAmd64Url);
+    setHref("#mcx-dl-deb-arm64", sel.debArm64Url);
+    setHref("#mcx-dl-rpm-amd64", sel.rpmAmd64Url);
+    setHref("#mcx-dl-flatpak", sel.flatpakUrl);
+    setHref("#mcx-dl-win-inst", sel.winInstallerUrl);
+    setHref("#mcx-dl-win-port", sel.winPortableUrl);
 
     var macDmgUrl = sel.macDmgUrl;
     if (!macDmgUrl && data.preRelease && data.preRelease.macDmgUrl) {
       macDmgUrl = data.preRelease.macDmgUrl;
     }
-    setHref('#mcx-dl-macos-dmg', macDmgUrl);
+    setHref("#mcx-dl-macos-dmg", macDmgUrl);
 
-    setHref('#mcx-dl-apk', sel.apkUrl);
-    const apkPending = qs('#mcx-android-apk-pending');
+    setHref("#mcx-dl-apk", sel.apkUrl);
+    const apkPending = qs("#mcx-android-apk-pending");
     if (apkPending) {
-      apkPending.classList.toggle('hidden', !!sel.apkUrl);
+      apkPending.classList.toggle("hidden", !!sel.apkUrl);
     }
 
-    const macPending = qs('#mcx-macos-pending');
+    const macPending = qs("#mcx-macos-pending");
     if (macPending) {
-      macPending.classList.toggle('hidden', !!macDmgUrl);
+      macPending.classList.toggle("hidden", !!macDmgUrl);
     }
 
-    const noApp = qs('#mcx-no-appimage');
+    const noApp = qs("#mcx-no-appimage");
     if (noApp) {
-      noApp.classList.toggle('hidden', !!(sel.appImageAmd64Url || sel.appImageArm64Url));
+      noApp.classList.toggle(
+        "hidden",
+        !!(sel.appImageAmd64Url || sel.appImageArm64Url),
+      );
     }
-    const noDeb = qs('#mcx-no-deb');
+    const noDeb = qs("#mcx-no-deb");
     if (noDeb) {
-      noDeb.classList.toggle('hidden', !!(sel.debAmd64Url || sel.debArm64Url));
+      noDeb.classList.toggle("hidden", !!(sel.debAmd64Url || sel.debArm64Url));
     }
-    const noRpm = qs('#mcx-no-rpm');
+    const noRpm = qs("#mcx-no-rpm");
     if (noRpm) {
-      noRpm.classList.toggle('hidden', !!sel.rpmAmd64Url);
+      noRpm.classList.toggle("hidden", !!sel.rpmAmd64Url);
     }
-    const noFlatpak = qs('#mcx-no-flatpak');
+    const noFlatpak = qs("#mcx-no-flatpak");
     if (noFlatpak) {
-      noFlatpak.classList.toggle('hidden', !!sel.flatpakUrl);
+      noFlatpak.classList.toggle("hidden", !!sel.flatpakUrl);
     }
-    const noWin = qs('#mcx-no-win');
+    const noWin = qs("#mcx-no-win");
     if (noWin) {
-      noWin.classList.toggle('hidden', !!(sel.winInstallerUrl || sel.winPortableUrl));
+      noWin.classList.toggle(
+        "hidden",
+        !!(sel.winInstallerUrl || sel.winPortableUrl),
+      );
     }
 
     const wheelUrl = sel.wheelUrl;
-    const pyBlock = qs('#mcx-python-block');
-    const pyEmpty = qs('#mcx-python-empty');
+    const pyBlock = qs("#mcx-python-block");
+    const pyEmpty = qs("#mcx-python-empty");
     if (pyBlock && pyEmpty) {
       if (wheelUrl) {
-        pyBlock.classList.remove('hidden');
-        pyEmpty.classList.add('hidden');
-        qsa('[data-wheel-cmd]', pyBlock).forEach(function (node) {
-          const kind = node.getAttribute('data-wheel-cmd');
-          let cmd = '';
-          if (kind === 'pip') cmd = 'pip install ' + wheelUrl;
-          else if (kind === 'pipx') cmd = 'pipx install ' + wheelUrl;
-          else if (kind === 'poetry') cmd = 'poetry add ' + wheelUrl;
-          else if (kind === 'uv') cmd = 'uv pip install ' + wheelUrl;
+        pyBlock.classList.remove("hidden");
+        pyEmpty.classList.add("hidden");
+        qsa("[data-wheel-cmd]", pyBlock).forEach(function (node) {
+          const kind = node.getAttribute("data-wheel-cmd");
+          let cmd = "";
+          if (kind === "pip") cmd = "pip install " + wheelUrl;
+          else if (kind === "pipx") cmd = "pipx install " + wheelUrl;
+          else if (kind === "poetry") cmd = "poetry add " + wheelUrl;
+          else if (kind === "uv") cmd = "uv pip install " + wheelUrl;
           node.textContent = cmd;
-          const wrap = node.closest('.mcx-code-row');
-          const btn = wrap && wrap.querySelector('[data-copy]');
-          if (btn) btn.setAttribute('data-copy', cmd);
+          const wrap = node.closest(".mcx-code-row");
+          const btn = wrap && wrap.querySelector("[data-copy]");
+          if (btn) btn.setAttribute("data-copy", cmd);
         });
       } else {
-        pyBlock.classList.add('hidden');
-        pyEmpty.classList.remove('hidden');
+        pyBlock.classList.add("hidden");
+        pyEmpty.classList.remove("hidden");
       }
     }
 
     const termuxUrl = wheelUrl
-      ? 'pip install ' + wheelUrl
-      : 'pip install https://git.quad4.io/RNS-Things/MeshChatX/releases/download/v' +
+      ? "pip install " + wheelUrl
+      : "pip install https://git.quad4.io/RNS-Things/MeshChatX/releases/download/v" +
         sel.version +
-        '/reticulum_meshchatx-' +
+        "/reticulum_meshchatx-" +
         sel.version +
-        '-py3-none-any.whl';
-    const termuxPre = qs('#mcx-termux-pip');
+        "-py3-none-any.whl";
+    const termuxPre = qs("#mcx-termux-pip");
     if (termuxPre) {
       termuxPre.textContent = termuxUrl;
-      const btn = qs('#mcx-termux-pip-copy');
-      if (btn) btn.setAttribute('data-copy', termuxUrl);
+      const btn = qs("#mcx-termux-pip-copy");
+      if (btn) btn.setAttribute("data-copy", termuxUrl);
     }
   }
 
   async function initDownloadPage() {
     var seq = ++mcxDownloadInitSeq;
-    const composePre = qs('#mcx-compose-yaml');
+    const composePre = qs("#mcx-compose-yaml");
     if (composePre) composePre.textContent = COMPOSE_YAML;
-    const composeBtn = qs('#mcx-compose-copy');
-    if (composeBtn) composeBtn.setAttribute('data-copy', COMPOSE_YAML);
+    const composeBtn = qs("#mcx-compose-copy");
+    if (composeBtn) composeBtn.setAttribute("data-copy", COMPOSE_YAML);
 
-    const hubImg = 'quad4io/meshchatx:latest';
-    const ghcrImg = 'ghcr.io/quad4-software/meshchatx:latest';
-    const dockerPullHub = 'docker pull ' + hubImg;
-    const dockerPullGhcr = 'docker pull ' + ghcrImg;
-    const podmanPullHub = 'podman pull ' + hubImg;
-    const podmanPullGhcr = 'podman pull ' + ghcrImg;
-    const dph = qs('#mcx-docker-pull-hub-text');
+    const hubImg = "quad4io/meshchatx:latest";
+    const ghcrImg = "ghcr.io/quad4-software/meshchatx:latest";
+    const dockerPullHub = "docker pull " + hubImg;
+    const dockerPullGhcr = "docker pull " + ghcrImg;
+    const podmanPullHub = "podman pull " + hubImg;
+    const podmanPullGhcr = "podman pull " + ghcrImg;
+    const dph = qs("#mcx-docker-pull-hub-text");
     if (dph) dph.textContent = dockerPullHub;
-    const dpg = qs('#mcx-docker-pull-ghcr-text');
+    const dpg = qs("#mcx-docker-pull-ghcr-text");
     if (dpg) dpg.textContent = dockerPullGhcr;
-    const pph = qs('#mcx-podman-pull-hub-text');
+    const pph = qs("#mcx-podman-pull-hub-text");
     if (pph) pph.textContent = podmanPullHub;
-    const ppg = qs('#mcx-podman-pull-ghcr-text');
+    const ppg = qs("#mcx-podman-pull-ghcr-text");
     if (ppg) ppg.textContent = podmanPullGhcr;
-    const dphb = qs('#mcx-docker-pull-hub-copy');
-    if (dphb) dphb.setAttribute('data-copy', dockerPullHub);
-    const dpgb = qs('#mcx-docker-pull-ghcr-copy');
-    if (dpgb) dpgb.setAttribute('data-copy', dockerPullGhcr);
-    const pphb = qs('#mcx-podman-pull-hub-copy');
-    if (pphb) pphb.setAttribute('data-copy', podmanPullHub);
-    const ppgb = qs('#mcx-podman-pull-ghcr-copy');
-    if (ppgb) ppgb.setAttribute('data-copy', podmanPullGhcr);
+    const dphb = qs("#mcx-docker-pull-hub-copy");
+    if (dphb) dphb.setAttribute("data-copy", dockerPullHub);
+    const dpgb = qs("#mcx-docker-pull-ghcr-copy");
+    if (dpgb) dpgb.setAttribute("data-copy", dockerPullGhcr);
+    const pphb = qs("#mcx-podman-pull-hub-copy");
+    if (pphb) pphb.setAttribute("data-copy", podmanPullHub);
+    const ppgb = qs("#mcx-podman-pull-ghcr-copy");
+    if (ppgb) ppgb.setAttribute("data-copy", podmanPullGhcr);
 
-    const dr = qs('#mcx-docker-run');
-    if (dr) dr.textContent = runCmd('docker');
-    const drb = qs('#mcx-docker-run-copy');
-    if (drb) drb.setAttribute('data-copy', runCmd('docker'));
-    const pr = qs('#mcx-podman-run');
-    if (pr) pr.textContent = runCmd('podman');
-    const prb = qs('#mcx-podman-run-copy');
-    if (prb) prb.setAttribute('data-copy', runCmd('podman'));
+    const dr = qs("#mcx-docker-run");
+    if (dr) dr.textContent = runCmd("docker");
+    const drb = qs("#mcx-docker-run-copy");
+    if (drb) drb.setAttribute("data-copy", runCmd("docker"));
+    const pr = qs("#mcx-podman-run");
+    if (pr) pr.textContent = runCmd("podman");
+    const prb = qs("#mcx-podman-run-copy");
+    if (prb) prb.setAttribute("data-copy", runCmd("podman"));
 
     let stableRelease = null;
     let preRelease = null;
     let selectedRelease = null;
-    let selectedChannel = 'stable';
+    let selectedChannel = "stable";
     let error = null;
 
     try {
@@ -743,19 +802,19 @@
       preRelease = window.MCX.parseRelease(latestPrerelease);
 
       const params = new URLSearchParams(window.location.search);
-      const wantsPrerelease = params.get('channel') === 'prerelease';
+      const wantsPrerelease = params.get("channel") === "prerelease";
       if (wantsPrerelease && preRelease) {
-        selectedChannel = 'prerelease';
+        selectedChannel = "prerelease";
         selectedRelease = preRelease;
       } else if (stableRelease) {
-        selectedChannel = 'stable';
+        selectedChannel = "stable";
         selectedRelease = stableRelease;
       } else if (preRelease) {
-        selectedChannel = 'prerelease';
+        selectedChannel = "prerelease";
         selectedRelease = preRelease;
       }
     } catch (e) {
-      error = e && e.message ? e.message : mcxT('download.fetch_error');
+      error = e && e.message ? e.message : mcxT("download.fetch_error");
     }
 
     if (seq !== mcxDownloadInitSeq) return;
@@ -772,7 +831,7 @@
       hasStableRelease: Boolean(stableRelease),
       hasPreRelease: Boolean(preRelease),
       publishedAtRelative,
-      error
+      error,
     });
 
     initCopyButtons();
@@ -782,13 +841,13 @@
     initThemeToggle();
     initCopyButtons();
 
-    const showcase = qs('[data-mcx-showcase]');
+    const showcase = qs("[data-mcx-showcase]");
     if (showcase) {
       initViewToggle(showcase);
       initShowcase(showcase);
     }
 
-    if (document.body.getAttribute('data-page') === 'home') {
+    if (document.body.getAttribute("data-page") === "home") {
       loadHomeVersion();
       loadHomePlatforms();
     }
@@ -796,8 +855,8 @@
 
   window.MCX.initDownloadPage = initDownloadPage;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
   } else {
     boot();
   }

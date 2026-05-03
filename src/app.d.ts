@@ -7,7 +7,9 @@ declare global {
       initDownloadPage?: () => void | Promise<void>;
       isLikelyPrereleaseRelease?: (release: unknown) => boolean;
       parseRelease?: (release: unknown) => unknown;
-      formatRelativeTime?: (publishedAt: string | null | undefined) => string | null;
+      formatRelativeTime?: (
+        publishedAt: string | null | undefined,
+      ) => string | null;
     };
   }
 }

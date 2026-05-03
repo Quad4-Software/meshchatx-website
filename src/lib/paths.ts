@@ -1,46 +1,64 @@
-import type { AppLocale } from './merge-messages';
+import type { AppLocale } from "./merge-messages";
 
-export const SITE_ORIGIN = 'https://meshchatx.com';
+export const SITE_ORIGIN = "https://meshchatx.com";
 
-export type PageId = 'home' | 'download' | 'contact' | 'donate' | 'license' | 'privacy';
+/** BCP47 primary subtag for `<html lang>` / SSR shell: first segment de|ru|it, else en. */
+export function localeFromPathname(pathname: string): AppLocale {
+  const first = pathname.split("/").filter(Boolean)[0];
+  if (first === "de" || first === "ru" || first === "it") return first;
+  return "en";
+}
 
-const PAGE_SLUG: Record<Exclude<PageId, 'home'>, string> = {
-  download: 'download',
-  contact: 'contact',
-  donate: 'donate',
-  license: 'license',
-  privacy: 'privacy',
+export type PageId =
+  | "home"
+  | "download"
+  | "contact"
+  | "donate"
+  | "license"
+  | "privacy";
+
+const PAGE_SLUG: Record<Exclude<PageId, "home">, string> = {
+  download: "download",
+  contact: "contact",
+  donate: "donate",
+  license: "license",
+  privacy: "privacy",
 };
 
 function pageSegment(id: PageId) {
-  if (id === 'home') {
-    return '';
+  if (id === "home") {
+    return "";
   }
   return PAGE_SLUG[id];
 }
 
-function isPageSlug(s: string): s is Exclude<PageId, 'home'> {
-  return s === 'download' || s === 'contact' || s === 'donate' || s === 'license' || s === 'privacy';
+function isPageSlug(s: string): s is Exclude<PageId, "home"> {
+  return (
+    s === "download" ||
+    s === "contact" ||
+    s === "donate" ||
+    s === "license" ||
+    s === "privacy"
+  );
 }
 
 /**
  * Public path for links and the browser (Vite dev + prerendered static).
  * English: `/`, `/download`, `/#features`, `/de/`, `/de/download#x`
  */
-export function appPath(loc: AppLocale, page: PageId, hash: string = ''): string {
-  const h =
-    !hash
-      ? ''
-      : hash.startsWith('#')
-        ? hash
-        : `#${hash}`;
+export function appPath(
+  loc: AppLocale,
+  page: PageId,
+  hash: string = "",
+): string {
+  const h = !hash ? "" : hash.startsWith("#") ? hash : `#${hash}`;
   const seg = pageSegment(page);
-  if (loc === 'en') {
-    const path = seg ? `/${seg}` : '/';
+  if (loc === "en") {
+    const path = seg ? `/${seg}` : "/";
     if (!h) {
       return path;
     }
-    if (path === '/') {
+    if (path === "/") {
       return `/${h}`;
     }
     return `${path}${h}`;
@@ -56,46 +74,53 @@ export function appPath(loc: AppLocale, page: PageId, hash: string = ''): string
 }
 
 export function pageIdFromPathname(path: string) {
-  const raw = (path?.split('?')[0] ?? path) || '/';
-  const p = raw.replace(/\/$/, '') || '/';
-  if (p === '/' || p === '') {
-    return 'home' as const;
+  const raw = (path?.split("?")[0] ?? path) || "/";
+  const p = raw.replace(/\/$/, "") || "/";
+  if (p === "/" || p === "") {
+    return "home" as const;
   }
-  const parts = p.split('/').filter(Boolean).map((s) => s.replace(/\.html$/i, ''));
-  if (parts[0] === 'index' || p.endsWith('/index') || p.endsWith('index.html')) {
-    return 'home' as const;
+  const parts = p
+    .split("/")
+    .filter(Boolean)
+    .map((s) => s.replace(/\.html$/i, ""));
+  if (
+    parts[0] === "index" ||
+    p.endsWith("/index") ||
+    p.endsWith("index.html")
+  ) {
+    return "home" as const;
   }
-  if (p.endsWith('de.html') || p.endsWith('ru.html') || p.endsWith('it.html')) {
-    return 'home' as const;
+  if (p.endsWith("de.html") || p.endsWith("ru.html") || p.endsWith("it.html")) {
+    return "home" as const;
   }
   if (parts.length === 1) {
     const a = parts[0]!;
-    if (a === 'de' || a === 'ru' || a === 'it' || a === 'en' || a === 'index') {
-      return 'home' as const;
+    if (a === "de" || a === "ru" || a === "it" || a === "en" || a === "index") {
+      return "home" as const;
     }
     if (isPageSlug(a)) {
       return a;
     }
-    return 'home' as const;
+    return "home" as const;
   }
   if (parts.length === 2) {
     const [a, b] = parts;
-    if ((a === 'de' || a === 'ru' || a === 'it') && isPageSlug(b!)) {
+    if ((a === "de" || a === "ru" || a === "it") && isPageSlug(b!)) {
       return b;
     }
   }
-  return 'home' as const;
+  return "home" as const;
 }
 
 export function canonicalForLocale(loc: AppLocale, page: PageId) {
   const p = pageSegment(page);
-  if (loc === 'en') {
-    if (p === '') {
+  if (loc === "en") {
+    if (p === "") {
       return `${SITE_ORIGIN}/`;
     }
     return `${SITE_ORIGIN}/${p}`;
   }
-  if (p === '') {
+  if (p === "") {
     return `${SITE_ORIGIN}/${loc}/`;
   }
   return `${SITE_ORIGIN}/${loc}/${p}`;
@@ -104,6 +129,10 @@ export function canonicalForLocale(loc: AppLocale, page: PageId) {
 /**
  * Language switcher: same logical page, other locale (root-absolute, works in dev and static).
  */
-export function crossLangHref(_from: AppLocale, to: AppLocale, currentPage: PageId) {
+export function crossLangHref(
+  _from: AppLocale,
+  to: AppLocale,
+  currentPage: PageId,
+) {
   return appPath(to, currentPage);
 }
