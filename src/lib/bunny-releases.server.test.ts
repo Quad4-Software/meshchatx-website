@@ -122,6 +122,44 @@ describe("bunny-releases.server", () => {
     expect(withAccessKey).toBe(true);
   });
 
+  it("treats version folder without hyphen-rc as prerelease and matches arch-only AppImage names", async () => {
+    vi.stubEnv("BUNNY_VERSIONS_PREFIX", "dev");
+    const fetchSpy = vi.fn(async (...args: unknown[]) => {
+      const url = String(args[0]);
+      if (url.endsWith("/meshchatx/dev/")) {
+        return {
+          ok: true,
+          json: async () => [
+            { ObjectName: "v4.6.0rc.5", IsDirectory: true },
+          ],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/v4.6.0rc.5/linux/")) {
+        return {
+          ok: true,
+          json: async () => [
+            {
+              ObjectName: "ReticulumMeshChatX-v4.6.0rc.5-x86_64.AppImage",
+              IsDirectory: false,
+            },
+          ],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/v4.6.0rc.5/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "linux", IsDirectory: true }],
+        };
+      }
+      return { ok: false, json: async () => [] };
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+    const p = await getMcxReleasesPayload();
+    expect(p.stable).toBeNull();
+    expect(p.prerelease?.version).toBe("4.6.0rc.5");
+    expect(p.prerelease?.appImageAmd64Url).toContain("x86_64.AppImage");
+  });
+
   it("falls back to dev when master has no version folders", async () => {
     vi.stubEnv("BUNNY_VERSIONS_PREFIX", "master");
     const fetchSpy = vi.fn(async (...args: unknown[]) => {

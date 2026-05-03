@@ -473,16 +473,25 @@
 
     if (data.hasPreRelease) {
       const wrap = el("span", { class: "mcx-channel-pill" });
-      const dlPath =
-        typeof window !== "undefined" &&
-        window.location &&
-        window.location.pathname
-          ? window.location.pathname
-          : "/download";
-      const aStable = el("a", { href: dlPath });
+      var loc =
+        typeof window !== "undefined" && window.location
+          ? window.location
+          : null;
+      var pathOnly =
+        loc && loc.pathname
+          ? loc.pathname
+          : typeof window !== "undefined" &&
+              window.location &&
+              window.location.pathname
+            ? window.location.pathname
+            : "/download";
+      var locHash = loc && loc.hash ? loc.hash : "";
+      const aStable = el("a", { href: pathOnly + locHash });
       aStable.textContent = mcxT("download.channel_stable");
       if (channel === "stable") aStable.classList.add("is-active-stable");
-      const aPre = el("a", { href: dlPath + "?channel=prerelease" });
+      const aPre = el("a", {
+        href: pathOnly + "?channel=prerelease" + locHash,
+      });
       aPre.textContent = mcxT("download.channel_pre");
       if (channel === "prerelease") aPre.classList.add("is-active-pre");
       wrap.appendChild(aStable);
@@ -514,12 +523,26 @@
       }
     }
 
-    setHref("#mcx-dl-appimage-amd64", sel.appImageAmd64Url);
-    setHref("#mcx-dl-appimage-arm64", sel.appImageArm64Url);
-    setHref("#mcx-dl-deb-amd64", sel.debAmd64Url);
-    setHref("#mcx-dl-deb-arm64", sel.debArm64Url);
-    setHref("#mcx-dl-rpm-amd64", sel.rpmAmd64Url);
-    setHref("#mcx-dl-flatpak", sel.flatpakUrl);
+    function linuxOrPre(field) {
+      var v = sel[field];
+      if (v) return v;
+      var pre = data.preRelease;
+      return pre && pre[field] ? pre[field] : null;
+    }
+
+    const appAmd = linuxOrPre("appImageAmd64Url");
+    const appArm = linuxOrPre("appImageArm64Url");
+    const debA = linuxOrPre("debAmd64Url");
+    const debR = linuxOrPre("debArm64Url");
+    const rpmA = linuxOrPre("rpmAmd64Url");
+    const flat = linuxOrPre("flatpakUrl");
+
+    setHref("#mcx-dl-appimage-amd64", appAmd);
+    setHref("#mcx-dl-appimage-arm64", appArm);
+    setHref("#mcx-dl-deb-amd64", debA);
+    setHref("#mcx-dl-deb-arm64", debR);
+    setHref("#mcx-dl-rpm-amd64", rpmA);
+    setHref("#mcx-dl-flatpak", flat);
     setHref("#mcx-dl-win-inst", sel.winInstallerUrl);
     setHref("#mcx-dl-win-port", sel.winPortableUrl);
 
@@ -542,22 +565,19 @@
 
     const noApp = qs("#mcx-no-appimage");
     if (noApp) {
-      noApp.classList.toggle(
-        "hidden",
-        !!(sel.appImageAmd64Url || sel.appImageArm64Url),
-      );
+      noApp.classList.toggle("hidden", !!(appAmd || appArm));
     }
     const noDeb = qs("#mcx-no-deb");
     if (noDeb) {
-      noDeb.classList.toggle("hidden", !!(sel.debAmd64Url || sel.debArm64Url));
+      noDeb.classList.toggle("hidden", !!(debA || debR));
     }
     const noRpm = qs("#mcx-no-rpm");
     if (noRpm) {
-      noRpm.classList.toggle("hidden", !!sel.rpmAmd64Url);
+      noRpm.classList.toggle("hidden", !!rpmA);
     }
     const noFlatpak = qs("#mcx-no-flatpak");
     if (noFlatpak) {
-      noFlatpak.classList.toggle("hidden", !!sel.flatpakUrl);
+      noFlatpak.classList.toggle("hidden", !!flat);
     }
     const noWin = qs("#mcx-no-win");
     if (noWin) {

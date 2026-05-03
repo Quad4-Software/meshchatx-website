@@ -109,7 +109,11 @@ async function listBunnyDirectory(
 
 function isPrereleaseVersionName(folder: string): boolean {
   const n = folder.replace(/^v/i, "");
-  return /-(rc|alpha|beta|pre)(\.|\d|$)/i.test(n);
+  if (/-(rc|alpha|beta|pre)(\.|\d|$)/i.test(n)) return true;
+  if (/\d(rc|alpha|beta|pre)(\.|\d|$)/i.test(n)) return true;
+  if (/\.(rc|alpha|beta|pre)\d/i.test(n)) return true;
+  if (/snapshot|nightly|canary/i.test(n)) return true;
+  return false;
 }
 
 function looksLikeVersionFolder(name: string): boolean {
@@ -252,6 +256,10 @@ function matchFileUrls(
     return hit ? publicUrlForRelativePath(hit.rel) : null;
   };
 
+  const notMacWinAppImage = (n: string) =>
+    n.endsWith(".appimage") &&
+    !/(darwin|macos|\bmac\b|windows|\bwin\b)/i.test(n);
+
   const appImageAmd64 =
     byBase(
       (n) =>
@@ -265,12 +273,27 @@ function matchFileUrls(
         n.endsWith(".appimage") &&
         /linux/.test(n) &&
         !/(amd64|x86_64|arm64|aarch64)/.test(n),
+    ) ||
+    byBase(
+      (n) =>
+        notMacWinAppImage(n) &&
+        /(amd64|x86_64)/.test(n) &&
+        !/(arm64|aarch64)/.test(n),
     );
 
-  const appImageArm64 = byBase(
-    (n) =>
-      n.endsWith(".appimage") && /linux/.test(n) && /(arm64|aarch64)/.test(n),
-  );
+  const appImageArm64 =
+    byBase(
+      (n) =>
+        n.endsWith(".appimage") &&
+        /linux/.test(n) &&
+        /(arm64|aarch64)/.test(n),
+    ) ||
+    byBase(
+      (n) =>
+        notMacWinAppImage(n) &&
+        /(arm64|aarch64)/.test(n) &&
+        !/(amd64|x86_64)/.test(n),
+    );
 
   const debAmd64 = byBase(
     (n) => n.endsWith(".deb") && /(amd64|x86_64)/.test(n),
