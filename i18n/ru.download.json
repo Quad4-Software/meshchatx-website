@@ -6,6 +6,7 @@
     "nojs_banner_title": "JavaScript отключён",
     "nojs_banner_text": "Прямые ссылки на загрузки и актуальные метаданные релизов подгружаются при включённом JavaScript. Команды Docker и Podman ниже работают как указано. Ссылку на страницу релизов для установщиков и wheel см. в следующем блоке.",
     "sbom": "SBOM",
+    "github_fallback": "Релизы на GitHub",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",

@@ -28,8 +28,8 @@
     "download.all_releases": "All releases",
     "download.channel_stable": "Stable",
     "download.channel_pre": "Pre-release",
-    "download.fetch_error": "Failed to fetch releases",
-    "download.gitea_error": "Gitea API ",
+    "download.fetch_error": "Failed to load download index",
+    "download.github_fallback": "GitHub releases",
   };
 
   function mcxT(key) {
@@ -317,99 +317,25 @@
     setView(mq.matches ? "desktop" : "mobile");
   }
 
-  function normalizeReleasesBundle(raw) {
-    if (!raw || typeof raw !== "object") return null;
+  function releasesPayloadFromWindow() {
+    var p = window.MCX_RELEASES_PAYLOAD;
+    if (p && typeof p === "object") return p;
     return {
-      gitea: Array.isArray(raw.gitea) ? raw.gitea : [],
-      github: Array.isArray(raw.github) ? raw.github : [],
+      stable: null,
+      prerelease: null,
+      githubFallbackUrl: "https://github.com/Quad4-Software/MeshChatX/releases",
     };
-  }
-
-  async function fetchStaticBundleSnapshot() {
-    var res = await fetch("/data/releases-bundle.json", {
-      credentials: "same-origin",
-    });
-    if (!res.ok) return null;
-    var data = await res.json();
-    if (Array.isArray(data)) return { gitea: data, github: [] };
-    return {
-      gitea: Array.isArray(data.gitea) ? data.gitea : [],
-      github: Array.isArray(data.github) ? data.github : [],
-    };
-  }
-
-  async function fetchStaticLegacyGiteaOnly() {
-    var res = await fetch("/data/gitea-releases.json", {
-      credentials: "same-origin",
-    });
-    if (!res.ok) throw new Error(mcxT("download.gitea_error") + res.status);
-    var list = await res.json();
-    return {
-      gitea: Array.isArray(list) ? list : [],
-      github: [],
-    };
-  }
-
-  async function fetchReleasesData() {
-    var fromSsr = normalizeReleasesBundle(window.MCX_RELEASES_BUNDLE);
-    if (fromSsr) return fromSsr;
-
-    var snap = await fetchStaticBundleSnapshot();
-    if (snap) return snap;
-    return await fetchStaticLegacyGiteaOnly();
-  }
-
-  function publishedOnly(list) {
-    return list.filter(function (r) {
-      return !r.draft;
-    });
-  }
-
-  function sortPublishedDesc(a, b) {
-    return new Date(b.published_at || 0) - new Date(a.published_at || 0);
-  }
-
-  function pickStableRelease(giteaList, githubList) {
-    var gp = publishedOnly(giteaList);
-    var s = gp.find(function (r) {
-      return r && !window.MCX.isLikelyPrereleaseRelease(r);
-    });
-    if (s) return s;
-    var hp = publishedOnly(githubList);
-    return (
-      hp.find(function (r) {
-        return r && !window.MCX.isLikelyPrereleaseRelease(r);
-      }) || null
-    );
-  }
-
-  function pickPrereleaseRelease(giteaList, githubList) {
-    var hp = publishedOnly(githubList).filter(
-      window.MCX.isLikelyPrereleaseRelease,
-    );
-    hp.sort(sortPublishedDesc);
-    if (hp.length) return hp[0];
-    var gp = publishedOnly(giteaList).filter(
-      window.MCX.isLikelyPrereleaseRelease,
-    );
-    gp.sort(sortPublishedDesc);
-    return gp.length ? gp[0] : null;
   }
 
   async function loadHomeVersion() {
     const badge = qs("[data-version-badge]");
     if (!badge) return;
     try {
-      const { gitea, github } = await fetchReleasesData();
-      const stableRel = pickStableRelease(gitea, github);
-      const preRel = pickPrereleaseRelease(gitea, github);
-      const rel =
-        stableRel ||
-        preRel ||
-        publishedOnly(gitea)[0] ||
-        publishedOnly(github)[0];
-      const v =
-        rel && rel.tag_name ? String(rel.tag_name).replace(/^v/, "") : null;
+      var p = releasesPayloadFromWindow();
+      var v =
+        (p.stable && p.stable.version) ||
+        (p.prerelease && p.prerelease.version) ||
+        null;
       if (!v) {
         badge.classList.add("hidden");
         return;
@@ -433,17 +359,20 @@
     "        ports:\n" +
     "            - 127.0.0.1:8000:8000\n" +
     "        volumes:\n" +
-    "            - ./meshchat-config:/config";
+    "            - meshchatx-config:/config\n" +
+    "\n" +
+    "volumes:\n" +
+    "    meshchatx-config:\n" +
+    "        name: meshchatx-config";
 
   function runCmd(engine) {
     return (
       engine +
-      " run -d \\\n" +
-      "  --name reticulum-meshchatx \\\n" +
+      " run -d --name reticulum-meshchatx \\\n" +
       "  --restart unless-stopped \\\n" +
       "  --security-opt no-new-privileges:true \\\n" +
       "  -p 127.0.0.1:8000:8000 \\\n" +
-      "  -v ./meshchat-config:/config \\\n" +
+      "  -v meshchatx-config:/config \\\n" +
       "  quad4io/meshchatx:latest"
     );
   }
@@ -461,6 +390,23 @@
     return e;
   }
 
+  function appendGithubFallbackLink(meta, ghUrl) {
+    if (!meta || !ghUrl) return;
+    meta.appendChild(document.createElement("br"));
+    const a = el(
+      "a",
+      {
+        href: ghUrl,
+        target: "_blank",
+        rel: "noopener noreferrer",
+        class: "mcx-link-blue",
+      },
+      null,
+    );
+    a.textContent = mcxT("download.github_fallback");
+    meta.appendChild(a);
+  }
+
   function setDownloadPage(data) {
     const meta = qs("#mcx-download-meta");
     if (!meta) return;
@@ -468,11 +414,13 @@
     const sel = data.selectedRelease;
     const channel = data.selectedChannel || "stable";
     const err = data.error;
+    const ghFallback = data.githubFallbackUrl || "";
 
     meta.textContent = "";
 
     if (err) {
       meta.appendChild(el("span", { class: "mcx-muted" }, err));
+      appendGithubFallbackLink(meta, ghFallback);
       return;
     }
 
@@ -480,6 +428,7 @@
       meta.appendChild(
         el("span", { class: "mcx-muted" }, mcxT("download.no_release")),
       );
+      appendGithubFallbackLink(meta, ghFallback);
       return;
     }
 
@@ -645,7 +594,11 @@
 
     const termuxUrl = wheelUrl
       ? "pip install " + wheelUrl
-      : "pip install https://github.com/Quad4-Software/MeshChatX/releases/download/v" +
+      : "pip install " +
+        (
+          ghFallback || "https://github.com/Quad4-Software/MeshChatX/releases"
+        ).replace(/\/releases\/?$/i, "") +
+        "/releases/download/v" +
         sel.version +
         "/reticulum_meshchatx-" +
         sel.version +
@@ -702,13 +655,14 @@
     let selectedRelease = null;
     let selectedChannel = "stable";
     let error = null;
+    let githubFallbackUrl =
+      "https://github.com/Quad4-Software/MeshChatX/releases";
 
     try {
-      const { gitea, github } = await fetchReleasesData();
-      const latestStable = pickStableRelease(gitea, github);
-      const latestPrerelease = pickPrereleaseRelease(gitea, github);
-      stableRelease = window.MCX.parseRelease(latestStable);
-      preRelease = window.MCX.parseRelease(latestPrerelease);
+      var payload = releasesPayloadFromWindow();
+      githubFallbackUrl = payload.githubFallbackUrl || githubFallbackUrl;
+      stableRelease = payload.stable || null;
+      preRelease = payload.prerelease || null;
 
       const params = new URLSearchParams(window.location.search);
       const wantsPrerelease = params.get("channel") === "prerelease";
@@ -741,6 +695,7 @@
       hasPreRelease: Boolean(preRelease),
       publishedAtRelative,
       error,
+      githubFallbackUrl,
     });
 
     initCopyButtons();

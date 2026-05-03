@@ -16,8 +16,7 @@
     "test:coverage": "vitest run --coverage",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "lint": "eslint .",
-    "format": "prettier -w .",
-    "fetch:releases": "node scripts/fetch-releases.mjs"
+    "format": "prettier -w ."
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

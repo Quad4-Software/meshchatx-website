@@ -205,8 +205,8 @@
       "all_releases": "All releases",
       "channel_stable": "Stable",
       "channel_pre": "Pre-release",
-      "fetch_error": "Failed to fetch releases",
-      "gitea_error": "Gitea API "
+      "fetch_error": "Failed to load download index",
+      "github_fallback": "GitHub releases"
     }
   }
 }

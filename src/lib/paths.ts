@@ -118,7 +118,10 @@ export function pageIdFromPathname(path: string) {
   }
   if (parts.length === 2) {
     const [a, b] = parts;
-    if ((a === "de" || a === "ru" || a === "it" || a === "zh") && isPageSlug(b!)) {
+    if (
+      (a === "de" || a === "ru" || a === "it" || a === "zh") &&
+      isPageSlug(b!)
+    ) {
       return b;
     }
   }

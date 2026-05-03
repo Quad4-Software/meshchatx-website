@@ -26,8 +26,8 @@
     '<script>window.MCX_I18N=' + data.mcxI18NJson + '<' + '/script>'
   );
   const mcxReleasesHead = $derived(
-    '<script>window.MCX_RELEASES_BUNDLE=' +
-      data.releasesBundleLiteral +
+    '<script>window.MCX_RELEASES_PAYLOAD=' +
+      data.mcxReleasesPayloadLiteral +
       ';<' +
       '/script>'
   );

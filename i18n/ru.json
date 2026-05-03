@@ -206,7 +206,7 @@
       "channel_stable": "Стабильный",
       "channel_pre": "Пре-релиз",
       "fetch_error": "Не удалось загрузить релизы",
-      "gitea_error": "Gitea API "
+      "github_fallback": "Релизы на GitHub"
     }
   }
 }

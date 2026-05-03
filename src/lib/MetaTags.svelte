@@ -39,7 +39,7 @@
   <meta name="description" content={tDesc} />
   <link rel="sitemap" type="application/xml" title="Sitemap" href={`${SITE_ORIGIN}/sitemap.xml`} />
   <link rel="canonical" href={can} />
-  {#each LOCALES as l}
+  {#each LOCALES as l (l)}
     <link rel="alternate" hreflang={l} href={canonicalForLocale(l, page)} />
   {/each}
   <link rel="alternate" hreflang="x-default" href={canonicalForLocale('en', page)} />
@@ -55,7 +55,7 @@
   <meta property="og:image" content={img} />
   <meta property="og:image:alt" content={tOg} />
   <meta property="og:locale" content={OG_LOCALE[locKey]} />
-  {#each LOCALES as l}
+  {#each LOCALES as l (l)}
     {#if l !== locKey}
       <meta property="og:locale:alternate" content={OG_LOCALE[l]} />
     {/if}

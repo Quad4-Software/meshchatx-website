@@ -1,6 +1,6 @@
 # MeshChatX website
 
-Marketing site for [MeshChatX](https://github.com/Quad4-Software/MeshChatX): [SvelteKit](https://kit.svelte.dev/) with [`@sveltejs/adapter-node`](https://github.com/sveltejs/kit/tree/main/packages/adapter-node). Pages are **server-rendered** (releases from Gitea/GitHub are fetched on the server with a short in-memory cache; `static/data/` snapshots are used if an API fails). `sitemap.xml` and `robots.txt` stay build-prerendered. Locales **en**, **de**, **ru**, **it** (strings in `i18n/`).
+Marketing site for [MeshChatX](https://github.com/Quad4-Software/MeshChatX): [SvelteKit](https://kit.svelte.dev/) with [`@sveltejs/adapter-node`](https://github.com/sveltejs/kit/tree/main/packages/adapter-node). Pages are **server-rendered**. Download links and the home version badge use **[bunny.net Edge Storage](https://docs.bunny.net/api-reference/storage/browse-files/list-files)** (list API) under your storage zone (default layout: `/{versionsPrefix}/{version}/win/`, `mac/`, etc.). Public file URLs use **`BUNNY_PUBLIC_BASE_URL`** (defaults to **`https://meshchatx.b-cdn.net`** Pull Zone; override for staging or another CDN). GitHub remains linked as a fallback. `sitemap.xml` and `robots.txt` stay build-prerendered. Locales **en**, **de**, **ru**, **it**, **zh** (strings in `i18n/`).
 
 **PWA:** Installable web app via `@vite-pwa/sveltekit`. The service worker **does not cache HTML navigations or `/data/*`** (always network), so SSR pages and embedded release payloads stay fresh; static assets use a separate stale-while-revalidate cache.
 
@@ -20,7 +20,9 @@ pnpm run build
 
 Output is written to **`build/`** (run **`pnpm start`** / `node build` after `pnpm run build`; the Docker image runs this).
 
-Useful scripts: `pnpm run dev` (Vite dev server), `pnpm run preview`, `pnpm run check` (svelte-check), `pnpm run lint`, `pnpm test`, **`pnpm run test:coverage`**. Snapshot files under **`static/data/`** (`releases-bundle.json`, `gitea-releases.json`) back the site when live APIs are unreachable; refresh them with **`pnpm run fetch:releases`** before shipping or from CI. Optional env **`RELEASES_CACHE_SECONDS`** (default 120, max 3600) tunes server-side release cache TTL.
+Useful scripts: `pnpm run dev` (Vite dev server), `pnpm run preview`, `pnpm run check` (svelte-check), `pnpm run lint`, `pnpm test`, **`pnpm run test:coverage`**.
+
+**Releases (server):** Set **`BUNNY_STORAGE_ACCESS_KEY`** (read-only storage password; header `AccessKey`). Defaults: **`BUNNY_STORAGE_HOST`** `la.storage.bunnycdn.com`, **`BUNNY_STORAGE_ZONE`** `meshchatx`, **`BUNNY_VERSIONS_PREFIX`** `master` (lists `/{zone}/{prefix}/` for version directories). **`BUNNY_PUBLIC_BASE_URL`**: base URL for browser download links (defaults to **`https://meshchatx.b-cdn.net`**; set explicitly to another origin, e.g. `https://la.storage.bunnycdn.com/meshchatx`, if you need raw storage instead of the Pull Zone). **`RELEASES_CACHE_SECONDS`**: in-memory cache TTL (default **300**, max **86400**). Without `BUNNY_STORAGE_ACCESS_KEY`, download metadata is empty and the UI points users to GitHub.
 
 ### SEO and social
 

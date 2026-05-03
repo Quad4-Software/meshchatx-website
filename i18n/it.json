@@ -206,7 +206,7 @@
       "channel_stable": "Stabile",
       "channel_pre": "Pre-release",
       "fetch_error": "Impossibile caricare le release",
-      "gitea_error": "API Gitea "
+      "github_fallback": "Release su GitHub"
     }
   }
 }

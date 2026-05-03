@@ -6,6 +6,7 @@
     "nojs_banner_title": "JavaScript disattivato",
     "nojs_banner_text": "I link di download diretti e i metadati delle release in tempo reale richiedono JavaScript. I comandi Docker e Podman più sotto funzionano come indicato. Usa il link alle release nella sezione seguente per installer e wheel versionati.",
     "sbom": "SBOM",
+    "github_fallback": "Release su GitHub",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",

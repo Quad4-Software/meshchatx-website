@@ -19,7 +19,11 @@
         ports:
             - 127.0.0.1:8000:8000
         volumes:
-            - ./meshchat-config:/config`;
+            - meshchatx-config:/config
+
+volumes:
+    meshchatx-config:
+        name: meshchatx-config`;
 </script>
 
 <section class="mcx-page-head">
@@ -42,6 +46,11 @@
             ></span
           >
         </noscript>
+      </p>
+      <p class="mcx-muted mcx-text-sm" style="margin-top:0.5rem">
+        <a href={MESHCHATX_RELEASES} class="mcx-link-blue" target="_blank" rel="noopener noreferrer"
+          >{$_('dl.github_fallback')}</a
+        >
       </p>
       <p>
         <a
@@ -286,12 +295,11 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             <div style="border-top:1px solid var(--border);padding-top:1.5rem">
               <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{$_('dl.containers.run_cmd')}</p>
               <div class="mcx-pre-wrap">
-                <pre class="mcx-pre" id="mcx-docker-run">docker run -d \
-  --name reticulum-meshchatx \
+                <pre class="mcx-pre" id="mcx-docker-run">docker run -d --name reticulum-meshchatx \
   --restart unless-stopped \
   --security-opt no-new-privileges:true \
   -p 127.0.0.1:8000:8000 \
-  -v ./meshchat-config:/config \
+  -v meshchatx-config:/config \
   quad4io/meshchatx:latest</pre>
                 <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-docker-run-copy" data-copy="" title="{$_('dl.containers.copy_run')}">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
@@ -332,12 +340,11 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             <div style="border-top:1px solid var(--border);padding-top:1.5rem">
               <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.75rem">{$_('dl.containers.run_cmd')}</p>
               <div class="mcx-pre-wrap">
-                <pre class="mcx-pre" id="mcx-podman-run">podman run -d \
-  --name reticulum-meshchatx \
+                <pre class="mcx-pre" id="mcx-podman-run">podman run -d --name reticulum-meshchatx \
   --restart unless-stopped \
   --security-opt no-new-privileges:true \
   -p 127.0.0.1:8000:8000 \
-  -v ./meshchat-config:/config \
+  -v meshchatx-config:/config \
   quad4io/meshchatx:latest</pre>
                 <button type="button" class="mcx-copy-btn" style="top:0.75rem;right:0.75rem" id="mcx-podman-run-copy" data-copy="" title="{$_('dl.containers.copy_run')}">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
