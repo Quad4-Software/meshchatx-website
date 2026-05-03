@@ -36,7 +36,6 @@
 <svelte:head>
   {@html mcxI18NHead}
   {@html mcxReleasesHead}
-  <script src="/js/releases.js" defer></script>
   <script src="/js/app.js" defer></script>
 </svelte:head>
 
