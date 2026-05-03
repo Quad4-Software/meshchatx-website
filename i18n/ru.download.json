@@ -107,7 +107,8 @@
       "termux_h3": "Termux",
       "intro": "Отдельный APK для Android ещё не доступен.",
       "badge": "Скоро",
-      "btn_apk": "Скачать .apk"
+      "btn_apk": "Скачать .apk",
+      "obtainium_alt": "Получить в Obtainium"
     },
     "termux": {
       "h2": "Termux",

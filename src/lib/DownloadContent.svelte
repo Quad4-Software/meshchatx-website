@@ -422,6 +422,19 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             ><svg class="mcx-icon" aria-hidden="true"><use href="#i-download" /></svg> {$_('dl.android.btn_apk')}</a
           >
         </div>
+        <div style="margin-bottom:1rem">
+          <a
+            href="https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/Quad4-Software/MeshChatX"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png"
+              height="60"
+              alt={$_('dl.android.obtainium_alt')}
+            />
+          </a>
+        </div>
         <h3 style="font-size:1rem;font-weight:800;margin:1.75rem 0 0.5rem">{$_('dl.android.termux_h3')}</h3>
         <p class="mcx-muted" style="margin-bottom:1.5rem">
           {$_('dl.termux.intro_before')}<code class="mcx-code-inline">meshchat --headless</code>{$_('dl.termux.intro_after')}

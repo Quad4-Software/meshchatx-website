@@ -107,7 +107,8 @@
       "termux_h3": "Termux",
       "intro": "L'APK Android autonomo non è ancora disponibile.",
       "badge": "In arrivo",
-      "btn_apk": "Scarica .apk"
+      "btn_apk": "Scarica .apk",
+      "obtainium_alt": "Scarica con Obtainium"
     },
     "termux": {
       "h2": "Termux",

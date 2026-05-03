@@ -107,7 +107,8 @@
       "termux_h3": "Termux",
       "intro": "独立 Android APK 尚未提供。",
       "badge": "即将推出",
-      "btn_apk": "下载 .apk"
+      "btn_apk": "下载 .apk",
+      "obtainium_alt": "在 Obtainium 获取"
     },
     "termux": {
       "h2": "Termux",

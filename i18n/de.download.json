@@ -107,7 +107,8 @@
       "termux_h3": "Termux",
       "intro": "Ein eigenständiges Android-APK ist noch nicht verfügbar.",
       "badge": "Demnächst",
-      "btn_apk": ".apk herunterladen"
+      "btn_apk": ".apk herunterladen",
+      "obtainium_alt": "Mit Obtainium laden"
     },
     "termux": {
       "h2": "Termux",

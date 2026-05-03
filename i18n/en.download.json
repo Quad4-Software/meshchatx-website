@@ -107,7 +107,8 @@
       "termux_h3": "Termux",
       "intro": "A standalone Android APK is not yet available.",
       "badge": "Coming soon",
-      "btn_apk": "Download .apk"
+      "btn_apk": "Download .apk",
+      "obtainium_alt": "Get it on Obtainium"
     },
     "termux": {
       "h2": "Termux",
