@@ -471,7 +471,7 @@
       line.appendChild(rel);
     }
 
-    if (data.hasPreRelease) {
+    if (data.hasPreRelease && data.hasStableRelease) {
       const wrap = el("span", { class: "mcx-channel-pill" });
       var loc =
         typeof window !== "undefined" && window.location

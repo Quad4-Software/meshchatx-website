@@ -82,6 +82,79 @@ describe("bunny-releases.server", () => {
     expect(p.prerelease?.apkUrl).toContain("pre.apk");
   });
 
+  it("returns prerelease only when master is empty and dev has an RC", async () => {
+    const fetchSpy = vi.fn(async (...args: unknown[]) => {
+      const url = String(args[0]);
+      if (url.endsWith("/meshchatx/master/")) {
+        return { ok: true, json: async () => [] };
+      }
+      if (url.endsWith("/meshchatx/dev/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "v1.0.0-rc.1", IsDirectory: true }],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/v1.0.0-rc.1/linux/")) {
+        return {
+          ok: true,
+          json: async () => [
+            { ObjectName: "only.apk", IsDirectory: false },
+          ],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/v1.0.0-rc.1/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "linux", IsDirectory: true }],
+        };
+      }
+      return { ok: false, json: async () => [] };
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+    const p = await getMcxReleasesPayload();
+    expect(p.stable).toBeNull();
+    expect(p.prerelease?.version).toBe("1.0.0-rc.1");
+    expect(p.prerelease?.apkUrl).toContain("only.apk");
+  });
+
+  it("returns stable only when dev has no RC folders but master has a release", async () => {
+    const fetchSpy = vi.fn(async (...args: unknown[]) => {
+      const url = String(args[0]);
+      if (url.endsWith("/meshchatx/master/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "v2.1.0", IsDirectory: true }],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "v2.1.0", IsDirectory: true }],
+        };
+      }
+      if (url.endsWith("/meshchatx/master/v2.1.0/linux/")) {
+        return {
+          ok: true,
+          json: async () => [
+            { ObjectName: "solo.apk", IsDirectory: false },
+          ],
+        };
+      }
+      if (url.endsWith("/meshchatx/master/v2.1.0/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "linux", IsDirectory: true }],
+        };
+      }
+      return { ok: false, json: async () => [] };
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+    const p = await getMcxReleasesPayload();
+    expect(p.stable?.version).toBe("2.1.0");
+    expect(p.stable?.apkUrl).toContain("solo.apk");
+    expect(p.prerelease).toBeNull();
+  });
+
   it("lists master, picks stable and prerelease, maps asset URLs", async () => {
     const fetchSpy = vi.fn(async (...args: unknown[]) => {
       const url = String(args[0]);
