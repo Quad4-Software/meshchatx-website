@@ -5,6 +5,7 @@ import {
   crossLangHref,
   localeFromPathname,
   pageIdFromPathname,
+  redirectPathWithoutIndexHtml,
   SITE_ORIGIN,
 } from "./paths";
 
@@ -62,5 +63,26 @@ describe("paths", () => {
     expect(localeFromPathname("/it/")).toBe("it");
     expect(localeFromPathname("/zh/contact")).toBe("zh");
     expect(localeFromPathname("/sitemap.xml")).toBe("en");
+  });
+
+  it("redirectPathWithoutIndexHtml", () => {
+    expect(redirectPathWithoutIndexHtml("/download")).toBeNull();
+    expect(redirectPathWithoutIndexHtml("/index.html")).toBe("/");
+    expect(redirectPathWithoutIndexHtml("/INDEX.HTML")).toBe("/");
+    expect(redirectPathWithoutIndexHtml("/download/index.html")).toBe(
+      "/download",
+    );
+    expect(redirectPathWithoutIndexHtml("/ru/index.html")).toBe("/ru/");
+    expect(redirectPathWithoutIndexHtml("/RU/index.html")).toBe("/ru/");
+    expect(redirectPathWithoutIndexHtml("/ru/download/index.html")).toBe(
+      "/ru/download",
+    );
+    expect(redirectPathWithoutIndexHtml("/en/index.html")).toBe("/");
+    expect(redirectPathWithoutIndexHtml("/en/download/index.html")).toBe(
+      "/download",
+    );
+    expect(redirectPathWithoutIndexHtml("/zh/contact/index.htm")).toBe(
+      "/zh/contact",
+    );
   });
 });

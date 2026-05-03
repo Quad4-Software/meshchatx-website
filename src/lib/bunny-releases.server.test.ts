@@ -122,6 +122,50 @@ describe("bunny-releases.server", () => {
     expect(withAccessKey).toBe(true);
   });
 
+  it("falls back to dev when master has no version folders", async () => {
+    vi.stubEnv("BUNNY_VERSIONS_PREFIX", "master");
+    const fetchSpy = vi.fn(async (...args: unknown[]) => {
+      const url = String(args[0]);
+      if (url.endsWith("/meshchatx/master/")) {
+        return {
+          ok: true,
+          json: async () => [
+            { ObjectName: "readme.txt", IsDirectory: false },
+          ],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "v2.0.0", IsDirectory: true }],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/v2.0.0/win/")) {
+        return {
+          ok: true,
+          json: async () => [
+            {
+              ObjectName: "MeshChatX-v2.0.0-win-installer.exe",
+              IsDirectory: false,
+              LastChanged: "2026-05-01T00:00:00Z",
+            },
+          ],
+        };
+      }
+      if (url.endsWith("/meshchatx/dev/v2.0.0/")) {
+        return {
+          ok: true,
+          json: async () => [{ ObjectName: "win", IsDirectory: true }],
+        };
+      }
+      return { ok: false, json: async () => [] };
+    });
+    vi.stubGlobal("fetch", fetchSpy);
+    const p = await getMcxReleasesPayload();
+    expect(p.stable?.version).toBe("2.0.0");
+    expect(p.stable?.winInstallerUrl).toContain("meshchatx/dev/v2");
+  });
+
   it("defaults public asset URLs to meshchatx.b-cdn.net when BUNNY_PUBLIC_BASE_URL unset", async () => {
     vi.stubEnv("BUNNY_PUBLIC_BASE_URL", "");
     const fetchSpy = vi.fn(async (...args: unknown[]) => {

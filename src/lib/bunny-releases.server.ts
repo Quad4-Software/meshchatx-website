@@ -117,6 +117,56 @@ function looksLikeVersionFolder(name: string): boolean {
   return /\d/.test(name);
 }
 
+function listingHasVersionSubdirs(entries: BunnyEntry[]): boolean {
+  return entries
+    .filter(entryIsDir)
+    .map(entryName)
+    .some((n) => looksLikeVersionFolder(n));
+}
+
+async function listWithVersionChildren(
+  host: string,
+  zone: string,
+  accessKey: string,
+  dir: string,
+): Promise<BunnyEntry[] | null> {
+  const list = await listBunnyDirectory(host, zone, accessKey, dir);
+  if (!list?.length || !listingHasVersionSubdirs(list)) return null;
+  return list;
+}
+
+async function resolveReleaseListingPrefix(
+  host: string,
+  zone: string,
+  accessKey: string,
+  preferred: string,
+): Promise<{ prefix: string; rootList: BunnyEntry[] } | null> {
+  const tryOrder: string[] = [];
+  for (const p of [preferred, "", "dev", "master", "release"]) {
+    const norm = p.replace(/^\/+|\/+$/g, "");
+    if (!tryOrder.includes(norm)) tryOrder.push(norm);
+  }
+  for (const prefixPath of tryOrder) {
+    const list = await listWithVersionChildren(
+      host,
+      zone,
+      accessKey,
+      prefixPath,
+    );
+    if (list) return { prefix: prefixPath, rootList: list };
+  }
+  const root = await listBunnyDirectory(host, zone, accessKey, "");
+  if (!root?.length) return null;
+  for (const e of root) {
+    if (!entryIsDir(e)) continue;
+    const name = entryName(e);
+    if (!name || looksLikeVersionFolder(name)) continue;
+    const list = await listWithVersionChildren(host, zone, accessKey, name);
+    if (list) return { prefix: name, rootList: list };
+  }
+  return null;
+}
+
 function compareVersionDesc(a: string, b: string): number {
   const na = a.replace(/^v/i, "");
   const nb = b.replace(/^v/i, "");
@@ -299,7 +349,7 @@ async function buildRowForVersion(
   versionFolder: string,
   isPrerelease: boolean,
 ): Promise<McxDownloadRow | null> {
-  const versionRoot = `${prefix}/${versionFolder}`.replace(/^\/+/, "");
+  const versionRoot = (prefix ? `${prefix}/` : "") + versionFolder;
   const files = await collectFilesUnderVersion(
     host,
     zone,
@@ -321,12 +371,13 @@ export async function buildMcxReleasesPayload(): Promise<McxReleasesPayload> {
 
   const host = storageHost();
   const zone = storageZone();
-  const prefix = versionsPrefix();
+  const preferred = versionsPrefix();
 
-  const rootList = await listBunnyDirectory(host, zone, key, prefix);
-  if (!rootList) {
+  const resolved = await resolveReleaseListingPrefix(host, zone, key, preferred);
+  if (!resolved) {
     return { stable: null, prerelease: null, githubFallbackUrl };
   }
+  const { prefix, rootList } = resolved;
 
   const dirNames = rootList.filter(entryIsDir).map(entryName).filter(Boolean);
 

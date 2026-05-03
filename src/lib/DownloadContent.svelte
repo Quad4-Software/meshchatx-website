@@ -47,11 +47,13 @@ volumes:
           >
         </noscript>
       </p>
-      <p class="mcx-muted mcx-text-sm" style="margin-top:0.5rem">
-        <a href={MESHCHATX_RELEASES} class="mcx-link-blue" target="_blank" rel="noopener noreferrer"
-          >{$_('dl.github_fallback')}</a
-        >
-      </p>
+      <noscript>
+        <p class="mcx-muted mcx-text-sm" style="margin-top:0.5rem">
+          <a href={MESHCHATX_RELEASES} class="mcx-link-blue" target="_blank" rel="noopener noreferrer"
+            >{$_('dl.github_fallback')}</a
+          >
+        </p>
+      </noscript>
       <p>
         <a
           id="mcx-sbom-link"

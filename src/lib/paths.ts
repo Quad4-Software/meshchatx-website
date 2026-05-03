@@ -1,4 +1,4 @@
-import type { AppLocale } from "./merge-messages";
+import { LOCALES, type AppLocale } from "./merge-messages";
 
 export const SITE_ORIGIN = "https://meshchatx.com";
 
@@ -8,6 +8,33 @@ export function localeFromPathname(pathname: string): AppLocale {
   if (first === "de" || first === "ru" || first === "it" || first === "zh")
     return first;
   return "en";
+}
+
+const NON_EN_LOCALES = new Set(
+  LOCALES.filter((l): l is AppLocale => l !== "en"),
+);
+
+/**
+ * Static hosts that serve `/ru/index.html` style paths: redirect to canonical URLs.
+ * Returns null if no redirect applies.
+ */
+export function redirectPathWithoutIndexHtml(pathname: string): string | null {
+  if (!/\/index\.html?$/i.test(pathname)) return null;
+  const stripped = pathname.replace(/\/index\.html?$/i, "");
+  const base = stripped.replace(/\/+$/, "") || "/";
+  if (base === "/") return "/";
+  const parts = base.split("/").filter(Boolean);
+  if (!parts.length) return "/";
+  const first = parts[0]!.toLowerCase();
+  if (first === "en") {
+    if (parts.length === 1) return "/";
+    return "/" + parts.slice(1).join("/");
+  }
+  if (NON_EN_LOCALES.has(first as AppLocale)) {
+    if (parts.length === 1) return `/${first}/`;
+    return "/" + [first, ...parts.slice(1)].join("/");
+  }
+  return "/" + parts.join("/");
 }
 
 export type PageId =
