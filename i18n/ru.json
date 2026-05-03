@@ -83,7 +83,7 @@
   },
   "license": {
     "h1": "Лицензия",
-    "intro": "Публичный сайт meshchatx.com и код этой веб-площадки распространяются под лицензией 0BSD (авторские права Quad4). Приложение MeshChatX распространяется под лицензиями 0BSD и MIT; полные тексты лицензий приложения приведены ниже.",
+    "intro": "Публичный сайт meshchatx.com и код этой веб-площадки распространяются под лицензией 0BSD (авторские права Quad4). Приложение MeshChatX распространяется под лицензиями 0BSD и MIT. Полные тексты лицензий приложения приведены ниже.",
     "h2_website": "Сайт",
     "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
     "h2_app": "Приложение MeshChatX",
@@ -98,14 +98,14 @@
     "p_analytics": "Публичный Сайт не подключает сторонние скрипты аналитики или трекинга в вашем браузере и не вызывает внешние веб-API. При обычной загрузке страниц запросы остаются в рамках этого хоста.",
     "p_analytics_detail": "Главная и раздел скачивания читают сведения о версиях из статического файла, отдаваемого с того же Сайта и обновляемого при публикации сборок. Сайт не отправляет ваше поведение в GitHub, Gitea, сервисы аналитики или третьим сторонам в фоне. Ссылки на скачивание и исходный код ведут на тот хост, который вы открываете, когда нажимаете ссылку.",
     "h2_rights": "Ваши права (ЕЭЗ и Великобритания)",
-    "p_rights": "В зависимости от страны проживания у вас могут быть права на доступ, исправление, удаление или ограничение обработки персональных данных, а также на жалобу в надзорный орган. Этот маркетинговый Сайт рассчитан на минимальную обработку данных. По конкретным вопросам, касающимся этого Сайта, свяжитесь с нами, как указано ниже; ответим в соответствии с применимым правом.",
+    "p_rights": "В зависимости от страны проживания у вас могут быть права на доступ, исправление, удаление или ограничение обработки персональных данных, а также на жалобу в надзорный орган. Этот маркетинговый Сайт рассчитан на минимальную обработку данных. По конкретным вопросам, касающимся этого Сайта, свяжитесь с нами, как указано ниже. Ответим в соответствии с применимым правом.",
     "h2_contact": "Контакты",
     "p_contact": "По вопросам конфиденциальности этого Сайта см. <a href=\"/ru/contact\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">страницу контактов</a>."
   },
   "home": {
     "hero": {
       "h1": "Единый клиент Reticulum",
-      "lead": "MeshChatX — клиент Reticulum «всё в одном»: обмен сообщениями, звонки и браузер Nomadnet."
+      "lead": "MeshChatX, клиент Reticulum «всё в одном». Обмен сообщениями, звонки и браузер Nomadnet."
     },
     "platform": {
       "macos": "macOS",
@@ -160,6 +160,17 @@
       "platform_h3": "Поддержка платформ",
       "platform_p": "Официально: Desktop (Electron) и Web (Docker/Python). Android через Termux."
     },
+    "security": {
+      "h2": "Безопасность и целостность",
+      "lead": "Проверяемость, прозрачность и осторожные настройки в десктопном стеке, чтобы было понятно, что поставляется и как ведёт себя приложение.",
+      "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> уровень 3 с усиленной provenance цепочки поставки для релизных сборок.",
+      "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Целостность ASAR</a> помогает выявлять подмену упакованных ресурсов приложения.",
+      "bullet_inapp": "Встроенный монитор целостности для дополнительной защиты во время работы.",
+      "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> и подписи Cosign для проверяемых артефактов там, где это применимо.",
+      "bullet_sast": "Статический анализ и проверка зависимостей: Trivy, pip-audit, Ruff и CodeQL в конвейере поставки.",
+      "bullet_csp": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#7-define-a-content-security-policy\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">CSP</a> и строгие умолчания для удалённого контента в оболочке Electron (включая дисциплину CORS, где уместно).",
+      "bullet_transport": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#1-only-load-secure-content\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">HTTPS и WSS</a> по умолчанию для удалённых страниц и транспортов, где это поддерживается."
+    },
     "split": {
       "h2_line1": "Полная анонимность",
       "h2_line2": "и Неудержимость",
@@ -169,6 +180,11 @@
       "item2_p": "Без документов, телефона или почты. Доступ к сети анонимно, без участия третьих лиц и каких-либо препятствий.",
       "item3_h4": "Без цензуры",
       "item3_p": "Создано для mesh-сетей и устойчивости к цензуре. Сообщения распространяются автоматически, а локальный архив всегда под рукой."
+    },
+    "videos": {
+      "h2": "Видео",
+      "lead": "Видео о MeshChatX",
+      "youtube_title": "MeshChatX на YouTube"
     }
   },
   "js": {

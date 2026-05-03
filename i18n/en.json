@@ -83,7 +83,7 @@
   },
   "license": {
     "h1": "License",
-    "intro": "The meshchatx.com public website and this site's code are released under 0BSD (copyright Quad4). The MeshChatX application is released under 0BSD and MIT; the full application license texts follow below.",
+    "intro": "The meshchatx.com public website and this site's code are released under 0BSD (copyright Quad4). The MeshChatX application is released under 0BSD and MIT. The full application license texts follow below.",
     "h2_website": "Website",
     "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
     "h2_app": "MeshChatX application",
@@ -160,6 +160,17 @@
       "platform_h3": "Platform Support",
       "platform_p": "Officially supported on Desktop (Electron) and Web (Docker/Python). Android is available via Termux."
     },
+    "security": {
+      "h2": "Security & integrity",
+      "lead": "Verification, transparency, and conservative defaults in the desktop stack, so you know what shipped and how it behaves.",
+      "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> Level 3 with hardened supply-chain provenance for release builds.",
+      "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR integrity</a> monitoring helps detect tampering with packaged application resources.",
+      "bullet_inapp": "In-app integrity monitor for additional runtime assurance.",
+      "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> cosign-based signing for verifiable artifacts where applicable.",
+      "bullet_sast": "Static analysis and dependency scanning with Trivy, pip-audit, Ruff, and CodeQL in the delivery pipeline.",
+      "bullet_csp": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#7-define-a-content-security-policy\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">CSP</a> plus tight defaults for remote content in the Electron shell (including CORS discipline where it applies).",
+      "bullet_transport": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#1-only-load-secure-content\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">HTTPS and WSS</a> by default for remote pages and transports where supported."
+    },
     "split": {
       "h2_line1": "Truly Anonymous",
       "h2_line2": "& Unstoppable",
@@ -169,6 +180,11 @@
       "item2_p": "No government ID, phone number, or email required. Access the network anonymously without any third-party verification or hurdles.",
       "item3_h4": "No Censorship",
       "item3_p": "Built for mesh networks and censorship resistance. Your messages propagate automatically and local archiving ensures your data is always available."
+    },
+    "videos": {
+      "h2": "Videos",
+      "lead": "Videos About MeshChatX",
+      "youtube_title": "MeshChatX on YouTube"
     }
   },
   "js": {

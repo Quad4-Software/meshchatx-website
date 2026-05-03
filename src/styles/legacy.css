@@ -638,19 +638,19 @@ html.dark .mcx-badge-mit {
 .mcx-hero {
   position: relative;
   overflow: hidden;
-  padding: 2.5rem 0 4.5rem;
+  padding: 2.5rem 0 4rem;
 }
 
 @media (min-width: 640px) {
   .mcx-hero {
-    padding: 3rem 0 8rem;
+    padding: 3rem 0 6rem;
   }
 }
 
 @media (min-width: 768px) {
   .mcx-hero {
-    padding-top: 6rem;
-    padding-bottom: 12rem;
+    padding-top: 5rem;
+    padding-bottom: 9rem;
   }
 }
 
@@ -1462,12 +1462,12 @@ html.dark .mcx-btn-ghost:hover {
 }
 
 .mcx-section {
-  padding: 4rem 0;
+  padding: 3.5rem 0;
 }
 
 @media (min-width: 768px) {
   .mcx-section {
-    padding: 8rem 0;
+    padding: 5.5rem 0;
   }
 }
 
@@ -1483,12 +1483,22 @@ html.dark .mcx-section--alt {
 
 .mcx-section-head {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 
 @media (min-width: 768px) {
   .mcx-section-head {
-    margin-bottom: 6rem;
+    margin-bottom: 3.5rem;
+  }
+}
+
+.mcx-section-head--compact {
+  margin-bottom: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .mcx-section-head--compact {
+    margin-bottom: 2rem;
   }
 }
 
@@ -1506,9 +1516,63 @@ html.dark .mcx-section--alt {
   color: var(--text-muted);
 }
 
+.mcx-security-list {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.65;
+  font-size: 0.9375rem;
+}
+
+.mcx-security-panel {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 1.35rem;
+}
+
+@media (min-width: 768px) {
+  .mcx-security-panel {
+    padding: 1.75rem 2rem 1.6rem;
+  }
+}
+
+.mcx-security-panel .mcx-security-list {
+  padding-left: 1.125rem;
+}
+
+.mcx-security-list li {
+  margin-bottom: 0.65rem;
+}
+
+.mcx-security-list li:last-child {
+  margin-bottom: 0;
+}
+
+.mcx-security-list .mcx-link-blue {
+  font-weight: 700;
+}
+
+.mcx-video-embed {
+  position: relative;
+  max-width: 56rem;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.mcx-video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
 .mcx-feature-grid {
   display: grid;
-  gap: 2rem;
+  gap: 1.75rem;
   grid-template-columns: 1fr;
 }
 
@@ -1679,12 +1743,12 @@ html.dark .mcx-split-icon {
 }
 
 .mcx-page-head {
-  padding: 0 0 3rem;
+  padding: 0 0 2.5rem;
 }
 
 @media (min-width: 768px) {
   .mcx-page-head {
-    padding: 0 0 6rem;
+    padding: 0 0 4.5rem;
   }
 }
 

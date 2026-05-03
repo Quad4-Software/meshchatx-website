@@ -13,7 +13,7 @@ export default defineConfig({
       manifest: {
         name: "MeshChatX",
         short_name: "MeshChatX",
-        description: "MeshChatX — Reticulum mesh chat",
+        description: "MeshChatX, Reticulum mesh chat",
         theme_color: "#ffffff",
         background_color: "#09090b",
         display: "standalone",

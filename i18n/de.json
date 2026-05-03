@@ -83,7 +83,7 @@
   },
   "license": {
     "h1": "Lizenz",
-    "intro": "Die öffentliche Website meshchatx.com und der zugehörige Code dieser Website stehen unter 0BSD (Copyright Quad4). Die MeshChatX-Anwendung steht unter 0BSD und MIT; die vollständigen Anwendungslizenztexte folgen unten.",
+    "intro": "Die öffentliche Website meshchatx.com und der zugehörige Code dieser Website stehen unter 0BSD (Copyright Quad4). Die MeshChatX-Anwendung steht unter 0BSD und MIT. Die vollständigen Anwendungslizenztexte folgen unten.",
     "h2_website": "Website",
     "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
     "h2_app": "Anwendung MeshChatX",
@@ -98,7 +98,7 @@
     "p_analytics": "Diese öffentliche Website lädt keine Drittanbieter-Analyseskripte oder Tracking-Code in Ihrem Browser, und die Seiten rufen keine externen Web-APIs auf. Bei normalem Seitenabruf verbleiben Anfragen in dieser Herkunft.",
     "p_analytics_detail": "Auf der Start- und der Download-Seite lesen wir Versionsinformationen aus einer statischen Datei, die von derselben Website ausgeliefert wird und die wir bei neuen Builds aktualisieren. Die Seite sendet Ihr Surfverhalten nicht im Hintergrund an GitHub, Gitea, Anbieter von Analysetools oder sonstige Dritte. Wenn Sie Download- oder Quelllinks nutzen, gehen diese Anfragen an den jeweiligen Host, wenn Sie darauf klicken.",
     "h2_rights": "Ihre Rechte (EWR und UK)",
-    "p_rights": "Je nach Wohnsitz können Sie Rechte auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung personenbezogener Daten sowie auf Beschwerde bei einer Aufsichtsbehörde haben. Diese Marketing-Website verarbeitet nur das Nötigste. Bei konkreten Anfragen zu dieser Website kontaktieren Sie uns wie unten angegeben; wir antworten im Rahmen des geltenden Rechts.",
+    "p_rights": "Je nach Wohnsitz können Sie Rechte auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung personenbezogener Daten sowie auf Beschwerde bei einer Aufsichtsbehörde haben. Diese Marketing-Website verarbeitet nur das Nötigste. Bei konkreten Anfragen zu dieser Website kontaktieren Sie uns wie unten angegeben. Wir antworten im Rahmen des geltenden Rechts.",
     "h2_contact": "Kontakt",
     "p_contact": "Bei Datenschutzfragen zu dieser Website nutzen Sie bitte die <a href=\"/de/contact\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">Kontaktseite</a>."
   },
@@ -160,6 +160,17 @@
       "platform_h3": "Plattformunterstützung",
       "platform_p": "Offiziell unterstützt auf Desktop (Electron) und Web (Docker/Python). Android über Termux."
     },
+    "security": {
+      "h2": "Sicherheit & Integrität",
+      "lead": "Prüfung, Transparenz und konservative Voreinstellungen im Desktop-Stack, damit klar ist, was ausgeliefert wurde und wie es sich verhält.",
+      "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> Stufe 3 mit gehärteter Supply-Chain-Provenance für Release-Builds.",
+      "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR-Integrität</a> überwacht Manipulationen an gepackten Anwendungsressourcen.",
+      "bullet_inapp": "In-App-Integritätsmonitor für zusätzliche Laufzeitsicherheit.",
+      "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> Cosign-Signaturen für nachprüfbare Artefakte, wo anwendbar.",
+      "bullet_sast": "Statische Analyse und Dependency-Scanning mit Trivy, pip-audit, Ruff und CodeQL in der Delivery-Pipeline.",
+      "bullet_csp": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#7-define-a-content-security-policy\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">CSP</a> plus strenge Defaults für Remote-Inhalte in der Electron-Shell (einschließlich CORS-Disziplin, wo relevant).",
+      "bullet_transport": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#1-only-load-secure-content\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">HTTPS und WSS</a> standardmäßig für Remote-Seiten und Transporte, wo unterstützt."
+    },
     "split": {
       "h2_line1": "Völlig anonym",
       "h2_line2": "& Unaufhaltsam",
@@ -169,6 +180,11 @@
       "item2_p": "Kein Ausweis, keine Telefonnummer oder E-Mail nötig. Greife anonym auf das Netz zu, ohne Hürden oder Drittanbieter-Verifizierung.",
       "item3_h4": "Keine Zensur",
       "item3_p": "Gebaut für Mesh-Netze und Zensurresistenz. Nachrichten verbreiten sich automatisch und lokale Archivierung sichert die Verfügbarkeit."
+    },
+    "videos": {
+      "h2": "Videos",
+      "lead": "Videos über MeshChatX",
+      "youtube_title": "MeshChatX auf YouTube"
     }
   },
   "js": {

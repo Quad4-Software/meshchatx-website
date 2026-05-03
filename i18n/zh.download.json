@@ -84,7 +84,7 @@
       "run_podman": "使用 Podman 运行。",
       "arch_badge": "AMD64 / ARM64",
       "pull_image": "拉取镜像",
-      "registries_note": "两个注册表为同一镜像；在 Compose 中使用 MESHCHAT_IMAGE 选择 GHCR。",
+      "registries_note": "两个注册表为同一镜像。在 Compose 中使用 MESHCHAT_IMAGE 选择 GHCR。",
       "registry_label_dockerhub": "Docker Hub",
       "registry_label_ghcr": "GitHub Container Registry",
       "copy_pull": "复制拉取命令",

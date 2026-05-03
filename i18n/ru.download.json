@@ -84,7 +84,7 @@
       "run_podman": "Запуск через Podman.",
       "arch_badge": "AMD64 / ARM64",
       "pull_image": "Скачать образ",
-      "registries_note": "Один образ в обоих реестрах; в Compose задайте MESHCHAT_IMAGE для GHCR.",
+      "registries_note": "Один образ в обоих реестрах. В Compose задайте MESHCHAT_IMAGE для GHCR.",
       "registry_label_dockerhub": "Docker Hub",
       "registry_label_ghcr": "GitHub Container Registry",
       "copy_pull": "Копировать pull",

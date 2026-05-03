@@ -84,7 +84,7 @@
       "run_podman": "Run using Podman.",
       "arch_badge": "AMD64 / ARM64",
       "pull_image": "Pull Image",
-      "registries_note": "Same image from either registry; use MESHCHAT_IMAGE in Compose to pick GHCR.",
+      "registries_note": "Same image from either registry. Use MESHCHAT_IMAGE in Compose to pick GHCR.",
       "registry_label_dockerhub": "Docker Hub",
       "registry_label_ghcr": "GitHub Container Registry",
       "copy_pull": "Copy Pull",

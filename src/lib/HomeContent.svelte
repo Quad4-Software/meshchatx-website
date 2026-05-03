@@ -230,6 +230,25 @@
       </div>
     </section>
 
+    <section id="videos" class="mcx-section">
+      <div class="mcx-container">
+        <div class="mcx-section-head">
+          <h2>{$_('home.videos.h2')}</h2>
+          <p>{$_('home.videos.lead')}</p>
+        </div>
+        <div class="mcx-video-embed mcx-glass-card">
+          <iframe
+            src="https://www.youtube.com/embed/defFiXuuxKg?si=-QXEjDkjTT2_-FBu"
+            title={$_('home.videos.youtube_title')}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
     <section class="mcx-section">
       <div class="mcx-container mcx-split mcx-split--single">
         <div>
@@ -257,6 +276,26 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="security" class="mcx-section mcx-section--alt">
+      <div class="mcx-container">
+        <div class="mcx-section-head mcx-section-head--compact">
+          <h2>{$_('home.security.h2')}</h2>
+          <p>{$_('home.security.lead')}</p>
+        </div>
+        <div class="mcx-security-panel mcx-glass-card">
+          <ul class="mcx-security-list">
+            <li>{@html $_('home.security.bullet_slsa')}</li>
+            <li>{@html $_('home.security.bullet_asar')}</li>
+            <li>{$_('home.security.bullet_inapp')}</li>
+            <li>{@html $_('home.security.bullet_sigstore')}</li>
+            <li>{$_('home.security.bullet_sast')}</li>
+            <li>{@html $_('home.security.bullet_csp')}</li>
+            <li>{@html $_('home.security.bullet_transport')}</li>
+          </ul>
         </div>
       </div>
     </section>
