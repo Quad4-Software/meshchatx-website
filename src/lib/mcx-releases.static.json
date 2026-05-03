@@ -1,0 +1,22 @@
+{
+  "stable": null,
+  "prerelease": {
+    "version": "4.6.0-rc.5",
+    "releaseUrl": "https://github.com/Quad4-Software/MeshChatX/releases",
+    "publishedAt": "2026-05-03T20:25:28.701",
+    "isPrerelease": true,
+    "appImageAmd64Url": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/ReticulumMeshChatX-v4.6.0-linux-x86_64.AppImage",
+    "appImageArm64Url": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/ReticulumMeshChatX-v4.6.0-linux-arm64.AppImage",
+    "debAmd64Url": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/ReticulumMeshChatX-v4.6.0-linux-amd64.deb",
+    "debArm64Url": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/ReticulumMeshChatX-v4.6.0-linux-arm64.deb",
+    "rpmAmd64Url": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/ReticulumMeshChatX-v4.6.0-linux-x86_64.rpm",
+    "wheelUrl": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/reticulum_meshchatx-4.6.0-py3-none-any.whl",
+    "winInstallerUrl": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/win/ReticulumMeshChatX-v4.6.0-win-installer.exe",
+    "winPortableUrl": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/win/ReticulumMeshChatX-v4.6.0-win-portable.exe",
+    "macDmgUrl": null,
+    "apkUrl": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/android/app-release-signed.apk",
+    "flatpakUrl": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/flatpak/flatpak/x86_64/io.quad4.git.reticulum-meshchatx_stable_x86_64.flatpak",
+    "sbomUrl": "https://meshchatx.b-cdn.net/dev/v4.6.0-rc.5/sbom.cyclonedx.json"
+  },
+  "githubFallbackUrl": "https://github.com/Quad4-Software/MeshChatX/releases"
+}

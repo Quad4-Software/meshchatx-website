@@ -1,4 +1,5 @@
 import { MESHCHATX_RELEASES } from "./meshchatx-repo";
+import staticReleasesEmbed from "./mcx-releases.static.json";
 
 export type McxDownloadRow = {
   version: string | null;
@@ -50,6 +51,19 @@ function storageZone(): string {
 
 function storageAccessKey(): string {
   return process.env.BUNNY_STORAGE_ACCESS_KEY?.trim() || "";
+}
+
+function releasesSyncMode(): boolean {
+  return process.env.MCX_RELEASES_SYNC === "1";
+}
+
+/** Bundled fallback when Bunny key is unset (run `pnpm sync-releases`). Skipped under Vitest so tests control env. */
+function embeddedStaticPayload(): McxReleasesPayload | null {
+  if (process.env.VITEST === "true") return null;
+  const j = staticReleasesEmbed as McxReleasesPayload;
+  if (!j.githubFallbackUrl) return null;
+  if (j.stable?.version || j.prerelease?.version) return j;
+  return null;
 }
 
 function fileWalkMaxDepth(): number {
@@ -437,6 +451,10 @@ export async function buildMcxReleasesPayload(): Promise<McxReleasesPayload> {
   const githubFallbackUrl = MESHCHATX_RELEASES;
   const key = storageAccessKey();
   if (!key) {
+    if (!releasesSyncMode()) {
+      const fb = embeddedStaticPayload();
+      if (fb) return fb;
+    }
     return { stable: null, prerelease: null, githubFallbackUrl };
   }
 
@@ -495,6 +513,10 @@ export async function buildMcxReleasesPayload(): Promise<McxReleasesPayload> {
     }
   }
 
+  if (!stable && !prerelease && !releasesSyncMode()) {
+    const fb = embeddedStaticPayload();
+    if (fb) return fb;
+  }
   return { stable, prerelease, githubFallbackUrl };
 }
 

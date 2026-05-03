@@ -45,6 +45,12 @@ export default defineConfig(
     },
   },
   {
+    files: ["scripts/**/*.ts"],
+    rules: {
+      "no-console": "off",
+    },
+  },
+  {
     files: ["static/**/*.js"],
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
