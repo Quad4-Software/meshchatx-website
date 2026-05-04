@@ -447,7 +447,6 @@
     const sel = data.selectedRelease;
     const channel = data.selectedChannel || "stable";
     const err = data.error;
-    const ghFallback = data.githubFallbackUrl || "";
 
     meta.textContent = "";
 
@@ -612,13 +611,11 @@
     }
 
     const wheelUrl = sel.wheelUrl;
-    const pyBlock = qs("#mcx-python-block");
-    const pyEmpty = qs("#mcx-python-empty");
-    if (pyBlock && pyEmpty) {
+    const pyWheelWrap = qs("#mcx-python-wheel-wrap");
+    if (pyWheelWrap) {
       if (wheelUrl) {
-        pyBlock.classList.remove("hidden");
-        pyEmpty.classList.add("hidden");
-        qsa("[data-wheel-cmd]", pyBlock).forEach(function (node) {
+        pyWheelWrap.classList.remove("hidden");
+        qsa("[data-wheel-cmd]", pyWheelWrap).forEach(function (node) {
           const kind = node.getAttribute("data-wheel-cmd");
           let cmd = "";
           if (kind === "pip") cmd = "pip install " + wheelUrl;
@@ -631,27 +628,16 @@
           if (btn) btn.setAttribute("data-copy", cmd);
         });
       } else {
-        pyBlock.classList.add("hidden");
-        pyEmpty.classList.remove("hidden");
+        pyWheelWrap.classList.add("hidden");
       }
     }
 
-    const termuxUrl = wheelUrl
-      ? "pip install " + wheelUrl
-      : "pip install " +
-        (
-          ghFallback || "https://github.com/Quad4-Software/MeshChatX/releases"
-        ).replace(/\/releases\/?$/i, "") +
-        "/releases/download/v" +
-        sel.version +
-        "/reticulum_meshchatx-" +
-        sel.version +
-        "-py3-none-any.whl";
+    const termuxPipCmd = "pip install reticulum-meshchatx";
     const termuxPre = qs("#mcx-termux-pip");
     if (termuxPre) {
-      termuxPre.textContent = termuxUrl;
+      termuxPre.textContent = termuxPipCmd;
       const btn = qs("#mcx-termux-pip-copy");
-      if (btn) btn.setAttribute("data-copy", termuxUrl);
+      if (btn) btn.setAttribute("data-copy", termuxPipCmd);
     }
   }
 

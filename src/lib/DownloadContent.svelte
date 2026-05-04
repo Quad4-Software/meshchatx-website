@@ -4,6 +4,8 @@
   import {
     MESHCHATX_CLONE_URL,
     MESHCHATX_PKGBUILD,
+    MESHCHATX_PYPI,
+    MESHCHATX_PYPI_PACKAGE,
     MESHCHATX_RELEASES,
   } from "$lib/meshchatx-repo";
   import { appPath } from "$lib/paths";
@@ -24,6 +26,12 @@
 volumes:
     meshchatx-config:
         name: meshchatx-config`;
+
+  const PYPI_PIP = `pip install ${MESHCHATX_PYPI_PACKAGE}`;
+  const PYPI_PIPX = `pipx install ${MESHCHATX_PYPI_PACKAGE}`;
+  const PYPI_POETRY = `poetry add ${MESHCHATX_PYPI_PACKAGE}`;
+  const PYPI_UV = `uv pip install ${MESHCHATX_PYPI_PACKAGE}`;
+  const PYPI_UVX = `uvx --from ${MESHCHATX_PYPI_PACKAGE} meshchatx`;
 </script>
 
 <section class="mcx-page-head">
@@ -388,14 +396,23 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
         <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 0.5rem;display:flex;align-items:center;gap:0.5rem">
           <svg class="mcx-icon" aria-hidden="true"><use href="#i-language-python" /></svg> {$_('dl.python.h2')}
         </h2>
-        <p class="mcx-muted" style="margin-bottom:1rem">{$_('dl.python.intro')}</p>
+        <p class="mcx-muted" style="margin-bottom:0.75rem">{$_('dl.python.intro')}</p>
+        <p class="mcx-muted mcx-text-sm" style="margin-bottom:1rem">
+          <a
+            href={MESHCHATX_PYPI}
+            class="mcx-link-blue"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={$_('dl.python.pypi_link_aria')}>{$_('dl.python.pypi_link_text')}</a>
+        </p>
         <div id="mcx-python-block">
+          <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 1rem">{$_('dl.python.pypi_heading')}</p>
           <div style="display:flex;flex-direction:column;gap:1rem">
             <div>
               <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{$_('dl.python.pip')}</p>
               <div class="mcx-code-row">
-                <code data-wheel-cmd="pip">pip install </code>
-                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{$_('dl.python.copy')}">
+                <code>{PYPI_PIP}</code>
+                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy={PYPI_PIP} title="{$_('dl.python.copy')}">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
                 </button>
               </div>
@@ -403,8 +420,8 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             <div>
               <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{$_('dl.python.pipx')}</p>
               <div class="mcx-code-row">
-                <code data-wheel-cmd="pipx">pipx install </code>
-                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{$_('dl.python.copy')}">
+                <code>{PYPI_PIPX}</code>
+                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy={PYPI_PIPX} title="{$_('dl.python.copy')}">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
                 </button>
               </div>
@@ -412,8 +429,8 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             <div>
               <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{$_('dl.python.poetry')}</p>
               <div class="mcx-code-row">
-                <code data-wheel-cmd="poetry">poetry add </code>
-                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{$_('dl.python.copy')}">
+                <code>{PYPI_POETRY}</code>
+                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy={PYPI_POETRY} title="{$_('dl.python.copy')}">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
                 </button>
               </div>
@@ -421,15 +438,67 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             <div>
               <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{$_('dl.python.uv')}</p>
               <div class="mcx-code-row">
-                <code data-wheel-cmd="uv">uv pip install </code>
-                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{$_('dl.python.copy')}">
+                <code>{PYPI_UV}</code>
+                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy={PYPI_UV} title="{$_('dl.python.copy')}">
+                  <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                </button>
+              </div>
+            </div>
+            <div>
+              <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{$_('dl.python.uvx')}</p>
+              <p class="mcx-muted mcx-text-sm" style="margin:0 0 0.5rem">{$_('dl.python.uvx_hint')}</p>
+              <div class="mcx-code-row">
+                <code>{PYPI_UVX}</code>
+                <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy={PYPI_UVX} title="{$_('dl.python.copy')}">
                   <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
                 </button>
               </div>
             </div>
           </div>
+
+          <div id="mcx-python-wheel-wrap" class="hidden" style="margin-top:1.75rem;padding-top:1.75rem;border-top:1px solid var(--border)">
+            <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.5rem">{$_('dl.python.wheel_heading')}</p>
+            <p class="mcx-muted mcx-text-sm" style="margin-bottom:1rem">{$_('dl.python.wheel_intro')}</p>
+            <div style="display:flex;flex-direction:column;gap:1rem">
+              <div>
+                <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{$_('dl.python.pip')}</p>
+                <div class="mcx-code-row">
+                  <code data-wheel-cmd="pip">pip install </code>
+                  <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{$_('dl.python.copy')}">
+                    <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{$_('dl.python.pipx')}</p>
+                <div class="mcx-code-row">
+                  <code data-wheel-cmd="pipx">pipx install </code>
+                  <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{$_('dl.python.copy')}">
+                    <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{$_('dl.python.poetry')}</p>
+                <div class="mcx-code-row">
+                  <code data-wheel-cmd="poetry">poetry add </code>
+                  <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{$_('dl.python.copy')}">
+                    <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                  </button>
+                </div>
+              </div>
+              <div>
+                <p style="font-weight:700;margin:0 0 0.25rem;color:var(--text-muted)">{$_('dl.python.uv')}</p>
+                <div class="mcx-code-row">
+                  <code data-wheel-cmd="uv">uv pip install </code>
+                  <button type="button" class="mcx-copy-btn" style="position:static;transform:none" data-copy="" title="{$_('dl.python.copy')}">
+                    <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <p id="mcx-python-empty" class="mcx-muted mcx-text-sm hidden">{$_('dl.python.no_wheel')}</p>
       </section>
 
       <section id="android" class="mcx-download-section">
@@ -476,8 +545,8 @@ pkg install build-essential</pre>
           <div>
             <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 0.5rem">{$_('dl.termux.step2')}</p>
             <div class="mcx-code-row">
-              <code id="mcx-termux-pip" style="font-size:0.75rem">pip install </code>
-              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-termux-pip-copy" data-copy="" title="{$_('dl.python.copy')}">
+              <code id="mcx-termux-pip" style="font-size:0.75rem">{PYPI_PIP}</code>
+              <button type="button" class="mcx-copy-btn" style="position:static;transform:none" id="mcx-termux-pip-copy" data-copy={PYPI_PIP} title="{$_('dl.python.copy')}">
                 <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
               </button>
             </div>

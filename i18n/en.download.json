@@ -98,13 +98,19 @@
     },
     "python": {
       "h2": "Python",
-      "intro": "Install via pip, pipx, Poetry, or uv (includes the built frontend).",
+      "intro": "Install from PyPI (includes the built frontend). Direct wheel URLs from the release CDN appear below when indexed.",
+      "pypi_heading": "PyPI",
+      "pypi_link_text": "pypi.org/project/reticulum-meshchatx",
+      "pypi_link_aria": "reticulum-meshchatx on PyPI",
+      "wheel_heading": "Direct wheel URL",
+      "wheel_intro": "Pin the exact CDN artifact for this release (same file as GitHub releases).",
       "pip": "pip",
       "pipx": "pipx",
       "poetry": "Poetry",
       "uv": "uv",
-      "copy": "Copy",
-      "no_wheel": "No wheel in latest release."
+      "uvx": "uvx",
+      "uvx_hint": "Run the meshchatx entry point from the package without a persistent install (uv tool run).",
+      "copy": "Copy"
     },
     "android": {
       "h2": "Android",
@@ -117,10 +123,10 @@
     },
     "termux": {
       "h2": "Termux",
-      "intro_before": "Install on Android via Termux. Install dependencies, then the Python wheel. Run headless with ",
+      "intro_before": "Install on Android via Termux. Install dependencies, then MeshChatX from PyPI. Run headless with ",
       "intro_after": ".",
       "step1": "1. Update and install packages",
-      "step2": "2. Install MeshChatX (use latest version from releases)",
+      "step2": "2. Install MeshChatX (pip install reticulum-meshchatx)",
       "step3": "3. Run headless"
     }
   }

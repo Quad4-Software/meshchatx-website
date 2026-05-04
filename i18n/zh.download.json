@@ -98,13 +98,19 @@
     },
     "python": {
       "h2": "Python",
-      "intro": "通过 pip、pipx、Poetry 或 uv 安装（包含已构建的前端）。",
+      "intro": "从 PyPI 安装（含已构建前端）。若索引中有该版本的 CDN wheel，下方会显示直链。",
+      "pypi_heading": "PyPI",
+      "pypi_link_text": "pypi.org/project/reticulum-meshchatx",
+      "pypi_link_aria": "PyPI 上的 reticulum-meshchatx",
+      "wheel_heading": "Wheel 直链",
+      "wheel_intro": "固定该版本在 CDN 上的确切文件（与 GitHub Release 中相同）。",
       "pip": "pip",
       "pipx": "pipx",
       "poetry": "Poetry",
       "uv": "uv",
-      "copy": "复制",
-      "no_wheel": "最新版本中无 wheel。"
+      "uvx": "uvx",
+      "uvx_hint": "从该包运行 meshchatx 入口程序，无需长期安装（uv tool run）。",
+      "copy": "复制"
     },
     "android": {
       "h2": "Android",
@@ -117,10 +123,10 @@
     },
     "termux": {
       "h2": "Termux",
-      "intro_before": "通过 Termux 在 Android 上安装。先安装依赖，再安装 Python wheel。使用 ",
+      "intro_before": "通过 Termux 在 Android 上安装。先安装依赖，再从 PyPI 安装 MeshChatX。使用 ",
       "intro_after": " 无界面运行。",
       "step1": "1. 更新并安装软件包",
-      "step2": "2. 安装 MeshChatX（版本请从发布页获取最新）",
+      "step2": "2. 安装 MeshChatX（pip install reticulum-meshchatx）",
       "step3": "3. 无界面运行"
     }
   }

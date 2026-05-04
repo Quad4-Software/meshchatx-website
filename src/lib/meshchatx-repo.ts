@@ -8,3 +8,8 @@ export const MESHCHATX_CHANGELOG =
 export const MESHCHATX_CLONE_URL = `${MESHCHATX_GITHUB}.git` as const;
 export const MESHCHATX_PKGBUILD =
   `${MESHCHATX_GITHUB}/blob/master/packaging/arch/PKGBUILD` as const;
+
+/** Published Python distribution (PyPI). */
+export const MESHCHATX_PYPI_PACKAGE = "reticulum-meshchatx" as const;
+export const MESHCHATX_PYPI =
+  `https://pypi.org/project/${MESHCHATX_PYPI_PACKAGE}/` as const;

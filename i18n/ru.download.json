@@ -98,13 +98,19 @@
     },
     "python": {
       "h2": "Python",
-      "intro": "Pip, pipx, Poetry или uv (с собранным фронтендом).",
+      "intro": "Установка с PyPI (со встроенным фронтендом). Прямые URL wheel с CDN релиза показываются ниже, если они есть в индексе.",
+      "pypi_heading": "PyPI",
+      "pypi_link_text": "pypi.org/project/reticulum-meshchatx",
+      "pypi_link_aria": "reticulum-meshchatx на PyPI",
+      "wheel_heading": "Прямой URL wheel",
+      "wheel_intro": "Точный артефакт CDN для этого релиза (тот же файл, что в релизах на GitHub).",
       "pip": "pip",
       "pipx": "pipx",
       "poetry": "Poetry",
       "uv": "uv",
-      "copy": "Копировать",
-      "no_wheel": "В последнем релизе нет wheel."
+      "uvx": "uvx",
+      "uvx_hint": "Запуск точки входа meshchatx из пакета без постоянной установки (uv tool run).",
+      "copy": "Копировать"
     },
     "android": {
       "h2": "Android",
@@ -117,10 +123,10 @@
     },
     "termux": {
       "h2": "Termux",
-      "intro_before": "Установка на Android через Termux. Установите зависимости, затем Python wheel. Без интерфейса с ",
+      "intro_before": "Установка на Android через Termux. Установите зависимости, затем MeshChatX с PyPI. Без интерфейса с ",
       "intro_after": ".",
       "step1": "1. Обновить и установить пакеты",
-      "step2": "2. Установить MeshChatX (актуальная версия из релизов)",
+      "step2": "2. Установить MeshChatX (pip install reticulum-meshchatx)",
       "step3": "3. Запуск без интерфейса"
     }
   }
