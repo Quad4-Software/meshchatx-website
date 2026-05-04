@@ -7,8 +7,11 @@
     "nojs_banner_text": "Direkte Download-Links und aktuelle Release-Metadaten werden mit JavaScript geladen. Die Docker- und Podman-Befehle weiter unten funktionieren wie angegeben. Nutzen Sie den Releases-Link im nächsten Abschnitt für Installer und Wheels.",
     "sbom": "SBOM",
     "github_fallback": "GitHub-Releases",
+    "github_also": "Auch auf",
     "github_releases": "GitHub-Releases",
-    "cdn_attrib": "Installer und Artefakte auf dieser Seite werden über das Bunny.net-CDN ausgeliefert.",
+    "bunny_link_aria": "Bunny.net CDN",
+    "cdn_attrib_before": "Installer und Release-Artefakte von dieser Seite nutzen ",
+    "cdn_attrib_suffix": " als Edge-CDN für schnelle Downloads weltweit.",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",

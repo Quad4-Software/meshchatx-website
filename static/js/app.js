@@ -25,7 +25,6 @@
     "download.latest": "Latest",
     "download.stable": "stable",
     "download.prerelease": "pre-release",
-    "download.all_releases": "All releases",
     "download.channel_stable": "Stable",
     "download.channel_pre": "Pre-release",
     "download.fetch_error": "Failed to load download index",
@@ -487,21 +486,6 @@
         : mcxT("download.stable");
     line.appendChild(pill);
     line.appendChild(document.createTextNode(" "));
-
-    const releasesHref =
-      sel.releaseUrl ||
-      ghFallback ||
-      "https://github.com/Quad4-Software/MeshChatX/releases";
-    if (releasesHref) {
-      const a = el("a", {
-        href: releasesHref,
-        target: "_blank",
-        rel: "noopener noreferrer",
-        class: "mcx-link-blue",
-      });
-      a.textContent = mcxT("download.all_releases");
-      line.appendChild(a);
-    }
 
     if (data.publishedAtRelative) {
       line.appendChild(document.createTextNode(" \u00b7 "));

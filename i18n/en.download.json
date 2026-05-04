@@ -7,8 +7,11 @@
     "nojs_banner_text": "Direct download links and live release metadata load when JavaScript is enabled. Docker and Podman commands further down work as shown. Use the releases link in the next section for versioned installers and wheels.",
     "sbom": "SBOM",
     "github_fallback": "GitHub releases",
+    "github_also": "Also available on",
     "github_releases": "GitHub releases",
-    "cdn_attrib": "Installers and artifacts on this page are delivered over the Bunny.net CDN.",
+    "bunny_link_aria": "Bunny.net CDN",
+    "cdn_attrib_before": "Installers and release artifacts linked here use ",
+    "cdn_attrib_suffix": " edge delivery for fast worldwide downloads.",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",

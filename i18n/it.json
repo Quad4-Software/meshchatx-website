@@ -218,7 +218,6 @@
       "latest": "Ultima",
       "stable": "stabile",
       "prerelease": "pre-release",
-      "all_releases": "Tutte le release",
       "channel_stable": "Stabile",
       "channel_pre": "Pre-release",
       "fetch_error": "Impossibile caricare le release",

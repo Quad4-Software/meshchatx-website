@@ -218,7 +218,6 @@
       "latest": "最新",
       "stable": "稳定版",
       "prerelease": "预发布",
-      "all_releases": "所有版本",
       "channel_stable": "稳定",
       "channel_pre": "预发布",
       "fetch_error": "获取版本失败",

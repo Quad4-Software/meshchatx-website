@@ -218,7 +218,6 @@
       "latest": "Latest",
       "stable": "stable",
       "prerelease": "pre-release",
-      "all_releases": "All releases",
       "channel_stable": "Stable",
       "channel_pre": "Pre-release",
       "fetch_error": "Failed to load download index",

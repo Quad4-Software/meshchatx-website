@@ -7,8 +7,11 @@
     "nojs_banner_text": "I link di download diretti e i metadati delle release in tempo reale richiedono JavaScript. I comandi Docker e Podman più sotto funzionano come indicato. Usa il link alle release nella sezione seguente per installer e wheel versionati.",
     "sbom": "SBOM",
     "github_fallback": "Release su GitHub",
+    "github_also": "Disponibile anche su",
     "github_releases": "Release su GitHub",
-    "cdn_attrib": "Installer e artefatti in questa pagina sono serviti tramite la CDN Bunny.net.",
+    "bunny_link_aria": "CDN Bunny.net",
+    "cdn_attrib_before": "Installer e artefatti di release collegati qui usano la rete edge di ",
+    "cdn_attrib_suffix": " per download rapidi in tutto il mondo.",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",

@@ -218,7 +218,6 @@
       "latest": "Последний",
       "stable": "стабильный",
       "prerelease": "пре-релиз",
-      "all_releases": "Все релизы",
       "channel_stable": "Стабильный",
       "channel_pre": "Пре-релиз",
       "fetch_error": "Не удалось загрузить релизы",

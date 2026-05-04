@@ -7,8 +7,11 @@
     "nojs_banner_text": "Прямые ссылки на загрузки и актуальные метаданные релизов подгружаются при включённом JavaScript. Команды Docker и Podman ниже работают как указано. Ссылку на страницу релизов для установщиков и wheel см. в следующем блоке.",
     "sbom": "SBOM",
     "github_fallback": "Релизы на GitHub",
+    "github_also": "Также на",
     "github_releases": "Релизы на GitHub",
-    "cdn_attrib": "Установщики и артефакты на этой странице отдаются через CDN Bunny.net.",
+    "bunny_link_aria": "CDN Bunny.net",
+    "cdn_attrib_before": "Установщики и артефакты релизов по ссылкам на этой странице отдаются через edge-сеть ",
+    "cdn_attrib_suffix": " для быстрых загрузок по всему миру.",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",

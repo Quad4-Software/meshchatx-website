@@ -218,7 +218,6 @@
       "latest": "Neuestes",
       "stable": "stabil",
       "prerelease": "Vorabversion",
-      "all_releases": "Alle Releases",
       "channel_stable": "Stabil",
       "channel_pre": "Vorabversion",
       "fetch_error": "Releases konnten nicht geladen werden",

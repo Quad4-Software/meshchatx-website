@@ -47,13 +47,13 @@ volumes:
           >
         </noscript>
       </p>
-      <p class="mcx-muted mcx-text-sm" style="display:flex;flex-wrap:wrap;align-items:center;gap:0.375rem;margin-top:0.25rem">
+      <p class="mcx-muted mcx-text-sm mcx-download-meta-row">
+        <span>{$_('dl.github_also')}</span>
         <a
           href={MESHCHATX_RELEASES}
-          class="mcx-link-blue"
+          class="mcx-link-blue mcx-download-github-link"
           target="_blank"
           rel="noopener noreferrer"
-          style="display:inline-flex;align-items:center;gap:0.375rem;font-weight:600"
         >
           <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-github" /></svg>
           {$_('dl.github_releases')}
@@ -68,6 +68,25 @@ volumes:
           target="_blank"
           rel="noopener noreferrer"
           >{$_('dl.sbom')}</a
+        >
+      </p>
+      <p class="mcx-muted mcx-text-sm mcx-download-cdn-line">
+        <span class="mcx-download-cdn-sentence"
+          >{$_('dl.cdn_attrib_before')}<a
+            class="mcx-download-bunny-link mcx-link-blue"
+            href="https://bunny.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={$_('dl.bunny_link_aria')}
+            >Bunny.net<img
+              src="/vendor/bunny-net.svg"
+              alt=""
+              width="19"
+              height="21"
+              decoding="async"
+              class="mcx-download-bunny-logo"
+            /></a
+          >{$_('dl.cdn_attrib_suffix')}</span
         >
       </p>
     </div>
@@ -475,6 +494,5 @@ pkg install build-essential</pre>
         </div>
       </section>
     </div>
-    <p class="mcx-muted mcx-text-sm" style="margin-top:2rem">{$_('dl.cdn_attrib')}</p>
   </div>
 </section>
