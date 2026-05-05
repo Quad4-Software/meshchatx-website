@@ -41,7 +41,7 @@ services:
       - traefik.http.middlewares.meshchatx-sec.headers.stsPreload=true
       - traefik.http.middlewares.meshchatx-sec.headers.forceSTSHeader=false
 
-      - "traefik.http.middlewares.meshchatx-sec.headers.contentSecurityPolicy=default-src 'self'; base-uri 'self'; frame-ancestors 'none'; frame-src https://www.youtube.com https://www.youtube-nocookie.com; script-src 'self' 'unsafe-inline' https://goat.meshchatx.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://goat.meshchatx.com; font-src 'self'; worker-src 'self'; connect-src 'self' https://goat.meshchatx.com; upgrade-insecure-requests"
+      - "traefik.http.middlewares.meshchatx-sec.headers.contentSecurityPolicy=default-src 'self'; base-uri 'self'; frame-ancestors 'none'; frame-src https://www.youtube.com https://www.youtube-nocookie.com; script-src 'self' 'unsafe-inline' https://swetrix.org; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://swtrx.meshchatx.com; font-src 'self'; worker-src 'self'; connect-src 'self' https://swtrx.meshchatx.com; upgrade-insecure-requests"
 
       - traefik.http.middlewares.meshchatx-sec.headers.referrerPolicy=strict-origin-when-cross-origin
       - traefik.http.middlewares.meshchatx-sec.headers.contentTypeNosniff=true
