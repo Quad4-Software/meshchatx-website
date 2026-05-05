@@ -758,6 +758,45 @@
       githubFallbackUrl,
     });
 
+    if (selectedRelease && !publishedAtRelative) {
+      setTimeout(function () {
+        if (seq !== mcxDownloadInitSeq) return;
+        fetch("/api/mcx-releases", { cache: "no-store" })
+          .then(function (r) {
+            return r.ok ? r.json() : null;
+          })
+          .then(function (j) {
+            if (!j || typeof j !== "object") return;
+            var release =
+              selectedChannel === "prerelease"
+                ? j.prerelease || null
+                : j.stable || null;
+            if (
+              release &&
+              release.publishedAt &&
+              window.MCX &&
+              typeof window.MCX.formatPublishedAgo === "function"
+            ) {
+              var relText = window.MCX.formatPublishedAgo(release.publishedAt);
+              if (relText) {
+                setDownloadPage({
+                  stableRelease: stableRelease,
+                  preRelease: preRelease,
+                  selectedRelease: selectedRelease,
+                  selectedChannel: selectedChannel,
+                  hasStableRelease: Boolean(stableRelease),
+                  hasPreRelease: Boolean(preRelease),
+                  publishedAtRelative: relText,
+                  error: error,
+                  githubFallbackUrl: githubFallbackUrl,
+                });
+              }
+            }
+          })
+          .catch(function () {});
+      }, 1200);
+    }
+
     initCopyButtons();
   }
 

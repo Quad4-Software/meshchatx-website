@@ -223,7 +223,7 @@ sudo zypper install ./MeshChatX-*.rpm</pre>
             <p id="mcx-no-flatpak" class="mcx-muted mcx-text-sm hidden">{$_('dl.linux.no_flatpak')}</p>
             <div style="border-top:1px solid var(--border);padding-top:1.5rem">
               <p style="font-size:0.875rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 1rem">{$_('dl.linux.install')}</p>
-              <pre class="mcx-pre">flatpak install --user ./MeshChatX-*.flatpak</pre>
+              <pre class="mcx-pre">flatpak install ./MeshChatX-*.flatpak</pre>
             </div>
           </div>
         </details>

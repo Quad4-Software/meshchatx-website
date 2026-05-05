@@ -571,7 +571,7 @@ export async function buildMcxReleasesPayload(): Promise<McxReleasesPayload> {
     if (!releasesSyncMode()) {
       const fb = embeddedStaticPayload();
       if (fb) {
-        await applyGithubPublishedAtToPayload(fb);
+        applyGithubPublishedAtToPayload(fb).catch(() => {});
         return fb;
       }
     }
@@ -629,7 +629,7 @@ export async function buildMcxReleasesPayload(): Promise<McxReleasesPayload> {
   if (!stable && !prerelease && !releasesSyncMode()) {
     const fb = embeddedStaticPayload();
     if (fb) {
-      await applyGithubPublishedAtToPayload(fb);
+      applyGithubPublishedAtToPayload(fb).catch(() => {});
       return fb;
     }
   }
@@ -638,7 +638,7 @@ export async function buildMcxReleasesPayload(): Promise<McxReleasesPayload> {
     prerelease,
     githubFallbackUrl,
   };
-  await applyGithubPublishedAtToPayload(out);
+  applyGithubPublishedAtToPayload(out).catch(() => {});
   return out;
 }
 
