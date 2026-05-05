@@ -495,19 +495,9 @@
 
     if (data.hasPreRelease && data.hasStableRelease) {
       const wrap = el("span", { class: "mcx-channel-pill" });
-      var loc =
-        typeof window !== "undefined" && window.location
-          ? window.location
-          : null;
-      var pathOnly =
-        loc && loc.pathname
-          ? loc.pathname
-          : typeof window !== "undefined" &&
-              window.location &&
-              window.location.pathname
-            ? window.location.pathname
-            : "/download";
-      var locHash = loc && loc.hash ? loc.hash : "";
+      var loc = typeof window !== "undefined" ? window.location : null;
+      var pathOnly = (loc && loc.pathname) || "/download";
+      var locHash = (loc && loc.hash) || "";
       const aStable = el("a", { href: pathOnly + locHash });
       aStable.textContent = mcxT("download.channel_stable");
       if (channel === "stable") aStable.classList.add("is-active-stable");

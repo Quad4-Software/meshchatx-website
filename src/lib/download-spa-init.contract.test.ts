@@ -37,7 +37,7 @@ describe("download SPA release init", () => {
 
   it("channel toggle links use current pathname (locale-aware), not hardcoded /download", () => {
     const src = readUtf8("static/js/app.js");
-    expect(src).toContain("location.pathname");
+    expect(src).toContain("loc.pathname");
     expect(src).toContain('pathOnly + "?channel=prerelease" + locHash');
     expect(src).not.toContain("href: '/download?channel=prerelease'");
     expect(src).not.toContain("href: '/download'");

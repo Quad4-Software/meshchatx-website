@@ -20,7 +20,7 @@ services:
           cpus: "0.25"
           memory: 128M
     environment:
-      - DOMAIN=${DOMAIN:-meshchatx.io}
+      - DOMAIN=${DOMAIN:-meshchatx.com}
       - BUNNY_STORAGE_HOST=${BUNNY_STORAGE_HOST:-la.storage.bunnycdn.com}
       - BUNNY_STORAGE_ZONE=${BUNNY_STORAGE_ZONE:-meshchatx}
       - BUNNY_VERSIONS_PREFIX=${BUNNY_VERSIONS_PREFIX:-master}
@@ -31,7 +31,7 @@ services:
       - RELEASES_CACHE_SECONDS=${RELEASES_CACHE_SECONDS:-300}
     labels:
       - traefik.enable=true
-      - "traefik.http.routers.meshchatx-web.rule=Host(`${DOMAIN:-meshchatx.io}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.meshchatx-web.rule=Host(`${DOMAIN:-meshchatx.com}`) && PathPrefix(`/`)"
       - traefik.http.routers.meshchatx-web.entrypoints=web
       - traefik.http.routers.meshchatx-web.middlewares=meshchatx-sec@docker
       - traefik.http.services.meshchatx-web.loadbalancer.server.port=8080

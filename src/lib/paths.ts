@@ -102,7 +102,7 @@ export function appPath(
 }
 
 export function pageIdFromPathname(path: string) {
-  const raw = (path?.split("?")[0] ?? path) || "/";
+  const raw = (path?.split(/[?#]/)[0] ?? path) || "/";
   const p = raw.replace(/\/$/, "") || "/";
   if (p === "/" || p === "") {
     return "home" as const;

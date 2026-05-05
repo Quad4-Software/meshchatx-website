@@ -85,4 +85,18 @@ describe("paths", () => {
       "/zh/contact",
     );
   });
+
+  it("pageIdFromPathname handles edge cases", () => {
+    expect(pageIdFromPathname("")).toBe("home");
+    expect(pageIdFromPathname("/download/")).toBe("download");
+    expect(pageIdFromPathname("/donate?q=test")).toBe("donate");
+    expect(pageIdFromPathname("/license#anchor")).toBe("license");
+    expect(pageIdFromPathname("/en/")).toBe("home");
+    expect(pageIdFromPathname("/random-page")).toBe("home");
+  });
+
+  it("appPath handles empty hash", () => {
+    expect(appPath("en", "home", "")).toBe("/");
+    expect(appPath("de", "download", "")).toBe("/de/download");
+  });
 });
