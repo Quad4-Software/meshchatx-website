@@ -33,6 +33,7 @@
         <li>
           <a href={MESHCHATX_CHANGELOG} target="_blank" rel="noopener noreferrer">{$_('footer.changelog')}</a>
         </li>
+        <li><a href={appPath(loc, 'roadmap')}>{$_('nav.roadmap')}</a></li>
         <li><a href={appPath(loc, 'donate')}>{$_('nav.donate')}</a></li>
         <li><a href={appPath(loc, 'contact')}>{$_('nav.contact')}</a></li>
       </ul>

@@ -43,7 +43,8 @@ export type PageId =
   | "contact"
   | "donate"
   | "license"
-  | "privacy";
+  | "privacy"
+  | "roadmap";
 
 const PAGE_SLUG: Record<Exclude<PageId, "home">, string> = {
   download: "download",
@@ -51,6 +52,7 @@ const PAGE_SLUG: Record<Exclude<PageId, "home">, string> = {
   donate: "donate",
   license: "license",
   privacy: "privacy",
+  roadmap: "roadmap",
 };
 
 function pageSegment(id: PageId) {
@@ -66,7 +68,8 @@ function isPageSlug(s: string): s is Exclude<PageId, "home"> {
     s === "contact" ||
     s === "donate" ||
     s === "license" ||
-    s === "privacy"
+    s === "privacy" ||
+    s === "roadmap"
   );
 }
 

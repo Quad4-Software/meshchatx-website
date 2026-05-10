@@ -13,6 +13,7 @@
       "donate": "Donazioni | MeshChatX",
       "license": "Licenza | MeshChatX",
       "privacy": "Privacy | MeshChatX",
+      "roadmap": "Roadmap | MeshChatX",
       "error": "Errore | MeshChatX"
     },
     "og_image_alt": "Logo MeshChatX",
@@ -23,6 +24,7 @@
       "donate": "Sostieni MeshChatX su Ko-fi, Buy Me a Coffee o con Monero (XMR).",
       "license": "Licenze del sito meshchatx.com (0BSD) e dell'applicazione MeshChatX (0BSD + MIT).",
       "privacy": "Come meshchatx.com tratta i dati durante la visita al Sito.",
+      "roadmap": "Roadmap di sviluppo di MeshChatX con funzionalità future, lavori in corso e traguardi raggiunti.",
       "error": "Questa pagina non può essere mostrata come richiesto."
     }
   },
@@ -41,6 +43,7 @@
     "showcase": "Anteprima",
     "donate": "Donazioni",
     "contact": "Contatti",
+    "roadmap": "Roadmap",
     "git": "Git",
     "download": "Download",
     "toggle_theme": "Cambia tema",
@@ -186,6 +189,15 @@
       "lead": "Video su MeshChatX",
       "youtube_title": "MeshChatX su YouTube"
     }
+  },
+  "roadmap": {
+    "h1": "Roadmap",
+    "lead": "La roadmap di sviluppo di MeshChatX. Ecco cosa stiamo facendo e cosa ci aspetta.",
+    "notice": "La roadmap è soggetta a modifiche. Versioni e funzionalità potrebbero essere adattate in base alle priorità di sviluppo e al feedback della comunità.",
+    "status_done": "Fatto",
+    "status_progress": "In corso",
+    "status_planned": "Pianificato",
+    "status_upcoming": "Prossimo"
   },
   "js": {
     "theme": {

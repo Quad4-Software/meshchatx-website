@@ -3,6 +3,7 @@ import { canonicalForLocale, SITE_ORIGIN, type PageId } from "$lib/paths";
 const SITEMAP_PAGE_ORDER: PageId[] = [
   "home",
   "download",
+  "roadmap",
   "contact",
   "donate",
   "license",
@@ -15,6 +16,7 @@ const PAGE_BREADCRUMB: Record<Exclude<PageId, "home">, string> = {
   donate: "Donate",
   license: "License",
   privacy: "Privacy",
+  roadmap: "Roadmap",
 };
 
 function hreflangForPage(page: PageId): [string, string][] {

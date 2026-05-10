@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  buildPageJsonLd,
-  buildRobotsTxt,
-  buildSitemapXml,
-} from "./seo";
+import { buildPageJsonLd, buildRobotsTxt, buildSitemapXml } from "./seo";
 
 describe("seo", () => {
   it("buildSitemapXml contains locales and pages", () => {

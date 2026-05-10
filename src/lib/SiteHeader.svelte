@@ -29,6 +29,7 @@
   <nav class="mcx-nav-desktop" aria-label={$_('nav.primary')}>
     <a href={homeFeatures}>{$_('nav.features')}</a>
     <a href={homeShowcase}>{$_('nav.showcase')}</a>
+    <a href={appPath(loc, 'roadmap')}>{$_('nav.roadmap')}</a>
     <a href={appPath(loc, 'donate')}>{$_('nav.donate')}</a>
     <a href={appPath(loc, 'contact')}>{$_('nav.contact')}</a>
     <a href={MESHCHATX_GITHUB} target="_blank" rel="noopener noreferrer">{$_('nav.git')}</a>
@@ -53,6 +54,7 @@
         <nav aria-label={$_('nav.mobile_nav')}>
           <a href={homeFeatures}>{$_('nav.features')}</a>
           <a href={homeShowcase}>{$_('nav.showcase')}</a>
+          <a href={appPath(loc, 'roadmap')}>{$_('nav.roadmap')}</a>
           <a href={appPath(loc, 'donate')}>{$_('nav.donate')}</a>
           <a href={appPath(loc, 'contact')}>{$_('nav.contact')}</a>
           <a href={MESHCHATX_GITHUB} target="_blank" rel="noopener noreferrer">{$_('nav.git')}</a>

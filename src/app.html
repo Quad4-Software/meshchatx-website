@@ -38,7 +38,31 @@
           apiURL: "https://swtrx.meshchatx.com/log",
         });
         swetrix.trackViews();
-        swetrix.trackErrors();
+        swetrix.trackErrors({
+          callback: function (error) {
+            if (!error || !error.message) return false;
+            var msg = error.message;
+            var file = error.filename || "";
+            var stack = error.stack || "";
+            // Filter generic CORS "Script error" from cross-origin extensions
+            if (msg === "Script error.") return false;
+            // Filter crypto wallet extensions (MetaMask, etc.)
+            if (/ethereum|web3|selectedAddress/i.test(msg)) return false;
+            // Filter Firefox internal / extension errors
+            if (/__firefox__/i.test(msg) || /__firefox__/i.test(stack))
+              return false;
+            // Filter common benign browser warnings
+            if (/ResizeObserver loop/i.test(msg)) return false;
+            // Filter extension-origin scripts
+            if (
+              /chrome-extension:\/\/|moz-extension:\/\/|safari-extension:\/\//i.test(
+                file,
+              )
+            )
+              return false;
+            return error;
+          },
+        });
       });
     </script>
     <noscript>

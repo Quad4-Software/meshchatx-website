@@ -13,6 +13,7 @@
       "donate": "捐赠 | MeshChatX",
       "license": "许可 | MeshChatX",
       "privacy": "隐私政策 | MeshChatX",
+      "roadmap": "路线图 | MeshChatX",
       "error": "错误 | MeshChatX"
     },
     "og_image_alt": "MeshChatX 标志",
@@ -23,6 +24,7 @@
       "donate": "在 Ko-fi、Buy Me a Coffee 或使用门罗币（XMR）支持 MeshChatX。",
       "license": "meshchatx.com 网站（0BSD）与 MeshChatX 应用（0BSD + MIT）的许可说明。",
       "privacy": "meshchatx.com 在您访问本站时如何处理数据。",
+      "roadmap": "MeshChatX 开发路线图，包含即将推出的功能、进行中的工作以及已完成的里程碑。",
       "error": "无法按请求显示此页面。"
     }
   },
@@ -41,6 +43,7 @@
     "showcase": "展示",
     "donate": "捐赠",
     "contact": "联系",
+    "roadmap": "路线图",
     "git": "Git",
     "download": "下载",
     "toggle_theme": "切换主题",
@@ -186,6 +189,15 @@
       "lead": "关于 MeshChatX 的视频",
       "youtube_title": "YouTube 上的 MeshChatX"
     }
+  },
+  "roadmap": {
+    "h1": "路线图",
+    "lead": "MeshChatX 开发路线图。以下是我们的当前工作和未来计划。",
+    "notice": "路线图可能会发生变化。版本和功能将根据开发优先级和社区反馈进行调整。",
+    "status_done": "已完成",
+    "status_progress": "进行中",
+    "status_planned": "已计划",
+    "status_upcoming": "即将推出"
   },
   "js": {
     "theme": {

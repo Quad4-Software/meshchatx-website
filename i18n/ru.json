@@ -13,6 +13,7 @@
       "donate": "Поддержать | MeshChatX",
       "license": "Лицензия | MeshChatX",
       "privacy": "Политика конфиденциальности | MeshChatX",
+      "roadmap": "Roadmap | MeshChatX",
       "error": "Ошибка | MeshChatX"
     },
     "og_image_alt": "Логотип MeshChatX",
@@ -23,6 +24,7 @@
       "donate": "Поддержите MeshChatX через Ko-fi, Buy Me a Coffee или Monero (XMR).",
       "license": "Лицензирование сайта meshchatx.com (0BSD) и приложения MeshChatX (0BSD + MIT).",
       "privacy": "Как meshchatx.com обрабатывает данные при посещении Сайта.",
+      "roadmap": "Дорожная карта разработки MeshChatX с предстоящими функциями, текущей работой и завершёнными этапами.",
       "error": "Страница не может быть показана так, как вы запрашивали."
     }
   },
@@ -41,6 +43,7 @@
     "showcase": "Обзор",
     "donate": "Поддержать",
     "contact": "Контакты",
+    "roadmap": "Roadmap",
     "git": "Git",
     "download": "Скачать",
     "toggle_theme": "Переключить тему",
@@ -186,6 +189,15 @@
       "lead": "Видео о MeshChatX",
       "youtube_title": "MeshChatX на YouTube"
     }
+  },
+  "roadmap": {
+    "h1": "Roadmap",
+    "lead": "Дорожная карта разработки MeshChatX. Здесь указано, над чем мы работаем и что будет дальше.",
+    "notice": "Дорожная карта может быть изменена. Версии и функции могут корректироваться в зависимости от приоритетов разработки и отзывов сообщества.",
+    "status_done": "Готово",
+    "status_progress": "В процессе",
+    "status_planned": "Запланировано",
+    "status_upcoming": "Скоро"
   },
   "js": {
     "theme": {

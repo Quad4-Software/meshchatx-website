@@ -5,7 +5,11 @@
 import { describe, expect, it } from "vitest";
 
 // Re-implement the pure functions from app.js for testing
-function formatPublishedAgo(publishedAt: string | null | undefined, nowIso?: string, docLang = "en") {
+function formatPublishedAgo(
+  publishedAt: string | null | undefined,
+  nowIso?: string,
+  docLang = "en",
+) {
   if (!publishedAt) return null;
   const date = new Date(publishedAt);
   const now = nowIso ? new Date(nowIso) : new Date();
@@ -55,12 +59,16 @@ describe("app.js formatPublishedAgo", () => {
 
   it("returns just now for very recent", () => {
     const now = "2026-05-04T12:00:00Z";
-    expect(formatPublishedAgo("2026-05-04T11:59:59Z", now)).toBe("published just now");
+    expect(formatPublishedAgo("2026-05-04T11:59:59Z", now)).toBe(
+      "published just now",
+    );
   });
 
   it("returns seconds ago", () => {
     const now = "2026-05-04T12:00:30Z";
-    expect(formatPublishedAgo("2026-05-04T11:59:50Z", now)).toContain("published");
+    expect(formatPublishedAgo("2026-05-04T11:59:50Z", now)).toContain(
+      "published",
+    );
     expect(formatPublishedAgo("2026-05-04T11:59:50Z", now)).toContain("second");
   });
 
@@ -101,7 +109,9 @@ describe("app.js formatPublishedAgo", () => {
 
   it("clamps negative time to just now", () => {
     const now = "2026-05-04T12:00:00Z";
-    expect(formatPublishedAgo("2026-05-04T12:01:00Z", now)).toBe("published just now");
+    expect(formatPublishedAgo("2026-05-04T12:01:00Z", now)).toBe(
+      "published just now",
+    );
   });
 
   it("supports German locale", () => {

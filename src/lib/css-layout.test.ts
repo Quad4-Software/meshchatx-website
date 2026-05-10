@@ -7,13 +7,18 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+const root = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../..",
+);
 const cssPath = path.join(root, "src/styles/legacy.css");
 const css = readFileSync(cssPath, "utf8");
 
 describe("CSS layout regression - critical rules exist", () => {
   it("has overflow-x hidden on html/body to prevent horizontal scroll", () => {
-    expect(css).toMatch(/html\s*,\s*html\.light\s*\{[\s\S]*?overflow-x:\s*hidden/i);
+    expect(css).toMatch(
+      /html\s*,\s*html\.light\s*\{[\s\S]*?overflow-x:\s*hidden/i,
+    );
   });
 
   it("has box-sizing border-box globally", () => {
