@@ -1,0 +1,116 @@
+html.mcx-theme-switching,
+html.mcx-theme-switching * {
+  transition: none !important;
+  animation: none !important;
+}
+
+html.light {
+  --header-bg-solid: color-mix(in srgb, #ffffff 94%, var(--zinc-100));
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--zinc-900) 6%, transparent);
+  --shadow-md:
+    0 4px 14px -4px color-mix(in srgb, var(--zinc-900) 10%, transparent),
+    0 2px 6px -2px color-mix(in srgb, var(--blue-500) 8%, transparent);
+  --shadow-lg:
+    0 18px 40px -14px color-mix(in srgb, var(--zinc-900) 14%, transparent),
+    0 8px 16px -8px color-mix(in srgb, var(--blue-500) 10%, transparent);
+}
+
+html.dark {
+  --header-bg-solid: color-mix(in srgb, var(--zinc-950) 94%, var(--zinc-900));
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #000 35%, transparent);
+  --shadow-md:
+    0 4px 14px -4px color-mix(in srgb, #000 45%, transparent),
+    0 2px 6px -2px color-mix(in srgb, var(--blue-500) 12%, transparent);
+  --shadow-lg:
+    0 18px 40px -14px color-mix(in srgb, #000 55%, transparent),
+    0 8px 16px -8px color-mix(in srgb, var(--blue-500) 14%, transparent);
+}
+
+.mcx-site-header {
+  backdrop-filter: none;
+  background: var(--header-bg-solid);
+  box-shadow: var(--shadow-sm);
+}
+
+.mcx-btn-primary {
+  border-radius: 0.875rem;
+  transition:
+    background 0.15s ease,
+    transform 0.12s ease,
+    box-shadow 0.15s ease;
+}
+
+.mcx-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.mcx-btn-ghost {
+  border: 1px solid var(--border);
+  border-radius: 0.875rem;
+}
+
+.mcx-btn-ghost:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-muted);
+}
+
+.mcx-glass-card {
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.mcx-feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.mcx-platform-row a {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid transparent;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.mcx-platform-row a:not(.mcx-disabled):hover {
+  background: var(--bg-muted);
+  border-color: var(--border);
+}
+
+.mcx-showcase-desktop {
+  box-shadow: var(--shadow-lg);
+}
+
+.mcx-nav-mobile__panel {
+  box-shadow: var(--shadow-lg);
+}
+
+.mcx-hero h1 {
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.mcx-version-pill {
+  box-shadow: var(--shadow-sm);
+}
+
+.mcx-download-tabs a {
+  border-radius: 0.625rem;
+}
+
+.mcx-download-tabs a:hover {
+  border-color: var(--border-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcx-btn-primary:hover,
+  .mcx-feature-card:hover {
+    transform: none;
+  }
+}

@@ -241,7 +241,7 @@
             src="https://www.youtube.com/embed/defFiXuuxKg?si=-QXEjDkjTT2_-FBu"
             title={$_('home.videos.youtube_title')}
             loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen
           ></iframe>

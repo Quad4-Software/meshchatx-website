@@ -97,9 +97,6 @@ body {
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
 }
 
 a {

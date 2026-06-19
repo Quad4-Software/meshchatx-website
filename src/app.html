@@ -9,6 +9,27 @@
     <meta name="color-scheme" content="light dark" />
     <script>
       (function () {
+        if ("serviceWorker" in navigator) {
+          var swKey = "mcx-sw-purge-v2";
+          try {
+            if (!localStorage.getItem(swKey)) {
+              navigator.serviceWorker.getRegistrations().then(function (regs) {
+                if (!regs.length) {
+                  localStorage.setItem(swKey, "1");
+                  return;
+                }
+                Promise.all(
+                  regs.map(function (r) {
+                    return r.unregister();
+                  }),
+                ).then(function () {
+                  localStorage.setItem(swKey, "1");
+                  location.reload();
+                });
+              });
+            }
+          } catch (e) {}
+        }
         var root = document.documentElement;
         var c = root.classList;
         c.remove("dark", "light");

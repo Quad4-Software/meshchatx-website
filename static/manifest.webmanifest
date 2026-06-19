@@ -1,0 +1,24 @@
+{
+  "name": "MeshChatX",
+  "short_name": "MeshChatX",
+  "description": "MeshChatX, Reticulum mesh chat",
+  "theme_color": "#ffffff",
+  "background_color": "#09090b",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/logo.webp",
+      "sizes": "800x800",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.webp",
+      "sizes": "32x32",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ]
+}

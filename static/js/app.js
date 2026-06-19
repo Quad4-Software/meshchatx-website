@@ -111,44 +111,68 @@
     );
   }
 
-  function toggleDarkMode() {
-    const root = document.documentElement;
-    const wantDark = !(
-      root.classList.contains("dark") ||
-      (!root.classList.contains("light") &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    );
-    root.classList.remove("dark", "light");
-    if (wantDark) {
-      root.classList.add("dark");
-      try {
-        localStorage.setItem("theme", "dark");
-      } catch {}
+  function scheduleShowcaseThemeRefresh() {
+    var run = function () {
+      qsa("[data-mcx-showcase]").forEach(function (showcase) {
+        var t = parseInt(showcase.dataset.activeTab, 10);
+        if (!isNaN(t)) updateShowcaseImages(showcase, t);
+      });
+    };
+    if (typeof requestIdleCallback === "function") {
+      requestIdleCallback(run, { timeout: 600 });
     } else {
-      root.classList.add("light");
-      try {
-        localStorage.setItem("theme", "light");
-      } catch {}
+      setTimeout(run, 0);
     }
-    qsa("[data-theme-toggle]").forEach(setThemeIcon);
-    const mobileLabel = qs("#mcx-mobile-theme-label");
-    if (mobileLabel) {
-      mobileLabel.textContent = isDark()
-        ? mcxT("theme.mobile_light")
-        : mcxT("theme.mobile_dark");
-    }
-    const mobileUse = qs("#mcx-mobile-theme-icon");
-    if (mobileUse) {
-      mobileUse.setAttribute(
-        "href",
-        isDark() ? "#i-weather-sunny" : "#i-weather-night",
-      );
-    }
-    qsa("[data-mcx-showcase]").forEach(function (showcase) {
-      var t = parseInt(showcase.dataset.activeTab, 10);
-      if (!isNaN(t)) updateShowcaseImages(showcase, t);
-    });
+  }
+
+  function withThemeSwitch(apply) {
+    var root = document.documentElement;
+    root.classList.add("mcx-theme-switching");
+    apply();
     syncThemeColor();
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        root.classList.remove("mcx-theme-switching");
+        scheduleShowcaseThemeRefresh();
+      });
+    });
+  }
+
+  function toggleDarkMode() {
+    withThemeSwitch(function () {
+      const root = document.documentElement;
+      const wantDark = !(
+        root.classList.contains("dark") ||
+        (!root.classList.contains("light") &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      );
+      root.classList.remove("dark", "light");
+      if (wantDark) {
+        root.classList.add("dark");
+        try {
+          localStorage.setItem("theme", "dark");
+        } catch {}
+      } else {
+        root.classList.add("light");
+        try {
+          localStorage.setItem("theme", "light");
+        } catch {}
+      }
+      qsa("[data-theme-toggle]").forEach(setThemeIcon);
+      const mobileLabel = qs("#mcx-mobile-theme-label");
+      if (mobileLabel) {
+        mobileLabel.textContent = isDark()
+          ? mcxT("theme.mobile_light")
+          : mcxT("theme.mobile_dark");
+      }
+      const mobileUse = qs("#mcx-mobile-theme-icon");
+      if (mobileUse) {
+        mobileUse.setAttribute(
+          "href",
+          isDark() ? "#i-weather-sunny" : "#i-weather-night",
+        );
+      }
+    });
   }
 
   function initThemeToggle() {
@@ -237,14 +261,24 @@
 
   function updateShowcaseImages(root, tabIndex) {
     root.querySelectorAll("[data-showcase-img]").forEach(function (img) {
+      var newSrc = showcaseShotUrl(root, tabIndex);
+      try {
+        var cur = new URL(img.src, location.origin).pathname;
+        var next = new URL(newSrc, location.origin).pathname;
+        if (cur === next) return;
+      } catch (e) {}
       var frame = img.closest("[data-showcase-frame]");
       var ph = frame
         ? frame.querySelector("[data-showcase-placeholder]")
         : null;
-      if (ph) ph.classList.add("hidden");
-      img.classList.remove("hidden");
-      img.src = showcaseShotUrl(root, tabIndex);
-      img.alt = "";
+      var pre = new Image();
+      pre.onload = function () {
+        img.src = newSrc;
+        img.classList.remove("hidden");
+        if (ph) ph.classList.add("hidden");
+        img.alt = "";
+      };
+      pre.src = newSrc;
     });
   }
 

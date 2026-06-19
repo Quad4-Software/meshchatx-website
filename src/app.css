@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./styles/legacy.css";
+@import "./styles/modern.css";
 
 @theme {
   --color-mcx-foreground: #fafafa;
