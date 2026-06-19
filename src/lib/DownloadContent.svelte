@@ -78,25 +78,6 @@ volumes:
           >{$_('dl.sbom')}</a
         >
       </p>
-      <p class="mcx-muted mcx-text-sm mcx-download-cdn-line">
-        <span class="mcx-download-cdn-sentence"
-          >{$_('dl.cdn_attrib_before')}<a
-            class="mcx-download-bunny-link mcx-link-blue"
-            href="https://bunny.net/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={$_('dl.bunny_link_aria')}
-            >Bunny.net<img
-              src="/vendor/bunny-net.svg"
-              alt=""
-              width="19"
-              height="21"
-              decoding="async"
-              class="mcx-download-bunny-logo"
-            /></a
-          >{$_('dl.cdn_attrib_suffix')}</span
-        >
-      </p>
     </div>
 
     <div class="mcx-download-tabs">

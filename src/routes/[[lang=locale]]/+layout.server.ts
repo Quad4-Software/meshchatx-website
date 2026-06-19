@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from "./$types";
-import { getMcxReleasesPayload } from "$lib/bunny-releases.server";
+import { getMcxReleasesPayload } from "$lib/github-releases.server";
 import { FLAT, isAppLocale, type AppLocale } from "$lib/merge-messages";
 
 function mcxI18NFromFlat(flat: Record<string, string>) {

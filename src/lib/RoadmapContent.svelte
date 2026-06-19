@@ -1,9 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import type { AppLocale } from "$lib/merge-messages";
   import { roadmapItems, type RoadmapStatus } from "$lib/roadmap";
-
-  const { locale: _loc } = $props<{ locale: AppLocale }>();
 
   const statusKey: Record<RoadmapStatus, string> = {
     done: "roadmap.status_done",
@@ -26,7 +23,7 @@
 <div class="roadmap-layout">
   <nav class="roadmap-sidebar" aria-label="Roadmap versions">
     <div class="roadmap-sidebar__line" aria-hidden="true"></div>
-    {#each roadmapItems as item}
+    {#each roadmapItems as item (item.version)}
       <a href={"#" + versionId(item.version)} class="roadmap-sidebar__link">
         <span class="roadmap-sidebar__version">{item.version}</span>
         <span class="roadmap-sidebar__date">{item.date.replace(" 2026", "")}</span>
@@ -41,7 +38,7 @@
     </div>
 
     <div class="roadmap-timeline">
-      {#each roadmapItems as item, i}
+      {#each roadmapItems as item (item.version)}
         {@const st = displayStatus(item)}
         {@const labelKey = statusKey[st]}
         <article class="roadmap-item" id={versionId(item.version)}>
@@ -56,7 +53,7 @@
             <p class="roadmap-item__desc">{item.desc}</p>
             {#if item.features.length}
               <ul class="roadmap-features">
-                {#each item.features as feature}
+                {#each item.features as feature (feature.text)}
                   <li class:roadmap-feature--highlight={feature.highlight}>{feature.text}</li>
                 {/each}
               </ul>

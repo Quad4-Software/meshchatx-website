@@ -2090,37 +2090,6 @@ html.dark .mcx-pre {
   font-weight: 600;
 }
 
-.mcx-download-cdn-line {
-  margin-top: 0.35rem;
-  max-width: 40rem;
-  line-height: 1.5;
-}
-
-.mcx-download-cdn-sentence {
-  display: inline;
-}
-
-.mcx-download-bunny-link {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 0.2em;
-  border-radius: 0.25rem;
-  vertical-align: text-bottom;
-  margin-left: 0.2em;
-  margin-right: 0.2em;
-}
-
-.mcx-download-bunny-link:hover {
-  opacity: 0.88;
-}
-
-.mcx-download-bunny-logo {
-  height: 1.125rem;
-  width: auto;
-  display: block;
-}
-
 .mcx-download-tabs {
   display: flex;
   flex-wrap: wrap;

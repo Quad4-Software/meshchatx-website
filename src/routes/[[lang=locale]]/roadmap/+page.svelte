@@ -6,4 +6,4 @@
 </script>
 
 <MetaTags page="roadmap" locale={data.locale} />
-<RoadmapContent locale={data.locale} />
+<RoadmapContent />

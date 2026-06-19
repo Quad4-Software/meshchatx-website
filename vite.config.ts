@@ -41,21 +41,40 @@ export default defineConfig({
         navigateFallback: undefined,
         runtimeCaching: [
           {
-            urlPattern: ({ request }) => request.mode === "navigate",
+            urlPattern: ({ request }: { request: Request }) =>
+              request.mode === "navigate",
             handler: "NetworkOnly",
           },
           {
-            urlPattern: ({ sameOrigin, url }) =>
-              sameOrigin && url.pathname.startsWith("/data/"),
+            urlPattern: ({
+              sameOrigin,
+              url,
+            }: {
+              sameOrigin: boolean;
+              url: URL;
+            }) => sameOrigin && url.pathname.startsWith("/data/"),
             handler: "NetworkOnly",
           },
           {
-            urlPattern: ({ sameOrigin, url }) =>
-              sameOrigin && url.pathname.startsWith("/api/"),
+            urlPattern: ({
+              sameOrigin,
+              url,
+            }: {
+              sameOrigin: boolean;
+              url: URL;
+            }) => sameOrigin && url.pathname.startsWith("/api/"),
             handler: "NetworkOnly",
           },
           {
-            urlPattern: ({ request, sameOrigin, url }) =>
+            urlPattern: ({
+              request,
+              sameOrigin,
+              url,
+            }: {
+              request: Request;
+              sameOrigin: boolean;
+              url: URL;
+            }) =>
               sameOrigin &&
               request.destination !== "document" &&
               (url.pathname.startsWith("/_app/immutable/") ||
