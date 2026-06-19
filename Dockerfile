@@ -24,4 +24,4 @@ USER node
 
 EXPOSE 8080
 
-CMD ["build"]
+CMD ["build/index.js"]

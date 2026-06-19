@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "vite build && node scripts/fix-adapter-client-path.mjs",
     "preview": "vite preview",
     "start": "node build",
     "test": "vitest run",
