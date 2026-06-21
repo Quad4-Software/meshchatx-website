@@ -640,9 +640,21 @@ html.dark .mcx-badge-mit {
   overflow: hidden;
   padding: 0.75rem 0 4rem;
   background:
-    radial-gradient(ellipse 80% 60% at 50% -20%, var(--hero-glow-a), transparent 72%),
-    radial-gradient(ellipse 50% 40% at 100% 0%, var(--hero-glow-b), transparent 68%),
-    radial-gradient(ellipse 40% 35% at 0% 20%, var(--hero-glow-b), transparent 70%),
+    radial-gradient(
+      ellipse 80% 60% at 50% -20%,
+      var(--hero-glow-a),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 100% 0%,
+      var(--hero-glow-b),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 0% 20%,
+      var(--hero-glow-b),
+      transparent 70%
+    ),
     var(--bg);
 }
 
@@ -654,7 +666,11 @@ html.dark .mcx-badge-mit {
     linear-gradient(var(--hero-grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--hero-grid) 1px, transparent 1px);
   background-size: 72px 72px;
-  mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, #000 20%, transparent 72%);
+  mask-image: radial-gradient(
+    ellipse 85% 65% at 50% 25%,
+    #000 20%,
+    transparent 72%
+  );
   pointer-events: none;
 }
 
@@ -1637,7 +1653,8 @@ html.dark .mcx-section--alt {
   justify-content: center;
   color: #fff;
   margin-bottom: 1.25rem;
-  box-shadow: 0 8px 20px -6px color-mix(in srgb, var(--blue-500) 35%, transparent);
+  box-shadow: 0 8px 20px -6px
+    color-mix(in srgb, var(--blue-500) 35%, transparent);
 }
 
 .mcx-bg-blue {

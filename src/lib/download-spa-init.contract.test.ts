@@ -25,7 +25,7 @@ describe("download page Svelte integration", () => {
   it("DownloadMeta uses locale-aware pathname for channel links", () => {
     const src = readUtf8("src/lib/DownloadMeta.svelte");
     expect(src).toContain("page.url.pathname");
-    expect(src).toContain('?channel=prerelease');
+    expect(src).toContain("?channel=prerelease");
     expect(src).not.toContain("href: '/download?channel=prerelease'");
   });
 

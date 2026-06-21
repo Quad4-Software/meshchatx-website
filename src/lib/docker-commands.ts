@@ -17,7 +17,10 @@ volumes:
     meshchatx-config:
         name: meshchatx-config`;
 
-export function containerPullCmd(engine: "docker" | "podman", registry: "hub" | "ghcr"): string {
+export function containerPullCmd(
+  engine: "docker" | "podman",
+  registry: "hub" | "ghcr",
+): string {
   const image = registry === "ghcr" ? GHCR_IMAGE : HUB_IMAGE;
   return `${engine} pull ${image}`;
 }

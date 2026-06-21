@@ -5,7 +5,10 @@ import {
   selectDownloadRelease,
   wheelInstallCmd,
 } from "./download-page";
-import type { McxDownloadRow, McxReleasesPayload } from "./github-releases.server";
+import type {
+  McxDownloadRow,
+  McxReleasesPayload,
+} from "./github-releases.server";
 
 function row(partial: Partial<McxDownloadRow>): McxDownloadRow {
   return {

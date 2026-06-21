@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import { page } from "$app/state";
   import { _ } from "svelte-i18n";
   import CopyButton from "$lib/CopyButton.svelte";
   import DownloadMeta from "$lib/DownloadMeta.svelte";
+  import { useDownloadReleases } from "$lib/download-remote-releases.svelte";
   import {
     COMPOSE_YAML,
     containerPullCmd,
@@ -11,7 +11,6 @@
   } from "$lib/docker-commands";
   import {
     channelFromSearch,
-    hasReleaseData,
     linuxOrPre,
     selectDownloadRelease,
     TERMUX_PIP_CMD,
@@ -36,28 +35,8 @@
     releases: McxReleasesPayload;
   }>();
 
-  let remoteReleases = $state<McxReleasesPayload | null>(null);
-  const releases = $derived(remoteReleases ?? serverReleases);
-
-  $effect(() => {
-    remoteReleases = null;
-  });
-
-  $effect(() => {
-    if (!browser || hasReleaseData(releases)) return;
-    let cancelled = false;
-    fetch("/api/mcx-releases", { cache: "no-store" })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((payload) => {
-        if (!cancelled && payload && hasReleaseData(payload)) {
-          remoteReleases = payload as McxReleasesPayload;
-        }
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  });
+  const downloadReleases = useDownloadReleases(() => serverReleases);
+  const releases = $derived(downloadReleases.releases);
 
   const channel = $derived(channelFromSearch(page.url.search));
   const selection = $derived(selectDownloadRelease(releases, channel));

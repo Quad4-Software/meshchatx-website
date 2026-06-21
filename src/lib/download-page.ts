@@ -1,4 +1,7 @@
-import type { McxDownloadRow, McxReleasesPayload } from "$lib/github-releases.server";
+import type {
+  McxDownloadRow,
+  McxReleasesPayload,
+} from "$lib/github-releases.server";
 
 export type DownloadChannel = "stable" | "prerelease";
 
