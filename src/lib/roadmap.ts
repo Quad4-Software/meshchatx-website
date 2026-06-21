@@ -15,7 +15,7 @@ export interface RoadmapItem {
   notice?: string;
 }
 
-export const roadmapItems: RoadmapItem[] = [
+export const roadmapItemsBase: RoadmapItem[] = [
   {
     version: "4.7.0",
     date: "June 2026",
@@ -69,3 +69,16 @@ export const roadmapItems: RoadmapItem[] = [
     status: "planned",
   },
 ];
+
+export function resolveRoadmapItems(
+  items: RoadmapItem[],
+  publishedVersions: Set<string>,
+): RoadmapItem[] {
+  return items.map((item) => {
+    if (item.status !== "planned") return item;
+    if (publishedVersions.has(item.version)) {
+      return { ...item, status: "done" };
+    }
+    return item;
+  });
+}

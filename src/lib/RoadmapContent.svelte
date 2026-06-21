@@ -1,6 +1,8 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { roadmapItems, type RoadmapStatus } from "$lib/roadmap";
+  import type { RoadmapItem, RoadmapStatus } from "$lib/roadmap";
+
+  const { items: roadmapItems } = $props<{ items: RoadmapItem[] }>();
 
   const statusKey: Record<RoadmapStatus, string> = {
     done: "roadmap.status_done",
@@ -9,9 +11,11 @@
     upcoming: "roadmap.status_upcoming",
   };
 
-  function displayStatus(item: (typeof roadmapItems)[number]): RoadmapStatus {
+  function displayStatus(item: RoadmapItem): RoadmapStatus {
     if (item.status !== "planned") return item.status;
-    const isNext = roadmapItems.findIndex((i) => i.status === "planned") === roadmapItems.indexOf(item);
+    const isNext =
+      roadmapItems.findIndex((i: RoadmapItem) => i.status === "planned") ===
+      roadmapItems.indexOf(item);
     return isNext ? "upcoming" : "planned";
   }
 

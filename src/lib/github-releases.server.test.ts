@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   getMcxReleasesPayload,
+  getPublishedReleaseVersions,
   resetGithubReleasesCacheForTests,
 } from "./github-releases.server";
 
@@ -226,5 +227,44 @@ describe("github-releases.server", () => {
     const n = fetchSpy.mock.calls.length;
     await getMcxReleasesPayload();
     expect(fetchSpy.mock.calls.length).toBe(n);
+  });
+
+  it("returns published release versions for roadmap status", async () => {
+    vi.stubGlobal(
+      "fetch",
+      mockGithubApiReleases([
+        {
+          tag_name: "v4.7.0",
+          published_at: "2026-06-21T00:00:00Z",
+          prerelease: true,
+          draft: false,
+          html_url:
+            "https://github.com/Quad4-Software/MeshChatX/releases/tag/v4.7.0",
+          assets: [],
+        },
+        {
+          tag_name: "v4.7.0-rc.6",
+          published_at: "2026-06-20T00:00:00Z",
+          prerelease: true,
+          draft: false,
+          html_url:
+            "https://github.com/Quad4-Software/MeshChatX/releases/tag/v4.7.0-rc.6",
+          assets: [],
+        },
+        {
+          tag_name: "v9.9.9",
+          published_at: "2026-06-01T00:00:00Z",
+          prerelease: false,
+          draft: true,
+          html_url:
+            "https://github.com/Quad4-Software/MeshChatX/releases/tag/v9.9.9",
+          assets: [],
+        },
+      ]),
+    );
+    const versions = await getPublishedReleaseVersions();
+    expect(versions.has("4.7.0")).toBe(true);
+    expect(versions.has("4.7.0-rc.6")).toBe(true);
+    expect(versions.has("9.9.9")).toBe(false);
   });
 });

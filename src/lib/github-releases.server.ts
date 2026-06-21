@@ -48,6 +48,8 @@ const GITHUB_RELEASES_API_URL = `https://api.github.com/repos/${GITHUB_REPO_PATH
 const GITHUB_RELEASES_ATOM_URL = `https://github.com/${GITHUB_REPO_PATH}/releases.atom`;
 
 let cache: { at: number; payload: McxReleasesPayload } | null = null;
+let releasesCache: { at: number; releases: GithubRelease[] | null } | null =
+  null;
 
 function cacheTtlMs(): number {
   const s = Number(process.env.RELEASES_CACHE_SECONDS);
@@ -338,9 +340,31 @@ function buildRowFromRelease(release: GithubRelease): McxDownloadRow {
   };
 }
 
+async function getGithubReleasesCached(): Promise<GithubRelease[] | null> {
+  const ttl = cacheTtlMs();
+  const now = Date.now();
+  if (releasesCache && now - releasesCache.at < ttl) {
+    return releasesCache.releases;
+  }
+  const releases = await fetchGithubReleases();
+  releasesCache = { at: now, releases };
+  return releases;
+}
+
+export async function getPublishedReleaseVersions(): Promise<Set<string>> {
+  const releases = await getGithubReleasesCached();
+  if (!releases?.length) return new Set();
+  const versions = new Set<string>();
+  for (const release of releases) {
+    if (release.draft) continue;
+    versions.add(versionDisplayFromTag(release.tag_name));
+  }
+  return versions;
+}
+
 export async function buildMcxReleasesPayload(): Promise<McxReleasesPayload> {
   const githubFallbackUrl = MESHCHATX_RELEASES;
-  const releases = await fetchGithubReleases();
+  const releases = await getGithubReleasesCached();
   if (!releases?.length) {
     return { stable: null, prerelease: null, githubFallbackUrl };
   }
@@ -370,4 +394,5 @@ export async function getMcxReleasesPayload(): Promise<McxReleasesPayload> {
 
 export function resetGithubReleasesCacheForTests(): void {
   cache = null;
+  releasesCache = null;
 }
