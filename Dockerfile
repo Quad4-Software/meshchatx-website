@@ -2,10 +2,13 @@
 FROM cgr.dev/chainguard/node:latest-dev AS build
 
 USER root
-RUN corepack enable pnpm
+ENV CI=true
 
 WORKDIR /site
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN npm install -g corepack@latest \
+ && corepack enable \
+ && corepack prepare pnpm@11.8.0 --activate
 RUN pnpm install --frozen-lockfile
 
 COPY . .
