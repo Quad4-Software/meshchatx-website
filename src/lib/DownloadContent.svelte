@@ -26,6 +26,8 @@
     MESHCHATX_PYPI,
     MESHCHATX_PYPI_PACKAGE,
     MESHCHATX_RELEASES,
+    MESHCHATX_RELEASES_ATOM,
+    MESHCHATX_UMBREL,
   } from "$lib/meshchatx-repo";
   import { appPath } from "$lib/paths";
 
@@ -120,6 +122,16 @@
           <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-github" /></svg>
           {$_("dl.github_releases")}
         </a>
+        <span class="mcx-download-meta-sep" aria-hidden="true">·</span>
+        <a
+          href={MESHCHATX_RELEASES_ATOM}
+          class="mcx-link-blue mcx-download-github-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-rss" /></svg>
+          {$_("dl.releases_atom")}
+        </a>
       </p>
     </div>
 
@@ -130,6 +142,7 @@
       <a href={appPath(loc, "download", "docker")}><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-docker" /></svg> {$_("dl.tabs.docker")}</a>
       <a href={appPath(loc, "download", "python")}><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-language-python" /></svg> {$_("dl.tabs.python")}</a>
       <a href={appPath(loc, "download", "android")}><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-android" /></svg> {$_("dl.tabs.android")}</a>
+      <a href={appPath(loc, "download", "umbrel")}><svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-home" /></svg> {$_("dl.tabs.umbrel")}</a>
     </div>
 
     <div class="mcx-download-sections">
@@ -491,6 +504,23 @@ poetry run meshchat --headless --host 127.0.0.1</pre>
             </div>
           {/if}
         </div>
+      </section>
+
+      <section id="umbrel" class="mcx-download-section">
+        <h2 style="font-size:1.25rem;font-weight:900;margin:0 0 0.5rem;display:flex;align-items:center;gap:0.5rem">
+          <svg class="mcx-icon" aria-hidden="true"><use href="#i-home" /></svg>
+          {$_("dl.umbrel.h2")}
+        </h2>
+        <p class="mcx-muted" style="margin-bottom:1.5rem">{$_("dl.umbrel.intro")}</p>
+        <a
+          class="mcx-btn-primary"
+          href={MESHCHATX_UMBREL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg class="mcx-icon" aria-hidden="true"><use href="#i-home" /></svg>
+          {$_("dl.umbrel.btn")}
+        </a>
       </section>
 
       <section id="android" class="mcx-download-section">

@@ -2,6 +2,10 @@
 export const MESHCHATX_GITHUB =
   "https://github.com/Quad4-Software/MeshChatX" as const;
 export const MESHCHATX_RELEASES = `${MESHCHATX_GITHUB}/releases` as const;
+export const MESHCHATX_RELEASES_ATOM =
+  `${MESHCHATX_GITHUB}/releases.atom` as const;
+export const MESHCHATX_UMBREL =
+  "https://apps.umbrel.com/app/meshchatx" as const;
 export const MESHCHATX_CHANGELOG =
   `${MESHCHATX_GITHUB}/blob/master/CHANGELOG.md` as const;
 /** `git clone` remote (HTTPS). */

@@ -212,7 +212,6 @@
     flex: 1;
     min-width: 0;
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
     border-radius: 1rem;
     padding: 1.25rem;

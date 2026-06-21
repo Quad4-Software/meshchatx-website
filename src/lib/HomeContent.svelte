@@ -14,10 +14,6 @@
 </script>
 
     <section class="mcx-hero">
-      <div class="mcx-hero-orbs" aria-hidden="true">
-        <div class="mcx-hero-orb mcx-hero-orb--a"></div>
-        <div class="mcx-hero-orb mcx-hero-orb--b"></div>
-      </div>
       <div class="mcx-hero-inner mcx-container">
         <VersionBadge {releases} />
         <h1>{$_('home.hero.h1')}</h1>
@@ -121,15 +117,27 @@
           <h2>{$_('home.videos.h2')}</h2>
           <p>{$_('home.videos.lead')}</p>
         </div>
-        <div class="mcx-video-embed mcx-glass-card">
-          <iframe
-            src="https://www.youtube.com/embed/defFiXuuxKg?si=-QXEjDkjTT2_-FBu"
-            title={$_('home.videos.youtube_title')}
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-          ></iframe>
+        <div class="mcx-video-grid">
+          <div class="mcx-video-embed mcx-glass-card">
+            <iframe
+              src="https://www.youtube.com/embed/defFiXuuxKg?si=-QXEjDkjTT2_-FBu"
+              title={$_('home.videos.youtube_title')}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="mcx-video-embed mcx-glass-card">
+            <iframe
+              src="https://www.youtube.com/embed/no7bahDoIUs"
+              title={$_('home.videos.youtube_title_2')}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
         </div>
       </div>
     </section>
@@ -175,7 +183,7 @@
           <ul class="mcx-security-list">
             <li>{@html $_('home.security.bullet_slsa')}</li>
             <li>{@html $_('home.security.bullet_asar')}</li>
-            <li>{$_('home.security.bullet_inapp')}</li>
+            <li>{@html $_('home.security.bullet_landlock')}</li>
             <li>{@html $_('home.security.bullet_sigstore')}</li>
             <li>{$_('home.security.bullet_sast')}</li>
             <li>{@html $_('home.security.bullet_csp')}</li>

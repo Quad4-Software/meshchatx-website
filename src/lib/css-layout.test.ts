@@ -81,7 +81,7 @@ describe("CSS layout regression - no dangerous patterns", () => {
   });
 
   it("uses clamp() for hero heading to prevent overflow", () => {
-    expect(css).toContain("clamp(2rem, 5vw, 3rem)");
+    expect(css).toMatch(/\.mcx-hero h1[\s\S]*?clamp\(/);
   });
 
   it("has reduced-motion media query for accessibility", () => {

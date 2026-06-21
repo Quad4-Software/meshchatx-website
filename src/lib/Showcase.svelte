@@ -18,26 +18,36 @@
 
   let activeTab = $state(0);
   let view = $state<"mobile" | "desktop">("desktop");
-  let mobileMenuOpen = $state(false);
   let tabsMenuOpen = $state(false);
   let displaySrc = $state("");
   let imageReady = $state(false);
+  let isMobileViewport = $state(false);
+  let swipeStartX = $state<number | null>(null);
+
+  const SWIPE_THRESHOLD_PX = 48;
 
   const tabIndices = Array.from({ length: SHOWCASE_TAB_COUNT }, (_, i) => i);
   const activeLabel = $derived($_(showcaseTabKey(activeTab)));
   const targetUrl = $derived(
     showcaseShotUrl(assetsBase, activeTab, theme.isDark),
   );
+  const shotAlt = $derived(
+    $_("js.showcase.desktop_fmt").replace("%s", activeLabel),
+  );
+  const showCarousel = $derived(
+    isMobileViewport || (!desktopOnly && view === "mobile"),
+  );
 
   $effect(() => {
     if (!browser) return;
-    if (desktopOnly) {
-      view = "desktop";
-      return;
-    }
-    const mq = window.matchMedia("(min-width: 768px)");
+    const mq = window.matchMedia("(max-width: 767px)");
     const apply = () => {
-      view = mq.matches ? "desktop" : "mobile";
+      isMobileViewport = mq.matches;
+      if (desktopOnly) {
+        view = "desktop";
+        return;
+      }
+      view = mq.matches ? "mobile" : "desktop";
     };
     apply();
     mq.addEventListener("change", apply);
@@ -58,18 +68,52 @@
 
   function selectTab(index: number) {
     activeTab = index;
-    mobileMenuOpen = false;
+    tabsMenuOpen = false;
+  }
+
+  function goNextTab() {
+    activeTab = (activeTab + 1) % SHOWCASE_TAB_COUNT;
+    tabsMenuOpen = false;
+  }
+
+  function goPrevTab() {
+    activeTab = (activeTab - 1 + SHOWCASE_TAB_COUNT) % SHOWCASE_TAB_COUNT;
     tabsMenuOpen = false;
   }
 
   function closeMenus() {
-    mobileMenuOpen = false;
     tabsMenuOpen = false;
+  }
+
+  function onSwipeStart(clientX: number) {
+    swipeStartX = clientX;
+  }
+
+  function onSwipeEnd(clientX: number) {
+    if (swipeStartX === null) return;
+    const delta = clientX - swipeStartX;
+    swipeStartX = null;
+    if (Math.abs(delta) < SWIPE_THRESHOLD_PX) return;
+    if (delta < 0) goNextTab();
+    else goPrevTab();
+  }
+
+  function onPointerDown(e: PointerEvent) {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    onSwipeStart(e.clientX);
+  }
+
+  function onPointerUp(e: PointerEvent) {
+    onSwipeEnd(e.clientX);
+  }
+
+  function onPointerCancel() {
+    swipeStartX = null;
   }
 </script>
 
 <div id="showcase" class="mcx-showcase-wrap">
-  {#if !desktopOnly}
+  {#if !desktopOnly && !isMobileViewport}
     <div class="mcx-toggle-pair" aria-hidden="true">
       <button
         type="button"
@@ -96,63 +140,52 @@
     </div>
   {/if}
 
-  {#if !desktopOnly && view === "mobile"}
-    <div>
-      <div class="mcx-flex-center">
-        <div class="mcx-showcase-phone">
-          <div class="mcx-phone-notch"><span></span></div>
-          <div class="mcx-phone-bar">
-            <details bind:open={mobileMenuOpen}>
-              <summary class="mcx-icon-btn" style="list-style:none">
-                <svg class="mcx-icon mcx-icon--sm" aria-hidden="true">
-                  <use href={mobileMenuOpen ? "#i-close" : "#i-menu"} />
-                </svg>
-              </summary>
-              <div
-                class="mcx-menu-popover"
-                style="position:absolute;top:100%;left:0;right:0;margin-top:2px;z-index:20;border-radius:0 0 0.5rem 0.5rem"
-              >
-                {#each tabIndices as index (index)}
-                  <button
-                    type="button"
-                    class="touch-manipulation"
-                    class:is-active={activeTab === index}
-                    role="menuitem"
-                    onclick={() => selectTab(index)}
-                  >
-                    {$_(showcaseTabKey(index))}
-                  </button>
-                {/each}
-              </div>
-            </details>
-            <span class="mcx-phone-bar-title">{activeLabel}</span>
-            <span style="width:1.5rem;flex-shrink:0"></span>
-          </div>
-          <div class="mcx-phone-screen" role="presentation" onclick={closeMenus}>
-            <div class="mcx-showcase-frame">
-              {#if imageReady}
-                <img
-                  class="mcx-showcase-shot"
-                  src={displaySrc}
-                  alt=""
-                  decoding="async"
-                  loading="lazy"
-                />
-              {:else}
-                <div class="mcx-showcase-placeholder" aria-hidden="true">
-                  <svg class="mcx-icon mcx-icon--2xl mcx-muted-icon" aria-hidden="true">
-                    <use href="#i-message-text-outline" />
-                  </svg>
-                </div>
-              {/if}
+  {#if showCarousel}
+    <div
+      class="mcx-showcase-carousel"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={$_("nav.showcase")}
+      onpointerdown={onPointerDown}
+      onpointerup={onPointerUp}
+      onpointercancel={onPointerCancel}
+      onpointerleave={onPointerCancel}
+    >
+      <div class="mcx-showcase-carousel__frame">
+        <div class="mcx-showcase-frame">
+          {#if imageReady}
+            <img
+              class="mcx-showcase-shot mcx-showcase-shot--carousel"
+              src={displaySrc}
+              alt={shotAlt}
+              decoding="async"
+              loading="lazy"
+              draggable="false"
+            />
+          {:else}
+            <div class="mcx-showcase-placeholder" aria-hidden="true">
+              <svg class="mcx-icon mcx-icon--2xl mcx-muted-icon" aria-hidden="true">
+                <use href="#i-message-text-outline" />
+              </svg>
             </div>
-          </div>
+          {/if}
         </div>
       </div>
+      <p class="mcx-showcase-carousel__label" aria-live="polite">{activeLabel}</p>
+      <div class="mcx-showcase-carousel__dots">
+        {#each tabIndices as index (index)}
+          <button
+            type="button"
+            class="mcx-showcase-carousel__dot"
+            class:is-active={activeTab === index}
+            aria-label={$_(showcaseTabKey(index))}
+            aria-current={activeTab === index ? "true" : undefined}
+            onclick={() => selectTab(index)}
+          ></button>
+        {/each}
+      </div>
     </div>
-  {/if}
-
-  {#if desktopOnly || view === "desktop"}
+  {:else}
     <div>
       <div class="mcx-showcase-desktop mcx-glass-card">
         <div class="mcx-browser-chrome">
@@ -206,7 +239,7 @@
               <img
                 class="mcx-showcase-shot mcx-showcase-shot--desktop"
                 src={displaySrc}
-                alt=""
+                alt={shotAlt}
                 decoding="async"
                 loading="lazy"
               />

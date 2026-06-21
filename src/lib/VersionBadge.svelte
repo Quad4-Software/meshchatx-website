@@ -15,13 +15,12 @@
 
 {#if label}
   <a
-    class="mcx-version-pill mcx-badge-enter"
+    class="mcx-version-pill"
     data-version-badge
     href={MESHCHATX_CHANGELOG}
     target="_blank"
     rel="noopener noreferrer"
   >
-    <span class="mcx-pulse" aria-hidden="true"></span>
     <span data-version-text>{label}</span>
   </a>
 {/if}

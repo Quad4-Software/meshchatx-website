@@ -9,13 +9,15 @@
     "github_fallback": "Release su GitHub",
     "github_also": "Disponibile anche su",
     "github_releases": "Release su GitHub",
+    "releases_atom": "Feed release (Atom)",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",
       "windows": "Windows",
       "docker": "Docker / Podman",
       "python": "Python",
-      "android": "Android"
+      "android": "Android",
+      "umbrel": "Umbrel"
     },
     "macos": {
       "h2": "macOS",
@@ -117,6 +119,11 @@
       "badge": "In arrivo",
       "btn_apk": "Scarica .apk",
       "obtainium_alt": "Scarica con Obtainium"
+    },
+    "umbrel": {
+      "h2": "Umbrel",
+      "intro": "Installa MeshChatX sul tuo home server Umbrel dall'Umbrel App Store.",
+      "btn": "Scarica su Umbrel"
     },
     "termux": {
       "h2": "Termux",

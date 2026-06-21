@@ -168,7 +168,7 @@
       "lead": "Проверяемость, прозрачность и осторожные настройки в десктопном стеке, чтобы было понятно, что поставляется и как ведёт себя приложение.",
       "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> уровень 3 с усиленной provenance цепочки поставки для релизных сборок.",
       "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Целостность ASAR</a> помогает выявлять подмену упакованных ресурсов приложения.",
-      "bullet_inapp": "Встроенный монитор целостности для дополнительной защиты во время работы.",
+      "bullet_landlock": "Песочница Linux с <a href=\"https://landlock.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Landlock LSM</a> для ограничения доступа к файловой системе.",
       "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> и подписи Cosign для проверяемых артефактов там, где это применимо.",
       "bullet_sast": "Статический анализ и проверка зависимостей: Trivy, pip-audit, Ruff и CodeQL в конвейере поставки.",
       "bullet_csp": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#7-define-a-content-security-policy\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">CSP</a> и строгие умолчания для удалённого контента в оболочке Electron (включая дисциплину CORS, где уместно).",
@@ -187,7 +187,8 @@
     "videos": {
       "h2": "Видео",
       "lead": "Видео о MeshChatX",
-      "youtube_title": "MeshChatX на YouTube"
+      "youtube_title": "MeshChatX на YouTube",
+      "youtube_title_2": "MeshChatX на YouTube"
     }
   },
   "roadmap": {

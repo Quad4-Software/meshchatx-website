@@ -168,7 +168,7 @@
       "lead": "Verification, transparency, and conservative defaults in the desktop stack, so you know what shipped and how it behaves.",
       "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> Level 3 with hardened supply-chain provenance for release builds.",
       "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR integrity</a> monitoring helps detect tampering with packaged application resources.",
-      "bullet_inapp": "In-app integrity monitor for additional runtime assurance.",
+      "bullet_landlock": "<a href=\"https://landlock.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Landlock LSM</a> sandboxing on Linux to restrict filesystem access.",
       "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> cosign-based signing for verifiable artifacts where applicable.",
       "bullet_sast": "Static analysis and dependency scanning with Trivy, pip-audit, Ruff, and CodeQL in the delivery pipeline.",
       "bullet_csp": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#7-define-a-content-security-policy\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">CSP</a> plus tight defaults for remote content in the Electron shell (including CORS discipline where it applies).",
@@ -187,7 +187,8 @@
     "videos": {
       "h2": "Videos",
       "lead": "Videos About MeshChatX",
-      "youtube_title": "MeshChatX on YouTube"
+      "youtube_title": "MeshChatX on YouTube",
+      "youtube_title_2": "MeshChatX on YouTube"
     }
   },
   "roadmap": {

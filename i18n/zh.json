@@ -168,7 +168,7 @@
       "lead": "在桌面技术栈中落实校验、透明度和稳妥默认行为，让你清楚交付内容与运行方式。",
       "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> 3 级：为发布构建提供更强的供应链来源与完整性保障。",
       "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR 完整性</a>监测，有助于发现对打包应用资源的篡改。",
-      "bullet_inapp": "应用内完整性监视器，提供额外的运行时保障。",
+      "bullet_landlock": "在 Linux 上使用 <a href=\"https://landlock.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Landlock LSM</a> 沙箱隔离以限制文件系统访问。",
       "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> Cosign 签名，在适用场景下提供可验证制品。",
       "bullet_sast": "交付流水线中的静态分析与依赖扫描：Trivy、pip-audit、Ruff、CodeQL。",
       "bullet_csp": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#7-define-a-content-security-policy\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">CSP</a> 及严格的远程内容默认策略（在适用范围内包含 CORS 约束）。",
@@ -187,7 +187,8 @@
     "videos": {
       "h2": "视频",
       "lead": "关于 MeshChatX 的视频",
-      "youtube_title": "YouTube 上的 MeshChatX"
+      "youtube_title": "YouTube 上的 MeshChatX",
+      "youtube_title_2": "YouTube 上的 MeshChatX"
     }
   },
   "roadmap": {

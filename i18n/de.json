@@ -168,7 +168,7 @@
       "lead": "Prüfung, Transparenz und konservative Voreinstellungen im Desktop-Stack, damit klar ist, was ausgeliefert wurde und wie es sich verhält.",
       "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> Stufe 3 mit gehärteter Supply-Chain-Provenance für Release-Builds.",
       "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR-Integrität</a> überwacht Manipulationen an gepackten Anwendungsressourcen.",
-      "bullet_inapp": "In-App-Integritätsmonitor für zusätzliche Laufzeitsicherheit.",
+      "bullet_landlock": "<a href=\"https://landlock.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Landlock LSM</a>-Sandboxing unter Linux zur Einschränkung des Dateisystemzugriffs.",
       "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> Cosign-Signaturen für nachprüfbare Artefakte, wo anwendbar.",
       "bullet_sast": "Statische Analyse und Dependency-Scanning mit Trivy, pip-audit, Ruff und CodeQL in der Delivery-Pipeline.",
       "bullet_csp": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#7-define-a-content-security-policy\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">CSP</a> plus strenge Defaults für Remote-Inhalte in der Electron-Shell (einschließlich CORS-Disziplin, wo relevant).",
@@ -187,7 +187,8 @@
     "videos": {
       "h2": "Videos",
       "lead": "Videos über MeshChatX",
-      "youtube_title": "MeshChatX auf YouTube"
+      "youtube_title": "MeshChatX auf YouTube",
+      "youtube_title_2": "MeshChatX auf YouTube"
     }
   },
   "roadmap": {

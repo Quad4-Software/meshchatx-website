@@ -9,13 +9,15 @@
     "github_fallback": "GitHub 发布",
     "github_also": "也可前往",
     "github_releases": "GitHub 发布",
+    "releases_atom": "发布订阅 (Atom)",
     "tabs": {
       "macos": "macOS",
       "linux": "Linux",
       "windows": "Windows",
       "docker": "Docker / Podman",
       "python": "Python",
-      "android": "Android"
+      "android": "Android",
+      "umbrel": "Umbrel"
     },
     "macos": {
       "h2": "macOS",
@@ -117,6 +119,11 @@
       "badge": "即将推出",
       "btn_apk": "下载 .apk",
       "obtainium_alt": "在 Obtainium 获取"
+    },
+    "umbrel": {
+      "h2": "Umbrel",
+      "intro": "通过 Umbrel 应用商店在 Umbrel 家庭服务器上安装 MeshChatX。",
+      "btn": "在 Umbrel 获取"
     },
     "termux": {
       "h2": "Termux",
