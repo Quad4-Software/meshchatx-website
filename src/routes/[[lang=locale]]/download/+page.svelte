@@ -9,13 +9,6 @@
 
   $effect(() => {
     if (!browser) return;
-    void page.url.pathname;
-    void page.url.search;
-    void window.MCX?.initDownloadPage?.();
-  });
-
-  $effect(() => {
-    if (!browser) return;
     const hash = page.url.hash;
     if (!hash.startsWith('#')) return;
     const id = hash.slice(1);
@@ -27,4 +20,4 @@
 </script>
 
 <MetaTags page="download" locale={data.locale} />
-<DownloadContent locale={data.locale} />
+<DownloadContent locale={data.locale} releases={data.releasesPayload} />

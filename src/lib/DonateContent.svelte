@@ -1,5 +1,9 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
+  import CopyButton from "$lib/CopyButton.svelte";
+
+  const XMR_ADDRESS =
+    "8AfDSLVeTSt1oku5ifK4jkbJ94fp5kW6y5RWxuP1FYmyZmLHYRVSrPXJJaX7mK1n7MQUzwYE15uVdQVeAuWWnR5pDkN52xU";
 </script>
 
 <section class="mcx-page-head mcx-page-head--center">
@@ -24,14 +28,7 @@
         <div class="mcx-mono-block" style="font-size:0.75rem" id="mcx-xmr-addr">
           8AfDSLVeTSt1oku5ifK4jkbJ94fp5kW6y5RWxuP1FYmyZmLHYRVSrPXJJaX7mK1n7MQUzwYE15uVdQVeAuWWnR5pDkN52xU
         </div>
-        <button
-          type="button"
-          class="mcx-copy-btn"
-          data-copy="8AfDSLVeTSt1oku5ifK4jkbJ94fp5kW6y5RWxuP1FYmyZmLHYRVSrPXJJaX7mK1n7MQUzwYE15uVdQVeAuWWnR5pDkN52xU"
-          title="{$_('donate.copy_xmr')}"
-        >
-          <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
-        </button>
+        <CopyButton text={XMR_ADDRESS} title={$_("donate.copy_xmr")} />
       </div>
     </div>
     <div class="mcx-glass-card mcx-glass-panel mcx-glass-panel--orange" style="margin-top:1.5rem">

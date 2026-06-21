@@ -5,7 +5,7 @@
 ## Requirements
 
 - Node.js 24+ (`package.json` `engines`)
-- pnpm 10.33+ (`corepack enable pnpm`)
+- pnpm 11+ (`corepack enable pnpm`)
 
 ## Install and build
 

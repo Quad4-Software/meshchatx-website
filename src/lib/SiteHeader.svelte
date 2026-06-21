@@ -4,6 +4,7 @@
   import type { AppLocale } from '$lib/merge-messages';
   import { MESHCHATX_GITHUB } from '$lib/meshchatx-repo';
   import { appPath, crossLangHref, pageIdFromPathname, type PageId } from '$lib/paths';
+  import ThemeToggle from '$lib/ThemeToggle.svelte';
 
   let { locale: loc } = $props<{ locale: AppLocale }>();
   const current = $derived(pageIdFromPathname(page.url?.pathname ?? '/')) as PageId;
@@ -42,9 +43,7 @@
       <a class="mcx-lang__link" href={hrefL('it')} hreflang="it" lang="it" aria-current={act('it')}>IT</a>
       <a class="mcx-lang__link" href={hrefL('zh')} hreflang="zh" lang="zh" aria-current={act('zh')}>ZH</a>
     </div>
-    <button type="button" class="mcx-theme-btn" data-theme-toggle aria-label={$_('nav.toggle_theme')}>
-      <svg class="mcx-icon mcx-icon--md" aria-hidden="true"><use href="#i-weather-night" /></svg>
-    </button>
+    <ThemeToggle />
     <a class="mcx-btn-primary mcx-btn-header" href={appPath(loc, 'download')}>{$_('nav.download')}</a>
     <details class="mcx-nav-mobile">
       <summary aria-label={$_('nav.mobile_menu')}>
@@ -73,17 +72,7 @@
           >
         </div>
         <div class="mcx-nav-mobile__footer">
-          <button
-            type="button"
-            class="mcx-theme-btn"
-            data-theme-toggle
-            aria-label={$_('nav.toggle_theme')}
-          >
-            <svg class="mcx-icon mcx-icon--md" id="mcx-mobile-theme-icon" aria-hidden="true"
-              ><use href="#i-weather-night" /></svg
-            >
-            <span id="mcx-mobile-theme-label"></span>
-          </button>
+          <ThemeToggle showLabel />
           <a
             class="mcx-btn-primary"
             href={appPath(loc, 'download', 'android')}

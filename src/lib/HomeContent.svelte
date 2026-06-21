@@ -1,10 +1,16 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import type { AppLocale } from "$lib/merge-messages";
-  import { MESHCHATX_CHANGELOG, MESHCHATX_GITHUB } from "$lib/meshchatx-repo";
+  import type { McxReleasesPayload } from "$lib/github-releases.server";
+  import { MESHCHATX_GITHUB } from "$lib/meshchatx-repo";
   import { appPath } from "$lib/paths";
+  import Showcase from "$lib/Showcase.svelte";
+  import VersionBadge from "$lib/VersionBadge.svelte";
 
-  const { locale: loc } = $props<{ locale: AppLocale }>();
+  const { locale: loc, releases } = $props<{
+    locale: AppLocale;
+    releases: McxReleasesPayload;
+  }>();
 </script>
 
     <section class="mcx-hero">
@@ -13,16 +19,7 @@
         <div class="mcx-hero-orb mcx-hero-orb--b"></div>
       </div>
       <div class="mcx-hero-inner mcx-container">
-        <a
-          class="mcx-version-pill mcx-badge-enter hidden"
-          data-version-badge
-          href={MESHCHATX_CHANGELOG}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span class="mcx-pulse" aria-hidden="true"></span>
-          <span data-version-text>MeshChatX</span>
-        </a>
+        <VersionBadge {releases} />
         <h1>{$_('home.hero.h1')}</h1>
         <p class="mcx-hero-lead">
           {$_('home.hero.lead')}
@@ -54,119 +51,7 @@
           </a>
         </div>
 
-        <div id="showcase" class="mcx-showcase-wrap" data-mcx-showcase data-showcase-assets="/showcase/" data-showcase-desktop-only="true">
-          <div class="mcx-toggle-pair hidden" aria-hidden="true">
-            <button type="button" class="mcx-toggle is-active" data-view="mobile" title="{$_('home.showcase.mobile')}" aria-label="{$_('home.showcase.mobile')}" tabindex="-1">
-              <svg class="mcx-icon mcx-icon--md" aria-hidden="true"><use href="#i-cellphone" /></svg>
-            </button>
-            <button type="button" class="mcx-toggle" data-view="desktop" title="{$_('home.showcase.desktop')}" aria-label="{$_('home.showcase.desktop')}" tabindex="-1">
-              <svg class="mcx-icon mcx-icon--md" aria-hidden="true"><use href="#i-monitor" /></svg>
-            </button>
-          </div>
-
-          <div data-showcase-mobile class="hidden">
-            <div class="mcx-flex-center">
-              <div class="mcx-showcase-phone">
-                <div class="mcx-phone-notch"><span></span></div>
-                <div class="mcx-phone-bar">
-                  <details data-showcase-menu>
-                    <summary class="mcx-icon-btn" data-showcase-toggle style="list-style:none">
-                      <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-menu" /></svg>
-                    </summary>
-                    <div class="mcx-menu-popover" style="position:absolute;top:100%;left:0;right:0;margin-top:2px;z-index:20;border-radius:0 0 0.5rem 0.5rem">
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="0" role="menuitem">{$_('js.showcase.tab0')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="1" role="menuitem">{$_('js.showcase.tab1')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="2" role="menuitem">{$_('js.showcase.tab2')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="3" role="menuitem">{$_('js.showcase.tab3')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="4" role="menuitem">{$_('js.showcase.tab4')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="5" role="menuitem">{$_('js.showcase.tab5')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="6" role="menuitem">{$_('js.showcase.tab6')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="7" role="menuitem">{$_('js.showcase.tab7')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="8" role="menuitem">{$_('js.showcase.tab8')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="9" role="menuitem">{$_('js.showcase.tab9')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="10" role="menuitem">{$_('js.showcase.tab10')}</button>
-                      <button type="button" class="touch-manipulation" data-showcase-mobile-item="11" role="menuitem">{$_('js.showcase.tab11')}</button>
-                    </div>
-                  </details>
-                  <span class="mcx-phone-bar-title" data-showcase-label>{$_('js.showcase.tab0')}</span>
-                  <span style="width:1.5rem;flex-shrink:0"></span>
-                </div>
-                <div class="mcx-phone-screen" data-showcase-screen role="presentation">
-                  <div class="mcx-showcase-frame" data-showcase-frame>
-                    <img class="mcx-showcase-shot hidden" alt="" data-showcase-img decoding="async" loading="lazy" />
-                    <div class="mcx-showcase-placeholder" data-showcase-placeholder aria-hidden="true">
-                      <svg class="mcx-icon mcx-icon--2xl mcx-muted-icon" aria-hidden="true"><use href="#i-message-text-outline" /></svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div data-showcase-desktop>
-            <div class="mcx-showcase-desktop mcx-glass-card">
-              <div class="mcx-browser-chrome">
-                <div class="mcx-dots" aria-hidden="true">
-                  <span class="mcx-dot-r"></span>
-                  <span class="mcx-dot-y"></span>
-                  <span class="mcx-dot-g"></span>
-                </div>
-                <div class="mcx-url-bar"><span class="opacity-80 truncate">meshchatx</span></div>
-              </div>
-              <div class="mcx-tabs-row">
-                <button type="button" class="mcx-tab is-active" data-showcase-tab="0">{$_('js.showcase.tab0')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="1">{$_('js.showcase.tab1')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="2">{$_('js.showcase.tab2')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="3">{$_('js.showcase.tab3')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="4">{$_('js.showcase.tab4')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="5">{$_('js.showcase.tab5')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="6">{$_('js.showcase.tab6')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="7">{$_('js.showcase.tab7')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="8">{$_('js.showcase.tab8')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="9">{$_('js.showcase.tab9')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="10">{$_('js.showcase.tab10')}</button>
-                <button type="button" class="mcx-tab" data-showcase-tab="11">{$_('js.showcase.tab11')}</button>
-              </div>
-              <div class="mcx-tabs-mobile">
-                <details data-showcase-menu>
-                  <summary class="mcx-icon-btn" data-showcase-toggle style="list-style:none">
-                    <svg class="mcx-icon" aria-hidden="true"><use href="#i-menu" /></svg>
-                  </summary>
-                  <div class="mcx-menu-popover" style="position:absolute;top:100%;left:0;right:0;margin-top:2px;z-index:10">
-                    <button type="button" data-showcase-mobile-item="0" role="menuitem">{$_('js.showcase.tab0')}</button>
-                    <button type="button" data-showcase-mobile-item="1" role="menuitem">{$_('js.showcase.tab1')}</button>
-                    <button type="button" data-showcase-mobile-item="2" role="menuitem">{$_('js.showcase.tab2')}</button>
-                    <button type="button" data-showcase-mobile-item="3" role="menuitem">{$_('js.showcase.tab3')}</button>
-                    <button type="button" data-showcase-mobile-item="4" role="menuitem">{$_('js.showcase.tab4')}</button>
-                    <button type="button" data-showcase-mobile-item="5" role="menuitem">{$_('js.showcase.tab5')}</button>
-                    <button type="button" data-showcase-mobile-item="6" role="menuitem">{$_('js.showcase.tab6')}</button>
-                    <button type="button" data-showcase-mobile-item="7" role="menuitem">{$_('js.showcase.tab7')}</button>
-                    <button type="button" data-showcase-mobile-item="8" role="menuitem">{$_('js.showcase.tab8')}</button>
-                    <button type="button" data-showcase-mobile-item="9" role="menuitem">{$_('js.showcase.tab9')}</button>
-                    <button type="button" data-showcase-mobile-item="10" role="menuitem">{$_('js.showcase.tab10')}</button>
-                    <button type="button" data-showcase-mobile-item="11" role="menuitem">{$_('js.showcase.tab11')}</button>
-                  </div>
-                </details>
-                <span data-showcase-label>{$_('js.showcase.tab0')}</span>
-              </div>
-              <div class="mcx-desktop-screen" data-showcase-screen role="presentation">
-                <div class="mcx-showcase-frame" data-showcase-frame>
-                  <img
-                    class="mcx-showcase-shot mcx-showcase-shot--desktop"
-                    src="/showcase/dark/tab-11-home.webp"
-                    alt=""
-                    data-showcase-img
-                    decoding="async"
-                    loading="lazy"
-                  />
-                  <div class="mcx-showcase-placeholder hidden" data-showcase-placeholder aria-hidden="true">
-                    <svg class="mcx-icon mcx-muted-icon" style="width:3rem;height:3rem" aria-hidden="true"><use href="#i-message-text-outline" /></svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Showcase desktopOnly />
 
         <div class="mcx-cap-grid">
           <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-message-text-outline" /></svg></div><span>{$_('home.cap.messaging')}</span></div>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
+  import CopyButton from '$lib/CopyButton.svelte';
 </script>
 
 <section class="mcx-page-head mcx-page-head--center">
@@ -12,9 +13,7 @@
       <h2 class="mcx-contact-card-title">{$_('contact.panel_title')}</h2>
       <div class="mcx-copy-field">
         <div class="mcx-mono-block" id="mcx-lxmf-addr">7cc8d66b4f6a0e0e49d34af7f6077b5a</div>
-        <button type="button" class="mcx-copy-btn" data-copy="7cc8d66b4f6a0e0e49d34af7f6077b5a" title="{$_('contact.copy_title')}">
-          <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
-        </button>
+        <CopyButton text="7cc8d66b4f6a0e0e49d34af7f6077b5a" title={$_('contact.copy_title')} />
       </div>
     </div>
     <div class="mcx-glass-card mcx-glass-panel mcx-glass-panel--orange mcx-contact-email-panel">
@@ -25,9 +24,7 @@
           class="mcx-mono-block mcx-contact-email-link"
           href={`mailto:${$_('contact.email')}`}
           id="mcx-team-email">{$_('contact.email')}</a>
-        <button type="button" class="mcx-copy-btn" data-copy={$_('contact.email')} title="{$_('contact.copy_email')}">
-          <svg class="mcx-icon mcx-icon--sm" aria-hidden="true"><use href="#i-content-copy" /></svg>
-        </button>
+        <CopyButton text={$_('contact.email')} title={$_('contact.copy_email')} />
       </div>
     </div>
   </div>

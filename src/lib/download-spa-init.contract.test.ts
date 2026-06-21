@@ -13,60 +13,55 @@ function readUtf8(rel: string): string {
   return readFileSync(path.join(root, rel), "utf8");
 }
 
-describe("download SPA release init", () => {
-  it("download +page re-runs MCX init when URL changes ($effect + page.url)", () => {
-    const src = readUtf8("src/routes/[[lang=locale]]/download/+page.svelte");
-    expect(src).toMatch(/\$effect\b/);
-    expect(src).toMatch(/\bbrowser\b/);
-    expect(src).toMatch(/\bpage\.url\.(pathname|search)\b/);
-    expect(src).toMatch(/window\.MCX\?\.initDownloadPage\?\.\(/);
-    expect(src).not.toMatch(/\bonMount\b/);
+describe("download page Svelte integration", () => {
+  it("DownloadContent reacts to releases payload and URL channel", () => {
+    const src = readUtf8("src/lib/DownloadContent.svelte");
+    expect(src).toContain("DownloadMeta");
+    expect(src).toContain("selectDownloadRelease");
+    expect(src).toContain("page.url.search");
+    expect(src).not.toContain("window.MCX");
   });
 
-  it("app.js exposes initDownloadPage on window.MCX for the page to invoke", () => {
-    const src = readUtf8("static/js/app.js");
-    expect(src).toContain("window.MCX.initDownloadPage = initDownloadPage");
-  });
-
-  it("app.js does not gate initDownloadPage only on boot data-page download", () => {
-    const src = readUtf8("static/js/app.js");
-    expect(src).not.toContain(
-      "if (document.body.getAttribute('data-page') === 'download')",
-    );
-  });
-
-  it("channel toggle links use current pathname (locale-aware), not hardcoded /download", () => {
-    const src = readUtf8("static/js/app.js");
-    expect(src).toContain("loc.pathname");
-    expect(src).toContain('pathOnly + "?channel=prerelease" + locHash');
+  it("DownloadMeta uses locale-aware pathname for channel links", () => {
+    const src = readUtf8("src/lib/DownloadMeta.svelte");
+    expect(src).toContain("page.url.pathname");
+    expect(src).toContain('?channel=prerelease');
     expect(src).not.toContain("href: '/download?channel=prerelease'");
-    expect(src).not.toContain("href: '/download'");
   });
 
-  it("copy buttons stay idempotent when initDownloadPage runs after navigation", () => {
-    const src = readUtf8("static/js/app.js");
-    expect(src).toContain("data-mcx-copy-bound");
-  });
-
-  it("initDownloadPage ignores stale async completions when channel changes quickly", () => {
-    const src = readUtf8("static/js/app.js");
-    expect(src).toContain("mcxDownloadInitSeq");
-    expect(src).toContain("if (seq !== mcxDownloadInitSeq) return");
+  it("layout no longer loads legacy app.js", () => {
+    const src = readUtf8("src/routes/[[lang=locale]]/+layout.svelte");
+    expect(src).not.toContain("app.js");
+    expect(src).not.toContain("MCX_I18N");
+    expect(src).not.toContain("MCX_RELEASES_PAYLOAD");
   });
 });
 
-describe("showcase SPA tab init", () => {
-  it("home +page re-runs showcase bind when URL changes ($effect + page.url)", () => {
-    const src = readUtf8("src/routes/[[lang=locale]]/+page.svelte");
-    expect(src).toMatch(/\$effect\b/);
-    expect(src).toMatch(/\bbrowser\b/);
-    expect(src).toMatch(/\bpage\.url\.(pathname|search|hash)\b/);
-    expect(src).toMatch(/window\.MCX\?\.initShowcaseRoots\?\.\(/);
+describe("showcase Svelte component", () => {
+  it("Showcase component owns tab state and theme-aware images", () => {
+    const src = readUtf8("src/lib/Showcase.svelte");
+    expect(src).toContain("showcaseShotUrl");
+    expect(src).toContain("theme.isDark");
+    expect(src).not.toContain("data-mcx-showcase-bound");
   });
 
-  it("app.js exposes initShowcaseRoots and idempotent data-mcx-showcase-bound", () => {
-    const src = readUtf8("static/js/app.js");
-    expect(src).toContain("window.MCX.initShowcaseRoots = initShowcaseRoots");
-    expect(src).toContain("data-mcx-showcase-bound");
+  it("home page passes releases to HomeContent instead of window.MCX init", () => {
+    const src = readUtf8("src/routes/[[lang=locale]]/+page.svelte");
+    expect(src).toContain("releases={data.releasesPayload}");
+    expect(src).not.toContain("window.MCX");
+  });
+});
+
+describe("reusable client components", () => {
+  it("ThemeToggle delegates to theme store", () => {
+    const src = readUtf8("src/lib/ThemeToggle.svelte");
+    expect(src).toContain("theme.toggle()");
+    expect(src).not.toContain("data-theme-toggle");
+  });
+
+  it("CopyButton handles clipboard feedback", () => {
+    const src = readUtf8("src/lib/CopyButton.svelte");
+    expect(src).toContain("navigator.clipboard.writeText");
+    expect(src).toContain("#i-check");
   });
 });

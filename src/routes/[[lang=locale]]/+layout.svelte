@@ -1,7 +1,7 @@
 <script lang="ts">
   import '$lib/register-i18n';
   import { browser } from '$app/environment';
-  import { _, locale } from 'svelte-i18n';
+  import { locale, _ } from 'svelte-i18n';
   import { page } from '$app/state';
   import { pageIdFromPathname } from '$lib/paths';
   import SiteHeader from '$lib/SiteHeader.svelte';
@@ -22,22 +22,7 @@
     }
   });
   const pageId = $derived(pageIdFromPathname(page.url?.pathname ?? '/'));
-  const mcxI18NHead = $derived(
-    '<script>window.MCX_I18N=' + data.mcxI18NJson + '<' + '/script>'
-  );
-  const mcxReleasesHead = $derived(
-    '<script>window.MCX_RELEASES_PAYLOAD=' +
-      data.mcxReleasesPayloadLiteral +
-      ';<' +
-      '/script>'
-  );
 </script>
-
-<svelte:head>
-  {@html mcxI18NHead}
-  {@html mcxReleasesHead}
-  <script src="/js/app.js" defer></script>
-</svelte:head>
 
 <a class="mcx-skip" href="#main">{$_('a11y.skip')}</a>
 <div class="mcx-shell">
