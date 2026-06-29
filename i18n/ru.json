@@ -35,12 +35,14 @@
     "lead_4xx": "Сервер не смог обработать такой запрос.",
     "title_5xx": "Что-то пошло не так",
     "lead_5xx": "Произошла непредвиденная ошибка. Попробуйте позже.",
-    "cta_home": "На главную"
+    "cta_home": "На главную",
+    "cta_download": "Скачать MeshChatX",
+    "cta_download": "Скачать MeshChatX"
   },
   "nav": {
     "primary": "Основное меню",
     "features": "Возможности",
-    "showcase": "Обзор",
+    "showcase": "Скриншоты",
     "donate": "Поддержать",
     "contact": "Контакты",
     "roadmap": "Roadmap",
@@ -51,7 +53,13 @@
     "mobile_nav": "Мобильная версия"
   },
   "lang": {
-    "label": "Язык"
+    "label": "Язык",
+    "pick": "Выбрать язык",
+    "en": "English",
+    "de": "Deutsch",
+    "ru": "Русский",
+    "it": "Italiano",
+    "zh": "中文"
   },
   "footer": {
     "tagline": "Безопасная, устойчивая и неостановимая связь в сети Reticulum.",

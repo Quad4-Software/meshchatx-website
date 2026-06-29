@@ -35,12 +35,13 @@
     "lead_4xx": "服务器无法按发送的方式处理此请求。",
     "title_5xx": "出了点问题",
     "lead_5xx": "发生意外错误。请稍后再试。",
-    "cta_home": "返回首页"
+    "cta_home": "返回首页",
+    "cta_download": "下载 MeshChatX"
   },
   "nav": {
     "primary": "主导航",
     "features": "功能",
-    "showcase": "展示",
+    "showcase": "截图",
     "donate": "捐赠",
     "contact": "联系",
     "roadmap": "路线图",
@@ -51,7 +52,13 @@
     "mobile_nav": "移动端"
   },
   "lang": {
-    "label": "语言"
+    "label": "语言",
+    "pick": "选择语言",
+    "en": "English",
+    "de": "Deutsch",
+    "ru": "Русский",
+    "it": "Italiano",
+    "zh": "中文"
   },
   "footer": {
     "tagline": "通过 Reticulum 网络实现安全、韧性强且难以封锁的通信。",

@@ -35,12 +35,14 @@
     "lead_4xx": "Il server non ha potuto elaborare la richiesta così com'è arrivata.",
     "title_5xx": "Qualcosa non ha funzionato",
     "lead_5xx": "Si è verificato un errore imprevisto. Riprova più tardi.",
-    "cta_home": "Torna alla home"
+    "cta_home": "Torna alla home",
+    "cta_download": "Scarica MeshChatX",
+    "cta_download": "Scarica MeshChatX"
   },
   "nav": {
     "primary": "Principale",
     "features": "Funzioni",
-    "showcase": "Anteprima",
+    "showcase": "Screenshot",
     "donate": "Donazioni",
     "contact": "Contatti",
     "roadmap": "Roadmap",
@@ -51,7 +53,13 @@
     "mobile_nav": "Mobile"
   },
   "lang": {
-    "label": "Lingua"
+    "label": "Lingua",
+    "pick": "Scegli lingua",
+    "en": "English",
+    "de": "Deutsch",
+    "ru": "Русский",
+    "it": "Italiano",
+    "zh": "中文"
   },
   "footer": {
     "tagline": "Comunicazione sicura, resiliente e inarrestabile sulla rete Reticulum.",

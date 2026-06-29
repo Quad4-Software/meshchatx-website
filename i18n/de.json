@@ -35,12 +35,14 @@
     "lead_4xx": "Der Server konnte diese Anfrage in dieser Form nicht verarbeiten.",
     "title_5xx": "Etwas ist schiefgelaufen",
     "lead_5xx": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
-    "cta_home": "Zur Startseite"
+    "cta_home": "Zur Startseite",
+    "cta_download": "MeshChatX herunterladen",
+    "cta_download": "MeshChatX herunterladen"
   },
   "nav": {
     "primary": "Hauptnavigation",
     "features": "Funktionen",
-    "showcase": "Überblick",
+    "showcase": "Screenshots",
     "donate": "Spenden",
     "contact": "Kontakt",
     "roadmap": "Roadmap",
@@ -51,7 +53,13 @@
     "mobile_nav": "Mobil"
   },
   "lang": {
-    "label": "Sprache"
+    "label": "Sprache",
+    "pick": "Sprache wählen",
+    "en": "English",
+    "de": "Deutsch",
+    "ru": "Russisch",
+    "it": "Italienisch",
+    "zh": "Chinesisch"
   },
   "footer": {
     "tagline": "Sichere, widerstandsfähige und nicht zu stoppen Kommunikation über das Reticulum-Netzwerk.",

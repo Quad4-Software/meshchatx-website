@@ -150,3 +150,16 @@ export function isAppLocale(s: string | undefined): s is AppLocale {
 }
 
 export const LOCALES: AppLocale[] = ["en", "de", "ru", "it", "zh"];
+
+/** Endonym shown in the language picker (always in that language). */
+export const LANG_NATIVE_LABELS: Record<AppLocale, string> = {
+  en: "English",
+  de: "Deutsch",
+  ru: "Русский",
+  it: "Italiano",
+  zh: "中文",
+};
+
+export function langNativeLabel(locale: AppLocale): string {
+  return LANG_NATIVE_LABELS[locale];
+}

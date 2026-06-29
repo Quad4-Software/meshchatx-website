@@ -1,15 +1,11 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { page } from '$app/state';
   import type { AppLocale } from '$lib/merge-messages';
-  import { MESHCHATX_GITHUB } from '$lib/meshchatx-repo';
-  import { appPath, crossLangHref, pageIdFromPathname, type PageId } from '$lib/paths';
+  import LanguagePicker from '$lib/LanguagePicker.svelte';
+  import { appPath } from '$lib/paths';
   import ThemeToggle from '$lib/ThemeToggle.svelte';
 
   let { locale: loc } = $props<{ locale: AppLocale }>();
-  const current = $derived(pageIdFromPathname(page.url?.pathname ?? '/')) as PageId;
-  const hrefL = (to: AppLocale) => crossLangHref(loc, to, current);
-  const act = (x: AppLocale) => (loc === x ? 'page' as const : undefined);
   const home = $derived(appPath(loc, 'home', ''));
   const homeFeatures = $derived(appPath(loc, 'home', 'features'));
   const homeShowcase = $derived(appPath(loc, 'home', 'showcase'));
@@ -30,19 +26,10 @@
   <nav class="mcx-nav-desktop" aria-label={$_('nav.primary')}>
     <a href={homeFeatures}>{$_('nav.features')}</a>
     <a href={homeShowcase}>{$_('nav.showcase')}</a>
-    <a href={appPath(loc, 'roadmap')}>{$_('nav.roadmap')}</a>
-    <a href={appPath(loc, 'donate')}>{$_('nav.donate')}</a>
     <a href={appPath(loc, 'contact')}>{$_('nav.contact')}</a>
-    <a href={MESHCHATX_GITHUB} target="_blank" rel="noopener noreferrer">{$_('nav.git')}</a>
   </nav>
   <div class="mcx-header-actions">
-    <div class="mcx-lang" role="navigation" aria-label={$_('lang.label')}>
-      <a class="mcx-lang__link" href={hrefL('en')} hreflang="en" lang="en" aria-current={act('en')}>EN</a>
-      <a class="mcx-lang__link" href={hrefL('de')} hreflang="de" lang="de" aria-current={act('de')}>DE</a>
-      <a class="mcx-lang__link" href={hrefL('ru')} hreflang="ru" lang="ru" aria-current={act('ru')}>RU</a>
-      <a class="mcx-lang__link" href={hrefL('it')} hreflang="it" lang="it" aria-current={act('it')}>IT</a>
-      <a class="mcx-lang__link" href={hrefL('zh')} hreflang="zh" lang="zh" aria-current={act('zh')}>ZH</a>
-    </div>
+    <LanguagePicker locale={loc} />
     <ThemeToggle />
     <a class="mcx-btn-primary mcx-btn-header" href={appPath(loc, 'download')}>{$_('nav.download')}</a>
     <details class="mcx-nav-mobile">
@@ -53,29 +40,15 @@
         <nav aria-label={$_('nav.mobile_nav')}>
           <a href={homeFeatures}>{$_('nav.features')}</a>
           <a href={homeShowcase}>{$_('nav.showcase')}</a>
-          <a href={appPath(loc, 'roadmap')}>{$_('nav.roadmap')}</a>
-          <a href={appPath(loc, 'donate')}>{$_('nav.donate')}</a>
+          <a href={appPath(loc, 'download')}>{$_('nav.download')}</a>
           <a href={appPath(loc, 'contact')}>{$_('nav.contact')}</a>
-          <a href={MESHCHATX_GITHUB} target="_blank" rel="noopener noreferrer">{$_('nav.git')}</a>
         </nav>
-        <div class="mcx-lang mcx-lang--mobile" role="navigation" aria-label={$_('lang.label')}>
-          <a class="mcx-lang__link" href={hrefL('en')} hreflang="en" lang="en" aria-current={act('en')}>EN</a
-          >
-          <a class="mcx-lang__link" href={hrefL('de')} hreflang="de" lang="de" aria-current={act('de')}>DE</a
-          >
-          <a class="mcx-lang__link" href={hrefL('ru')} hreflang="ru" lang="ru" aria-current={act('ru')}>RU</a
-          >
-          <a class="mcx-lang__link" href={hrefL('it')} hreflang="it" lang="it" aria-current={act('it')}>IT</a
-          >
-          <a class="mcx-lang__link" href={hrefL('zh')} hreflang="zh" lang="zh" aria-current={act('zh')}
-            >ZH</a
-          >
-        </div>
         <div class="mcx-nav-mobile__footer">
+          <LanguagePicker locale={loc} mobile />
           <ThemeToggle showLabel />
           <a
             class="mcx-btn-primary"
-            href={appPath(loc, 'download', 'android')}
+            href={appPath(loc, 'download')}
             onclick={(e) => {
               const det = e.currentTarget.closest('details');
               if (det) det.open = false;

@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   FLAT,
   isAppLocale,
+  LANG_NATIVE_LABELS,
+  LOCALES,
   mergeLocaleJson,
   mergeJsonObjects,
   toNestedI18n,
@@ -54,6 +56,15 @@ describe("merge-messages", () => {
     const merged = mergeFallback(de, en);
     expect(merged.hello).toBe("Hallo");
     expect(merged.world).toBe("World");
+  });
+
+  it("LANG_NATIVE_LABELS uses endonyms for every locale", () => {
+    expect(LOCALES).toHaveLength(5);
+    for (const code of LOCALES) {
+      expect(LANG_NATIVE_LABELS[code]).toBeTruthy();
+    }
+    expect(LANG_NATIVE_LABELS.ru).toBe("Русский");
+    expect(LANG_NATIVE_LABELS.zh).toBe("中文");
   });
 });
 

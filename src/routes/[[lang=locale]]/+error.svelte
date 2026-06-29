@@ -23,4 +23,6 @@
   lead={st === 404 ? $_('error.lead_404') : st >= 500 ? $_('error.lead_5xx') : $_('error.lead_4xx')}
   homeLabel={$_('error.cta_home')}
   {homeHref}
+  downloadLabel={$_('error.cta_download')}
+  downloadHref={appPath(loc as AppLocale, 'download')}
 />

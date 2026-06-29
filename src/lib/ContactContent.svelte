@@ -12,8 +12,8 @@
     <div class="mcx-glass-card mcx-glass-panel">
       <h2 class="mcx-contact-card-title">{$_('contact.panel_title')}</h2>
       <div class="mcx-copy-field">
-        <div class="mcx-mono-block" id="mcx-lxmf-addr">7cc8d66b4f6a0e0e49d34af7f6077b5a</div>
-        <CopyButton text="7cc8d66b4f6a0e0e49d34af7f6077b5a" title={$_('contact.copy_title')} />
+        <div class="mcx-mono-block" id="mcx-lxmf-addr">f489752fbef161c64d65e385a4e9fc74</div>
+        <CopyButton text="f489752fbef161c64d65e385a4e9fc74" title={$_('contact.copy_title')} />
       </div>
     </div>
     <div class="mcx-glass-card mcx-glass-panel mcx-glass-panel--orange mcx-contact-email-panel">

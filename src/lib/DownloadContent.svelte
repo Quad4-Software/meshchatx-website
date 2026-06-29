@@ -168,7 +168,7 @@
                 >
               {/if}
               {#if appArm}
-                <a class="mcx-btn-secondary" href={appArm} download style="border-radius:1rem"
+                <a class="mcx-btn-secondary" href={appArm} download
                   ><svg class="mcx-icon" aria-hidden="true"><use href="#i-cpu-64-bit" /></svg> {$_("dl.linux.btn_appimage_arm64")}</a
                 >
               {/if}

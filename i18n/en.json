@@ -35,12 +35,13 @@
     "lead_4xx": "The server could not process this request as sent.",
     "title_5xx": "Something went wrong",
     "lead_5xx": "An unexpected error occurred. Please try again later.",
-    "cta_home": "Back to home"
+    "cta_home": "Back to home",
+    "cta_download": "Download MeshChatX"
   },
   "nav": {
     "primary": "Primary",
     "features": "Features",
-    "showcase": "Showcase",
+    "showcase": "Screenshots",
     "donate": "Donate",
     "contact": "Contact",
     "roadmap": "Roadmap",
@@ -51,7 +52,13 @@
     "mobile_nav": "Mobile"
   },
   "lang": {
-    "label": "Language"
+    "label": "Language",
+    "pick": "Choose language",
+    "en": "English",
+    "de": "Deutsch",
+    "ru": "Russian",
+    "it": "Italian",
+    "zh": "Chinese"
   },
   "footer": {
     "tagline": "Secure, resilient, and unstoppable communication over the Reticulum network.",
