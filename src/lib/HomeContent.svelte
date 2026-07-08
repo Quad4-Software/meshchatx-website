@@ -64,10 +64,7 @@
           <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-backup-restore" /></svg></div><span>{$_('home.cap.backups')}</span></div>
           <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-cog" /></svg></div><span>{$_('home.cap.customizable')}</span></div>
           <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-chart-line" /></svg></div><span>{$_('home.cap.telemetry')}</span></div>
-          <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-tunnel" /></svg></div><span>{$_('home.cap.tunnel')}<span class="mcx-cap-soon-note">{$_('home.cap.soon')}</span></span></div>
           <div class="mcx-cap-item"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-file-document" /></svg></div><span>{$_('home.cap.host_pages')}</span></div>
-          <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-message-bulleted" /></svg></div><span>{$_('home.cap.group_msgs')}<span class="mcx-cap-soon-note">{$_('home.cap.soon')}</span></span></div>
-          <div class="mcx-cap-item mcx-soon"><div class="mcx-cap-icon"><svg class="mcx-icon mcx-icon--xs" aria-hidden="true"><use href="#i-account-group" /></svg></div><span>{$_('home.cap.group_calls')}<span class="mcx-cap-soon-note">{$_('home.cap.soon')}</span></span></div>
         </div>
         <p class="mcx-more">{$_('home.cap.more')}</p>
         <div class="mcx-hero-cta">

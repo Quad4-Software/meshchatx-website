@@ -36,12 +36,12 @@ export const roadmapItemsBase: RoadmapItem[] = [
   {
     version: "4.8.0",
     date: "July 2026",
-    title: "RNS Tunnel, Filesync, and Remote Management",
-    desc: "Tunneling and peer-to-peer file synchronisation, plus remote management tools for administering mesh nodes and clients from a single interface.",
+    title: "Filesync, Remote Management, and Stability",
+    desc: "Peer-to-peer file synchronisation, plus remote management tools for administering mesh nodes and clients from a single interface.",
     features: [
-      { text: "RNS tunneling for TCP and UDP traffic over Reticulum" },
       { text: "Peer-to-peer file synchronisation" },
       { text: "Remote management tools" },
+      { text: "Stability and bug fixes" },
       { text: "Easier RNode flashing workflows" },
       { text: "Map improvements" },
     ],
@@ -51,8 +51,11 @@ export const roadmapItemsBase: RoadmapItem[] = [
     version: "4.9.0",
     date: "August 2026",
     title: "Modular Code and Restructure",
-    desc: "Major internal restructure to make the codebase more modular, maintainable, and easier to fork, along with performance and memory optimizations.",
-    features: [{ text: "Performance and memory optimizations" }],
+    desc: "Major internal restructure to make the codebase more modular, maintainable, and easier to fork, along with performance, stability, and memory improvements.",
+    features: [
+      { text: "Performance, Stability and Memory improvements." },
+      { text: "Code Cleanup" },
+    ],
     status: "planned",
   },
   {
@@ -60,12 +63,7 @@ export const roadmapItemsBase: RoadmapItem[] = [
     date: "September 2026",
     title: "Final Feature Release",
     desc: "The last feature-focused release. After 5.0.0, MeshChatX will enter maintenance mode with only security, bug, and performance fixes, Electron updates, and dependency bumps.",
-    features: [
-      { text: "Group calling over Reticulum", highlight: true },
-      { text: "Group messaging", highlight: true },
-    ],
-    notice:
-      "Group features are awaiting official group calling and messaging support in RNS, LXMF, and LXST before they can be implemented.",
+    features: [],
     status: "planned",
   },
 ];
