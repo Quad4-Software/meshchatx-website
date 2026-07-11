@@ -43,7 +43,7 @@
       <ul>
         <li>
           <a
-            href="https://git.quad4.io/websites/meshchatx/src/branch/master/LICENSE"
+            href="https://github.com/MeshChatX/website/blob/master/LICENSE"
             class="mcx-footer-license"
             target="_blank"
             rel="noopener noreferrer"
