@@ -13,7 +13,6 @@ export default defineConfig(
       ".svelte-kit/**",
       "node_modules/**",
       "static/data/**",
-      "static/js/swetrix.js",
     ],
   },
   js.configs.recommended,
