@@ -1,9 +1,9 @@
 <script lang="ts">
   import HomeContent from '$lib/HomeContent.svelte';
   import MetaTags from '$lib/MetaTags.svelte';
-  import type { PageData } from './$types';
+  import type { PageProps } from './$types';
 
-  const { data } = $props() as { data: PageData };
+  let { data }: PageProps = $props();
 </script>
 
 <MetaTags page="home" locale={data.locale} />

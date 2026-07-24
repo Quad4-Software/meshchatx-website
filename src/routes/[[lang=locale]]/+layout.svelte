@@ -7,10 +7,9 @@
   import SiteHeader from '$lib/SiteHeader.svelte';
   import SiteFooter from '$lib/SiteFooter.svelte';
   import IconSprite from '$lib/IconSprite.svelte';
-  import type { Snippet } from 'svelte';
-  import type { LayoutData } from './$types';
+  import type { LayoutProps } from './$types';
 
-  let { data, children } = $props() as { data: LayoutData; children: Snippet };
+  let { data, children }: LayoutProps = $props();
   $effect(() => {
     locale.set(data.locale);
   });

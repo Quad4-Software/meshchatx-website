@@ -1,11 +1,11 @@
 <script lang="ts">
   import DownloadContent from '$lib/DownloadContent.svelte';
   import MetaTags from '$lib/MetaTags.svelte';
-  import type { PageData } from './$types';
+  import type { PageProps } from './$types';
   import { browser } from '$app/environment';
   import { page } from '$app/state';
 
-  const { data } = $props() as { data: PageData };
+  let { data }: PageProps = $props();
 
   $effect(() => {
     if (!browser) return;

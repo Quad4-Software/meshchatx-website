@@ -320,6 +320,9 @@ body {
 @media (min-width: 768px) {
   .mcx-nav-desktop {
     display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 

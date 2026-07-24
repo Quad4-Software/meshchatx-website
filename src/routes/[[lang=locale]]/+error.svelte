@@ -3,14 +3,11 @@
   import { _ } from 'svelte-i18n';
   import ErrorPageContent from '$lib/ErrorPageContent.svelte';
   import ErrorPageHead from '$lib/ErrorPageHead.svelte';
-  import type { AppLocale } from '$lib/merge-messages';
-  import { appPath } from '$lib/paths';
-  import type { LayoutData } from './$types';
+  import { appPath, localeFromPathname } from '$lib/paths';
 
-  let { data } = $props() as { data: LayoutData };
-  const loc = $derived((data as LayoutData | undefined)?.locale ?? 'en');
+  const loc = $derived(localeFromPathname(page.url?.pathname ?? '/'));
   const st = $derived(page.status);
-  const homeHref = $derived(appPath(loc as AppLocale, 'home'));
+  const homeHref = $derived(appPath(loc, 'home'));
 </script>
 
 <ErrorPageHead
@@ -24,5 +21,5 @@
   homeLabel={$_('error.cta_home')}
   {homeHref}
   downloadLabel={$_('error.cta_download')}
-  downloadHref={appPath(loc as AppLocale, 'download')}
+  downloadHref={appPath(loc, 'download')}
 />
