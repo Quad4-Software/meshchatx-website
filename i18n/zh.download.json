@@ -77,7 +77,7 @@
       "h2": "容器",
       "compose": "Compose",
       "compose_intro_before": "标准 ",
-      "compose_intro_after": "，便于部署。",
+      "compose_intro_after": "，用于 Compose 安装。",
       "compose_filename": "docker-compose.yml",
       "copy_compose": "复制 Compose",
       "docker": "Docker",

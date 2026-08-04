@@ -18,13 +18,13 @@
     },
     "og_image_alt": "MeshChatX 标志",
     "desc": {
-      "home": "去中心化通信的未来。通过 Reticulum 实现安全、韧性强且难以封锁的消息传递。",
+      "home": "MeshChatX 客户端：基于 Reticulum 的消息、通话与 NomadNet。无中心服务器。",
       "download": "下载适用于 Windows、Linux、macOS、Docker 与 Python 的 MeshChatX。基于 Reticulum 的去中心化消息。",
       "contact": "通过 LXMF（Reticulum）或电子邮件 team@quad4.io 联系 MeshChatX。",
       "donate": "在 Ko-fi、Buy Me a Coffee 或使用门罗币（XMR）支持 MeshChatX。",
       "license": "meshchatx.com 网站（0BSD）与 MeshChatX 应用（0BSD + MIT）的许可说明。",
       "privacy": "meshchatx.com 在您访问本站时如何处理数据。",
-      "roadmap": "MeshChatX 开发路线图，包含即将推出的功能、进行中的工作以及已完成的里程碑。",
+      "roadmap": "MeshChatX 已规划版本、进行中的工作与已完成里程碑。",
       "error": "无法按请求显示此页面。"
     }
   },
@@ -61,7 +61,7 @@
     "zh": "中文"
   },
   "footer": {
-    "tagline": "通过 Reticulum 网络实现安全、韧性强且难以封锁的通信。",
+    "tagline": "基于 Reticulum 网络的消息、通话与 NomadNet。",
     "community": "社区",
     "legal": "法律信息",
     "source": "源代码（GitHub）",
@@ -69,7 +69,7 @@
     "license": "许可",
     "privacy": "隐私政策",
     "license_badge": "MIT + 0BSD",
-    "meta_copyright": "© 2026 MeshChatX。安全、去中心化网络。",
+    "meta_copyright": "© 2026 MeshChatX。",
     "meta_site": "MeshChatX 是 <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a> 的项目。"
   },
   "contact": {
@@ -115,7 +115,7 @@
   "home": {
     "hero": {
       "h1": "一体化 Reticulum 客户端",
-      "lead": "MeshChatX 是一体化 Reticulum 客户端，具备消息、通话与 nomadnet 浏览器。"
+      "lead": "MeshChatX 是一体化 Reticulum 客户端，具备消息、通话与 NomadNet 浏览器。"
     },
     "platform": {
       "macos": "macOS",
@@ -149,29 +149,29 @@
       "more": "+ 更多"
     },
     "cta": {
-      "download": "立即下载",
+      "download": "下载",
       "source": "查看源代码"
     },
     "section": {
-      "infra_h2": "去中心化基础设施",
-      "infra_lead": "为网状网络与抗审查而构建。"
+      "infra_h2": "无中心服务器",
+      "infra_lead": "流量走 Reticulum 网状链路，不经过 MeshChatX 运营的后端。"
     },
     "feature": {
       "decentralized_h3": "去中心化",
-      "decentralized_p": "基于 Reticulum。无中心服务器，无单点故障。数据完全由您掌控。",
+      "decentralized_p": "基于 Reticulum。没有由 MeshChatX 运营的消息服务器。身份与消息历史保存在你的设备上。",
       "crypto_h3": "密码学原语",
-      "crypto_p": "Reticulum 采用高效、强健且经过充分测试的密码学原语，旨在各平台上安全、可靠。",
+      "crypto_p": "Reticulum 在公开规范中说明其密码学原语。MeshChatX 原样使用该技术栈。",
       "crypto_link": "阅读规范",
       "mesh_h3": "网状网络",
-      "mesh_p": "跨任意媒介通信。MeshChatX 支持互联网、无线电、LoRa 及多种其他媒介！",
+      "mesh_p": "MeshChatX 可运行于互联网链路、无线电、LoRa，以及 Reticulum 支持的其他传输方式。",
       "platform_h3": "平台支持",
       "platform_p": "官方支持桌面（Electron）与 Web（Docker/Python）。Android 可通过 Termux 使用。"
     },
     "security": {
       "h2": "安全与完整性",
-      "lead": "在桌面技术栈中落实校验、透明度和稳妥默认行为，让你清楚交付内容与运行方式。",
-      "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> 3 级：为发布构建提供更强的供应链来源与完整性保障。",
-      "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR 完整性</a>监测，有助于发现对打包应用资源的篡改。",
+      "lead": "桌面发布包含来源证明、包完整性检查，并在平台允许时使用 Linux 沙箱。",
+      "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> 3 级来源证明，用于发布构建。",
+      "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR 完整性</a>监测可发现对打包应用资源的篡改。",
       "bullet_landlock": "在 Linux 上使用 <a href=\"https://landlock.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Landlock LSM</a> 沙箱隔离以限制文件系统访问。",
       "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> Cosign 签名，在适用场景下提供可验证制品。",
       "bullet_sast": "交付流水线中的静态分析与依赖扫描：Trivy、pip-audit、Ruff、CodeQL。",
@@ -179,26 +179,26 @@
       "bullet_transport": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#1-only-load-secure-content\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">HTTPS 与 WSS</a> 默认用于远程页面与传输（在受支持的情况下）。"
     },
     "split": {
-      "h2_line1": "真正匿名",
-      "h2_line2": "且难以封锁",
+      "h2_line1": "匿名",
+      "h2_line2": "且无需账号",
       "item1_h4": "多身份",
-      "item1_p": "按需创建并管理多个身份。在不同身份之间无缝切换，同时保持数据私密与隔离。",
+      "item1_p": "按需创建多个身份。在身份之间切换时不会混用各自的数据存储。",
       "item2_h4": "无需年龄验证",
-      "item2_p": "无需政府证件、手机号或邮箱。匿名接入网络，无第三方验证障碍。",
+      "item2_p": "无需政府证件、手机号或邮箱。接入时无第三方身份核验。",
       "item3_h4": "无审查",
-      "item3_p": "为网状网络与抗审查而构建。消息自动传播，本地归档确保数据始终可用。"
+      "item3_p": "消息在网状网络中传播。远程对等节点离线时，本地归档仍可提供历史记录。"
     },
     "videos": {
       "h2": "视频",
-      "lead": "关于 MeshChatX 的视频",
+      "lead": "MeshChatX 视频",
       "youtube_title": "YouTube 上的 MeshChatX",
       "youtube_title_2": "YouTube 上的 MeshChatX"
     }
   },
   "roadmap": {
     "h1": "路线图",
-    "lead": "MeshChatX 开发路线图。以下是我们的当前工作和未来计划。",
-    "notice": "路线图可能会发生变化。版本和功能将根据开发优先级和社区反馈进行调整。",
+    "lead": "已规划的 MeshChatX 版本及各版本下列出的工作项。",
+    "notice": "日期与功能可能随优先级变化而调整。",
     "status_done": "已完成",
     "status_progress": "进行中",
     "status_planned": "已计划",

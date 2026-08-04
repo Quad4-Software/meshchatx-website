@@ -18,13 +18,13 @@
     },
     "og_image_alt": "Logo MeshChatX",
     "desc": {
-      "home": "Il futuro della comunicazione decentralizzata. Messaggistica sicura, resiliente e inarrestabile su Reticulum.",
+      "home": "Client MeshChatX per messaggi, chiamate e NomadNet su Reticulum. Nessun server centrale.",
       "download": "Scarica MeshChatX per Windows, Linux, macOS, Docker o Python. Messaggistica decentralizzata su Reticulum.",
       "contact": "Contatta MeshChatX via LXMF (Reticulum) o email team@quad4.io.",
       "donate": "Sostieni MeshChatX su Ko-fi, Buy Me a Coffee o con Monero (XMR).",
       "license": "Licenze del sito meshchatx.com (0BSD) e dell'applicazione MeshChatX (0BSD + MIT).",
       "privacy": "Come meshchatx.com tratta i dati durante la visita al Sito.",
-      "roadmap": "Roadmap di sviluppo di MeshChatX con funzionalità future, lavori in corso e traguardi raggiunti.",
+      "roadmap": "Release pianificate di MeshChatX, lavori in corso e traguardi raggiunti.",
       "error": "Questa pagina non può essere mostrata come richiesto."
     }
   },
@@ -62,7 +62,7 @@
     "zh": "中文"
   },
   "footer": {
-    "tagline": "Comunicazione sicura, resiliente e inarrestabile sulla rete Reticulum.",
+    "tagline": "Messaggi, chiamate e NomadNet sulla rete Reticulum.",
     "community": "Community",
     "legal": "Note legali",
     "source": "Sorgente (GitHub)",
@@ -70,7 +70,7 @@
     "license": "Licenza",
     "privacy": "Privacy",
     "license_badge": "MIT + 0BSD",
-    "meta_copyright": "© 2026 MeshChatX. Reti decentralizzate sicure.",
+    "meta_copyright": "© 2026 MeshChatX.",
     "meta_site": "MeshChatX è un progetto <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>."
   },
   "contact": {
@@ -116,7 +116,7 @@
   "home": {
     "hero": {
       "h1": "Client Reticulum tutto-in-uno",
-      "lead": "MeshChatX è un client Reticulum tutto-in-uno con messaggistica, chiamate e browser Nomadnet."
+      "lead": "MeshChatX è un client Reticulum tutto-in-uno con messaggistica, chiamate e browser NomadNet."
     },
     "platform": {
       "macos": "macOS",
@@ -147,32 +147,32 @@
       "telemetry": "Telemetria (LXMF)",
       "host_pages": "Pagine host",
       "soon": "(in arrivo)",
-      "more": "+ e molto altro"
+      "more": "+ altro"
     },
     "cta": {
-      "download": "Scarica ora",
+      "download": "Scarica",
       "source": "Vedi il codice sorgente"
     },
     "section": {
-      "infra_h2": "Infrastruttura decentralizzata",
-      "infra_lead": "Pensata per reti mesh e resistenza alla censura."
+      "infra_h2": "Nessun server centrale",
+      "infra_lead": "Il traffico passa su link mesh Reticulum, non su un backend gestito da MeshChatX."
     },
     "feature": {
       "decentralized_h3": "Decentralizzato",
-      "decentralized_p": "Basato su Reticulum. Nessun server centrale, nessun singolo punto di guasto. Pieno controllo dei tuoi dati.",
+      "decentralized_p": "Basato su Reticulum. Nessun server di messaggi gestito da MeshChatX. Identità e cronologia restano sul tuo dispositivo.",
       "crypto_h3": "Primitive crittografiche",
-      "crypto_p": "Reticulum usa primitive crittografiche efficienti, solide e collaudate per sicurezza e affidabilità su tutte le piattaforme.",
+      "crypto_p": "Reticulum pubblica le sue primitive crittografiche in una specifica aperta. MeshChatX usa quello stack senza modifiche.",
       "crypto_link": "Leggi la specifica",
       "mesh_h3": "Rete mesh",
-      "mesh_p": "Comunica su qualsiasi mezzo. MeshChatX funziona su internet, radio, LoRa e molti altri canali!",
+      "mesh_p": "MeshChatX funziona su link internet, radio, LoRa e altri trasporti supportati da Reticulum.",
       "platform_h3": "Supporto piattaforme",
       "platform_p": "Supporto ufficiale su Desktop (Electron) e Web (Docker/Python). Android tramite Termux."
     },
     "security": {
       "h2": "Sicurezza e integrità",
-      "lead": "Verifica, trasparenza e impostazioni conservative nello stack desktop, così sai cosa è stato rilasciato e come si comporta.",
-      "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> livello 3 con provenance della supply chain rafforzata per le build di release.",
-      "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Integrità ASAR</a> per rilevare manomissioni delle risorse dell'app impacchettata.",
+      "lead": "Le release desktop includono attestazioni di provenance, controlli di integrità dei pacchetti e sandboxing Linux dove la piattaforma lo consente.",
+      "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> livello 3 provenance per le build di release.",
+      "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Integrità ASAR</a> rileva manomissioni delle risorse dell'app impacchettata.",
       "bullet_landlock": "Sandboxing Linux con <a href=\"https://landlock.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Landlock LSM</a> per limitare l'accesso al filesystem.",
       "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> con firme cosign per artefatti verificabili dove applicabile.",
       "bullet_sast": "Analisi statica e scansione delle dipendenze con Trivy, pip-audit, Ruff e CodeQL nella pipeline di consegna.",
@@ -180,26 +180,26 @@
       "bullet_transport": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#1-only-load-secure-content\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">HTTPS e WSS</a> predefiniti per pagine e trasporti remoti dove supportato."
     },
     "split": {
-      "h2_line1": "Veramente anonimo",
-      "h2_line2": "& Inarrestabile",
+      "h2_line1": "Anonimo",
+      "h2_line2": "& senza account",
       "item1_h4": "Identità multiple",
-      "item1_p": "Crea e gestisci tutte le identità di cui hai bisogno. Passa da un profilo all'altro senza problemi mantenendo i tuoi dati privati.",
+      "item1_p": "Crea tutte le identità di cui hai bisogno. Passa da una all'altra senza mescolare i rispettivi archivi dati.",
       "item2_h4": "Nessuna verifica dell'età",
-      "item2_p": "Nessun documento, telefono o email richiesti. Accedi alla rete in modo anonimo senza ostacoli o verifiche di terze parti.",
+      "item2_p": "Nessun documento, telefono o email. Accedi senza controlli di identità di terze parti.",
       "item3_h4": "Nessuna censura",
-      "item3_p": "Costruito per reti mesh e resistenza alla censura. I messaggi si propagano automaticamente e l'archiviazione locale garantisce la disponibilità."
+      "item3_p": "I messaggi si propagano sulla mesh. Gli archivi locali tengono la cronologia disponibile quando un peer remoto è offline."
     },
     "videos": {
       "h2": "Video",
-      "lead": "Video su MeshChatX",
+      "lead": "Video MeshChatX",
       "youtube_title": "MeshChatX su YouTube",
       "youtube_title_2": "MeshChatX su YouTube"
     }
   },
   "roadmap": {
     "h1": "Roadmap",
-    "lead": "La roadmap di sviluppo di MeshChatX. Ecco cosa stiamo facendo e cosa ci aspetta.",
-    "notice": "La roadmap è soggetta a modifiche. Versioni e funzionalità potrebbero essere adattate in base alle priorità di sviluppo e al feedback della comunità.",
+    "lead": "Release pianificate di MeshChatX e il lavoro elencato sotto ogni versione.",
+    "notice": "Date e funzionalità possono cambiare al variare delle priorità.",
     "status_done": "Fatto",
     "status_progress": "In corso",
     "status_planned": "Pianificato",

@@ -18,13 +18,13 @@
     },
     "og_image_alt": "MeshChatX logo",
     "desc": {
-      "home": "The future of decentralized communication. Secure, resilient, and unstoppable messaging over Reticulum.",
+      "home": "MeshChatX client for messaging, calls, and NomadNet over Reticulum. No central servers.",
       "download": "Download MeshChatX for Windows, Linux, macOS, Docker, and Python. Decentralized messaging over Reticulum.",
       "contact": "Contact MeshChatX via LXMF (Reticulum) or email team@quad4.io.",
       "donate": "Support MeshChatX on Ko-fi, Buy Me a Coffee, or with Monero (XMR).",
       "license": "Licensing for the meshchatx.com website (0BSD) and the MeshChatX application (0BSD + MIT).",
       "privacy": "How meshchatx.com handles data when you visit the Site.",
-      "roadmap": "MeshChatX development roadmap with upcoming features, in-progress work, and completed milestones.",
+      "roadmap": "MeshChatX planned releases, in-progress work, and completed milestones.",
       "error": "This page could not be shown as requested."
     }
   },
@@ -61,7 +61,7 @@
     "zh": "Chinese"
   },
   "footer": {
-    "tagline": "Secure, resilient, and unstoppable communication over the Reticulum network.",
+    "tagline": "Messaging, calls, and NomadNet over the Reticulum network.",
     "community": "Community",
     "legal": "Legal",
     "source": "Source (GitHub)",
@@ -69,7 +69,7 @@
     "license": "License",
     "privacy": "Privacy Policy",
     "license_badge": "MIT + 0BSD",
-    "meta_copyright": "© 2026 MeshChatX. Secure, Decentralized Networking.",
+    "meta_copyright": "© 2026 MeshChatX.",
     "meta_site": "MeshChatX is a <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a> project."
   },
   "contact": {
@@ -115,7 +115,7 @@
   "home": {
     "hero": {
       "h1": "All-in-one Reticulum Client",
-      "lead": "MeshChatX is a all-in-one Reticulum client featuring messaging, calling, and a nomadnet browser."
+      "lead": "MeshChatX is an all-in-one Reticulum client with messaging, calling, and a NomadNet browser."
     },
     "platform": {
       "macos": "macOS",
@@ -146,32 +146,32 @@
       "telemetry": "Telemetry (LXMF)",
       "host_pages": "Host Pages",
       "soon": "(coming soon)",
-      "more": "+ so much more"
+      "more": "+ more"
     },
     "cta": {
-      "download": "Download Now",
-      "source": "View Source Code"
+      "download": "Download",
+      "source": "View source"
     },
     "section": {
-      "infra_h2": "Decentralized Infrastructure",
-      "infra_lead": "Built for mesh networks and censorship resistance."
+      "infra_h2": "No central servers",
+      "infra_lead": "Traffic goes over Reticulum mesh links, not a MeshChatX-operated backend."
     },
     "feature": {
       "decentralized_h3": "Decentralized",
-      "decentralized_p": "Built on Reticulum. No central servers, no single point of failure. Total ownership of your data.",
+      "decentralized_p": "Built on Reticulum. No MeshChatX-operated message servers. Identities and message history stay on your device.",
       "crypto_h3": "Cryptographic Primitives",
-      "crypto_p": "Reticulum uses efficient, strong, and well-tested cryptographic primitives designed for safety and reliability across all platforms.",
+      "crypto_p": "Reticulum publishes its cryptographic primitives in an open specification. MeshChatX uses that stack unchanged.",
       "crypto_link": "Read Specification",
       "mesh_h3": "Mesh Networking",
-      "mesh_p": "Communicate across any medium. MeshChatX works over the internet, radio, LoRa, and many other mediums!",
+      "mesh_p": "MeshChatX runs over internet links, radio, LoRa, and other transports that Reticulum supports.",
       "platform_h3": "Platform Support",
       "platform_p": "Officially supported on Desktop (Electron) and Web (Docker/Python). Android is available via Termux."
     },
     "security": {
       "h2": "Security & integrity",
-      "lead": "Verification, transparency, and conservative defaults in the desktop stack, so you know what shipped and how it behaves.",
-      "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> Level 3 with hardened supply-chain provenance for release builds.",
-      "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR integrity</a> monitoring helps detect tampering with packaged application resources.",
+      "lead": "Desktop releases ship with provenance attestations, package integrity checks, and Linux sandboxing where the platform allows it.",
+      "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> Level 3 provenance for release builds.",
+      "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR integrity</a> monitoring detects tampering with packaged application resources.",
       "bullet_landlock": "<a href=\"https://landlock.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Landlock LSM</a> sandboxing on Linux to restrict filesystem access.",
       "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> cosign-based signing for verifiable artifacts where applicable.",
       "bullet_sast": "Static analysis and dependency scanning with Trivy, pip-audit, Ruff, and CodeQL in the delivery pipeline.",
@@ -179,26 +179,26 @@
       "bullet_transport": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#1-only-load-secure-content\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">HTTPS and WSS</a> by default for remote pages and transports where supported."
     },
     "split": {
-      "h2_line1": "Truly Anonymous",
-      "h2_line2": "& Unstoppable",
+      "h2_line1": "Anonymous",
+      "h2_line2": "& account-free",
       "item1_h4": "Multiple Identities",
-      "item1_p": "Create and manage as many identities as you need. Switch between personas seamlessly while keeping your data private and compartmentalized.",
+      "item1_p": "Create as many identities as you need. Switch between them without mixing their data stores.",
       "item2_h4": "No Age Verification",
-      "item2_p": "No government ID, phone number, or email required. Access the network anonymously without any third-party verification or hurdles.",
+      "item2_p": "No government ID, phone number, or email. Join without third-party identity checks.",
       "item3_h4": "No Censorship",
-      "item3_p": "Built for mesh networks and censorship resistance. Your messages propagate automatically and local archiving ensures your data is always available."
+      "item3_p": "Messages propagate across the mesh. Local archives keep history available when a remote peer is offline."
     },
     "videos": {
       "h2": "Videos",
-      "lead": "Videos About MeshChatX",
+      "lead": "MeshChatX videos",
       "youtube_title": "MeshChatX on YouTube",
       "youtube_title_2": "MeshChatX on YouTube"
     }
   },
   "roadmap": {
     "h1": "Roadmap",
-    "lead": "The MeshChatX development roadmap. Here is what we are working on and what is coming next.",
-    "notice": "Roadmap is subject to change. Versions and features may be adjusted based on development priorities and community feedback.",
+    "lead": "Planned MeshChatX releases and the work listed under each version.",
+    "notice": "Dates and features can move as priorities change.",
     "status_done": "Done",
     "status_progress": "In Progress",
     "status_planned": "Planned",

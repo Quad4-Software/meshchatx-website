@@ -77,7 +77,7 @@
       "h2": "Containers",
       "compose": "Compose",
       "compose_intro_before": "Standard ",
-      "compose_intro_after": " for easy deployment.",
+      "compose_intro_after": " for Compose-based installs.",
       "compose_filename": "docker-compose.yml",
       "copy_compose": "Copy Compose",
       "docker": "Docker",

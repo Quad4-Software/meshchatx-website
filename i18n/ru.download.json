@@ -77,7 +77,7 @@
       "h2": "Контейнеры",
       "compose": "Compose",
       "compose_intro_before": "Стандартный ",
-      "compose_intro_after": " для простого развёртывания.",
+      "compose_intro_after": " для установки через Compose.",
       "compose_filename": "docker-compose.yml",
       "copy_compose": "Копировать Compose",
       "docker": "Docker",
