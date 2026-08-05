@@ -1,4 +1,4 @@
-# CodeQL analysis for PHP, JS/TS, and Actions workflows
+# CodeQL analysis for JS/TS and Actions workflows
 # https://docs.github.com/en/code-security
 
 name: CodeQL
@@ -30,8 +30,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - language: php
-            build-mode: none
           - language: javascript-typescript
             build-mode: none
           - language: actions

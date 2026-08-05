@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Facades\Route;
+
 class LocaleUrl
 {
     public static function route(string $name, array $parameters = [], ?string $locale = null): string
@@ -30,6 +32,10 @@ class LocaleUrl
         }
         if ($base === '') {
             $base = 'home';
+        }
+
+        if (! Route::has('locale.'.$base)) {
+            return self::route('home', [], $targetLocale);
         }
 
         return self::route($base, $params, $targetLocale);
