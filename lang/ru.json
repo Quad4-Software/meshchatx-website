@@ -197,7 +197,8 @@
       "h2": "Видео",
       "lead": "Видео MeshChatX",
       "youtube_title": "MeshChatX на YouTube",
-      "youtube_title_2": "MeshChatX на YouTube"
+      "youtube_title_2": "MeshChatX на YouTube",
+      "play": "Воспроизвести видео: :title"
     }
   },
   "roadmap": {

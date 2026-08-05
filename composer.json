@@ -45,6 +45,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
+            "@php -r \"if (! is_file('.env')) { fwrite(STDERR, 'Missing .env. Run: composer setup'.PHP_EOL); exit(1); }\"",
             "pnpm exec concurrently -c \"#93c5fd,#fb7185\" \"php artisan serve\" \"pnpm run dev\" --names=server,vite --kill-others"
         ],
         "format": [

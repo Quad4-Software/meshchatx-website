@@ -196,7 +196,8 @@
       "h2": "视频",
       "lead": "MeshChatX 视频",
       "youtube_title": "YouTube 上的 MeshChatX",
-      "youtube_title_2": "YouTube 上的 MeshChatX"
+      "youtube_title_2": "YouTube 上的 MeshChatX",
+      "play": "播放视频：:title"
     }
   },
   "roadmap": {

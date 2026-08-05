@@ -45,4 +45,14 @@ class PublicRoutesTest extends TestCase
             ->assertOk()
             ->assertSee('MeshChatX', false);
     }
+
+    public function test_home_defers_youtube_embeds_until_click(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('youtube.com/embed/', false)
+            ->assertDontSee('youtube-nocookie.com/embed/', false)
+            ->assertSee('data-video-embed', false)
+            ->assertSee('data-video-trigger', false);
+    }
 }

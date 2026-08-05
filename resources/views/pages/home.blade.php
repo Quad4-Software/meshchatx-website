@@ -106,7 +106,7 @@
     <section class="section section--compact section--caps" data-reveal>
         <div class="cap-marquee" data-marquee aria-label="{{ t('home.section.infra_h2') }}">
             <ul class="cap-marquee__track">
-                @foreach ($capMarquee as $item)
+                @foreach (array_merge($capMarquee, $capMarquee) as $item)
                     <li class="cap-marquee__item{{ ! empty($item['more']) ? ' cap-marquee__item--more' : '' }}">{{ $item['label'] }}</li>
                 @endforeach
             </ul>
@@ -172,16 +172,32 @@
             </div>
             <div class="video-grid">
                 @foreach ($site['youtube'] as $video)
+                    @php
+                        $videoTitle = t($video['title_key']);
+                    @endphp
                     <div class="video-card">
-                        <div class="video-frame">
-                            <iframe
-                                src="https://www.youtube.com/embed/{{ $video['id'] }}"
-                                title="{{ t($video['title_key']) }}"
-                                loading="lazy"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                allowfullscreen
-                            ></iframe>
+                        <div
+                            class="video-frame"
+                            data-video-embed
+                            data-video-id="{{ $video['id'] }}"
+                        >
+                            <button
+                                type="button"
+                                class="video-facade"
+                                data-video-trigger
+                                aria-label="{{ t('home.videos.play', ['title' => $videoTitle]) }}"
+                            >
+                                <img
+                                    class="video-facade__thumb"
+                                    src="https://i.ytimg.com/vi/{{ $video['id'] }}/hqdefault.jpg"
+                                    alt=""
+                                    width="480"
+                                    height="360"
+                                    loading="lazy"
+                                    decoding="async"
+                                >
+                                <span class="video-facade__play" aria-hidden="true"></span>
+                            </button>
                         </div>
                     </div>
                 @endforeach
