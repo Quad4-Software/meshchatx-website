@@ -26,8 +26,7 @@ class SiteTranslator
             return $key;
         }
 
-        return $value
-            |> (fn (string $text): string => $this->applyReplacements($text, $replace));
+        return $this->applyReplacements($value, $replace);
     }
 
     /**

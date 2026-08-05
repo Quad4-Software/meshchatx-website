@@ -36,8 +36,8 @@ if (! function_exists('clean_site_html')) {
      */
     function clean_site_html(string $html): string
     {
-        return $html
-            |> (fn (string $value): string => preg_replace('/\s*class="mcx-link-blue"/', '', $value) ?? $value)
-            |> (fn (string $value): string => preg_replace('/\s*style="[^"]*"/', '', $value) ?? $value);
+        $html = preg_replace('/\s*class="mcx-link-blue"/', '', $html) ?? $html;
+
+        return preg_replace('/\s*style="[^"]*"/', '', $html) ?? $html;
     }
 }

@@ -1,5 +1,4 @@
-import '@fontsource-variable/outfit';
-import '@mdi/font/css/materialdesignicons.min.css';
+import '@fontsource-variable/outfit/wght.css';
 
 const THEME_KEY = 'theme';
 

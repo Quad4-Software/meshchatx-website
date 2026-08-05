@@ -12,11 +12,9 @@ class Php85FeaturesTest extends TestCase
         $this->assertGreaterThanOrEqual(80500, PHP_VERSION_ID);
     }
 
-    public function test_pipe_operator_and_array_helpers_work(): void
+    public function test_array_helpers_work(): void
     {
-        $value = '  MeshChatX  '
-            |> trim(...)
-            |> strtoupper(...);
+        $value = strtoupper(trim('  MeshChatX  '));
 
         $this->assertSame('MESHCHATX', $value);
         $this->assertSame(2, array_first([2, 4, 6]));
@@ -33,7 +31,7 @@ class Php85FeaturesTest extends TestCase
         $this->assertSame($url, SiteUri::normalize($url));
     }
 
-    public function test_clean_site_html_uses_pipe_chain(): void
+    public function test_clean_site_html_strips_legacy_markup(): void
     {
         $html = '<a href="/x" class="mcx-link-blue" style="text-decoration:underline">x</a>';
 

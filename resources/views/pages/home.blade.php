@@ -30,6 +30,8 @@
                 width="512"
                 height="512"
                 decoding="async"
+                loading="lazy"
+                fetchpriority="low"
             >
         </div>
 
@@ -91,8 +93,8 @@
                         data-showcase-image
                         src="/showcase/light/{{ $firstTab }}"
                         alt="{{ t('js.showcase.desktop_fmt', ['s' => t('js.showcase.tab0')]) }}"
-                        width="1280"
-                        height="800"
+                        width="1800"
+                        height="959"
                         decoding="async"
                         fetchpriority="high"
                     >

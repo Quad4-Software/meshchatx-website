@@ -290,8 +290,7 @@ class GithubReleasesService
 
     private function versionDisplay(string $tag): string
     {
-        return $tag
-            |> (fn (string $value): string => (string) (preg_replace('/^v/i', '', $value) ?? $value));
+        return (string) (preg_replace('/^v/i', '', $tag) ?? $tag);
     }
 
     private function isPrereleaseTag(string $tag): bool

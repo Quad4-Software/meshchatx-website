@@ -11,8 +11,8 @@
             <img
                 class="brand-mark__img"
                 src="/logo-navbar.webp"
-                alt="{{ t('brand.name') }}"
-                width="120"
+                alt=""
+                width="40"
                 height="40"
                 decoding="async"
             >

@@ -8,7 +8,11 @@ use App\Support\PreferredLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -24,6 +28,13 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->encryptCookies(except: [
             PreferredLocale::COOKIE,
+        ]);
+
+        $middleware->web(remove: [
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            ValidateCsrfToken::class,
+            PreventRequestForgery::class,
         ]);
 
         $middleware->appendToGroup('web', [

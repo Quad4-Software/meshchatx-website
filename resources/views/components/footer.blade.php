@@ -40,8 +40,8 @@
                     <img
                         class="site-footer__logo"
                         src="/logo-navbar.webp"
-                        alt="{{ t('brand.name') }}"
-                        width="120"
+                        alt=""
+                        width="40"
                         height="40"
                         decoding="async"
                     >

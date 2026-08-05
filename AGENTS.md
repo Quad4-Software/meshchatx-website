@@ -52,19 +52,15 @@ Banned-word reference: `.agents/skills/no-ai-slop/references/ai-writing-detectio
 
 Upstream anti-slop package: [no_ai_slop_writing_rules](https://github.com/realrossmanngroup/no_ai_slop_writing_rules).
 
-## Commands
+## Checks
 
 ```bash
-composer install
-pnpm install --frozen-lockfile
-pnpm run build
-composer format
-pnpm run format
-composer lint
-pnpm run lint
-composer test
-composer dev
+composer format && composer lint && composer test
+pnpm run lint && pnpm run build
+pnpm run lighthouse
 ```
+
+Lighthouse thresholds live in `lighthouserc.cjs`. Remove `public/hot` before runs so Vite HMR does not poison production asset URLs.
 
 ## Design
 

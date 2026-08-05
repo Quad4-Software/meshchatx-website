@@ -225,12 +225,12 @@
         z-index: 100;
         padding: 0.65rem 1rem;
         border-radius: var(--radius-sm);
-        background: var(--color-surface);
-        color: var(--color-ink);
+        background: var(--color-accent);
+        color: #ffffff;
         font-size: 0.875rem;
         font-weight: 600;
         text-decoration: none;
-        border: 1px solid var(--color-line);
+        border: 1px solid var(--color-accent-soft);
     }
 
     .skip-link:focus {
@@ -308,8 +308,11 @@
 
     .nav-link {
         position: relative;
-        padding: 0.45rem 0.8rem;
-        color: var(--color-muted);
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.75rem;
+        padding: 0.55rem 0.85rem;
+        color: var(--color-ink);
         font-size: 0.9rem;
         font-weight: 500;
         text-decoration: none;
@@ -444,9 +447,9 @@
     }
 
     .btn--sm {
-        min-height: 1.7rem;
-        padding: 0.18rem 0.6rem;
-        font-size: 0.78rem;
+        min-height: 2.5rem;
+        padding: 0.4rem 0.85rem;
+        font-size: 0.85rem;
     }
 
     .theme-toggle,
@@ -502,10 +505,12 @@
     }
 
     .lang-picker__option {
-        display: block;
+        display: flex;
+        align-items: center;
+        min-height: 2.5rem;
         padding: 0.45rem 0.65rem;
         border-radius: var(--radius-sm);
-        color: var(--color-muted);
+        color: var(--color-ink);
         font-size: 0.85rem;
         text-decoration: none;
         text-align: left;
@@ -715,15 +720,37 @@
 
     .platform-chip .mcx-icon {
         color: inherit;
-        line-height: 1;
     }
 
     .mcx-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
+        display: inline-block;
+        flex-shrink: 0;
+        max-width: none;
+        overflow: visible;
         vertical-align: middle;
+        fill: currentColor;
+        color: inherit;
+    }
+
+    .mcx-icon--xs {
+        width: 18px;
+        height: 18px;
+    }
+
+    .mcx-icon--sm {
+        width: 24px;
+        height: 24px;
+    }
+
+    .mcx-icon--md {
+        width: 36px;
+        height: 36px;
+    }
+
+    .mcx-icon--lg,
+    .mcx-icon--xl {
+        width: 48px;
+        height: 48px;
     }
 
     .home-hero__actions {

@@ -44,13 +44,18 @@ composer dev
 ```bash
 composer format && composer lint && composer test
 pnpm run lint && pnpm run build
+pnpm run lighthouse
 ```
+
+Lighthouse CI uses `lighthouserc.cjs` (desktop, performance ≥ 0.9, accessibility/SEO ≥ 0.95, best-practices ≥ 0.9).
 
 ## Docker
 
 Local (default host port `8090` from `.env.docker`):
 
 ```bash
+cp .env.docker.example .env.docker
+# set APP_KEY (php artisan key:generate --show) then:
 docker compose --env-file .env.docker up --build -d
 ```
 

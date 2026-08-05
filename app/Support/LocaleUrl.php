@@ -24,11 +24,13 @@ class LocaleUrl
 
         unset($params['locale']);
 
-        $base = $name
-            |> (fn (string $value): string => str_starts_with($value, 'locale.')
-                ? substr($value, strlen('locale.'))
-                : $value)
-            |> (fn (string $value): string => $value !== '' ? $value : 'home');
+        $base = $name;
+        if (str_starts_with($base, 'locale.')) {
+            $base = substr($base, strlen('locale.'));
+        }
+        if ($base === '') {
+            $base = 'home';
+        }
 
         return self::route($base, $params, $targetLocale);
     }

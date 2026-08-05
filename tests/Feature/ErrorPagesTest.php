@@ -30,6 +30,51 @@ class ErrorPagesTest extends TestCase
             ->assertOk()
             ->assertHeader('X-Content-Type-Options', 'nosniff')
             ->assertHeader('X-Frame-Options', 'SAMEORIGIN')
-            ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+            ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
+            ->assertHeader('Cross-Origin-Opener-Policy', 'same-origin')
+            ->assertHeader('Cross-Origin-Resource-Policy', 'same-origin');
+
+        $csp = $this->get('/')->headers->get('Content-Security-Policy');
+        $this->assertIsString($csp);
+        $this->assertStringContainsString("default-src 'self'", $csp);
+        $this->assertStringContainsString("object-src 'none'", $csp);
+        $this->assertStringNotContainsString('5173', $csp);
+    }
+
+    public function test_local_csp_allows_vite_hot_origin(): void
+    {
+        $hot = public_path('hot');
+        $previous = is_file($hot) ? file_get_contents($hot) : null;
+        file_put_contents($hot, "http://[::1]:5173\n");
+
+        try {
+            app()->detectEnvironment(fn (): string => 'local');
+
+            $csp = $this->get('/')->headers->get('Content-Security-Policy');
+            $this->assertIsString($csp);
+            $this->assertStringNotContainsString('[::1]', $csp);
+            $this->assertStringContainsString('http://127.0.0.1:5173', $csp);
+            $this->assertStringContainsString('ws://127.0.0.1:5173', $csp);
+            $this->assertStringContainsString('http://localhost:5173', $csp);
+        } finally {
+            if ($previous === null) {
+                @unlink($hot);
+            } else {
+                file_put_contents($hot, $previous);
+            }
+            app()->detectEnvironment(fn (): string => 'testing');
+        }
+    }
+
+    public function test_home_does_not_set_session_cookie(): void
+    {
+        $response = $this->get('/');
+        $response->assertOk();
+
+        $cookies = $response->headers->getCookies();
+        foreach ($cookies as $cookie) {
+            $this->assertStringNotContainsString('session', strtolower($cookie->getName()));
+            $this->assertNotSame('XSRF-TOKEN', $cookie->getName());
+        }
     }
 }
