@@ -210,6 +210,43 @@ function initVideoEmbeds() {
     });
 }
 
+function canPrefetchAssets() {
+    const connection = navigator.connection;
+    if (connection?.saveData) {
+        return false;
+    }
+    const slow = ['slow-2g', '2g'];
+    return !slow.includes(connection?.effectiveType);
+}
+
+function prefetchAsset(src) {
+    if (!src) {
+        return Promise.resolve();
+    }
+
+    return new Promise((resolve) => {
+        const img = new Image();
+        const done = () => resolve();
+        img.onload = () => {
+            if (typeof img.decode === 'function') {
+                img.decode().then(done).catch(done);
+                return;
+            }
+            done();
+        };
+        img.onerror = done;
+        img.src = src;
+    });
+}
+
+function scheduleIdle(task) {
+    if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(task, { timeout: 3000 });
+        return;
+    }
+    window.setTimeout(task, 1200);
+}
+
 function initShowcase() {
     document.querySelectorAll('[data-showcase]').forEach((root) => {
         const tabs = Array.from(root.querySelectorAll('[data-showcase-tab]'));
@@ -224,6 +261,7 @@ function initShowcase() {
         let busy = false;
         const delay = Number(root.getAttribute('data-showcase-autoplay') || 0);
         const fadeMs = 520;
+        const prefetched = new Set();
 
         const resolveSrc = (tab) => {
             const src = tab.getAttribute('data-src');
@@ -233,6 +271,32 @@ function initShowcase() {
                 return srcDark;
             }
             return src;
+        };
+
+        const queuePrefetch = (src) => {
+            if (!src || prefetched.has(src)) {
+                return;
+            }
+            prefetched.add(src);
+            prefetchAsset(src);
+        };
+
+        const prefetchTab = (tab) => {
+            queuePrefetch(tab.getAttribute('data-src'));
+            queuePrefetch(tab.getAttribute('data-src-dark'));
+        };
+
+        const prefetchAllTabs = () => {
+            tabs.forEach((tab) => prefetchTab(tab));
+        };
+
+        const prefetchAdjacent = (tab) => {
+            const index = tabs.indexOf(tab);
+            if (index < 0) {
+                return;
+            }
+            prefetchTab(tabs[(index + 1) % tabs.length]);
+            prefetchTab(tabs[(index - 1 + tabs.length) % tabs.length]);
         };
 
         const activate = (tab, { animate = true } = {}) => {
@@ -247,6 +311,7 @@ function initShowcase() {
             });
 
             const nextSrc = resolveSrc(tab);
+            prefetchAdjacent(tab);
             const label = tab.getAttribute('data-label') || tab.textContent.trim();
             const applyMeta = () => {
                 if (label) {
@@ -347,6 +412,10 @@ function initShowcase() {
         const active = tabs.find((tab) => tab.classList.contains('is-active')) || tabs[0];
         activate(active, { animate: false });
         startAutoplay();
+
+        if (canPrefetchAssets()) {
+            scheduleIdle(prefetchAllTabs);
+        }
 
         const observer = new MutationObserver(() => {
             const current = tabs.find((tab) => tab.classList.contains('is-active')) || tabs[0];
