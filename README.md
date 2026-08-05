@@ -1,39 +1,76 @@
 # MeshChatX website
 
-[SvelteKit](https://kit.svelte.dev/) site with [`@sveltejs/adapter-node`](https://github.com/sveltejs/sveltekit/tree/main/packages/adapter-node). Product: [MeshChatX](https://github.com/Quad4-Software/MeshChatX).
+Public marketing site for [MeshChatX](https://github.com/Quad4-Software/MeshChatX).
 
-## Requirements
+Stack: PHP 8.5, Laravel 13, Blade, Vite 8, Tailwind CSS 4, pnpm 11.
 
-- Node.js 26+ (`package.json` `engines`)
-- pnpm 11+ (`corepack enable pnpm`)
+Locales: `en` (unprefixed), `de`, `ru`, `it`, `zh`.
 
-## Install and build
+## Setup
 
 ```bash
-pnpm install
+composer setup
+```
+
+Or:
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+pnpm install --frozen-lockfile
 pnpm run build
 ```
 
-Artifacts: `build/`. Run locally: `pnpm start` (or `node build`). Dev: `pnpm run dev`.
-
-## Environment
-
-| Variable                 | Description                                                       |
-| ------------------------ | ----------------------------------------------------------------- |
-| `GITHUB_TOKEN`           | Optional. Raises GitHub API rate limits for release metadata.     |
-| `RELEASES_CACHE_SECONDS` | In-memory cache for release listing (default `300`, max `86400`). |
-
-Release metadata is fetched live from [GitHub releases](https://github.com/Quad4-Software/MeshChatX/releases) (REST API, with Atom feed fallback). No manual sync or CDN configuration is required.
-
-**GET `/api/mcx-releases`** returns the same JSON embedded in HTML (handy for `curl`). The download page requests it when the embed has no version (e.g. stale cached HTML).
-
-## Deployment
-
-Build and run the image (listens on **8080**; set `PORT` if needed):
+Dev server:
 
 ```bash
-docker build -t meshchatx-website:latest .
-docker run --rm -p 8080:8080 meshchatx-website:latest
+composer dev
 ```
 
-Podman: `podman build` / `podman run` with the same flags.
+## Layout
+
+| Path | Role |
+| --- | --- |
+| `config/meshchatx.php` | URLs, nav, SEO inputs |
+| `config/meshchatx/roadmap.php` | Roadmap versions |
+| `lang/` | Translations |
+| `resources/views/pages/` | Page templates |
+| `resources/css/app.css` | Theme and components |
+| `routes/web.php` | Public routes |
+
+## Checks
+
+```bash
+composer format && composer lint && composer test
+pnpm run lint && pnpm run build
+```
+
+## Docker
+
+Local (default host port `8090` from `.env.docker`):
+
+```bash
+docker compose --env-file .env.docker up --build -d
+```
+
+Coolify: use `docker-compose.coolify.yml`. Do not publish host ports. Point the proxy at `web:8080`.
+
+GHCR images (CI): `ghcr.io/quad4-software/meshchatx-website/app` and `.../web`.
+
+## Env
+
+| Variable | Purpose |
+| --- | --- |
+| `APP_KEY` | Required at runtime |
+| `MESHCHATX_DOMAIN` | Canonical origin (default `https://meshchatx.com`) |
+| `RELEASES_CACHE_SECONDS` | GitHub release cache TTL (default `3600`) |
+| `GITHUB_TOKEN` | Optional GitHub API rate limit |
+
+## Agents
+
+Project agent skills live under `.agents/skills/` (anti-slop writing rules plus MeshChatX / Reticulum / rngit context). See `AGENTS.md`.
+
+## License
+
+0BSD. See `LICENSE`.

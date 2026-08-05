@@ -1,0 +1,110 @@
+@php
+    $isHome = request()->routeIs('home', 'locale.home');
+    $homeUrl = locale_route('home');
+    $downloadUrl = locale_route('download');
+    $current = current_locale();
+@endphp
+
+<header class="site-header">
+    <div class="site-header__inner site-container">
+        <a class="brand-mark" href="{{ $homeUrl }}">
+            <img
+                class="brand-mark__img"
+                src="/logo-navbar.webp"
+                alt="{{ t('brand.name') }}"
+                width="120"
+                height="40"
+                decoding="async"
+            >
+            <span class="brand-mark__text">{{ t('brand.name') }}</span>
+        </a>
+
+        <nav class="site-nav" aria-label="{{ t('nav.primary') }}">
+            @foreach ($site['nav'] as $item)
+                @php
+                    $label = t($item['label_key']);
+                    $homeOnly = ! empty($item['home_only']);
+                    if ($homeOnly) {
+                        $href = $homeUrl.($item['href'] ?? '');
+                        $active = false;
+                    } elseif (! empty($item['route'])) {
+                        $href = locale_route($item['route']);
+                        $active = request()->routeIs($item['route'], 'locale.'.$item['route']);
+                    } else {
+                        $href = $item['href'] ?? '#';
+                        $active = false;
+                    }
+                @endphp
+                <a class="nav-link{{ $active ? ' is-active' : '' }}" href="{{ $href }}">{{ $label }}</a>
+            @endforeach
+        </nav>
+
+        <div class="site-header__tools">
+            <div class="lang-picker" data-lang-picker>
+                <button
+                    type="button"
+                    class="lang-picker__trigger tool-icon-btn"
+                    data-lang-trigger
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    aria-label="{{ t('lang.pick') }}"
+                >
+                    <x-icon name="earth" size="xs" />
+                </button>
+                <div class="lang-picker__menu" role="listbox" aria-label="{{ t('lang.label') }}">
+                    @foreach ($site['locales'] as $code)
+                        <a
+                            class="lang-picker__option{{ $code === $current ? ' is-active' : '' }}"
+                            href="{{ \App\Support\LocaleUrl::switchLocale($code) }}"
+                            role="option"
+                            @if ($code === $current) aria-selected="true" @endif
+                            hreflang="{{ $code }}"
+                            lang="{{ $code }}"
+                        >{{ t('lang.'.$code) }}</a>
+                    @endforeach
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="theme-toggle tool-icon-btn"
+                data-theme-toggle
+                aria-label="{{ t('nav.toggle_theme') }}"
+            >
+                <x-icon name="theme" size="xs" />
+            </button>
+
+            <a class="btn btn--solid btn--sm" href="{{ $downloadUrl }}">{{ t('nav.download') }}</a>
+
+            <button
+                type="button"
+                class="menu-toggle"
+                data-menu-toggle
+                aria-expanded="false"
+                aria-controls="mobile-nav"
+                aria-label="{{ t('nav.mobile_menu') }}"
+            >
+                <x-icon name="menu" size="xs" />
+            </button>
+        </div>
+    </div>
+
+    <nav id="mobile-nav" class="mobile-nav" data-mobile-nav aria-label="{{ t('nav.mobile_nav') }}">
+        <div class="site-container">
+            @foreach ($site['nav'] as $item)
+                @php
+                    $label = t($item['label_key']);
+                    if (! empty($item['home_only'])) {
+                        $href = $homeUrl.($item['href'] ?? '');
+                    } elseif (! empty($item['route'])) {
+                        $href = locale_route($item['route']);
+                    } else {
+                        $href = $item['href'] ?? '#';
+                    }
+                @endphp
+                <a class="nav-link" href="{{ $href }}">{{ $label }}</a>
+            @endforeach
+            <a class="btn btn--solid" href="{{ $downloadUrl }}">{{ t('nav.download') }}</a>
+        </div>
+    </nav>
+</header>

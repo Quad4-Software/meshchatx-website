@@ -1,0 +1,139 @@
+# Coolify Docker Compose for MeshChatX website
+# Docs: https://coolify.io/docs/knowledge-base/docker/compose
+#
+# In Coolify, set the compose file to docker-compose.coolify.yml
+# Assign a domain to the `web` service as https://your.domain:8080
+# (8080 is the container listen port nginx uses Coolify still publishes 80/443)
+#
+# Do not map host ports here. Coolify's proxy routes traffic into the stack.
+
+name: meshchatx-website
+
+services:
+  app:
+    build:
+      context: .
+      target: app
+      args:
+        BUILD_DATE: ${BUILD_DATE:-}
+        VCS_REF: ${VCS_REF:-}
+        VERSION: ${VERSION:-0.1.0}
+    image: meshchatx-website-app:${VERSION:-0.1.0}
+    init: true
+    restart: unless-stopped
+    user: "82:82"
+    read_only: true
+    privileged: false
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:uid=82,gid=82,mode=1777,size=64m
+      - /var/www/html/storage:uid=82,gid=82,mode=0755,size=64m
+      - /var/www/html/bootstrap/cache:uid=82,gid=82,mode=0755,size=16m
+    environment:
+      APP_NAME: MeshChatX
+      APP_ENV: production
+      APP_KEY: ${APP_KEY:?}
+      APP_DEBUG: ${APP_DEBUG:-false}
+      APP_URL: ${APP_URL:-${SERVICE_URL_WEB_8080}}
+      LOG_CHANNEL: stderr
+      LOG_LEVEL: ${LOG_LEVEL:-warning}
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      FILESYSTEM_DISK: local
+      BROADCAST_CONNECTION: log
+      MAIL_MAILER: log
+      MESHCHATX_DOMAIN: ${MESHCHATX_DOMAIN:-${SERVICE_URL_WEB_8080}}
+      RELEASES_CACHE_SECONDS: ${RELEASES_CACHE_SECONDS:-3600}
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      SERVICE_URL_WEB_8080: ${SERVICE_URL_WEB_8080}
+    networks:
+      - internal
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "SCRIPT_NAME=/ping SCRIPT_FILENAME=/ping REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000 || exit 1",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    mem_limit: 512m
+    mem_reservation: 128m
+    cpus: 1.0
+    pids_limit: 256
+    oom_score_adj: 200
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+          pids: 256
+        reservations:
+          cpus: "0.10"
+          memory: 128M
+
+  web:
+    build:
+      context: .
+      target: web
+      args:
+        BUILD_DATE: ${BUILD_DATE:-}
+        VCS_REF: ${VCS_REF:-}
+        VERSION: ${VERSION:-0.1.0}
+    image: meshchatx-website-web:${VERSION:-0.1.0}
+    init: true
+    restart: unless-stopped
+    user: "101:101"
+    read_only: true
+    privileged: false
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:uid=101,gid=101,mode=1777,size=16m
+      - /var/cache/nginx:uid=101,gid=101,mode=0755,size=32m
+      - /var/run:uid=101,gid=101,mode=0755,size=16m
+    # No host ports. Coolify proxy reaches container port 8080 via the domain field.
+    expose:
+      - "8080"
+    environment:
+      SERVICE_URL_WEB_8080: ${SERVICE_URL_WEB_8080}
+    depends_on:
+      app:
+        condition: service_healthy
+    networks:
+      - edge
+      - internal
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/up"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    mem_limit: 128m
+    mem_reservation: 32m
+    cpus: 0.50
+    pids_limit: 64
+    oom_score_adj: 100
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 128M
+          pids: 64
+        reservations:
+          cpus: "0.05"
+          memory: 32M
+
+networks:
+  edge:
+    driver: bridge
+  internal:
+    driver: bridge
+    internal: true

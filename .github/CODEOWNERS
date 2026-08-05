@@ -1,0 +1,5 @@
+# Prefer reviewing workflow and Dependabot changes before merge.
+# Set a real CODEOWNER team when available, for example:
+# .github/ @your-org/security
+.github/workflows/
+.github/dependabot.yml

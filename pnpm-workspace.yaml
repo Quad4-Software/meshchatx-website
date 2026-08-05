@@ -1,6 +1,36 @@
-packages:
-  - .
+# pnpm 11+ project settings (auth/registry stay in .npmrc)
+# Docs: https://pnpm.io/settings
+#
+# Supply chain defaults used here:
+# - 3 day release age quarantine (falls back to older mature versions)
+# - block exotic transitive sources
+# - trustPolicy no-downgrade for publish attestation regressions
+# - lifecycle scripts disabled (ignoreScripts)
+# - verifyDepsBeforeRun install
+# - strict peer deps and engines
 
-allowBuilds:
-  esbuild: true
-  es5-ext: true
+minimumReleaseAge: 4320
+minimumReleaseAgeStrict: false
+blockExoticSubdeps: true
+strictDepBuilds: true
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 129600
+ignoreScripts: true
+verifyDepsBeforeRun: install
+strictPeerDependencies: true
+engineStrict: true
+managePackageManagerVersions: true
+resolvePeersFromWorkspaceRoot: true
+shamefullyHoist: false
+hoist: true
+packageImportMethod: hardlink
+preferFrozenLockfile: true
+saveExact: false
+savePrefix: '^'
+auditLevel: moderate
+minimumReleaseAgeExclude:
+  - uuid@11.1.1
+  - tmp@0.2.6
+overrides:
+  tmp@<0.2.6: ^0.2.6
+  uuid@<11.1.1: ^11.1.1

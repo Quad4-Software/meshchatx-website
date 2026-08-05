@@ -1,5 +1,0 @@
-Contact: mailto:team@quad4.io
-Contact: https://meshchatx.com/contact
-Expires: 2027-12-31T23:59:59.000Z
-Preferred-Languages: en, de, ru, it
-Canonical: https://meshchatx.com/.well-known/security.txt

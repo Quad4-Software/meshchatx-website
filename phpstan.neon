@@ -1,0 +1,20 @@
+{
+    "includes": [
+        "vendor/larastan/larastan/extension.neon"
+    ],
+
+    "parameters": {
+        "phpVersion": 80500,
+        "paths": [
+            "app",
+            "bootstrap",
+            "config",
+            "routes"
+        ],
+        "level": 5,
+        "excludePaths": [
+            "bootstrap/cache"
+        ],
+        "treatPhpDocTypesAsCertain": false
+    }
+}
