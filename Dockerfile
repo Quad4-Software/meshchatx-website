@@ -106,7 +106,6 @@ ENV APP_ENV=production \
 
 RUN apk add --no-cache --no-scripts \
         fcgi \
-    && docker-php-ext-install opcache \
     && rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/zz-opcache.ini
