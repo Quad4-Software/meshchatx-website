@@ -1,11 +1,9 @@
-# Coolify Docker Compose for MeshChatX website
-# Docs: https://coolify.io/docs/knowledge-base/docker/compose
-#
-# In Coolify, set the compose file to docker-compose.coolify.yml
-# Assign a domain to the `web` service as https://your.domain:8080
-# (8080 is the container listen port nginx uses Coolify still publishes 80/443)
-#
-# Do not map host ports here. Coolify's proxy routes traffic into the stack.
+# Coolify compose for MeshChatX website.
+# Use this file as the Coolify Docker Compose build pack.
+# Proxy via SERVICE_URL_WEB_8080 (web listens on 8080). No host port publish.
+# Set APP_KEY (full base64:... value) before deploy.
+# Assign the domain ONLY to the web service (not app). Example: https://meshchatx.com:8080
+# Do not define custom networks. Coolify creates one per stack and attaches its proxy to it.
 
 name: meshchatx-website
 
@@ -49,9 +47,6 @@ services:
       MESHCHATX_DOMAIN: ${MESHCHATX_DOMAIN:-${SERVICE_URL_WEB_8080}}
       RELEASES_CACHE_SECONDS: ${RELEASES_CACHE_SECONDS:-3600}
       GITHUB_TOKEN: ${GITHUB_TOKEN:-}
-      SERVICE_URL_WEB_8080: ${SERVICE_URL_WEB_8080}
-    networks:
-      - internal
     healthcheck:
       test:
         [
@@ -99,7 +94,6 @@ services:
       - /tmp:uid=101,gid=101,mode=1777,size=16m
       - /var/cache/nginx:uid=101,gid=101,mode=0755,size=32m
       - /var/run:uid=101,gid=101,mode=0755,size=16m
-    # No host ports. Coolify proxy reaches container port 8080 via the domain field.
     expose:
       - "8080"
     environment:
@@ -107,9 +101,6 @@ services:
     depends_on:
       app:
         condition: service_healthy
-    networks:
-      - edge
-      - internal
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/up"]
       interval: 30s
@@ -130,10 +121,3 @@ services:
         reservations:
           cpus: "0.05"
           memory: 32M
-
-networks:
-  edge:
-    driver: bridge
-  internal:
-    driver: bridge
-    internal: true

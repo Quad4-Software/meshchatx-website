@@ -59,7 +59,7 @@ cp .env.docker.example .env.docker
 docker compose --env-file .env.docker up --build -d
 ```
 
-Coolify: use `docker-compose.coolify.yml`. Do not publish host ports. Point the proxy at `web:8080`.
+Coolify: use `docker-compose.coolify.yml`. Do not publish host ports. Assign the domain only to the `web` service as `https://your.domain:8080` (not `app`). Set `APP_KEY` in Coolify env vars.
 
 GHCR images (CI): `ghcr.io/quad4-software/meshchatx-website/app` and `.../web`.
 
