@@ -523,6 +523,80 @@ function initDownloadChannels() {
     });
 }
 
+function initInterfaceDirectory() {
+    const root = document.querySelector('[data-ifx]');
+    if (!root) {
+        return;
+    }
+
+    const search = root.querySelector('[data-ifx-search]');
+    const status = root.querySelector('[data-ifx-status]');
+    const cards = Array.from(root.querySelectorAll('[data-ifx-card]'));
+    const typeButtons = Array.from(root.querySelectorAll('[data-ifx-type]'));
+    const networkButtons = Array.from(root.querySelectorAll('[data-ifx-network]'));
+    let type = '';
+    let network = '';
+
+    const setActive = (buttons, value, attr) => {
+        buttons.forEach((button) => {
+            button.classList.toggle('is-active', (button.getAttribute(attr) || '') === value);
+        });
+    };
+
+    const apply = () => {
+        const needle = (search?.value || '').trim().toLowerCase();
+        let visible = 0;
+
+        cards.forEach((card) => {
+            const matchType = !type || card.getAttribute('data-type') === type;
+            const matchNetwork = !network || card.getAttribute('data-network') === network;
+            const hay = [
+                card.getAttribute('data-name'),
+                card.getAttribute('data-host'),
+                card.getAttribute('data-type'),
+                card.getAttribute('data-typename'),
+                card.getAttribute('data-network'),
+            ]
+                .join(' ')
+                .toLowerCase();
+            const show = matchType && matchNetwork && (!needle || hay.includes(needle));
+            card.hidden = !show;
+            if (show) {
+                visible += 1;
+            }
+        });
+
+        root.querySelectorAll('[data-ifx-group]').forEach((group) => {
+            const any = Array.from(group.querySelectorAll('[data-ifx-card]')).some(
+                (card) => !card.hidden,
+            );
+            group.hidden = !any;
+        });
+
+        if (status) {
+            status.hidden = visible > 0;
+        }
+    };
+
+    typeButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            type = button.getAttribute('data-ifx-type') || '';
+            setActive(typeButtons, type, 'data-ifx-type');
+            apply();
+        });
+    });
+
+    networkButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            network = button.getAttribute('data-ifx-network') || '';
+            setActive(networkButtons, network, 'data-ifx-network');
+            apply();
+        });
+    });
+
+    search?.addEventListener('input', apply);
+}
+
 function initLangPicker() {
     document.querySelectorAll('[data-lang-picker]').forEach((root) => {
         const trigger = root.querySelector('[data-lang-trigger]');
@@ -585,6 +659,7 @@ function boot() {
     initCopyButtons();
     initShowcase();
     initDownloadChannels();
+    initInterfaceDirectory();
     initLangPicker();
     initSectionReveal();
     initVideoEmbeds();

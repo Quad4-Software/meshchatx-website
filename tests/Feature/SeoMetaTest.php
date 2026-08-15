@@ -33,6 +33,7 @@ class SeoMetaTest extends TestCase
             ->assertOk()
             ->assertSee('/download', false)
             ->assertSee('/de/download', false)
+            ->assertSee('/interfaces', false)
             ->assertSee('hreflang', false);
     }
 }

@@ -13,9 +13,8 @@
     ];
     $capMarquee = [];
     foreach ($capabilities as $key) {
-        $capMarquee[] = ['label' => t('home.cap.'.$key), 'more' => false];
+        $capMarquee[] = t('home.cap.'.$key);
     }
-    $capMarquee[] = ['label' => t('home.cap.more'), 'more' => true];
 @endphp
 
 @extends('layouts.app')
@@ -106,8 +105,8 @@
     <section class="section section--compact section--caps" data-reveal>
         <div class="cap-marquee" data-marquee aria-label="{{ t('home.section.infra_h2') }}">
             <ul class="cap-marquee__track">
-                @foreach (array_merge($capMarquee, $capMarquee) as $item)
-                    <li class="cap-marquee__item{{ ! empty($item['more']) ? ' cap-marquee__item--more' : '' }}">{{ $item['label'] }}</li>
+                @foreach (array_merge($capMarquee, $capMarquee) as $label)
+                    <li class="cap-marquee__item">{{ $label }}</li>
                 @endforeach
             </ul>
         </div>

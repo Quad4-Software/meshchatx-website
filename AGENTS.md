@@ -15,6 +15,7 @@ Stack: Laravel 13, Blade, Tailwind CSS 4, Vite, pnpm 11. Requires PHP 8.5.
 | Home | `/`, `/{locale}` |
 | Download | `/download` |
 | Roadmap | `/roadmap` |
+| Interfaces | `/interfaces` |
 | Branding | `/branding` |
 | Contact | `/contact` |
 | Donate | `/donate` |
@@ -23,6 +24,7 @@ Stack: Laravel 13, Blade, Tailwind CSS 4, Vite, pnpm 11. Requires PHP 8.5.
 | Git | `/git` |
 | Sitemap | `/sitemap.xml` |
 | Releases API | `/api/mcx-releases` |
+| Interfaces API | `/api/mcx-interfaces` |
 
 Locales: English has no prefix. Prefixed: `de`, `ru`, `it`, `zh`.
 

@@ -12,6 +12,11 @@ class MeshchatxConfigTest extends TestCase
         $this->assertSame('MeshChatX', config('meshchatx.name'));
         $this->assertContains('en', config('meshchatx.locales'));
         $this->assertNotEmpty(config('meshchatx.nav'));
+        $this->assertSame('https://forum.meshchatx.com/', config('meshchatx.forum_url'));
+        $this->assertContains('nav.forum', array_column(config('meshchatx.nav'), 'label_key'));
+        $this->assertNotContains('nav.interfaces', array_column(config('meshchatx.nav'), 'label_key'));
+        $this->assertContains('nav.interfaces', array_column(config('meshchatx.footer_nav'), 'label_key'));
+        $this->assertContains('interfaces', config('meshchatx.pages'));
         $this->assertNotEmpty(config('meshchatx.sitemap'));
         $this->assertNotEmpty(config('meshchatx.roadmap'));
         $this->assertCount(12, config('meshchatx.showcase_tabs'));
@@ -22,6 +27,8 @@ class MeshchatxConfigTest extends TestCase
         $t = app(SiteTranslator::class);
         $this->assertSame('MeshChatX', $t->get('brand.name', [], 'en'));
         $this->assertSame('Download', $t->get('dl.h1', [], 'en'));
+        $this->assertSame('Portable', $t->get('dl.windows.btn_portable', [], 'en'));
+        $this->assertSame('Interfaces', $t->get('nav.interfaces', [], 'en'));
         $this->assertNotSame('home.hero.h1', $t->get('home.hero.h1', [], 'en'));
     }
 

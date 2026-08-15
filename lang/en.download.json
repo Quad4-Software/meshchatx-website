@@ -33,7 +33,7 @@
     },
     "linux": {
       "h2": "Linux",
-      "arch_note": "AppImage and DEB: AMD64 / ARM64, RPM: AMD64, Flatpak: bundle",
+      "arch_note": "AppImage and DEB: AMD64 / ARM64, RPM: AMD64, Alpine APK: x64, Flatpak: bundle",
       "appimage": "AppImage",
       "appimage_intro": "A portable build with no package manager required. Download the architecture you need.",
       "btn_appimage_amd64": "AppImage (AMD64)",
@@ -50,6 +50,10 @@
       "rpm_intro": "An RPM package for 64-bit x86 systems.",
       "btn_rpm_amd64": ".rpm (AMD64)",
       "no_rpm": "No RPM package in latest release.",
+      "alpine": "Alpine Linux (.apk)",
+      "alpine_intro": "apk-tools package for Alpine Linux on x86_64. This is not the Android APK.",
+      "btn_alpine": ".apk (Alpine x64)",
+      "no_alpine": "No Alpine package in latest release.",
       "flatpak": "Flatpak (.flatpak)",
       "flatpak_intro": "Single-file bundle for systems with Flatpak installed.",
       "btn_flatpak": "Download .flatpak",
@@ -72,7 +76,7 @@
       "badge_64": "64bit only",
       "intro": "Installer or portable build.",
       "btn_installer": "Download installer",
-      "btn_portable": "Portable zip",
+      "btn_portable": "Portable",
       "no_win": "No Windows assets in latest release.",
       "friendly": "Download the installer, run it, and open MeshChatX from the Start menu. Use portable if you prefer no install."
     },
@@ -107,6 +111,8 @@
       "pypi_link_aria": "reticulum-meshchatx on PyPI",
       "wheel_heading": "Direct wheel URL",
       "wheel_intro": "Pin the exact wheel file for this release from GitHub.",
+      "btn_whl": "Download .whl",
+      "no_wheel": "No wheel in latest release.",
       "pip": "pip",
       "pipx": "pipx",
       "poetry": "Poetry",
@@ -145,11 +151,11 @@
     "more_options": "More install options",
     "pick": {
       "windows_hint": "Installer",
-      "macos_hint": "DMG soon",
+      "macos_hint": "DMG",
       "linux_hint": "AppImage",
       "android_hint": "APK / Termux",
       "docker_hint": "Containers",
-      "python_hint": "PyPI",
+      "python_hint": "PyPI / .whl",
       "umbrel_hint": "App store"
     }
   }

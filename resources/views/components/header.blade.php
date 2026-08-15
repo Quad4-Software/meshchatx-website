@@ -3,6 +3,28 @@
     $homeUrl = locale_route('home');
     $downloadUrl = locale_route('download');
     $current = current_locale();
+    $navItem = function (array $item) use ($homeUrl, $site): array {
+        $external = false;
+        $active = false;
+        if (! empty($item['home_only'])) {
+            $href = $homeUrl.($item['href'] ?? '');
+        } elseif (! empty($item['route'])) {
+            $href = locale_route($item['route']);
+            $active = request()->routeIs($item['route'], 'locale.'.$item['route']);
+        } elseif (! empty($item['external'])) {
+            $href = $site[$item['external']] ?? (string) config('meshchatx.'.$item['external']);
+            $external = true;
+        } else {
+            $href = $item['href'] ?? '#';
+        }
+
+        return [
+            'label' => t($item['label_key']),
+            'href' => $href,
+            'active' => $active,
+            'external' => $external,
+        ];
+    };
 @endphp
 
 <header class="site-header">
@@ -21,21 +43,12 @@
 
         <nav class="site-nav" aria-label="{{ t('nav.primary') }}">
             @foreach ($site['nav'] as $item)
-                @php
-                    $label = t($item['label_key']);
-                    $homeOnly = ! empty($item['home_only']);
-                    if ($homeOnly) {
-                        $href = $homeUrl.($item['href'] ?? '');
-                        $active = false;
-                    } elseif (! empty($item['route'])) {
-                        $href = locale_route($item['route']);
-                        $active = request()->routeIs($item['route'], 'locale.'.$item['route']);
-                    } else {
-                        $href = $item['href'] ?? '#';
-                        $active = false;
-                    }
-                @endphp
-                <a class="nav-link{{ $active ? ' is-active' : '' }}" href="{{ $href }}">{{ $label }}</a>
+                @php $link = $navItem($item); @endphp
+                <a
+                    class="nav-link{{ $link['active'] ? ' is-active' : '' }}"
+                    href="{{ $link['href'] }}"
+                    @if ($link['external']) target="_blank" rel="noopener noreferrer" @endif
+                >{{ $link['label'] }}</a>
             @endforeach
         </nav>
 
@@ -92,17 +105,12 @@
     <nav id="mobile-nav" class="mobile-nav" data-mobile-nav aria-label="{{ t('nav.mobile_nav') }}">
         <div class="site-container">
             @foreach ($site['nav'] as $item)
-                @php
-                    $label = t($item['label_key']);
-                    if (! empty($item['home_only'])) {
-                        $href = $homeUrl.($item['href'] ?? '');
-                    } elseif (! empty($item['route'])) {
-                        $href = locale_route($item['route']);
-                    } else {
-                        $href = $item['href'] ?? '#';
-                    }
-                @endphp
-                <a class="nav-link" href="{{ $href }}">{{ $label }}</a>
+                @php $link = $navItem($item); @endphp
+                <a
+                    class="nav-link"
+                    href="{{ $link['href'] }}"
+                    @if ($link['external']) target="_blank" rel="noopener noreferrer" @endif
+                >{{ $link['label'] }}</a>
             @endforeach
             <a class="btn btn--solid" href="{{ $downloadUrl }}">{{ t('nav.download') }}</a>
         </div>

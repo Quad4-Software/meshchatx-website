@@ -19,6 +19,9 @@ return [
     'docker_hub' => 'quad4io/meshchatx:latest',
     'ghcr' => 'ghcr.io/quad4-software/meshchatx:latest',
     'umbrel_url' => 'https://apps.umbrel.com/app/meshchatx',
+    'forum_url' => 'https://forum.meshchatx.com/',
+    'rns_directory_url' => 'https://directory.rns.recipes/',
+    'rns_directory_api' => 'https://directory.rns.recipes/api/directory/submitted?search=&type=&status=online',
     'obtainium_url' => 'https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/Quad4-Software/MeshChatX',
     'reticulum_crypto' => 'https://reticulum.network/crypto.html',
     'quad4_url' => 'https://quad4.io/',
@@ -56,6 +59,7 @@ return [
         ['label_key' => 'nav.features', 'href' => '#features', 'home_only' => true],
         ['label_key' => 'nav.download', 'route' => 'download'],
         ['label_key' => 'nav.roadmap', 'route' => 'roadmap'],
+        ['label_key' => 'nav.forum', 'external' => 'forum_url'],
         ['label_key' => 'nav.donate', 'route' => 'donate'],
         ['label_key' => 'nav.contact', 'route' => 'contact'],
         ['label_key' => 'nav.git', 'route' => 'git'],
@@ -63,18 +67,21 @@ return [
 
     'footer_nav' => [
         ['label_key' => 'nav.git', 'route' => 'git'],
+        ['label_key' => 'nav.interfaces', 'route' => 'interfaces'],
+        ['label_key' => 'nav.forum', 'external' => 'forum_url'],
         ['label_key' => 'footer.changelog', 'external' => 'github_changelog'],
         ['label_key' => 'nav.branding', 'route' => 'branding'],
         ['label_key' => 'footer.license', 'route' => 'license'],
         ['label_key' => 'footer.privacy', 'route' => 'privacy'],
     ],
 
-    'pages' => ['home', 'download', 'roadmap', 'branding', 'contact', 'donate', 'license', 'privacy', 'git'],
+    'pages' => ['home', 'download', 'roadmap', 'interfaces', 'branding', 'contact', 'donate', 'license', 'privacy', 'git'],
 
     'sitemap' => [
         'home',
         'download',
         'roadmap',
+        'interfaces',
         'branding',
         'contact',
         'donate',
@@ -126,4 +133,5 @@ return [
     ],
 
     'releases_cache_seconds' => (int) env('RELEASES_CACHE_SECONDS', 3600),
+    'rns_directory_cache_seconds' => (int) env('RNS_DIRECTORY_CACHE_SECONDS', 259200),
 ];

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\GithubReleasesService;
+use App\Services\RnsDirectoryService;
 use App\Support\SiteUri;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -15,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(GithubReleasesService::class);
+        $this->app->singleton(RnsDirectoryService::class);
     }
 
     /**
@@ -44,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
             'docker_hub' => config('meshchatx.docker_hub'),
             'ghcr' => config('meshchatx.ghcr'),
             'umbrel_url' => config('meshchatx.umbrel_url'),
+            'forum_url' => config('meshchatx.forum_url'),
+            'rns_directory_url' => config('meshchatx.rns_directory_url'),
             'obtainium_url' => config('meshchatx.obtainium_url'),
             'reticulum_crypto' => config('meshchatx.reticulum_crypto'),
             'quad4_url' => config('meshchatx.quad4_url'),

@@ -74,6 +74,57 @@ class GithubReleasesServiceTest extends TestCase
         $this->assertSame('https://example.test/nightly.apk', $payload['prerelease']['apkUrl'] ?? null);
     }
 
+    public function test_release_assets_map_wheel_alpine_android_dmg_and_sbom(): void
+    {
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response([
+                [
+                    'tag_name' => 'v4.8.3',
+                    'published_at' => '2026-08-14T22:54:57Z',
+                    'prerelease' => false,
+                    'draft' => false,
+                    'html_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/tag/v4.8.3',
+                    'assets' => [
+                        [
+                            'name' => 'ReticulumMeshChatX-v4.8.3-linux-alpine-x64.apk',
+                            'browser_download_url' => 'https://example.test/alpine.apk',
+                        ],
+                        [
+                            'name' => 'app-release-signed.apk',
+                            'browser_download_url' => 'https://example.test/android.apk',
+                        ],
+                        [
+                            'name' => 'reticulum_meshchatx-4.8.3-py3-none-any.whl',
+                            'browser_download_url' => 'https://example.test/meshchatx.whl',
+                        ],
+                        [
+                            'name' => 'ReticulumMeshChatX-v4.8.3-mac-universal.dmg',
+                            'browser_download_url' => 'https://example.test/mac.dmg',
+                        ],
+                        [
+                            'name' => 'ReticulumMeshChatX-v4.8.3-mac-universal.dmg.cosign.bundle',
+                            'browser_download_url' => 'https://example.test/mac.dmg.cosign.bundle',
+                        ],
+                        [
+                            'name' => 'sbom.cyclonedx.json',
+                            'browser_download_url' => 'https://example.test/sbom.cyclonedx.json',
+                        ],
+                    ],
+                ],
+            ], 200),
+        ]);
+
+        $stable = app(GithubReleasesService::class)->payload()['stable'] ?? null;
+
+        $this->assertIsArray($stable);
+        $this->assertSame('https://example.test/meshchatx.whl', $stable['wheelUrl'] ?? null);
+        $this->assertSame('https://example.test/alpine.apk', $stable['alpineApkUrl'] ?? null);
+        $this->assertSame('https://example.test/android.apk', $stable['apkUrl'] ?? null);
+        $this->assertSame('https://example.test/mac.dmg', $stable['macDmgUrl'] ?? null);
+        $this->assertSame('https://example.test/sbom.cyclonedx.json', $stable['sbomUrl'] ?? null);
+        $this->assertNotSame($stable['apkUrl'], $stable['alpineApkUrl']);
+    }
+
     public function test_prerelease_channel_includes_dev_tagged_releases(): void
     {
         Http::fake([

@@ -16,6 +16,7 @@ Canonical source of truth for site URLs and nav lives in `config/meshchatx.php`.
 - Stack: Laravel 13, Blade, Tailwind CSS 4, Vite, pnpm 11, PHP 8.5
 - Locales: `en` (no prefix), `de`, `ru`, `it`, `zh`
 - Release assets are pulled from GitHub Releases and cached (`RELEASES_CACHE_SECONDS`, default 3600)
+- Reticulum interface directory is copied from directory.rns.recipes and cached (`RNS_DIRECTORY_CACHE_SECONDS`, default 259200 / 72 hours)
 - Privacy stance on the site: no tracking, no ads, functional cookies only (`mcx_locale`)
 
 ## Product URLs (from config)
@@ -30,6 +31,8 @@ Canonical source of truth for site URLs and nav lives in `config/meshchatx.php`.
 | Docker Hub | `quad4io/meshchatx:latest` |
 | App GHCR | `ghcr.io/quad4-software/meshchatx:latest` |
 | Umbrel | `https://apps.umbrel.com/app/meshchatx` |
+| Forum | `https://forum.meshchatx.com/` |
+| Interface directory | `https://directory.rns.recipes/` |
 | LavaForge mirror | `https://lavaforge.org/Reticulum-Things/MeshChatX` |
 | Quad4 | `https://quad4.io/` |
 | Crypto docs | `https://reticulum.network/crypto.html` |

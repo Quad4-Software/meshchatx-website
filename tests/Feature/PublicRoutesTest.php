@@ -8,7 +8,7 @@ class PublicRoutesTest extends TestCase
 {
     public function test_english_pages_respond_ok(): void
     {
-        foreach (['/', '/download', '/roadmap', '/branding', '/contact', '/donate', '/license', '/privacy', '/git'] as $path) {
+        foreach (['/', '/download', '/roadmap', '/interfaces', '/branding', '/contact', '/donate', '/license', '/privacy', '/git'] as $path) {
             $this->get($path)->assertOk();
         }
     }
@@ -39,11 +39,26 @@ class PublicRoutesTest extends TestCase
             ->assertJsonStructure(['stable', 'prerelease', 'githubFallbackUrl']);
     }
 
+    public function test_interfaces_api_responds_json(): void
+    {
+        $this->getJson('/api/mcx-interfaces')
+            ->assertOk()
+            ->assertJsonStructure(['source', 'interfaces', 'count', 'total', 'stale']);
+    }
+
     public function test_home_shows_brand(): void
     {
         $this->get('/')
             ->assertOk()
             ->assertSee('MeshChatX', false);
+    }
+
+    public function test_roadmap_uses_full_width_and_october_milestone(): void
+    {
+        $this->get('/roadmap')
+            ->assertOk()
+            ->assertSee('October 2026', false)
+            ->assertDontSee('site-container--narrow', false);
     }
 
     public function test_home_defers_youtube_embeds_until_click(): void

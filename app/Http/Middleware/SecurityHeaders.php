@@ -21,7 +21,14 @@ class SecurityHeaders
             'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()',
         );
         $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
-        $response->headers->set('Cross-Origin-Resource-Policy', 'same-origin');
+        if ($request->is('api/*')) {
+            $response->headers->set('Cross-Origin-Resource-Policy', 'cross-origin');
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->headers->set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+            $response->headers->set('Access-Control-Allow-Headers', 'Accept');
+        } else {
+            $response->headers->set('Cross-Origin-Resource-Policy', 'same-origin');
+        }
         $response->headers->set('X-Permitted-Cross-Domain-Policies', 'none');
         $response->headers->set('Content-Security-Policy', $this->contentSecurityPolicy());
 

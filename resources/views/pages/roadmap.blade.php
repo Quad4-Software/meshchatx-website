@@ -21,7 +21,7 @@
     </section>
 
     <section class="section section--tight">
-        <div class="site-container site-container--narrow">
+        <div class="site-container">
             <div class="roadmap">
                 @foreach ($items as $index => $item)
                     @php

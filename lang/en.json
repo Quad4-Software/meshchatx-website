@@ -14,6 +14,7 @@
       "license": "License | MeshChatX",
       "privacy": "Privacy Policy | MeshChatX",
       "roadmap": "Roadmap | MeshChatX",
+      "interfaces": "Interfaces | MeshChatX",
       "branding": "Branding | MeshChatX",
       "error": "Error | MeshChatX",
       "git": "Git | MeshChatX"
@@ -27,6 +28,7 @@
       "license": "Licensing for the meshchatx.com website (0BSD) and the MeshChatX application (0BSD + MIT).",
       "privacy": "How meshchatx.com handles data when you visit the Site.",
       "roadmap": "MeshChatX planned releases, in-progress work, and completed milestones.",
+      "interfaces": "Online Reticulum interfaces cached from directory.rns.recipes, with config blocks for ~/.reticulum/config.",
       "branding": "MeshChatX logos, icons, and brand colors for press and product use.",
       "error": "This page could not be shown as requested.",
       "git": "Clone MeshChatX from rngit over Reticulum, or use the GitHub and LavaForge mirrors."
@@ -71,6 +73,8 @@
     "donate": "Donate",
     "contact": "Contact",
     "roadmap": "Roadmap",
+    "interfaces": "Interfaces",
+    "forum": "Forum",
     "branding": "Branding",
     "git": "Git",
     "download": "Download",
@@ -141,7 +145,7 @@
     "p_cookies": "Any cookies or browser storage used by the Site are strictly functional. They exist only so the Site can remember preferences you choose or that your browser already signals.",
     "p_cookies_detail": "Examples include theme preference (light, dark, or follow system), and language preference when you select a locale or when we match your browser Accept-Language header on first visit. These are not used for advertising, profiling, or cross-site tracking.",
     "h2_analytics": "Version data and outbound links",
-    "p_analytics": "Download and version information is loaded from this Site (and, when needed, from public GitHub release metadata for MeshChatX). That process is not advertising and is not used to build a personal profile.",
+    "p_analytics": "Download, version, and interface-directory data are loaded from this Site. When the cache expires, the Site fetches public GitHub release metadata for MeshChatX and the submitted online list from directory.rns.recipes. That process is not advertising and is not used to build a personal profile.",
     "p_analytics_detail": "If you follow download, source, donation, or documentation links, those requests go to the host you click through to. Those third parties have their own policies.",
     "h2_rights": "Your rights (EEA and UK)",
     "p_rights": "Depending on where you live, you may have rights to access, correct, delete, or restrict processing of personal data, and to lodge a complaint with a supervisory authority. This marketing Site is designed to keep processing minimal. If you have a specific request regarding this Site, contact us as below and we will respond as required by applicable law.",
@@ -294,6 +298,37 @@
       "github_fallback": "GitHub releases",
       "published_prefix": "published",
       "published_just_now": "published just now"
+    }
+  },
+  "ifx": {
+    "h1": "Interfaces",
+    "lead": "Online Reticulum interfaces submitted to directory.rns.recipes. Copy a block into ~/.reticulum/config under [interfaces]. This Site keeps a local copy and refreshes it every 72 hours.",
+    "count": "%n online",
+    "source": "directory.rns.recipes",
+    "api": "JSON API",
+    "updated": "Cached %s",
+    "stale": "Showing a cached copy. directory.rns.recipes did not respond.",
+    "search_label": "Search interfaces",
+    "search_placeholder": "Name, host, type, or network",
+    "filter_all": "All",
+    "filter_type": "Interface type",
+    "filter_network": "Network",
+    "copy": "Copy config",
+    "copied": "Copied",
+    "config": "Config",
+    "empty": "No interfaces in the local copy.",
+    "no_results": "No interfaces match that search.",
+    "type": {
+      "tcp": "TCP",
+      "backbone": "Backbone",
+      "i2p": "I2P",
+      "udp": "UDP"
+    },
+    "network": {
+      "clearnet": "Clearnet",
+      "yggdrasil": "Yggdrasil",
+      "i2p": "I2P",
+      "other": "Other"
     }
   },
   "git": {

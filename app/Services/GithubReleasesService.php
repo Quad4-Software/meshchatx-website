@@ -377,6 +377,9 @@ class GithubReleasesService
         $wheel = array_find(
             $files,
             fn (array $file): bool => (bool) preg_match('/-py3-none-any\.whl$/i', $file['base']),
+        ) ?? array_find(
+            $files,
+            fn (array $file): bool => str_ends_with(strtolower($file['base']), '.whl'),
         );
         $wheelUrl = is_array($wheel) ? $wheel['url'] : null;
         $wheelBase = is_array($wheel) ? $wheel['base'] : null;
@@ -412,8 +415,11 @@ class GithubReleasesService
             'winInstallerUrl' => is_array($winInstaller) ? $winInstaller['url'] : null,
             'winPortableUrl' => is_array($winPortable) ? $winPortable['url'] : null,
             'macDmgUrl' => $macDmgUrl,
-            'apkUrl' => $byBase(fn (string $n): bool => str_ends_with($n, '.apk'))
-                ?? $byBase(fn (string $n): bool => $n === 'app-release-signed.apk'),
+            'apkUrl' => $byBase(fn (string $n): bool => str_ends_with($n, '.apk')
+                && ! str_contains($n, 'alpine')
+                && ! str_contains($n, 'linux')),
+            'alpineApkUrl' => $byBase(fn (string $n): bool => str_ends_with($n, '.apk')
+                && str_contains($n, 'alpine')),
             'flatpakUrl' => $byBase(fn (string $n): bool => str_ends_with($n, '.flatpak')),
             'sbomUrl' => $byBase(fn (string $n): bool => (bool) preg_match('/sbom\.cyclonedx\.json$/i', $n)),
         ];

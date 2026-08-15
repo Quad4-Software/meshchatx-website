@@ -83,6 +83,7 @@
             'roadmap' => t('nav.roadmap'),
             'branding' => t('nav.branding'),
             'git' => t('nav.git'),
+            'interfaces' => t('nav.interfaces'),
             default => ucfirst($page),
         };
         $graph[] = [

@@ -27,6 +27,8 @@ class BrandingPageTest extends TestCase
             ->assertSee('/download#windows', false)
             ->assertSee('cap-marquee', false)
             ->assertSee('data-marquee', false)
+            ->assertDontSee('cap-marquee__item--more', false)
+            ->assertDontSee('+ more', false)
             ->assertSee('home-hero__bg', false)
             ->assertSee('feature-grid--cards', false);
     }

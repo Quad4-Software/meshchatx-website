@@ -1666,7 +1666,247 @@
         color: var(--color-muted);
         font-size: 0.95rem;
         line-height: 1.6;
+    }
+
+    .ifx {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .ifx-toolbar {
+        display: grid;
+        gap: 0.9rem;
+        min-width: 0;
+        max-width: 100%;
+        margin-bottom: 1.5rem;
+        padding: 0.9rem;
+        border: 1px solid var(--color-line);
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+    }
+
+    .ifx-search {
+        display: block;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .ifx-search__input {
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+        min-height: 2.75rem;
+        padding: 0.55rem 0.85rem;
+        border: 1px solid var(--color-line);
+        border-radius: var(--radius-sm);
+        background: var(--color-paper);
+        color: var(--color-ink);
+        font: inherit;
+        font-size: 1rem;
+    }
+
+    .ifx-search__input:focus {
+        outline: 2px solid color-mix(in oklab, var(--color-accent) 55%, transparent);
+        outline-offset: 1px;
+    }
+
+    .ifx-filters {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .ifx-filters__label {
+        margin: 0 0 0.4rem;
+        color: var(--color-muted);
+        font-size: 0.78rem;
+        font-weight: 550;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+    }
+
+    .ifx-toolbar .channel-toggle__btn {
+        min-height: 2.5rem;
+    }
+
+    .ifx-hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.4rem 1rem;
+        margin-top: 1rem;
+        max-width: 100%;
+        color: var(--color-muted);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+    }
+
+    .ifx-hero-note {
+        margin-top: 0.75rem;
         max-width: 40rem;
+        color: var(--color-muted);
+        font-size: 0.95rem;
+        line-height: 1.55;
+        overflow-wrap: anywhere;
+    }
+
+    .ifx-status {
+        margin: 0 0 1rem;
+        color: var(--color-muted);
+    }
+
+    .ifx-group {
+        min-width: 0;
+        max-width: 100%;
+        margin-top: 1.75rem;
+    }
+
+    .ifx-group:first-of-type {
+        margin-top: 0;
+    }
+
+    .ifx-group__title {
+        margin-bottom: 0.75rem;
+        font-size: 1.05rem;
+        font-weight: 650;
+        color: var(--color-ink);
+        overflow-wrap: anywhere;
+    }
+
+    .ifx-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+        gap: 0.75rem;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .ifx-card {
+        display: grid;
+        gap: 0.65rem;
+        align-content: start;
+        min-width: 0;
+        max-width: 100%;
+        padding: 0.9rem;
+        overflow-x: clip;
+        border: 1px solid var(--color-line);
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+    }
+
+    .ifx-card__top {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .ifx-card__title {
+        font-size: 1rem;
+        font-weight: 650;
+        color: var(--color-ink);
+        overflow-wrap: anywhere;
+    }
+
+    .ifx-card__host {
+        margin-top: 0.25rem;
+        color: var(--color-muted);
+        font-size: 0.85rem;
+        font-family: var(--font-mono);
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .ifx-card__meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin: 0;
+        min-width: 0;
+    }
+
+    .ifx-badge {
+        display: inline-flex;
+        align-items: center;
+        max-width: 100%;
+        padding: 0.15rem 0.45rem;
+        overflow-wrap: anywhere;
+        border: 1px solid var(--color-line);
+        border-radius: var(--radius-sm);
+        color: var(--color-muted);
+        font-size: 0.72rem;
+        font-weight: 550;
+        letter-spacing: 0.02em;
+    }
+
+    .ifx-badge--ok {
+        color: var(--color-accent-soft);
+        border-color: color-mix(in oklab, var(--color-accent) 35%, var(--color-line));
+    }
+
+    .ifx-card__config-wrap {
+        display: grid;
+        gap: 0.5rem;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .ifx-card__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        min-width: 0;
+    }
+
+    .ifx-card__details {
+        min-width: 0;
+        max-width: 100%;
+        padding-top: 0.65rem;
+        border-top: 1px solid var(--color-line-soft);
+    }
+
+    .ifx-card__details > summary {
+        cursor: pointer;
+        color: var(--color-accent-muted);
+        font-size: 0.9rem;
+        font-weight: 550;
+        list-style: none;
+    }
+
+    .ifx-card__details > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .ifx-card__details[open] > summary {
+        margin-bottom: 0.55rem;
+        color: var(--color-ink);
+    }
+
+    .ifx-card__config {
+        box-sizing: border-box;
+        margin: 0;
+        min-width: 0;
+        max-width: 100%;
+        padding: 0.7rem 0.8rem;
+        overflow-x: auto;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        white-space: pre-wrap;
+        border: 1px solid var(--color-line);
+        border-radius: var(--radius-sm);
+        background: var(--code-bg);
+        color: var(--color-ink);
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        line-height: 1.5;
+    }
+
+    .ifx-card__config code {
+        font: inherit;
+        background: none;
+        border: 0;
+        padding: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        white-space: inherit;
     }
 
     .contact-panel,
@@ -2000,6 +2240,19 @@
 
         .git-card--primary {
             grid-column: 1 / -1;
+        }
+
+        .ifx-toolbar {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            padding: 1rem 1.1rem;
+        }
+
+        .ifx-search {
+            grid-column: 1 / -1;
+        }
+
+        .ifx-card {
+            padding: 1.05rem 1.05rem 1.1rem;
         }
     }
 

@@ -14,6 +14,7 @@
       "license": "Lizenz | MeshChatX",
       "privacy": "Datenschutz | MeshChatX",
       "roadmap": "Roadmap | MeshChatX",
+      "interfaces": "Interfaces | MeshChatX",
       "error": "Fehler | MeshChatX"
     },
     "og_image_alt": "MeshChatX-Logo",
@@ -25,6 +26,7 @@
       "license": "Lizenzierung der Website meshchatx.com (0BSD) und der MeshChatX-Anwendung (0BSD + MIT).",
       "privacy": "Wie meshchatx.com mit Daten umgeht, wenn Sie die Website besuchen.",
       "roadmap": "Geplante MeshChatX-Releases, laufende Arbeiten und abgeschlossene Meilensteine.",
+      "interfaces": "Online-Reticulum-Interfaces von directory.rns.recipes, mit Config-Blöcken für ~/.reticulum/config.",
       "error": "Diese Seite konnte nicht wie gewünscht angezeigt werden."
     }
   },
@@ -45,6 +47,8 @@
     "donate": "Spenden",
     "contact": "Kontakt",
     "roadmap": "Roadmap",
+    "interfaces": "Interfaces",
+    "forum": "Forum",
     "git": "Git",
     "download": "Download",
     "toggle_theme": "Design wechseln",
@@ -105,7 +109,7 @@
     "updated": "Stand: 12. Juli 2026",
     "p_scope": "Diese Erklärung beschreibt, wie die öffentliche Marketing-Website unter meshchatx.com (die \"Website\") Informationen verarbeitet, wenn Sie Seiten der Website besuchen. Sie gilt nicht für die MeshChatX-Anwendung, Reticulum oder Drittanbieterdienste, die Sie separat nutzen.",
     "h2_analytics": "Analyse und Datenanfragen",
-    "p_analytics": "Diese öffentliche Website verwendet keine Analyse-Cookies und keine Drittanbieter-Analysedienste. Wir verfolgen Sie nicht im Internet.",
+    "p_analytics": "Download-, Versions- und Interface-Verzeichnisdaten kommen von dieser Website. Nach Ablauf des Caches holt die Website öffentliche GitHub-Release-Metadaten für MeshChatX und die eingereichte Online-Liste von directory.rns.recipes. Das ist keine Werbung und dient nicht dem Aufbau eines Personenprofils.",
     "p_analytics_detail": "Auf der Start- und der Download-Seite lesen wir Versionsinformationen aus einer statischen Datei, die von derselben Website ausgeliefert wird. Es werden keine personenbezogenen Daten für Analysen erfasst, und Ihr Surfverhalten wird nicht mit Drittanbieter-Analysediensten geteilt. Wenn Sie Download- oder Quelllinks nutzen, gehen diese Anfragen an den jeweiligen Host, wenn Sie darauf klicken.",
     "h2_rights": "Ihre Rechte (EWR und UK)",
     "p_rights": "Je nach Wohnsitz können Sie Rechte auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung personenbezogener Daten sowie auf Beschwerde bei einer Aufsichtsbehörde haben. Diese Marketing-Website verarbeitet nur das Nötigste. Bei konkreten Anfragen zu dieser Website kontaktieren Sie uns wie unten angegeben. Wir antworten im Rahmen des geltenden Rechts.",
@@ -246,6 +250,37 @@
       "github_fallback": "GitHub-Releases",
       "published_prefix": "veröffentlicht",
       "published_just_now": "gerade veröffentlicht"
+    }
+  },
+  "ifx": {
+    "h1": "Interfaces",
+    "lead": "Online-Reticulum-Interfaces aus directory.rns.recipes. Kopiere einen Block nach ~/.reticulum/config unter [interfaces]. Diese Website hält eine lokale Kopie und aktualisiert sie alle 72 Stunden.",
+    "count": "%n online",
+    "source": "directory.rns.recipes",
+    "api": "JSON-API",
+    "updated": "Zwischengespeichert %s",
+    "stale": "Zwischengespeicherte Kopie. directory.rns.recipes hat nicht geantwortet.",
+    "search_label": "Interfaces suchen",
+    "search_placeholder": "Name, Host, Typ oder Netz",
+    "filter_all": "Alle",
+    "filter_type": "Interface-Typ",
+    "filter_network": "Netz",
+    "copy": "Config kopieren",
+    "copied": "Kopiert",
+    "config": "Config",
+    "empty": "Keine Interfaces in der lokalen Kopie.",
+    "no_results": "Keine Interfaces passen zur Suche.",
+    "type": {
+      "tcp": "TCP",
+      "backbone": "Backbone",
+      "i2p": "I2P",
+      "udp": "UDP"
+    },
+    "network": {
+      "clearnet": "Clearnet",
+      "yggdrasil": "Yggdrasil",
+      "i2p": "I2P",
+      "other": "Andere"
     }
   }
 }

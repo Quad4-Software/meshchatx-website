@@ -14,6 +14,7 @@
       "license": "许可 | MeshChatX",
       "privacy": "隐私政策 | MeshChatX",
       "roadmap": "路线图 | MeshChatX",
+      "interfaces": "接口 | MeshChatX",
       "error": "错误 | MeshChatX"
     },
     "og_image_alt": "MeshChatX 标志",
@@ -25,6 +26,7 @@
       "license": "meshchatx.com 网站（0BSD）与 MeshChatX 应用（0BSD + MIT）的许可说明。",
       "privacy": "meshchatx.com 在您访问本站时如何处理数据。",
       "roadmap": "MeshChatX 已规划版本、进行中的工作与已完成里程碑。",
+      "interfaces": "来自 directory.rns.recipes 的在线 Reticulum 接口，含可写入 ~/.reticulum/config 的配置块。",
       "error": "无法按请求显示此页面。"
     }
   },
@@ -45,6 +47,8 @@
     "donate": "捐赠",
     "contact": "联系",
     "roadmap": "路线图",
+    "interfaces": "接口",
+    "forum": "论坛",
     "git": "Git",
     "download": "下载",
     "toggle_theme": "切换主题",
@@ -105,7 +109,7 @@
     "updated": "最近更新：2026 年 7 月 12 日",
     "p_scope": "本政策说明当您访问 meshchatx.com（「本站」）上的页面时，该公开营销网站如何处理信息。它不约束 MeshChatX 应用、Reticulum 或您另行使用的第三方服务。",
     "h2_analytics": "分析与数据请求",
-    "p_analytics": "本公开站点不使用分析 Cookie，也不使用第三方分析服务。我们不会在网络上跟踪您。",
+    "p_analytics": "下载、版本与接口目录数据由本站提供。缓存过期后，本站会读取 MeshChatX 的公开 GitHub 发布元数据，以及 directory.rns.recipes 上提交的在线列表。该过程不是广告，也不用于建立个人档案。",
     "p_analytics_detail": "首页与下载区从本站提供的静态文件读取版本信息。不会为分析收集个人数据，您的浏览行为也不会与第三方分析服务共享。若您使用下载或源码链接，相关请求将发往您点击跳转的主机。",
     "h2_rights": "您的权利（欧洲经济区与英国）",
     "p_rights": "根据您所在地区，您可能有权访问、更正、删除或限制处理个人数据，并向监管机构投诉。本营销站点的数据处理设计为尽量少。若您对本站有具体请求，请按下方方式联系我们，我们将在适用法律要求的范围内回复。",
@@ -246,6 +250,37 @@
       "github_fallback": "GitHub 发布",
       "published_prefix": "发布于",
       "published_just_now": "刚刚发布"
+    }
+  },
+  "ifx": {
+    "h1": "接口",
+    "lead": "directory.rns.recipes 上提交的在线 Reticulum 接口。将配置块复制到 ~/.reticulum/config 的 [interfaces] 段。本站保存本地副本，每 72 小时刷新一次。",
+    "count": "%n 个在线",
+    "source": "directory.rns.recipes",
+    "api": "JSON API",
+    "updated": "缓存于 %s",
+    "stale": "正在显示缓存副本。directory.rns.recipes 未响应。",
+    "search_label": "搜索接口",
+    "search_placeholder": "名称、主机、类型或网络",
+    "filter_all": "全部",
+    "filter_type": "接口类型",
+    "filter_network": "网络",
+    "copy": "复制配置",
+    "copied": "已复制",
+    "config": "配置",
+    "empty": "本地副本中没有接口。",
+    "no_results": "没有匹配该搜索的接口。",
+    "type": {
+      "tcp": "TCP",
+      "backbone": "Backbone",
+      "i2p": "I2P",
+      "udp": "UDP"
+    },
+    "network": {
+      "clearnet": "Clearnet",
+      "yggdrasil": "Yggdrasil",
+      "i2p": "I2P",
+      "other": "其他"
     }
   }
 }

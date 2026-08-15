@@ -24,10 +24,12 @@
     $debR = $pick($active, $pre, 'debArm64Url');
     $rpmA = $pick($active, $pre, 'rpmAmd64Url');
     $flat = $pick($active, $pre, 'flatpakUrl');
+    $alpineApk = $pick($active, $pre, 'alpineApkUrl');
     $winInstaller = $pick($active, $pre, 'winInstallerUrl');
     $winPortable = $pick($active, $pre, 'winPortableUrl');
     $apkUrl = $pick($active, $pre, 'apkUrl');
-    $wheelUrl = is_array($active) ? ($active['wheelUrl'] ?? null) : null;
+    $wheelUrl = $pick($active, $pre, 'wheelUrl');
+    $sbomUrl = $pick($active, $pre, 'sbomUrl');
 
     $pkg = $site['pypi_package'];
     $hub = $site['docker_hub'];
@@ -117,6 +119,10 @@ YAML;
                     <a href="{{ $site['github_releases'] }}" target="_blank" rel="noopener noreferrer">{{ t('dl.github_releases') }}</a>
                     ·
                     <a href="{{ $site['github_releases_atom'] }}" target="_blank" rel="noopener noreferrer">{{ t('dl.releases_atom') }}</a>
+                    @if ($sbomUrl)
+                        ·
+                        <a href="{{ $sbomUrl }}" download>{{ t('dl.sbom') }}</a>
+                    @endif
                 </p>
             </div>
         </div>
@@ -261,6 +267,26 @@ sudo apt -f install</code></pre>
                                 <pre class="command-block__body" id="cmd-rpm"><code>sudo dnf install ./MeshChatX-*.rpm
 # or on openSUSE:
 sudo zypper install ./MeshChatX-*.rpm</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="download-panel__subhead">{{ t('dl.linux.alpine') }}</h3>
+                            <p class="download-panel__intro">{{ t('dl.linux.alpine_intro') }}</p>
+                            <div class="download-panel__actions">
+                                @if ($alpineApk)
+                                    <a class="btn btn--solid" href="{{ $alpineApk }}" download>{{ t('dl.linux.btn_alpine') }}</a>
+                                @endif
+                            </div>
+                            @if (! $alpineApk)
+                                <p class="download-panel__intro">{{ t('dl.linux.no_alpine') }}</p>
+                            @endif
+                            <div class="command-block">
+                                <div class="command-block__header">
+                                    <span>{{ t('dl.linux.install') }}</span>
+                                    <button type="button" class="copy-btn" data-copy="#cmd-alpine" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
+                                </div>
+                                <pre class="command-block__body" id="cmd-alpine"><code>sudo apk add --allow-untrusted ./ReticulumMeshChatX-*-linux-alpine-*.apk</code></pre>
                             </div>
                         </div>
 
@@ -426,6 +452,15 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 <p class="download-panel__intro">
                     <a href="{{ $site['pypi_url'] }}" target="_blank" rel="noopener noreferrer" aria-label="{{ t('dl.python.pypi_link_aria') }}">{{ t('dl.python.pypi_link_text') }}</a>
                 </p>
+
+                @if (is_string($wheelUrl) && $wheelUrl !== '')
+                    <div class="download-panel__actions">
+                        <a class="btn btn--solid" href="{{ $wheelUrl }}" download>
+                            <x-icon name="download" size="xs" />
+                            {{ t('dl.python.btn_whl') }}
+                        </a>
+                    </div>
+                @endif
 
                 <div class="command-block">
                     <div class="command-block__header">

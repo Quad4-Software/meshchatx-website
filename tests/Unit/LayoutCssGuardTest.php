@@ -22,5 +22,8 @@ class LayoutCssGuardTest extends TestCase
         $this->assertMatchesRegularExpression('/\.site-shell\s*>\s*main\s*\{[^}]*overflow-x:\s*clip/', $css);
         $this->assertMatchesRegularExpression('/\.cap-marquee\s*\{[^}]*max-width:\s*100%/', $css);
         $this->assertMatchesRegularExpression('/\.home-hero__bg-img\s*\{[^}]*max-width:\s*100%/', $css);
+        $this->assertMatchesRegularExpression('/\.ifx-card__config\s*\{[^}]*overflow-wrap:\s*anywhere/', $css);
+        $this->assertMatchesRegularExpression('/\.ifx-card__config\s*\{[^}]*white-space:\s*pre-wrap/', $css);
+        $this->assertMatchesRegularExpression('/\.ifx-grid\s*\{[^}]*minmax\(min\(100%,\s*19rem\)/', $css);
     }
 }
