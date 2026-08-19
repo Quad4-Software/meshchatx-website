@@ -2,7 +2,7 @@
 <html lang="{{ current_locale() }}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <script src="{{ asset('theme-boot.js') }}"></script>
     <x-seo :page="$page ?? 'home'" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])

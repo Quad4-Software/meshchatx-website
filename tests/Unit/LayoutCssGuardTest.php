@@ -28,6 +28,12 @@ class LayoutCssGuardTest extends TestCase
         $this->assertMatchesRegularExpression('/\.branding-swatches\s*\{[^}]*minmax\(min\(100%,\s*9\.5rem\)/', $css);
         $this->assertMatchesRegularExpression('/\.mobile-nav\s+\.nav-link\s*\{[^}]*display:\s*flex/', $css);
         $this->assertMatchesRegularExpression('/\.mobile-nav\s+\.nav-link\s*\{[^}]*width:\s*100%/', $css);
+        $this->assertMatchesRegularExpression('/\.mobile-nav\s*\{[^}]*position:\s*fixed/', $css);
+        $this->assertMatchesRegularExpression('/\.nav-scrim\s*\{[^}]*position:\s*fixed/', $css);
+        $this->assertMatchesRegularExpression('/\.site-header-wrap\s*\{[^}]*position:\s*sticky/', $css);
+        $this->assertMatchesRegularExpression('/\.command-block__body\s*\{[^}]*white-space:\s*pre-wrap/', $css);
+        $this->assertMatchesRegularExpression('/\.download-panel\s*\{[^}]*min-width:\s*0/', $css);
+        $this->assertMatchesRegularExpression('/\.download-stack\s*\{[^}]*min-width:\s*0/', $css);
         $this->assertMatchesRegularExpression('/\.site-header__cta\s*\{[^}]*display:\s*none/', $css);
 
         $ctaDesktop = strpos($css, "        .site-header__cta {\n            display: inline-flex;");
@@ -39,7 +45,9 @@ class LayoutCssGuardTest extends TestCase
 
         $tablet = strpos($css, '@media (min-width: 768px)');
         $this->assertNotFalse($tablet);
-        $tabletSlice = substr($css, $tablet, 700);
+        $desktopNav = strpos($css, '@media (min-width: 1024px)', $tablet);
+        $this->assertNotFalse($desktopNav);
+        $tabletSlice = substr($css, $tablet, $desktopNav - $tablet);
         $this->assertStringNotContainsString('.menu-toggle', $tabletSlice);
     }
 }

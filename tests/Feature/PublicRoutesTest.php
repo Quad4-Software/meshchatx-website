@@ -60,6 +60,8 @@ class PublicRoutesTest extends TestCase
             ->assertSee('data-menu-toggle', false)
             ->assertSee('data-mobile-nav', false)
             ->assertSee('site-header__cta', false)
+            ->assertSee('data-nav-scrim', false)
+            ->assertSee('data-site-header', false)
             ->assertSee('mobile-nav__inner', false)
             ->assertSee('menu-toggle__icon--open', false)
             ->assertSee('menu-toggle__icon--close', false)

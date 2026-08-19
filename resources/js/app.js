@@ -1,6 +1,10 @@
 import '@fontsource-variable/outfit/wght.css';
 
 const THEME_KEY = 'theme';
+const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+const DESKTOP_NAV = '(min-width: 1024px)';
+
+let setMobileNavOpen = () => {};
 
 function getStoredTheme() {
     try {
@@ -72,23 +76,57 @@ function initTheme() {
     });
 }
 
+function closeLangPickers() {
+    document.querySelectorAll('[data-lang-picker].is-open').forEach((root) => {
+        root.classList.remove('is-open');
+        root.querySelector('[data-lang-trigger]')?.setAttribute('aria-expanded', 'false');
+    });
+}
+
+function syncHeaderHeight() {
+    const header = document.querySelector('[data-site-header]');
+    if (!header) {
+        return;
+    }
+
+    const height = Math.round(header.getBoundingClientRect().height);
+    document.documentElement.style.setProperty('--site-header-height', `${height}px`);
+}
+
+function lockPageScroll(lock) {
+    const root = document.documentElement;
+    if (lock) {
+        const gap = window.innerWidth - root.clientWidth;
+        root.style.paddingRight = gap > 0 ? `${gap}px` : '';
+    } else {
+        root.style.paddingRight = '';
+    }
+
+    root.classList.toggle('nav-open', lock);
+    document.body.classList.toggle('nav-open', lock);
+}
+
+function setPageInert(lock) {
+    document.querySelectorAll('main, .site-footer').forEach((node) => {
+        if (lock) {
+            node.setAttribute('inert', '');
+        } else {
+            node.removeAttribute('inert');
+        }
+    });
+}
+
 function initMobileMenu() {
     const toggle = document.querySelector('[data-menu-toggle]');
     const nav = document.querySelector('[data-mobile-nav]');
+    const scrim = document.querySelector('[data-nav-scrim]');
     if (!toggle || !nav) {
         return;
     }
 
-    const desktopNav = window.matchMedia('(min-width: 1024px)');
+    const desktopNav = window.matchMedia(DESKTOP_NAV);
     const labelOpen = toggle.getAttribute('data-label-open') || 'Open menu';
     const labelClose = toggle.getAttribute('data-label-close') || 'Close menu';
-
-    const closeLangPickers = () => {
-        document.querySelectorAll('[data-lang-picker].is-open').forEach((root) => {
-            root.classList.remove('is-open');
-            root.querySelector('[data-lang-trigger]')?.setAttribute('aria-expanded', 'false');
-        });
-    };
 
     const setOpen = (open) => {
         if (desktopNav.matches) {
@@ -99,43 +137,55 @@ function initMobileMenu() {
         toggle.setAttribute('aria-label', open ? labelClose : labelOpen);
         nav.classList.toggle('is-open', open);
         nav.setAttribute('aria-hidden', open ? 'false' : 'true');
-        document.documentElement.classList.toggle('nav-open', open);
-        document.body.classList.toggle('nav-open', open);
+        scrim?.setAttribute('aria-hidden', open ? 'false' : 'true');
+        lockPageScroll(open);
+        setPageInert(open);
 
         if (open) {
             closeLangPickers();
+            syncHeaderHeight();
         }
     };
+
+    setMobileNavOpen = setOpen;
 
     toggle.addEventListener('click', () => {
         const open = toggle.getAttribute('aria-expanded') !== 'true';
         setOpen(open);
     });
 
+    scrim?.addEventListener('click', () => setOpen(false));
+
     nav.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', () => setOpen(false));
-    });
-
-    document.addEventListener('click', (event) => {
-        if (!nav.classList.contains('is-open')) {
-            return;
-        }
-
-        const target = event.target;
-        if (!(target instanceof Node)) {
-            return;
-        }
-
-        if (toggle.contains(target) || nav.contains(target)) {
-            return;
-        }
-
-        setOpen(false);
     });
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
             setOpen(false);
+            closeLangPickers();
+            return;
+        }
+
+        if (event.key !== 'Tab' || !nav.classList.contains('is-open')) {
+            return;
+        }
+
+        const nodes = [toggle, ...nav.querySelectorAll(FOCUSABLE)];
+        if (!nodes.length) {
+            return;
+        }
+
+        const first = nodes[0];
+        const last = nodes[nodes.length - 1];
+        const active = document.activeElement;
+
+        if (event.shiftKey && active === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && active === last) {
+            event.preventDefault();
+            first.focus();
         }
     });
 
@@ -143,7 +193,11 @@ function initMobileMenu() {
         if (desktopNav.matches) {
             setOpen(false);
         }
+        syncHeaderHeight();
     });
+
+    window.addEventListener('resize', syncHeaderHeight);
+    syncHeaderHeight();
 }
 
 function initCopyButtons() {
@@ -654,8 +708,14 @@ function initLangPicker() {
             document.querySelectorAll('[data-lang-picker].is-open').forEach((other) => {
                 if (other !== root) {
                     other.classList.remove('is-open');
+                    other
+                        .querySelector('[data-lang-trigger]')
+                        ?.setAttribute('aria-expanded', 'false');
                 }
             });
+            if (open) {
+                setMobileNavOpen(false);
+            }
             root.classList.toggle('is-open', open);
             trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
         });
