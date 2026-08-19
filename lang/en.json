@@ -255,6 +255,8 @@
     "lead": "Official MeshChatX marks, icons, and colors for press kits, docs, and stores.",
     "colors_h2": "Colors",
     "colors_lead": "Primary palette used on meshchatx.com.",
+    "lockup_h2": "Logo with text",
+    "lockup_lead": "Mark plus MeshChatX in Outfit. PNG and WebP keep a transparent field in dark type and in light type. Light JPG sits on white. Dark JPG sits on near-black.",
     "logo_h2": "Logo",
     "logo_lead": "Full mark at common export sizes. PNG and WebP keep transparency. JPG variants sit on white or near-black.",
     "icon_h2": "App icons",

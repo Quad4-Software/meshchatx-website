@@ -12,6 +12,9 @@ class BrandingPageTest extends TestCase
             ->assertOk()
             ->assertSee('Branding', false)
             ->assertSee('800px', false)
+            ->assertSee('Logo with text', false)
+            ->assertSee('/media/branding/lockup/lockup-128.png', false)
+            ->assertSee('/media/branding/lockup/lockup.svg', false)
             ->assertSee('/media/branding/logo/logo-512.png', false)
             ->assertSee('/media/branding/icon/favicon.ico', false)
             ->assertDontSee('branding-swatches', false);

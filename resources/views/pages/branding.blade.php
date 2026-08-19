@@ -15,9 +15,14 @@
         return array_values($bySize);
     };
 
+    $lockups = $groupAssets($assets['lockup'] ?? []);
     $logos = $groupAssets($assets['logo'] ?? []);
     $icons = $groupAssets($assets['icon'] ?? []);
     $wordmarks = $groupAssets($assets['wordmark'] ?? []);
+
+    $formatLabel = function (string $format): string {
+        return strtoupper(str_replace(['jpg-', '-'], ['', ' '], $format));
+    };
 @endphp
 
 @extends('layouts.app')
@@ -31,6 +36,52 @@
     </section>
 
     <section class="section section--tight" data-reveal>
+        <div class="site-container">
+            <div class="section__intro">
+                <h2 class="section__title">{{ t('branding.lockup_h2') }}</h2>
+                <p class="section__lead">{{ t('branding.lockup_lead') }}</p>
+            </div>
+            <div class="branding-grid branding-grid--lockups">
+                @foreach ($lockups as $item)
+                    @php
+                        $preview = $item['formats']['png'] ?? $item['formats']['webp'] ?? reset($item['formats']);
+                        $darkPreview = $item['formats']['png-dark'] ?? $item['formats']['jpg-dark'] ?? $preview;
+                        $previewH = min($item['size'], 80);
+                    @endphp
+                    <article class="branding-card">
+                        <div class="branding-card__preview branding-card__preview--lockup">
+                            <img
+                                src="{{ $preview }}"
+                                alt="{{ t('brand.name') }} logo with text {{ $item['size'] }}px"
+                                height="{{ $previewH }}"
+                                loading="lazy"
+                                decoding="async"
+                            >
+                        </div>
+                        <div class="branding-card__preview branding-card__preview--dark branding-card__preview--lockup">
+                            <img
+                                src="{{ $darkPreview }}"
+                                alt="{{ t('brand.name') }} logo with text on dark {{ $item['size'] }}px"
+                                height="{{ $previewH }}"
+                                loading="lazy"
+                                decoding="async"
+                            >
+                        </div>
+                        <div class="branding-card__meta">
+                            <span class="branding-card__size">{{ $item['size'] }}px height</span>
+                            <div class="branding-card__links">
+                                @foreach ($item['formats'] as $format => $path)
+                                    <a href="{{ $path }}" download>{{ $formatLabel($format) }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <section class="section" data-reveal>
         <div class="site-container">
             <div class="section__intro">
                 <h2 class="section__title">{{ t('branding.logo_h2') }}</h2>

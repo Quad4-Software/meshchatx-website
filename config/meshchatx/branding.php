@@ -6,6 +6,7 @@ $raw = json_decode(
 );
 
 $groups = [
+    'lockup' => [],
     'logo' => [],
     'icon' => [],
     'wordmark' => [],

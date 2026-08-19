@@ -2682,6 +2682,16 @@
         height: auto;
     }
 
+    .branding-card__preview--lockup {
+        min-height: 6.5rem;
+        padding-inline: 1.1rem;
+    }
+
+    .branding-card__preview--lockup img {
+        width: auto;
+        max-height: 5rem;
+    }
+
     .branding-card__meta {
         display: flex;
         flex-wrap: wrap;
@@ -2742,11 +2752,19 @@
         .branding-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+
+        .branding-grid--lockups {
+            grid-template-columns: minmax(0, 1fr);
+        }
     }
 
     @media (min-width: 1100px) {
         .branding-grid--icons {
             grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .branding-grid--lockups {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 }
