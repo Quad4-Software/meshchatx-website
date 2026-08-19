@@ -25,5 +25,21 @@ class LayoutCssGuardTest extends TestCase
         $this->assertMatchesRegularExpression('/\.ifx-card__config\s*\{[^}]*overflow-wrap:\s*anywhere/', $css);
         $this->assertMatchesRegularExpression('/\.ifx-card__config\s*\{[^}]*white-space:\s*pre-wrap/', $css);
         $this->assertMatchesRegularExpression('/\.ifx-grid\s*\{[^}]*minmax\(min\(100%,\s*19rem\)/', $css);
+        $this->assertMatchesRegularExpression('/\.branding-swatches\s*\{[^}]*minmax\(min\(100%,\s*9\.5rem\)/', $css);
+        $this->assertMatchesRegularExpression('/\.mobile-nav\s+\.nav-link\s*\{[^}]*display:\s*flex/', $css);
+        $this->assertMatchesRegularExpression('/\.mobile-nav\s+\.nav-link\s*\{[^}]*width:\s*100%/', $css);
+        $this->assertMatchesRegularExpression('/\.site-header__cta\s*\{[^}]*display:\s*none/', $css);
+
+        $ctaDesktop = strpos($css, "        .site-header__cta {\n            display: inline-flex;");
+        $this->assertNotFalse($ctaDesktop);
+        $desktopSlice = substr($css, max(0, $ctaDesktop - 180), 700);
+        $this->assertStringContainsString('@media (min-width: 1024px)', $desktopSlice);
+        $this->assertStringContainsString('.menu-toggle', $desktopSlice);
+        $this->assertStringContainsString('display: none', $desktopSlice);
+
+        $tablet = strpos($css, '@media (min-width: 768px)');
+        $this->assertNotFalse($tablet);
+        $tabletSlice = substr($css, $tablet, 700);
+        $this->assertStringNotContainsString('.menu-toggle', $tabletSlice);
     }
 }

@@ -53,6 +53,19 @@ class PublicRoutesTest extends TestCase
             ->assertSee('MeshChatX', false);
     }
 
+    public function test_header_exposes_mobile_menu_controls(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('data-menu-toggle', false)
+            ->assertSee('data-mobile-nav', false)
+            ->assertSee('site-header__cta', false)
+            ->assertSee('mobile-nav__inner', false)
+            ->assertSee('menu-toggle__icon--open', false)
+            ->assertSee('menu-toggle__icon--close', false)
+            ->assertSee('data-label-close', false);
+    }
+
     public function test_roadmap_uses_full_width_and_october_milestone(): void
     {
         $this->get('/roadmap')

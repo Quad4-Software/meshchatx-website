@@ -87,7 +87,7 @@
                 <x-icon name="theme" size="xs" />
             </button>
 
-            <a class="btn btn--solid btn--sm" href="{{ $downloadUrl }}">{{ t('nav.download') }}</a>
+            <a class="btn btn--solid btn--sm site-header__cta" href="{{ $downloadUrl }}">{{ t('nav.download') }}</a>
 
             <button
                 type="button"
@@ -96,23 +96,26 @@
                 aria-expanded="false"
                 aria-controls="mobile-nav"
                 aria-label="{{ t('nav.mobile_menu') }}"
+                data-label-open="{{ t('nav.mobile_menu') }}"
+                data-label-close="{{ t('nav.mobile_menu_close') }}"
             >
-                <x-icon name="menu" size="xs" />
+                <x-icon name="menu" size="xs" class="menu-toggle__icon menu-toggle__icon--open" />
+                <x-icon name="close" size="xs" class="menu-toggle__icon menu-toggle__icon--close" />
             </button>
         </div>
     </div>
 
-    <nav id="mobile-nav" class="mobile-nav" data-mobile-nav aria-label="{{ t('nav.mobile_nav') }}">
-        <div class="site-container">
+    <nav id="mobile-nav" class="mobile-nav" data-mobile-nav aria-label="{{ t('nav.mobile_nav') }}" aria-hidden="true">
+        <div class="mobile-nav__inner site-container">
             @foreach ($site['nav'] as $item)
                 @php $link = $navItem($item); @endphp
                 <a
-                    class="nav-link"
+                    class="nav-link{{ $link['active'] ? ' is-active' : '' }}"
                     href="{{ $link['href'] }}"
                     @if ($link['external']) target="_blank" rel="noopener noreferrer" @endif
                 >{{ $link['label'] }}</a>
             @endforeach
-            <a class="btn btn--solid" href="{{ $downloadUrl }}">{{ t('nav.download') }}</a>
+            <a class="btn btn--solid mobile-nav__download" href="{{ $downloadUrl }}">{{ t('nav.download') }}</a>
         </div>
     </nav>
 </header>
