@@ -12,8 +12,8 @@ class MeshchatxConfigTest extends TestCase
         $this->assertSame('MeshChatX', config('meshchatx.name'));
         $this->assertContains('en', config('meshchatx.locales'));
         $this->assertNotEmpty(config('meshchatx.nav'));
-        $this->assertSame('https://forum.meshchatx.com/', config('meshchatx.forum_url'));
-        $this->assertContains('nav.forum', array_column(config('meshchatx.nav'), 'label_key'));
+        $this->assertNotContains('nav.forum', array_column(config('meshchatx.nav'), 'label_key'));
+        $this->assertNotContains('nav.forum', array_column(config('meshchatx.footer_nav'), 'label_key'));
         $this->assertNotContains('nav.interfaces', array_column(config('meshchatx.nav'), 'label_key'));
         $this->assertContains('nav.interfaces', array_column(config('meshchatx.footer_nav'), 'label_key'));
         $this->assertContains('interfaces', config('meshchatx.pages'));

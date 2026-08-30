@@ -46,7 +46,6 @@ class AppServiceProvider extends ServiceProvider
             'docker_hub' => config('meshchatx.docker_hub'),
             'ghcr' => config('meshchatx.ghcr'),
             'umbrel_url' => config('meshchatx.umbrel_url'),
-            'forum_url' => config('meshchatx.forum_url'),
             'rns_directory_url' => config('meshchatx.rns_directory_url'),
             'obtainium_url' => config('meshchatx.obtainium_url'),
             'reticulum_crypto' => config('meshchatx.reticulum_crypto'),

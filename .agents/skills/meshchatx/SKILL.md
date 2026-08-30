@@ -31,7 +31,6 @@ Canonical source of truth for site URLs and nav lives in `config/meshchatx.php`.
 | Docker Hub | `quad4io/meshchatx:latest` |
 | App GHCR | `ghcr.io/quad4-software/meshchatx:latest` |
 | Umbrel | `https://apps.umbrel.com/app/meshchatx` |
-| Forum | `https://forum.meshchatx.com/` |
 | Interface directory | `https://directory.rns.recipes/` |
 | LavaForge mirror | `https://lavaforge.org/Reticulum-Things/MeshChatX` |
 | Quad4 | `https://quad4.io/` |

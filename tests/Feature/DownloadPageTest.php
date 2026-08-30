@@ -14,14 +14,6 @@ class DownloadPageTest extends TestCase
         Cache::flush();
     }
 
-    public function test_navbar_and_footer_link_to_forum(): void
-    {
-        $this->get('/')
-            ->assertOk()
-            ->assertSee('https://forum.meshchatx.com/', false)
-            ->assertSee('>Forum</a>', false);
-    }
-
     public function test_download_page_lists_wheel_alpine_apk_dmg_and_sbom(): void
     {
         Http::fake([
@@ -67,7 +59,6 @@ class DownloadPageTest extends TestCase
             ->assertSee('https://example.test/android.apk', false)
             ->assertSee('https://example.test/mac.dmg', false)
             ->assertSee('Download .dmg', false)
-            ->assertSee('https://example.test/sbom.cyclonedx.json', false)
-            ->assertSee('https://forum.meshchatx.com/', false);
+            ->assertSee('https://example.test/sbom.cyclonedx.json', false);
     }
 }
