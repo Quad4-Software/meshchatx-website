@@ -33,7 +33,13 @@ class BrandingPageTest extends TestCase
             ->assertDontSee('cap-marquee__item--more', false)
             ->assertDontSee('+ more', false)
             ->assertSee('home-hero__bg', false)
-            ->assertSee('feature-grid--cards', false);
+            ->assertSee('feature-grid--cards', false)
+            ->assertSee('Native OS Sandboxing', false)
+            ->assertSee('Android ships as an APK and via Termux', false)
+            ->assertSee('https://landlock.io/', false)
+            ->assertSee('https://learn.microsoft.com/en-us/windows/win32/secauthz/appcontainer-for-legacy-applications-', false)
+            ->assertSee('https://www.kernel.org/doc/html/latest/userspace-api/seccomp_filter.html', false)
+            ->assertDontSee('Android is available via Termux', false);
     }
 
     public function test_git_page_lists_mirrors(): void

@@ -130,7 +130,7 @@
       "badge": "Coming soon",
       "btn_apk": "Download .apk",
       "obtainium_alt": "Get it on Obtainium",
-      "friendly": "Use the APK when it is available, or install via Termux for a headless node."
+      "friendly": "Android APK for the app, or Termux for a headless node."
     },
     "umbrel": {
       "h2": "Umbrel",

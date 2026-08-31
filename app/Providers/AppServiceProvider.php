@@ -49,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
             'rns_directory_url' => config('meshchatx.rns_directory_url'),
             'obtainium_url' => config('meshchatx.obtainium_url'),
             'reticulum_crypto' => config('meshchatx.reticulum_crypto'),
+            'docs' => config('meshchatx.docs'),
             'quad4_url' => config('meshchatx.quad4_url'),
             'website_license_url' => config('meshchatx.website_license_url'),
             'sitemap' => config('meshchatx.sitemap'),

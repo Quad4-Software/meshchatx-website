@@ -23,6 +23,11 @@ return [
     'rns_directory_api' => 'https://directory.rns.recipes/api/directory/submitted?search=&type=&status=online',
     'obtainium_url' => 'https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/Quad4-Software/MeshChatX',
     'reticulum_crypto' => 'https://reticulum.network/crypto.html',
+    'docs' => [
+        'appcontainer' => 'https://learn.microsoft.com/en-us/windows/win32/secauthz/appcontainer-for-legacy-applications-',
+        'landlock' => 'https://landlock.io/',
+        'seccomp' => 'https://www.kernel.org/doc/html/latest/userspace-api/seccomp_filter.html',
+    ],
     'quad4_url' => 'https://quad4.io/',
     'website_license_url' => 'https://github.com/MeshChatX/website/blob/master/LICENSE',
 

@@ -3,13 +3,24 @@
     $downloadBase = locale_route('download');
     $gitUrl = locale_route('git');
     $firstTab = $showcaseTabs[0] ?? 'tab-11-home.webp';
+    $docs = $site['docs'] ?? [];
+    $sandboxLinks = [
+        'appcontainer' => '<a href="'.e($docs['appcontainer'] ?? '#').'" target="_blank" rel="noopener noreferrer">AppContainer</a>',
+        'landlock' => '<a href="'.e($docs['landlock'] ?? '#').'" target="_blank" rel="noopener noreferrer">Landlock</a>',
+        'seccomp' => '<a href="'.e($docs['seccomp'] ?? '#').'" target="_blank" rel="noopener noreferrer">seccomp-bpf</a>',
+    ];
     $features = [
         ['icon' => 'orbit', 'title' => 'home.feature.decentralized_h3', 'body' => 'home.feature.decentralized_p'],
         ['icon' => 'shield-lock', 'title' => 'home.feature.crypto_h3', 'body' => 'home.feature.crypto_p', 'link' => true],
         ['icon' => 'web', 'title' => 'home.feature.mesh_h3', 'body' => 'home.feature.mesh_p'],
         ['icon' => 'monitor', 'title' => 'home.feature.platform_h3', 'body' => 'home.feature.platform_p'],
-        ['icon' => 'windows', 'title' => 'home.feature.sandbox_win_h3', 'body' => 'home.feature.sandbox_win_p'],
-        ['icon' => 'linux', 'title' => 'home.feature.sandbox_linux_h3', 'body' => 'home.feature.sandbox_linux_p'],
+        [
+            'icon' => 'shield-check',
+            'title' => 'home.feature.sandbox_h3',
+            'body' => 'home.feature.sandbox_p',
+            'html' => true,
+            'replace' => $sandboxLinks,
+        ],
     ];
     $capMarquee = [];
     foreach ($capabilities as $key) {
@@ -125,7 +136,11 @@
                             <x-icon :name="$feature['icon']" size="sm" />
                         </div>
                         <h3 class="feature-item__title">{{ t($feature['title']) }}</h3>
-                        <p class="feature-item__body">{{ t($feature['body']) }}</p>
+                        @if (! empty($feature['html']))
+                            <p class="feature-item__body">{!! clean_site_html(t($feature['body'], $feature['replace'] ?? [])) !!}</p>
+                        @else
+                            <p class="feature-item__body">{{ t($feature['body']) }}</p>
+                        @endif
                         @if (! empty($feature['link']))
                             <p class="feature-item__body">
                                 <a href="{{ $site['reticulum_crypto'] }}" target="_blank" rel="noopener noreferrer">{{ t('home.feature.crypto_link') }}</a>
