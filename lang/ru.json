@@ -38,7 +38,6 @@
     "title_5xx": "Что-то пошло не так",
     "lead_5xx": "Произошла непредвиденная ошибка. Попробуйте позже.",
     "cta_home": "На главную",
-    "cta_download": "Скачать MeshChatX",
     "cta_download": "Скачать MeshChatX"
   },
   "nav": {
@@ -54,7 +53,8 @@
     "toggle_theme": "Переключить тему",
     "mobile_menu": "Открыть меню",
     "mobile_menu_close": "Закрыть меню",
-    "mobile_nav": "Мобильная версия"
+    "mobile_nav": "Мобильная версия",
+    "docs": "Документация"
   },
   "lang": {
     "label": "Язык",
@@ -210,7 +210,8 @@
     "status_done": "Готово",
     "status_progress": "В процессе",
     "status_planned": "Запланировано",
-    "status_upcoming": "Скоро"
+    "status_upcoming": "Скоро",
+    "rail_label": "Шкала релизов"
   },
   "js": {
     "theme": {

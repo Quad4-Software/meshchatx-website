@@ -9,7 +9,12 @@
             $href = $homeUrl.($item['href'] ?? '');
         } elseif (! empty($item['route'])) {
             $href = locale_route($item['route']);
-            $active = request()->routeIs($item['route'], 'locale.'.$item['route']);
+            $active = request()->routeIs(
+                $item['route'],
+                'locale.'.$item['route'],
+                $item['route'].'.*',
+                'locale.'.$item['route'].'.*',
+            );
         } elseif (! empty($item['external'])) {
             $href = $site[$item['external']] ?? (string) config('meshchatx.'.$item['external']);
             $external = true;

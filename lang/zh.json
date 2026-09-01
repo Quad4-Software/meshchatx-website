@@ -53,7 +53,8 @@
     "toggle_theme": "切换主题",
     "mobile_menu": "打开菜单",
     "mobile_menu_close": "关闭菜单",
-    "mobile_nav": "移动端"
+    "mobile_nav": "移动端",
+    "docs": "文档"
   },
   "lang": {
     "label": "语言",

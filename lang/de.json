@@ -53,7 +53,8 @@
     "toggle_theme": "Design wechseln",
     "mobile_menu": "Menü öffnen",
     "mobile_menu_close": "Menü schließen",
-    "mobile_nav": "Mobil"
+    "mobile_nav": "Mobil",
+    "docs": "Docs"
   },
   "lang": {
     "label": "Sprache",

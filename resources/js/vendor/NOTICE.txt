@@ -1,0 +1,4 @@
+Fuse.js v7.1.0
+Source: https://github.com/krisk/Fuse
+License: Apache-2.0
+Vendored at resources/js/vendor/fuse.mjs for docs search.

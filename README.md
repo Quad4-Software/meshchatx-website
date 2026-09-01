@@ -34,6 +34,8 @@ composer dev
 | --- | --- |
 | `config/meshchatx.php` | URLs, nav, SEO inputs |
 | `config/meshchatx/roadmap.php` | Roadmap versions |
+| `config/meshchatx/documentation.php` | Docs sidebar groups and slugs |
+| `content/docs/` | Markdown docs (`en/` with locale fallback) |
 | `lang/` | Translations |
 | `resources/views/pages/` | Page templates |
 | `resources/css/app.css` | Theme and components |

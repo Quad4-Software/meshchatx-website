@@ -38,7 +38,6 @@
     "title_5xx": "Qualcosa non ha funzionato",
     "lead_5xx": "Si è verificato un errore imprevisto. Riprova più tardi.",
     "cta_home": "Torna alla home",
-    "cta_download": "Scarica MeshChatX",
     "cta_download": "Scarica MeshChatX"
   },
   "nav": {
@@ -54,7 +53,8 @@
     "toggle_theme": "Cambia tema",
     "mobile_menu": "Apri menu",
     "mobile_menu_close": "Chiudi menu",
-    "mobile_nav": "Mobile"
+    "mobile_nav": "Mobile",
+    "docs": "Docs"
   },
   "lang": {
     "label": "Lingua",
@@ -210,7 +210,8 @@
     "status_done": "Fatto",
     "status_progress": "In corso",
     "status_planned": "Pianificato",
-    "status_upcoming": "Prossimo"
+    "status_upcoming": "Prossimo",
+    "rail_label": "Timeline delle release"
   },
   "js": {
     "theme": {

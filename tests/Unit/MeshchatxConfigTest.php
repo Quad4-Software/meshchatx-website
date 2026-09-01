@@ -17,6 +17,10 @@ class MeshchatxConfigTest extends TestCase
         $this->assertNotContains('nav.interfaces', array_column(config('meshchatx.nav'), 'label_key'));
         $this->assertContains('nav.interfaces', array_column(config('meshchatx.footer_nav'), 'label_key'));
         $this->assertContains('interfaces', config('meshchatx.pages'));
+        $this->assertContains('docs', config('meshchatx.pages'));
+        $this->assertContains('nav.docs', array_column(config('meshchatx.nav'), 'label_key'));
+        $this->assertContains('nav.docs', array_column(config('meshchatx.footer_nav'), 'label_key'));
+        $this->assertNotEmpty(config('meshchatx.documentation.groups'));
         $this->assertNotEmpty(config('meshchatx.sitemap'));
         $this->assertNotEmpty(config('meshchatx.roadmap'));
         $this->assertCount(12, config('meshchatx.showcase_tabs'));
@@ -29,6 +33,7 @@ class MeshchatxConfigTest extends TestCase
         $this->assertSame('Download', $t->get('dl.h1', [], 'en'));
         $this->assertSame('Portable', $t->get('dl.windows.btn_portable', [], 'en'));
         $this->assertSame('Interfaces', $t->get('nav.interfaces', [], 'en'));
+        $this->assertSame('Docs', $t->get('nav.docs', [], 'en'));
         $this->assertNotSame('home.hero.h1', $t->get('home.hero.h1', [], 'en'));
     }
 

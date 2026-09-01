@@ -15,6 +15,7 @@ Canonical source of truth for site URLs and nav lives in `config/meshchatx.php`.
 
 - Stack: Laravel 13, Blade, Tailwind CSS 4, Vite, pnpm 11, PHP 8.5
 - Locales: `en` (no prefix), `de`, `ru`, `it`, `zh`
+- Docs: markdown under `content/docs/{locale}/` with nav in `config/meshchatx/documentation.php`, served at `/docs` and `/docs/{slug}`
 - Release assets are pulled from GitHub Releases and cached (`RELEASES_CACHE_SECONDS`, default 3600)
 - Reticulum interface directory is copied from directory.rns.recipes and cached (`RNS_DIRECTORY_CACHE_SECONDS`, default 259200 / 72 hours)
 - Privacy stance on the site: no tracking, no ads, functional cookies only (`mcx_locale`)

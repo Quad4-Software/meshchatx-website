@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\DocsService;
 use App\Services\GithubReleasesService;
 use App\Services\RnsDirectoryService;
 use App\Support\SiteUri;
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(GithubReleasesService::class);
         $this->app->singleton(RnsDirectoryService::class);
+        $this->app->singleton(DocsService::class);
     }
 
     /**

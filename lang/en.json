@@ -17,7 +17,8 @@
       "interfaces": "Interfaces | MeshChatX",
       "branding": "Branding | MeshChatX",
       "error": "Error | MeshChatX",
-      "git": "Git | MeshChatX"
+      "git": "Git | MeshChatX",
+      "docs": "Docs | MeshChatX"
     },
     "og_image_alt": "MeshChatX logo",
     "desc": {
@@ -31,7 +32,8 @@
       "interfaces": "Online Reticulum interfaces cached from directory.rns.recipes, with config blocks for ~/.reticulum/config.",
       "branding": "MeshChatX logos, icons, and brand colors for press and product use.",
       "error": "This page could not be shown as requested.",
-      "git": "Clone MeshChatX from rngit over Reticulum, or use the GitHub and LavaForge mirrors."
+      "git": "Clone MeshChatX from rngit over Reticulum, or use the GitHub and LavaForge mirrors.",
+      "docs": "MeshChatX documentation from the application docs bundle: install, messaging, LXST calls, NomadNet, interfaces, and platform guides."
     }
   },
   "error": {
@@ -80,7 +82,8 @@
     "toggle_theme": "Toggle theme",
     "mobile_menu": "Toggle menu",
     "mobile_menu_close": "Close menu",
-    "mobile_nav": "Mobile"
+    "mobile_nav": "Mobile",
+    "docs": "Docs"
   },
   "lang": {
     "label": "Language",
@@ -349,5 +352,26 @@
     "github_lead": "Public mirror used for releases, CI, and distribution. Fine for most contributors.",
     "lavaforge_h3": "LavaForge",
     "lavaforge_lead": "Community forge mirror. Useful if you already live on LavaForge."
+  },
+  "docs": {
+    "meta_suffix": "MeshChatX Docs",
+    "nav_label": "Documentation",
+    "search_placeholder": "Search docs...",
+    "search_empty": "No matching pages.",
+    "menu": "Docs menu",
+    "breadcrumb": "Breadcrumb",
+    "export": "Export",
+    "export_all": "Download all docs",
+    "toc": "On this page",
+    "pager": "Page navigation",
+    "prev": "Previous",
+    "next": "Next",
+    "group": {
+      "start": "Start",
+      "use": "Features",
+      "authoring": "Authoring",
+      "platforms": "Platform guides",
+      "ops": "Operations"
+    }
   }
 }

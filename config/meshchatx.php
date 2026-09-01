@@ -62,6 +62,7 @@ return [
     'nav' => [
         ['label_key' => 'nav.features', 'href' => '#features', 'home_only' => true],
         ['label_key' => 'nav.download', 'route' => 'download'],
+        ['label_key' => 'nav.docs', 'route' => 'docs'],
         ['label_key' => 'nav.roadmap', 'route' => 'roadmap'],
         ['label_key' => 'nav.donate', 'route' => 'donate'],
         ['label_key' => 'nav.contact', 'route' => 'contact'],
@@ -69,6 +70,7 @@ return [
     ],
 
     'footer_nav' => [
+        ['label_key' => 'nav.docs', 'route' => 'docs'],
         ['label_key' => 'nav.git', 'route' => 'git'],
         ['label_key' => 'nav.interfaces', 'route' => 'interfaces'],
         ['label_key' => 'footer.changelog', 'external' => 'github_changelog'],
@@ -77,11 +79,12 @@ return [
         ['label_key' => 'footer.privacy', 'route' => 'privacy'],
     ],
 
-    'pages' => ['home', 'download', 'roadmap', 'interfaces', 'branding', 'contact', 'donate', 'license', 'privacy', 'git'],
+    'pages' => ['home', 'download', 'docs', 'roadmap', 'interfaces', 'branding', 'contact', 'donate', 'license', 'privacy', 'git'],
 
     'sitemap' => [
         'home',
         'download',
+        'docs',
         'roadmap',
         'interfaces',
         'branding',

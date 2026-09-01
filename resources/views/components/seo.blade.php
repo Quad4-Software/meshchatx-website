@@ -1,15 +1,25 @@
-@props(['page' => 'home'])
+@props([
+    'page' => 'home',
+    'title' => null,
+    'description' => null,
+    'canonical' => null,
+    'routeName' => null,
+    'routeParams' => [],
+])
 
 @php
     $locale = current_locale();
-    $title = t("meta.title.{$page}");
-    $desc = t("meta.desc.{$page}");
+    $title = is_string($title) && $title !== '' ? $title : t("meta.title.{$page}");
+    $desc = is_string($description) && $description !== '' ? $description : t("meta.desc.{$page}");
     $brand = t('brand.name');
     $ogAlt = t('meta.og_image_alt');
     $domain = rtrim($site['domain'], '/');
     $isError = $page === 'error';
-    $routeName = $isError ? 'home' : $page;
-    $canonical = $isError ? url()->current() : locale_route($page);
+    $routeName = is_string($routeName) && $routeName !== '' ? $routeName : ($isError ? 'home' : $page);
+    $routeParams = is_array($routeParams) ? $routeParams : [];
+    $canonical = is_string($canonical) && $canonical !== ''
+        ? $canonical
+        : ($isError ? url()->current() : locale_route($routeName, $routeParams));
     $logoUrl = $domain.'/logo.webp';
     $ogLocales = $site['og_locales'] ?? [];
     $ogLocale = $ogLocales[$locale] ?? 'en_US';
@@ -84,25 +94,35 @@
             'branding' => t('nav.branding'),
             'git' => t('nav.git'),
             'interfaces' => t('nav.interfaces'),
+            'docs' => t('nav.docs'),
             default => ucfirst($page),
         };
+        $crumbs = [
+            [
+                '@type' => 'ListItem',
+                'position' => 1,
+                'name' => $brand,
+                'item' => locale_route('home'),
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => $crumbLabel,
+                'item' => $page === 'docs' ? locale_route('docs') : $canonical,
+            ],
+        ];
+        if ($page === 'docs' && ! empty($routeParams['slug'])) {
+            $crumbs[] = [
+                '@type' => 'ListItem',
+                'position' => 3,
+                'name' => $title,
+                'item' => $canonical,
+            ];
+        }
         $graph[] = [
             '@type' => 'BreadcrumbList',
             '@id' => $canonical.'#breadcrumbs',
-            'itemListElement' => [
-                [
-                    '@type' => 'ListItem',
-                    'position' => 1,
-                    'name' => $brand,
-                    'item' => locale_route('home'),
-                ],
-                [
-                    '@type' => 'ListItem',
-                    'position' => 2,
-                    'name' => $crumbLabel,
-                    'item' => $canonical,
-                ],
-            ],
+            'itemListElement' => $crumbs,
         ];
     }
 
@@ -117,9 +137,9 @@
 <link rel="canonical" href="{{ $canonical }}">
 @unless ($isError)
     @foreach ($locales as $code)
-        <link rel="alternate" hreflang="{{ $code }}" href="{{ locale_route($routeName, [], $code) }}">
+        <link rel="alternate" hreflang="{{ $code }}" href="{{ locale_route($routeName, $routeParams, $code) }}">
     @endforeach
-    <link rel="alternate" hreflang="x-default" href="{{ locale_route($routeName, [], $site['default_locale'] ?? 'en') }}">
+    <link rel="alternate" hreflang="x-default" href="{{ locale_route($routeName, $routeParams, $site['default_locale'] ?? 'en') }}">
 @endunless
 <meta name="robots" content="{{ $robots }}">
 <meta property="og:type" content="website">

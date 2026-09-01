@@ -13,6 +13,7 @@ Stack: Laravel 13, Blade, Tailwind CSS 4, Vite, pnpm 11. Requires PHP 8.5.
 | Surface | Route(s) |
 | --- | --- |
 | Home | `/`, `/{locale}` |
+| Docs | `/docs`, `/docs/{slug}` |
 | Download | `/download` |
 | Roadmap | `/roadmap` |
 | Interfaces | `/interfaces` |
@@ -33,6 +34,9 @@ Locales: English has no prefix. Prefixed: `de`, `ru`, `it`, `zh`.
 - Controllers: `app/Http/Controllers` (thin, invokable)
 - Constants and URLs: `config/meshchatx.php`
 - Translations: `lang/*.json` (merged with `*.download.json`)
+- Docs markdown: `content/docs/{locale}/` (falls back to `en`, synced from MeshChatX app `docs/`)
+- Docs nav: `config/meshchatx/documentation.php`
+- Docs search: vendored Fuse.js at `resources/js/vendor/fuse.mjs`
 - Views: `resources/views/pages`, `resources/views/components`
 - CSS: `resources/css/app.css`
 - Routes: `routes/web.php`

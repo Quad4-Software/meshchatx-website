@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BrandingController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DocsController;
 use App\Http\Controllers\DonateController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\GitController;
@@ -27,6 +28,15 @@ $registerPages = function (): void {
     Route::get('/privacy', PrivacyController::class)->name('privacy');
     Route::get('/git', GitController::class)->name('git');
     Route::get('/interfaces', InterfacesController::class)->name('interfaces');
+    Route::get('/docs', [DocsController::class, 'index'])->name('docs');
+    Route::get('/docs/export-all/{format}', [DocsController::class, 'exportAll'])
+        ->where('format', 'md|txt')
+        ->name('docs.export-all');
+    Route::get('/docs/{slug}/export/{format}', [DocsController::class, 'export'])
+        ->where('format', 'md|txt')
+        ->name('docs.export');
+    Route::get('/docs/{slug}', [DocsController::class, 'show'])
+        ->name('docs.show');
 };
 
 Route::middleware('locale')->group($registerPages);

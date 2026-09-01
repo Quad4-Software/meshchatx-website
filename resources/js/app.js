@@ -1,4 +1,5 @@
 import '@fontsource-variable/outfit/wght.css';
+import Fuse from './vendor/fuse.mjs';
 
 const THEME_KEY = 'theme';
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -758,6 +759,192 @@ function initSectionReveal() {
     sections.forEach((section) => observer.observe(section));
 }
 
+function initDocs() {
+    const shell = document.querySelector('[data-docs-shell]');
+    if (!shell) {
+        return;
+    }
+
+    const sidebar = document.querySelector('[data-docs-sidebar]');
+    const sidebarToggle = document.querySelector('[data-docs-sidebar-toggle]');
+    const searchRoot = document.querySelector('[data-docs-search]');
+    const searchOpeners = document.querySelectorAll('[data-docs-search-open]');
+    const searchInput = document.querySelector('[data-docs-search-input]');
+    const searchResults = document.querySelector('[data-docs-search-results]');
+    const searchEmpty = document.querySelector('[data-docs-search-empty]');
+    const indexNode = document.querySelector('[data-docs-search-index]');
+
+    let index = [];
+    if (indexNode) {
+        try {
+            index = JSON.parse(indexNode.textContent || '[]');
+        } catch {
+            index = [];
+        }
+    }
+
+    const fuse = new Fuse(index, {
+        includeScore: true,
+        shouldSort: true,
+        threshold: 0.35,
+        ignoreLocation: true,
+        minMatchCharLength: 2,
+        keys: [
+            { name: 'title', weight: 0.4 },
+            { name: 'description', weight: 0.25 },
+            { name: 'headings', weight: 0.2 },
+            { name: 'body', weight: 0.15 },
+        ],
+    });
+
+    const setSidebarOpen = (open) => {
+        if (!sidebar || !sidebarToggle) {
+            return;
+        }
+        sidebar.classList.toggle('is-open', open);
+        sidebarToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.documentElement.classList.toggle('docs-nav-open', open);
+    };
+
+    sidebarToggle?.addEventListener('click', () => {
+        setSidebarOpen(!sidebar?.classList.contains('is-open'));
+    });
+
+    sidebar?.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => setSidebarOpen(false));
+    });
+
+    const closeSearch = () => {
+        if (!searchRoot) {
+            return;
+        }
+        searchRoot.hidden = true;
+        document.documentElement.classList.remove('docs-search-open');
+    };
+
+    const openSearch = () => {
+        if (!searchRoot || !searchInput) {
+            return;
+        }
+        setSidebarOpen(false);
+        searchRoot.hidden = false;
+        document.documentElement.classList.add('docs-search-open');
+        searchInput.value = '';
+        renderSearch('');
+        window.requestAnimationFrame(() => searchInput.focus());
+    };
+
+    const renderSearch = (query) => {
+        if (!searchResults || !searchEmpty) {
+            return;
+        }
+
+        const q = query.trim();
+        const matches = !q
+            ? index.slice(0, 8)
+            : fuse.search(q, { limit: 12 }).map((row) => row.item);
+
+        searchResults.innerHTML = '';
+        searchEmpty.hidden = matches.length > 0;
+
+        matches.forEach((item, i) => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.className = 'docs-search__result' + (i === 0 ? ' is-active' : '');
+            a.href = item.href;
+            a.setAttribute('role', 'option');
+
+            const title = document.createElement('span');
+            title.className = 'docs-search__result-title';
+            title.textContent = item.title;
+            a.appendChild(title);
+
+            if (item.description) {
+                const desc = document.createElement('span');
+                desc.className = 'docs-search__result-desc';
+                desc.textContent = item.description;
+                a.appendChild(desc);
+            }
+
+            li.appendChild(a);
+            searchResults.appendChild(li);
+        });
+    };
+
+    searchOpeners.forEach((btn) => btn.addEventListener('click', openSearch));
+    searchRoot?.querySelector('[data-docs-search-close]')?.addEventListener('click', closeSearch);
+    searchInput?.addEventListener('input', () => renderSearch(searchInput.value));
+
+    searchInput?.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closeSearch();
+            return;
+        }
+        if (event.key !== 'Enter') {
+            return;
+        }
+        const active = searchResults?.querySelector('.docs-search__result.is-active');
+        if (active instanceof HTMLAnchorElement) {
+            event.preventDefault();
+            window.location.href = active.href;
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        const target = event.target;
+        const typing =
+            target instanceof HTMLElement &&
+            (target.tagName === 'INPUT' ||
+                target.tagName === 'TEXTAREA' ||
+                target.isContentEditable);
+
+        if ((event.key === 'k' || event.key === 'K') && (event.metaKey || event.ctrlKey)) {
+            event.preventDefault();
+            openSearch();
+            return;
+        }
+
+        if (event.key === '/' && !typing && !event.metaKey && !event.ctrlKey && !event.altKey) {
+            event.preventDefault();
+            openSearch();
+            return;
+        }
+
+        if (event.key === 'Escape') {
+            closeSearch();
+            setSidebarOpen(false);
+        }
+    });
+
+    const tocLinks = Array.from(document.querySelectorAll('.docs-toc a[href^="#"]'));
+    if (tocLinks.length && 'IntersectionObserver' in window) {
+        const map = new Map();
+        tocLinks.forEach((link) => {
+            const id = decodeURIComponent(link.getAttribute('href').slice(1));
+            const el = document.getElementById(id);
+            if (el) {
+                map.set(el, link.parentElement);
+            }
+        });
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const item = map.get(entry.target);
+                    if (!item) {
+                        return;
+                    }
+                    item.classList.toggle('is-active', entry.isIntersecting);
+                });
+            },
+            { rootMargin: '-20% 0px -65% 0px', threshold: [0, 1] },
+        );
+
+        map.forEach((_, el) => observer.observe(el));
+    }
+}
+
 function boot() {
     initTheme();
     initMobileMenu();
@@ -768,6 +955,7 @@ function boot() {
     initLangPicker();
     initSectionReveal();
     initVideoEmbeds();
+    initDocs();
 }
 
 if (document.readyState === 'loading') {
