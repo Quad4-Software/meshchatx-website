@@ -12,7 +12,14 @@ class ErrorPagesTest extends TestCase
             ->assertNotFound()
             ->assertSee('Page not found', false)
             ->assertSee('noindex, nofollow', false)
-            ->assertSee('Back to home', false);
+            ->assertSee('Back to home', false)
+            ->assertHeader('X-Content-Type-Options', 'nosniff')
+            ->assertHeader('Cross-Origin-Opener-Policy', 'same-origin');
+
+        $csp = $this->get('/this-page-does-not-exist')->headers->get('Content-Security-Policy');
+        $this->assertIsString($csp);
+        $this->assertStringContainsString("default-src 'self'", $csp);
+        $this->assertStringContainsString('upgrade-insecure-requests', $csp);
     }
 
     public function test_not_found_respects_locale_prefix(): void

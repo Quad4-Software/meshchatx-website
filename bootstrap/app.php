@@ -22,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->trustProxies(at: '*');
+
         $middleware->alias([
             'locale' => SetLocale::class,
         ]);
@@ -49,7 +51,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
             if ($request->is('api/*') || $request->expectsJson()) {
-                return $response;
+                return app(SecurityHeaders::class)->apply($request, $response);
             }
 
             $status = $response->getStatusCode();
@@ -68,9 +70,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 ? 'errors.'.$status
                 : 'errors.generic';
 
-            return response()->view($view, [
+            $errorResponse = response()->view($view, [
                 'status' => $status,
                 'page' => 'error',
             ], $status);
+
+            return app(SecurityHeaders::class)->apply($request, $errorResponse);
         });
     })->create();
