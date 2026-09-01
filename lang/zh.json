@@ -204,8 +204,9 @@
   },
   "roadmap": {
     "h1": "路线图",
-    "lead": "已规划的 MeshChatX 版本及各版本下列出的工作项。",
+    "lead": "MeshChatX 大版本大约每两到三个月发布一次。每条记录列出该版本计划中的工作。",
     "notice": "日期与功能可能随优先级变化而调整。",
+    "rail_label": "发布时间线",
     "status_done": "已完成",
     "status_progress": "进行中",
     "status_planned": "已计划",

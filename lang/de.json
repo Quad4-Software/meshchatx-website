@@ -204,8 +204,9 @@
   },
   "roadmap": {
     "h1": "Roadmap",
-    "lead": "Geplante MeshChatX-Releases und die Arbeit unter jeder Version.",
+    "lead": "Große MeshChatX-Releases kommen etwa alle zwei bis drei Monate. Jeder Eintrag listet die geplante Arbeit für diese Version.",
     "notice": "Termine und Funktionen können sich mit den Prioritäten ändern.",
+    "rail_label": "Release-Zeitachse",
     "status_done": "Fertig",
     "status_progress": "In Arbeit",
     "status_planned": "Geplant",

@@ -36,7 +36,7 @@ return [
     ],
     [
         'version' => '4.9.0',
-        'date' => 'September 2026',
+        'date' => 'November 2026',
         'title' => 'Map, UI, and Codebase Cleanup',
         'desc' => 'Map updates, UI cleanup, RRC LXMFy bots, and codebase cleanup ahead of 5.0.0.',
         'features' => [
@@ -49,7 +49,7 @@ return [
     ],
     [
         'version' => '5.0.0',
-        'date' => 'October 2026',
+        'date' => 'February 2027',
         'title' => 'Last Feature Release',
         'desc' => 'Last planned feature release. After 5.0.0, MeshChatX moves to maintenance: security fixes, bug fixes, performance fixes, Electron updates, and dependency bumps.',
         'features' => [],

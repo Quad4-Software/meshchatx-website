@@ -8,7 +8,12 @@ class PublicRoutesTest extends TestCase
 {
     public function test_english_pages_respond_ok(): void
     {
-        foreach (['/', '/download', '/roadmap', '/interfaces', '/branding', '/contact', '/donate', '/license', '/privacy', '/git'] as $path) {
+        foreach (['/', '/download', '/docs', '/roadmap', '/interfaces', '/branding', '/contact', '/donate', '/license', '/privacy', '/git'] as $path) {
+            if ($path === '/docs') {
+                $this->get($path)->assertRedirect();
+
+                continue;
+            }
             $this->get($path)->assertOk();
         }
     }
@@ -68,11 +73,16 @@ class PublicRoutesTest extends TestCase
             ->assertSee('data-label-close', false);
     }
 
-    public function test_roadmap_uses_full_width_and_october_milestone(): void
+    public function test_roadmap_uses_full_width_and_timeline(): void
     {
         $this->get('/roadmap')
             ->assertOk()
-            ->assertSee('October 2026', false)
+            ->assertSee('February 2027', false)
+            ->assertSee('November 2026', false)
+            ->assertSee('roadmap-rail', false)
+            ->assertSee('roadmap-timeline', false)
+            ->assertSee('Release timeline', false)
+            ->assertDontSee('October 2026', false)
             ->assertDontSee('site-container--narrow', false);
     }
 
