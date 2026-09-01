@@ -1,0 +1,252 @@
+---
+title: Raspberry Pi
+description: Headless MeshChatX on Raspberry Pi with the release wheel.
+---
+
+This guide shows a simple headless setup for running MeshChatX on a Raspberry Pi 4
+with a web UI you can access from another device on your network.
+
+This install path uses a release wheel, which already includes frontend assets.
+
+## Automated Setup Scripts
+
+```bash
+curl -fsSL 'https://raw.githubusercontent.com/Quad4-Software/MeshChatX/refs/heads/master/scripts/rpi/install_meshchatx.sh' | bash
+```
+
+If you have the repo cloned locally already:
+
+```bash
+bash scripts/rpi/install_meshchatx.sh
+```
+
+The installer guides you through:
+
+- Optional espeak-ng install (tries apt/dnf/pacman)
+- Install method (pipx or venv + pip)
+- Wheel choice (latest stable, latest pre-release, or a custom URL)
+- Optional **cosign** attestation: if a *.whl.cosign.bundle is published
+  next to the wheel, you can verify it. The script uses cosign on PATH if
+  present, or downloads a **checksum-verified** official Linux binary to /tmp
+  (the Sigstore bundle format is not reimplemented in shell, so you still use the
+  real cosign to verify, without installing a distro package)
+- Storage and Reticulum directories
+- Bind host and port (with availability check)
+- HTTPS on/off (default on)
+- Service mode (system, user, or none)
+- Service startup validation via the HTTP status endpoint
+
+If startup validation fails, it prints recent logs and stops the service to avoid
+restart loops.
+
+## 1) Install Base Dependencies
+
+```bash
+sudo apt update
+sudo apt upgrade -y
+sudo apt install -y python3 python3-pip pipx
+```
+
+## 2) Enable pipx Path
+
+```bash
+pipx ensurepath
+source ~/.profile
+```
+
+If pipx is not available in your distro package repo, install it with:
+
+```bash
+python3 -m pip install --user pipx
+python3 -m pipx ensurepath
+source ~/.profile
+```
+
+## 3) Install MeshChatX with pipx (recommended)
+
+Preferred option (recommended): install from a release wheel (4.8.6 or newer),
+because the wheel bundles frontend assets.
+
+```bash
+pipx install /path/to/reticulum_meshchatx-<version>-py3-none-any.whl
+```
+
+Direct example (v4.8.6):
+
+```bash
+pipx install "https://github.com/Quad4-Software/MeshChatX/releases/download/v4.8.6/reticulum_meshchatx-4.8.6-py3-none-any.whl"
+```
+
+py3-none-any wheels are architecture-independent, so the same wheel artifact
+works on Raspberry Pi ARM and x86_64 Linux systems.
+
+Upgrade example:
+
+```bash
+pipx upgrade meshchatx
+```
+
+## 4) Install MeshChatX without pipx (venv + pip)
+
+If you prefer not to use pipx:
+
+```bash
+mkdir -p ~/meshchatx
+cd ~/meshchatx
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install "https://github.com/Quad4-Software/MeshChatX/releases/download/v4.8.6/reticulum_meshchatx-4.8.6-py3-none-any.whl"
+```
+
+Run command in venv mode:
+
+```bash
+~/meshchatx/.venv/bin/meshchatx --headless --host 0.0.0.0 --port 8000
+```
+
+## 5) Run MeshChatX (Headless)
+
+```bash
+meshchatx --headless --host 0.0.0.0 --port 8000
+```
+
+Then open:
+
+```bash
+http://<pi-ip>:8000
+```
+
+## 6) Configure a systemd Service
+
+systemd keeps MeshChatX running in the background and starts it automatically
+on boot.
+
+You have two service styles:
+
+- System service (/etc/systemd/system/...) for always-on host services.
+- User service (~/.config/systemd/user/...) for per-user sessions.
+
+### Option A: System service (recommended for Pi node/server use)
+
+Create /etc/systemd/system/meshchatx.service:
+
+```ini
+[Unit]
+Description=MeshChatX Headless (system service)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/meshchatx
+Environment="PATH=/home/pi/.local/bin:/usr/bin:/bin"
+ExecStart=/home/pi/.local/bin/meshchatx --headless --host 0.0.0.0 --port 8000 --storage-dir /home/pi/meshchatx/storage --reticulum-config-dir /home/pi/.reticulum
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+The above service file is for pipx installs. For venv installs, use:
+
+```ini
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/meshchatx
+Environment="PATH=/home/pi/meshchatx/.venv/bin:/usr/bin:/bin"
+ExecStart=/home/pi/meshchatx/.venv/bin/meshchatx --headless --host 0.0.0.0 --port 8000 --storage-dir /home/pi/meshchatx/storage --reticulum-config-dir /home/pi/.reticulum
+Restart=always
+RestartSec=3
+```
+
+Update User, Group, and paths if your install location is different.
+
+Enable and start:
+
+```bash
+mkdir -p /home/pi/meshchatx/storage /home/pi/.reticulum
+sudo chown -R pi:pi /home/pi/meshchatx
+sudo systemctl daemon-reload
+sudo systemctl enable --now meshchatx.service
+sudo systemctl status meshchatx.service
+```
+
+### Option B: User service (no sudo system unit)
+
+Create ~/.config/systemd/user/meshchatx.service:
+
+```ini
+[Unit]
+Description=MeshChatX Headless (user service)
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/meshchatx
+Environment="PATH=%h/.local/bin:/usr/bin:/bin"
+ExecStart=%h/.local/bin/meshchatx --headless --host 0.0.0.0 --port 8000 --storage-dir %h/meshchatx/storage --reticulum-config-dir %h/.reticulum
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target
+```
+
+Enable/start user service:
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now meshchatx.service
+systemctl --user status meshchatx.service
+```
+
+If you want user services to stay active without login:
+
+```bash
+sudo loginctl enable-linger pi
+```
+
+### Service management commands
+
+```bash
+sudo systemctl restart meshchatx.service
+sudo systemctl stop meshchatx.service
+sudo systemctl disable meshchatx.service
+```
+
+Useful logs and troubleshooting:
+
+```bash
+journalctl -u meshchatx.service -f
+journalctl -u meshchatx.service -n 200 --no-pager
+systemctl show meshchatx.service -p ExecStart -p User -p Group
+```
+
+## Reset Password
+
+If you forget the web UI password and have SSH access to the Pi, reset it with the --reset-password flag:
+
+```bash
+meshchatx --reset-password --headless --host 0.0.0.0 --port 8000
+```
+
+Or set the environment variable:
+
+```bash
+MESHCHAT_RESET_PASSWORD=true meshchatx --headless --host 0.0.0.0 --port 8000
+```
+
+This clears the stored password hash on startup. Open the web UI and you will see the Initial Setup screen where you can set a new password. After resetting, you can stop the app and restart without the flag.
+
+## Notes
+
+- Reticulum configuration and identity data are stored in the service user's home
+  directory by default (for example ~/.reticulum and MeshChatX storage paths).
+- If you attach RNode hardware by USB, make sure the service user has permission
+  to access serial devices (dialout group on Debian-based systems).
