@@ -46,4 +46,33 @@ class MeshchatxConfigTest extends TestCase
         $this->assertNotEmpty($en);
         $this->assertIsString($t->get('footer.tagline', [], 'de'));
     }
+
+    public function test_prefixed_locales_cover_english_catalog_keys(): void
+    {
+        $flatten = static function (array $tree, string $prefix = '') use (&$flatten): array {
+            $out = [];
+            foreach ($tree as $key => $value) {
+                $path = $prefix === '' ? (string) $key : $prefix.'.'.$key;
+                if (is_array($value) && ! array_is_list($value)) {
+                    $out += $flatten($value, $path);
+                } else {
+                    $out[$path] = true;
+                }
+            }
+
+            return $out;
+        };
+
+        $en = $flatten(json_decode((string) file_get_contents(lang_path('en.json')), true, 512, JSON_THROW_ON_ERROR));
+        $enDownload = $flatten(json_decode((string) file_get_contents(lang_path('en.download.json')), true, 512, JSON_THROW_ON_ERROR));
+
+        foreach (['de', 'ru', 'it', 'zh'] as $locale) {
+            $localeKeys = $flatten(json_decode((string) file_get_contents(lang_path($locale.'.json')), true, 512, JSON_THROW_ON_ERROR));
+            $downloadKeys = $flatten(json_decode((string) file_get_contents(lang_path($locale.'.download.json')), true, 512, JSON_THROW_ON_ERROR));
+
+            $this->assertSame([], array_keys(array_diff_key($en, $localeKeys)), $locale.'.json missing keys');
+            $this->assertSame([], array_keys(array_diff_key($enDownload, $downloadKeys)), $locale.'.download.json missing keys');
+            $this->assertNotSame('Load more versions', app(SiteTranslator::class)->get('changelog.load_more', [], $locale));
+        }
+    }
 }
