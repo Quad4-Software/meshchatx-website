@@ -1,12 +1,16 @@
 {
   "name": "MeshChatX",
   "short_name": "MeshChatX",
-  "description": "MeshChatX client for messaging, calls, and NomadNet over Reticulum.",
+  "description": "MeshChatX site: docs, interfaces directory, changelog, and product overview. Works offline for those pages.",
   "theme_color": "#fafafa",
   "background_color": "#09090b",
   "display": "standalone",
+  "orientation": "any",
   "scope": "/",
   "start_url": "/",
+  "id": "/",
+  "lang": "en",
+  "categories": ["utilities", "developer"],
   "icons": [
     {
       "src": "/logo.webp",
@@ -15,10 +19,36 @@
       "purpose": "any"
     },
     {
+      "src": "/logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "maskable"
+    },
+    {
       "src": "/favicon.webp",
       "sizes": "32x32",
       "type": "image/webp",
       "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Docs",
+      "short_name": "Docs",
+      "url": "/docs/overview",
+      "icons": [{ "src": "/logo.webp", "sizes": "800x800", "type": "image/webp" }]
+    },
+    {
+      "name": "Interfaces",
+      "short_name": "Interfaces",
+      "url": "/interfaces",
+      "icons": [{ "src": "/logo.webp", "sizes": "800x800", "type": "image/webp" }]
+    },
+    {
+      "name": "Changelog",
+      "short_name": "Changelog",
+      "url": "/changelog",
+      "icons": [{ "src": "/logo.webp", "sizes": "800x800", "type": "image/webp" }]
     }
   ]
 }

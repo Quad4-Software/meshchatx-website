@@ -54,7 +54,7 @@ class DetectBrowserLocale
         }
 
         $path = trim($request->path(), '/');
-        $skip = ['up', 'robots.txt', 'sitemap.xml', 'api', 'build', 'vendor', 'showcase', 'media'];
+        $skip = ['up', 'robots.txt', 'sitemap.xml', 'changelog.xml', 'sw.js', 'offline', 'api', 'build', 'vendor', 'showcase', 'media'];
         foreach ($skip as $prefix) {
             if ($path === $prefix || str_starts_with($path, $prefix.'/')) {
                 return false;

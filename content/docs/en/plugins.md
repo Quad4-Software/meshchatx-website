@@ -5,7 +5,7 @@ description: Capability-gated plugins, signing, WASM, and Sideband Python.
 
 Plugins extend MeshChatX with extra tools, nav items, and background behaviour. They are capability-gated: a plugin only gets what you grant at install time.
 
-Manage them from **Settings → Plugins**. Disable every packaged plugin at startup with --disable-plugins or MESHCHAT_DISABLE_PLUGINS=true.
+Manage them from **Settings -> Plugins**. Disable every packaged plugin at startup with --disable-plugins or MESHCHAT_DISABLE_PLUGINS=true.
 
 ## What plugins can do
 
@@ -32,7 +32,7 @@ A packaged plugin can ship frontend only, backend only, or both.
 ## Install flow
 
 ```
-Pick ZIP or .wasm file in Settings → Plugins
+Pick ZIP or .wasm file in Settings -> Plugins
     |
     --> Preview (permissions, URLs, signature, findings)
     |
@@ -256,7 +256,7 @@ Broken / mismatched .rsg
 Legacy Sideband-style flat *.py files are separate from packaged ZIP/WASM plugins.
 
 ```
-Settings → Plugins → Sideband
+Settings -> Plugins -> Sideband
     |
     --> Confirm danger prompt
     |

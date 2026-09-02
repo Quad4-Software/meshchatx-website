@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Support\SafeText;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
@@ -211,9 +212,18 @@ class RnsDirectoryService
             return null;
         }
 
+        $name = SafeText::plain($name, 200);
+        $host = SafeText::plain($host, 253);
+        if ($name === '' || $host === '') {
+            return null;
+        }
+
         $port = $row['port'] ?? null;
         if (is_numeric($port)) {
             $port = (int) $port;
+            if ($port < 1 || $port > 65535) {
+                $port = null;
+            }
         } else {
             $port = null;
         }
@@ -222,18 +232,19 @@ class RnsDirectoryService
         if (! is_string($config)) {
             $config = '';
         }
+        $config = SafeText::plain($config, 20000);
 
         $id = $row['id'] ?? null;
 
         return [
             'id' => is_numeric($id) ? (int) $id : null,
             'name' => $name,
-            'type' => is_string($row['type'] ?? null) ? (string) $row['type'] : '',
-            'typeName' => is_string($row['typeName'] ?? null) ? (string) $row['typeName'] : '',
-            'network' => is_string($row['network'] ?? null) ? (string) $row['network'] : '',
+            'type' => is_string($row['type'] ?? null) ? SafeText::plain((string) $row['type'], 64) : '',
+            'typeName' => is_string($row['typeName'] ?? null) ? SafeText::plain((string) $row['typeName'], 120) : '',
+            'network' => is_string($row['network'] ?? null) ? SafeText::plain((string) $row['network'], 64) : '',
             'host' => $host,
             'port' => $port,
-            'status' => is_string($row['status'] ?? null) ? (string) $row['status'] : '',
+            'status' => is_string($row['status'] ?? null) ? SafeText::plain((string) $row['status'], 64) : '',
             'config' => $config,
         ];
     }

@@ -2,13 +2,14 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class PublicRoutesTest extends TestCase
 {
     public function test_english_pages_respond_ok(): void
     {
-        foreach (['/', '/download', '/docs', '/roadmap', '/interfaces', '/branding', '/contact', '/donate', '/license', '/privacy', '/git'] as $path) {
+        foreach (['/', '/download', '/docs', '/roadmap', '/changelog', '/interfaces', '/branding', '/contact', '/donate', '/license', '/privacy', '/git', '/offline'] as $path) {
             if ($path === '/docs') {
                 $this->get($path)->assertRedirect();
 
@@ -75,6 +76,44 @@ class PublicRoutesTest extends TestCase
 
     public function test_roadmap_uses_full_width_and_timeline(): void
     {
+        Http::fake([
+            'api.github.com/*' => Http::response([
+                [
+                    'tag_name' => 'v4.8.5',
+                    'published_at' => '2026-08-21T12:00:00Z',
+                    'prerelease' => false,
+                    'draft' => false,
+                    'html_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/tag/v4.8.5',
+                    'assets' => [],
+                ],
+                [
+                    'tag_name' => 'v4.8.0',
+                    'published_at' => '2026-07-01T12:00:00Z',
+                    'prerelease' => false,
+                    'draft' => false,
+                    'html_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/tag/v4.8.0',
+                    'assets' => [],
+                ],
+                [
+                    'tag_name' => 'v4.7.0',
+                    'published_at' => '2026-06-01T12:00:00Z',
+                    'prerelease' => false,
+                    'draft' => false,
+                    'html_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/tag/v4.7.0',
+                    'assets' => [],
+                ],
+            ], 200),
+            'raw.githubusercontent.com/*' => Http::response(<<<'MD'
+# Changelog
+
+## [4.8.5] - 2026-08-21 [released]
+
+### Fixed
+
+- **Map**: Markers update again.
+MD, 200),
+        ]);
+
         $this->get('/roadmap')
             ->assertOk()
             ->assertSee('February 2027', false)
@@ -82,6 +121,9 @@ class PublicRoutesTest extends TestCase
             ->assertSee('roadmap-rail', false)
             ->assertSee('roadmap-timeline', false)
             ->assertSee('Release timeline', false)
+            ->assertSee('is-patch', false)
+            ->assertSee('v4.8.5', false)
+            ->assertSee('data-roadmap-preview', false)
             ->assertDontSee('October 2026', false)
             ->assertDontSee('site-container--narrow', false);
     }

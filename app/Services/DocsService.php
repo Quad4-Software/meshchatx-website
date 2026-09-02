@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Support\SafeHtml;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Support\Str;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
@@ -9,6 +12,7 @@ use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\MarkdownConverter;
 use RuntimeException;
+use ZipArchive;
 
 class DocsService
 {
@@ -106,6 +110,360 @@ class DocsService
         }
 
         return implode("\n\n".str_repeat('=', 72)."\n\n", $chunks);
+    }
+
+    public function exportAllPdf(): string
+    {
+        $options = new Options;
+        $options->set('isRemoteEnabled', false);
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('defaultFont', 'DejaVu Sans');
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($this->bundleHtmlDocument());
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return (string) $dompdf->output();
+    }
+
+    public function exportAllEpub(): string
+    {
+        $tmp = tempnam(sys_get_temp_dir(), 'mcx-docs-epub-');
+        if ($tmp === false) {
+            throw new RuntimeException('Could not create temporary EPUB file.');
+        }
+
+        $path = $tmp.'.epub';
+        if (! @rename($tmp, $path)) {
+            @unlink($tmp);
+            throw new RuntimeException('Could not prepare temporary EPUB file.');
+        }
+
+        $zip = new ZipArchive;
+        if ($zip->open($path, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+            @unlink($path);
+            throw new RuntimeException('Could not open EPUB archive.');
+        }
+
+        try {
+            $zip->addFromString('mimetype', 'application/epub+zip');
+            $zip->setCompressionName('mimetype', ZipArchive::CM_STORE);
+
+            $zip->addFromString('META-INF/container.xml', <<<'XML'
+<?xml version="1.0" encoding="UTF-8"?>
+<container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
+  <rootfiles>
+    <rootfile full-path="EPUB/package.opf" media-type="application/oebps-package+xml"/>
+  </rootfiles>
+</container>
+XML);
+
+            $zip->addFromString('EPUB/styles.css', $this->bundleCss());
+            $zip->addFromString('EPUB/nav.xhtml', $this->epubNavDocument());
+            $zip->addFromString('EPUB/cover.xhtml', $this->epubCoverDocument());
+
+            $manifest = [
+                '    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>',
+                '    <item id="cover" href="cover.xhtml" media-type="application/xhtml+xml"/>',
+                '    <item id="css" href="styles.css" media-type="text/css"/>',
+            ];
+            $spine = [
+                '    <itemref idref="cover"/>',
+            ];
+
+            foreach ($this->orderedSlugs() as $index => $slug) {
+                $id = 'chap-'.($index + 1);
+                $href = $id.'.xhtml';
+                $zip->addFromString('EPUB/'.$href, $this->epubChapterDocument($slug));
+                $manifest[] = '    <item id="'.$id.'" href="'.$href.'" media-type="application/xhtml+xml"/>';
+                $spine[] = '    <itemref idref="'.$id.'"/>';
+            }
+
+            $manifestXml = implode("\n", $manifest);
+            $spineXml = implode("\n", $spine);
+            $modified = gmdate('Y-m-d\TH:i:s\Z');
+            $uid = 'urn:uuid:'.Str::uuid()->toString();
+            $title = 'MeshChatX Documentation';
+            $language = e(app()->getLocale() ?: 'en');
+
+            $zip->addFromString('EPUB/package.opf', <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uid" version="3.0" xml:lang="{$language}">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:identifier id="uid">{$uid}</dc:identifier>
+    <dc:title>{$title}</dc:title>
+    <dc:language>{$language}</dc:language>
+    <dc:creator>MeshChatX</dc:creator>
+    <dc:publisher>MeshChatX</dc:publisher>
+    <meta property="dcterms:modified">{$modified}</meta>
+  </metadata>
+  <manifest>
+{$manifestXml}
+  </manifest>
+  <spine>
+{$spineXml}
+  </spine>
+</package>
+XML);
+
+            $zip->close();
+
+            $binary = (string) file_get_contents($path);
+            @unlink($path);
+
+            return $binary;
+        } catch (\Throwable $e) {
+            $zip->close();
+            @unlink($path);
+            throw $e;
+        }
+    }
+
+    private function bundleHtmlDocument(): string
+    {
+        $sections = [];
+        foreach ($this->orderedSlugs() as $slug) {
+            $doc = $this->get($slug);
+            $lead = $doc['description'] !== ''
+                ? '<p class="lead">'.e($doc['description']).'</p>'
+                : '';
+            $sections[] = '<article id="'.e($slug).'">'
+                .'<h1>'.e($doc['title']).'</h1>'
+                .$lead
+                .$this->exportableHtml($doc['html'])
+                .'</article>';
+        }
+
+        $css = $this->bundleCss();
+        $body = implode("\n", $sections);
+
+        return <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MeshChatX Documentation</title>
+<style>{$css}</style>
+</head>
+<body>
+<header class="cover">
+  <p class="cover-kicker">MeshChatX</p>
+  <h1 class="cover-title">Documentation</h1>
+  <p class="lead">Install, messaging, LXST calls, NomadNet, interfaces, and platform guides.</p>
+</header>
+{$body}
+</body>
+</html>
+HTML;
+    }
+
+    private function bundleCss(): string
+    {
+        return <<<'CSS'
+body {
+  font-family: DejaVu Sans, sans-serif;
+  font-size: 11pt;
+  line-height: 1.5;
+  color: #18181b;
+}
+.cover {
+  text-align: center;
+  margin: 4rem 0 2rem;
+  page-break-after: always;
+}
+.cover-kicker {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #52525b;
+}
+.cover-title {
+  margin: 0;
+  font-size: 28pt;
+  letter-spacing: -0.03em;
+}
+.lead {
+  color: #52525b;
+  font-size: 1.02rem;
+}
+article {
+  page-break-before: always;
+}
+article:first-of-type {
+  page-break-before: auto;
+}
+h1 {
+  font-size: 20pt;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6rem;
+}
+h2 {
+  font-size: 14pt;
+  margin: 1.4rem 0 0.55rem;
+}
+h3 {
+  font-size: 12pt;
+  margin: 1.15rem 0 0.45rem;
+}
+p, ul, ol {
+  margin: 0.55rem 0;
+}
+a {
+  color: #2563eb;
+  text-decoration: none;
+}
+code, pre {
+  font-family: DejaVu Sans Mono, monospace;
+  font-size: 9pt;
+}
+code {
+  background: #f4f4f5;
+  padding: 0.05rem 0.25rem;
+}
+pre {
+  background: #f4f4f5;
+  border: 1px solid #e4e4e7;
+  padding: 0.7rem 0.8rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+pre code {
+  background: transparent;
+  padding: 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8rem 0;
+  font-size: 10pt;
+}
+th, td {
+  border: 1px solid #d4d4d8;
+  padding: 0.35rem 0.45rem;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: #f4f4f5;
+}
+blockquote {
+  margin: 0.8rem 0;
+  padding: 0.1rem 0 0.1rem 0.8rem;
+  border-left: 3px solid #2563eb;
+  color: #52525b;
+}
+CSS;
+    }
+
+    private function exportableHtml(string $html): string
+    {
+        $html = (string) preg_replace(
+            '/<a\b[^>]*class="docs-heading-link"[^>]*>.*?<\/a>/is',
+            '',
+            $html,
+        );
+
+        return $html;
+    }
+
+    private function epubCoverDocument(): string
+    {
+        return $this->epubWrap(
+            'MeshChatX Documentation',
+            <<<'HTML'
+<header class="cover">
+  <p class="cover-kicker">MeshChatX</p>
+  <h1 class="cover-title">Documentation</h1>
+  <p class="lead">Install, messaging, LXST calls, NomadNet, interfaces, and platform guides.</p>
+</header>
+HTML
+        );
+    }
+
+    private function epubNavDocument(): string
+    {
+        $items = [];
+        foreach ($this->orderedSlugs() as $index => $slug) {
+            $doc = $this->get($slug);
+            $href = 'chap-'.($index + 1).'.xhtml';
+            $items[] = '        <li><a href="'.e($href).'">'.e($doc['title']).'</a></li>';
+        }
+
+        $list = implode("\n", $items);
+
+        return $this->epubWrap(
+            'Contents',
+            <<<HTML
+<nav epub:type="toc" id="toc" role="doc-toc">
+  <h1>Contents</h1>
+  <ol>
+{$list}
+  </ol>
+</nav>
+HTML
+            ,
+            withEpubNs: true,
+        );
+    }
+
+    private function epubChapterDocument(string $slug): string
+    {
+        $doc = $this->get($slug);
+        $lead = $doc['description'] !== ''
+            ? '<p class="lead">'.e($doc['description']).'</p>'
+            : '';
+        $body = $lead.$this->xhtmlFragment($this->exportableHtml($doc['html']));
+
+        return $this->epubWrap($doc['title'], '<h1>'.e($doc['title']).'</h1>'.$body);
+    }
+
+    private function epubWrap(string $title, string $body, bool $withEpubNs = false): string
+    {
+        $epubNs = $withEpubNs ? ' xmlns:epub="http://www.idpf.org/2007/ops"' : '';
+
+        return <<<XHTML
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"{$epubNs} xml:lang="en" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{$this->xmlEscape($title)}</title>
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+<body>
+{$body}
+</body>
+</html>
+XHTML;
+    }
+
+    private function xhtmlFragment(string $html): string
+    {
+        $wrapped = '<!DOCTYPE html><html><body>'.$html.'</body></html>';
+        $dom = new \DOMDocument('1.0', 'UTF-8');
+        $previous = libxml_use_internal_errors(true);
+        $dom->loadHTML($wrapped, LIBXML_NONET);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+
+        $body = $dom->getElementsByTagName('body')->item(0);
+        if ($body === null) {
+            return $html;
+        }
+
+        $fragment = '';
+        foreach ($body->childNodes as $child) {
+            $fragment .= $dom->saveXML($child);
+        }
+
+        return $fragment;
+    }
+
+    private function xmlEscape(string $value): string
+    {
+        return htmlspecialchars($value, ENT_XML1 | ENT_QUOTES, 'UTF-8');
     }
 
     /**
@@ -327,8 +685,9 @@ class DocsService
         $environment->addExtension(new HeadingPermalinkExtension);
 
         $converter = new MarkdownConverter($environment);
+        $html = (string) $converter->convert($markdown);
 
-        return (string) $converter->convert($markdown);
+        return SafeHtml::sanitize($html);
     }
 
     /**

@@ -45,6 +45,7 @@ class ErrorPagesTest extends TestCase
         $this->assertIsString($csp);
         $this->assertStringContainsString("default-src 'self'", $csp);
         $this->assertStringContainsString("object-src 'none'", $csp);
+        $this->assertStringContainsString("worker-src 'self'", $csp);
         $this->assertStringNotContainsString('5173', $csp);
     }
 

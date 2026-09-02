@@ -945,6 +945,406 @@ function initDocs() {
     }
 }
 
+function initRoadmapRail() {
+    const rail = document.querySelector('[data-roadmap-rail]');
+    if (!(rail instanceof HTMLElement)) {
+        return;
+    }
+
+    const tip = rail.querySelector('[data-roadmap-tip]');
+    const tipTitle = tip?.querySelector('[data-roadmap-tip-title]');
+    const tipDate = tip?.querySelector('[data-roadmap-tip-date]');
+    const tipList = tip?.querySelector('[data-roadmap-tip-list]');
+    const tipLink = tip?.querySelector('[data-roadmap-tip-link]');
+    if (
+        !(tip instanceof HTMLElement) ||
+        !(tipTitle instanceof HTMLElement) ||
+        !(tipDate instanceof HTMLElement) ||
+        !(tipList instanceof HTMLElement) ||
+        !(tipLink instanceof HTMLAnchorElement)
+    ) {
+        return;
+    }
+
+    const nodes = Array.from(rail.querySelectorAll('[data-roadmap-preview]'));
+    let hideTimer = 0;
+    let activeNode = null;
+
+    const hideTip = () => {
+        tip.hidden = true;
+        activeNode = null;
+        rail.style.marginBottom = '';
+    };
+
+    const scheduleHide = () => {
+        window.clearTimeout(hideTimer);
+        hideTimer = window.setTimeout(() => {
+            if (
+                !tip.matches(':hover') &&
+                activeNode &&
+                !activeNode.matches(':hover, :focus-visible')
+            ) {
+                hideTip();
+            }
+        }, 120);
+    };
+
+    const showTip = (node) => {
+        window.clearTimeout(hideTimer);
+        activeNode = node;
+
+        let bullets = [];
+        try {
+            bullets = JSON.parse(node.getAttribute('data-preview-bullets') || '[]');
+        } catch {
+            bullets = [];
+        }
+        if (!Array.isArray(bullets) || bullets.length === 0) {
+            hideTip();
+            return;
+        }
+
+        tipTitle.textContent = node.getAttribute('data-preview-title') || '';
+        const date = node.getAttribute('data-preview-date') || '';
+        tipDate.textContent = date;
+        tipDate.hidden = date === '';
+        tipLink.href = node.getAttribute('data-preview-href') || '#';
+        tipList.replaceChildren();
+        bullets.forEach((bullet) => {
+            const li = document.createElement('li');
+            li.textContent = String(bullet);
+            tipList.append(li);
+        });
+
+        tip.hidden = false;
+
+        const railRect = rail.getBoundingClientRect();
+        const nodeRect = node.getBoundingClientRect();
+        const tipWidth = Math.min(tip.offsetWidth || 280, rail.clientWidth - 24);
+        let left = nodeRect.left - railRect.left + nodeRect.width / 2 - tipWidth / 2;
+        left = Math.max(12, Math.min(left, rail.clientWidth - tipWidth - 12));
+        tip.style.left = `${left}px`;
+        rail.style.marginBottom = `${Math.max(tip.offsetHeight + 28, 40)}px`;
+    };
+
+    nodes.forEach((node) => {
+        if (!(node instanceof HTMLElement)) {
+            return;
+        }
+        node.addEventListener('mouseenter', () => showTip(node));
+        node.addEventListener('focus', () => showTip(node));
+        node.addEventListener('mouseleave', scheduleHide);
+        node.addEventListener('blur', scheduleHide);
+    });
+
+    tip.addEventListener('mouseenter', () => window.clearTimeout(hideTimer));
+    tip.addEventListener('mouseleave', scheduleHide);
+}
+
+function scrubChangelogFragment(root) {
+    root.querySelectorAll('script, iframe, object, embed, form, link, meta, style').forEach(
+        (node) => {
+            node.remove();
+        },
+    );
+
+    root.querySelectorAll('*').forEach((el) => {
+        [...el.attributes].forEach((attr) => {
+            const name = attr.name.toLowerCase();
+            const value = attr.value || '';
+            if (name.startsWith('on') || name === 'srcdoc') {
+                el.removeAttribute(attr.name);
+                return;
+            }
+            if (
+                (name === 'href' || name === 'src' || name === 'xlink:href') &&
+                /^\s*(javascript|data|vbscript):/i.test(value)
+            ) {
+                el.removeAttribute(attr.name);
+            }
+        });
+    });
+}
+
+function appendChangelogHtml(list, html) {
+    const parsed = new DOMParser().parseFromString(
+        `<div id="mcx-changelog-root">${html}</div>`,
+        'text/html',
+    );
+    const fragmentRoot = parsed.getElementById('mcx-changelog-root');
+    if (!fragmentRoot) {
+        return 0;
+    }
+
+    scrubChangelogFragment(fragmentRoot);
+
+    let added = 0;
+    Array.from(fragmentRoot.children).forEach((node) => {
+        if (
+            !(node instanceof HTMLElement) ||
+            node.tagName !== 'LI' ||
+            !node.classList.contains('changelog-entry')
+        ) {
+            return;
+        }
+        const id = node.id || '';
+        if (id && list.querySelector(`#${CSS.escape(id)}`)) {
+            return;
+        }
+        list.appendChild(document.importNode(node, true));
+        added += 1;
+    });
+
+    return added;
+}
+
+function initChangelog() {
+    const root = document.querySelector('[data-changelog]');
+    if (!(root instanceof HTMLElement)) {
+        return;
+    }
+
+    const list = root.querySelector('[data-changelog-list]');
+    const more = root.querySelector('[data-changelog-more]');
+    const sentinel = root.querySelector('[data-changelog-sentinel]');
+    const loadBtn = root.querySelector('[data-changelog-load]');
+    const status = root.querySelector('[data-changelog-status]');
+    const entriesUrl = root.getAttribute('data-entries-url') || '';
+    if (!(list instanceof HTMLElement) || !entriesUrl) {
+        return;
+    }
+
+    let nextPage = root.getAttribute('data-next-page') || '';
+    let hasMore = root.getAttribute('data-has-more') === '1';
+    let loading = false;
+
+    const setStatus = (visible) => {
+        if (status instanceof HTMLElement) {
+            status.hidden = !visible;
+        }
+    };
+
+    const syncMore = () => {
+        if (more instanceof HTMLElement) {
+            more.hidden = !hasMore;
+        }
+        if (loadBtn instanceof HTMLButtonElement) {
+            loadBtn.disabled = !hasMore || loading;
+        }
+    };
+
+    const fetchPage = async (page, until = '') => {
+        const url = new URL(entriesUrl, window.location.origin);
+        url.searchParams.set('page', String(page));
+        if (until) {
+            url.searchParams.set('until', until);
+        }
+
+        const response = await fetch(url.toString(), {
+            headers: { Accept: 'text/html' },
+            credentials: 'same-origin',
+        });
+        if (!response.ok) {
+            throw new Error('changelog fetch failed');
+        }
+
+        const html = await response.text();
+        appendChangelogHtml(list, html);
+
+        hasMore = response.headers.get('X-Changelog-Has-More') === '1';
+        nextPage = response.headers.get('X-Changelog-Next-Page') || '';
+        root.setAttribute('data-has-more', hasMore ? '1' : '0');
+        root.setAttribute('data-next-page', nextPage);
+        root.setAttribute('data-page', response.headers.get('X-Changelog-Page') || String(page));
+        syncMore();
+    };
+
+    const loadNext = async (until = '') => {
+        if (loading) {
+            return false;
+        }
+        if (!until && (!hasMore || !nextPage)) {
+            return false;
+        }
+        if (!nextPage) {
+            return false;
+        }
+
+        loading = true;
+        setStatus(true);
+        syncMore();
+        try {
+            await fetchPage(nextPage, until);
+            return true;
+        } catch {
+            return false;
+        } finally {
+            loading = false;
+            setStatus(false);
+            syncMore();
+        }
+    };
+
+    const ensureAnchor = async (anchor) => {
+        if (!anchor || !/^v-[0-9a-z]+(?:-[0-9a-z]+)*$/.test(anchor)) {
+            return null;
+        }
+        let el = document.getElementById(anchor);
+        if (el) {
+            return el;
+        }
+        if (!hasMore || !nextPage) {
+            return null;
+        }
+        await loadNext(anchor);
+        return document.getElementById(anchor);
+    };
+
+    loadBtn?.addEventListener('click', () => {
+        void loadNext();
+    });
+
+    root.querySelectorAll('[data-changelog-toc]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+            const anchor = link.getAttribute('data-changelog-toc') || '';
+            if (!anchor || document.getElementById(anchor)) {
+                return;
+            }
+            event.preventDefault();
+            void ensureAnchor(anchor).then((el) => {
+                if (el) {
+                    history.replaceState(null, '', `#${anchor}`);
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    });
+
+    if (sentinel instanceof HTMLElement && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        void loadNext();
+                    }
+                });
+            },
+            { rootMargin: '240px 0px' },
+        );
+        observer.observe(sentinel);
+    }
+
+    const hash = decodeURIComponent((window.location.hash || '').replace(/^#/, ''));
+    if (hash) {
+        void ensureAnchor(hash).then((el) => {
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    }
+
+    syncMore();
+}
+
+function pwaI18n() {
+    const node = document.querySelector('[data-pwa-i18n]');
+    if (!(node instanceof HTMLScriptElement)) {
+        return { updating: 'Updating…', offline: 'You are offline', online: 'Back online' };
+    }
+    try {
+        return JSON.parse(node.textContent || '{}');
+    } catch {
+        return { updating: 'Updating…', offline: 'You are offline', online: 'Back online' };
+    }
+}
+
+function showPwaToast(message, { sticky = false } = {}) {
+    const toast = document.querySelector('[data-pwa-toast]');
+    if (!(toast instanceof HTMLElement)) {
+        return;
+    }
+    toast.textContent = message;
+    toast.hidden = false;
+    toast.classList.add('is-visible');
+    window.clearTimeout(showPwaToast._timer);
+    if (!sticky) {
+        showPwaToast._timer = window.setTimeout(() => {
+            toast.classList.remove('is-visible');
+            toast.hidden = true;
+        }, 3200);
+    }
+}
+
+function initOfflineRetry() {
+    document.querySelector('[data-offline-retry]')?.addEventListener('click', () => {
+        window.location.reload();
+    });
+}
+
+function initPwa() {
+    if (!('serviceWorker' in navigator) || !import.meta.env.PROD) {
+        return;
+    }
+
+    const copy = pwaI18n();
+    let pendingReload = false;
+    let refreshing = false;
+
+    const checkForUpdates = (registration) => {
+        registration?.update().catch(() => {});
+    };
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!pendingReload || refreshing) {
+            return;
+        }
+        refreshing = true;
+        window.location.reload();
+    });
+
+    navigator.serviceWorker
+        .register('/sw.js', { scope: '/' })
+        .then((registration) => {
+            if (registration.waiting && navigator.serviceWorker.controller) {
+                pendingReload = true;
+                showPwaToast(copy.updating, { sticky: true });
+                registration.waiting.postMessage({ type: 'MCX_SKIP_WAITING' });
+            }
+
+            registration.addEventListener('updatefound', () => {
+                const worker = registration.installing;
+                if (!worker) {
+                    return;
+                }
+                worker.addEventListener('statechange', () => {
+                    if (worker.state !== 'installed' || !navigator.serviceWorker.controller) {
+                        return;
+                    }
+                    pendingReload = true;
+                    showPwaToast(copy.updating, { sticky: true });
+                });
+            });
+
+            window.addEventListener('online', () => {
+                showPwaToast(copy.online);
+                checkForUpdates(registration);
+            });
+
+            window.addEventListener('offline', () => {
+                showPwaToast(copy.offline);
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    checkForUpdates(registration);
+                }
+            });
+
+            window.setInterval(() => checkForUpdates(registration), 5 * 60 * 1000);
+        })
+        .catch(() => {});
+}
+
 function boot() {
     initTheme();
     initMobileMenu();
@@ -956,6 +1356,10 @@ function boot() {
     initSectionReveal();
     initVideoEmbeds();
     initDocs();
+    initRoadmapRail();
+    initChangelog();
+    initOfflineRetry();
+    initPwa();
 }
 
 if (document.readyState === 'loading') {

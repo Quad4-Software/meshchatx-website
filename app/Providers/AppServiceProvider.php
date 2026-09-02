@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\ChangelogService;
 use App\Services\DocsService;
 use App\Services\GithubReleasesService;
 use App\Services\RnsDirectoryService;
@@ -19,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GithubReleasesService::class);
         $this->app->singleton(RnsDirectoryService::class);
         $this->app->singleton(DocsService::class);
+        $this->app->singleton(ChangelogService::class);
     }
 
     /**
@@ -37,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
             'github_releases' => config('meshchatx.github_releases'),
             'github_releases_atom' => config('meshchatx.github_releases_atom'),
             'github_changelog' => config('meshchatx.github_changelog'),
+            'github_changelog_raw' => config('meshchatx.github_changelog_raw'),
             'github_clone' => config('meshchatx.github_clone'),
             'github_pkgbuild' => config('meshchatx.github_pkgbuild'),
             'rngit_rns' => config('meshchatx.rngit_rns'),

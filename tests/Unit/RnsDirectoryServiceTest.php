@@ -154,4 +154,33 @@ class RnsDirectoryServiceTest extends TestCase
         $this->assertNotEmpty($payload['interfaces'][0]['name'] ?? null);
         $this->assertNotEmpty($payload['interfaces'][0]['host'] ?? null);
     }
+
+    public function test_strips_html_from_hostile_directory_fields(): void
+    {
+        Http::fake([
+            'directory.rns.recipes/*' => Http::response([
+                'data' => [
+                    [
+                        'id' => 9,
+                        'name' => '<img src=x onerror=alert(1)>Evil',
+                        'type' => 'tcp<script>',
+                        'typeName' => 'TCPClientInterface',
+                        'network' => 'clearnet',
+                        'host' => 'evil.example',
+                        'port' => 4242,
+                        'status' => 'online',
+                        'config' => "<script>alert(1)</script>\n[[Evil]]",
+                    ],
+                ],
+            ], 200),
+        ]);
+
+        $payload = app(RnsDirectoryService::class)->payload();
+        $item = $payload['interfaces'][0];
+
+        $this->assertSame('Evil', $item['name']);
+        $this->assertSame('tcp', $item['type']);
+        $this->assertStringNotContainsString('<script', $item['config']);
+        $this->assertStringContainsString('[[Evil]]', $item['config']);
+    }
 }

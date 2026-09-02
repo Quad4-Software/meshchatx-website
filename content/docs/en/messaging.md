@@ -44,7 +44,7 @@ MeshChatX can:
 - **Auto-select** a preferred propagation peer via AutoPropagationManager from local lxmf.propagation announces and RNS paths (small sync probe, remembered destination hashes, no central directory)
 - **Retry** failed direct deliveries through propagation when configured
 
-Manage nodes from **Tools → Propagation nodes** or related settings entries.
+Manage nodes from **Tools -> Propagation nodes** or related settings entries.
 
 ## Stamp costs and stranger protection
 
@@ -66,11 +66,11 @@ Raise inbound costs when you operate a public-facing node. Lower them on trusted
 
 ## Paper messages
 
-**Tools → Paper message** generates LXMF URIs you can share as QR codes. Another MeshChatX user can ingest the URI to receive the payload. Useful for offline handoff when no live path exists yet.
+**Tools -> Paper message** generates LXMF URIs you can share as QR codes. Another MeshChatX user can ingest the URI to receive the payload. Useful for offline handoff when no live path exists yet.
 
 ## Forwarding
 
-ForwardingManager supports alias identities that forward messages between peers according to rules you define. Configure forwarding from **Tools → Forwarder**.
+ForwardingManager supports alias identities that forward messages between peers according to rules you define. Configure forwarding from **Tools -> Forwarder**.
 
 ## Import and export
 

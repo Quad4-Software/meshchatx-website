@@ -59,6 +59,25 @@ class DocsPageTest extends TestCase
             ->assertOk()
             ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
             ->assertSee('Installation and setup', false);
+
+        $pdf = $this->get('/docs/export-all/pdf');
+        $pdf->assertOk()
+            ->assertHeader('Content-Type', 'application/pdf');
+        $this->assertStringStartsWith('%PDF', $pdf->getContent());
+
+        $epub = $this->get('/docs/export-all/epub');
+        $epub->assertOk()
+            ->assertHeader('Content-Type', 'application/epub+zip');
+        $this->assertStringStartsWith('PK', $epub->getContent());
+    }
+
+    public function test_docs_page_shows_bundle_export_formats(): void
+    {
+        $this->get('/docs/overview')
+            ->assertOk()
+            ->assertSee('/docs/export-all/pdf', false)
+            ->assertSee('/docs/export-all/epub', false)
+            ->assertDontSee('/docs/overview/export/pdf', false);
     }
 
     public function test_unknown_docs_slug_returns_404(): void

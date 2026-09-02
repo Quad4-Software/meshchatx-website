@@ -37,4 +37,32 @@ class RoadmapServiceTest extends TestCase
         $this->assertSame('upcoming', $items[0]['status']);
         $this->assertSame('planned', $items[1]['status']);
     }
+
+    public function test_rail_inserts_released_patches_between_milestones(): void
+    {
+        $service = app(RoadmapService::class);
+        $items = $service->items(['4.8.5', '4.8.4', '4.8.1', '4.8.0', '4.7.0']);
+        $rail = $service->rail($items, ['4.8.5', '4.8.4', '4.8.1', '4.8.0', '4.7.0'], [
+            '4.8.5' => [
+                'version' => '4.8.5',
+                'date' => '2026-08-21',
+                'released' => true,
+                'summary' => ['Map markers update again.'],
+                'anchor' => 'v-4-8-5',
+            ],
+        ]);
+
+        $versions = array_column($rail, 'version');
+        $this->assertSame('4.7.0', $versions[0]);
+        $this->assertSame('4.8.0', $versions[1]);
+        $this->assertContains('4.8.1', $versions);
+        $this->assertContains('4.8.4', $versions);
+        $this->assertContains('4.8.5', $versions);
+        $this->assertNotContains('4.9.0', array_slice($versions, 0, 3));
+
+        $patch = collect($rail)->firstWhere('version', '4.8.5');
+        $this->assertSame('patch', $patch['type']);
+        $this->assertNotNull($patch['preview']);
+        $this->assertStringContainsString('/changelog#v-4-8-5', $patch['href']);
+    }
 }

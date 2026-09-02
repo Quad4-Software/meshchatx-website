@@ -18,6 +18,8 @@ class MeshchatxConfigTest extends TestCase
         $this->assertContains('nav.interfaces', array_column(config('meshchatx.footer_nav'), 'label_key'));
         $this->assertContains('interfaces', config('meshchatx.pages'));
         $this->assertContains('docs', config('meshchatx.pages'));
+        $this->assertContains('changelog', config('meshchatx.pages'));
+        $this->assertContains('changelog', config('meshchatx.sitemap'));
         $this->assertContains('nav.docs', array_column(config('meshchatx.nav'), 'label_key'));
         $this->assertContains('nav.docs', array_column(config('meshchatx.footer_nav'), 'label_key'));
         $this->assertNotEmpty(config('meshchatx.documentation.groups'));

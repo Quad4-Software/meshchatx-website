@@ -1,21 +1,15 @@
 @php
     $page = 'roadmap';
     $items = $items ?? [];
+    $rail = $rail ?? [];
+    $railProgress = $railProgress ?? 0;
     $statusKeys = [
         'done' => 'roadmap.status_done',
         'progress' => 'roadmap.status_progress',
         'planned' => 'roadmap.status_planned',
         'upcoming' => 'roadmap.status_upcoming',
+        'released' => 'roadmap.status_released',
     ];
-    $lastDoneIndex = -1;
-    foreach ($items as $i => $item) {
-        if (($item['status'] ?? '') === 'done') {
-            $lastDoneIndex = $i;
-        }
-    }
-    $railProgress = count($items) > 1
-        ? max(0, $lastDoneIndex) / (count($items) - 1) * 100
-        : ($lastDoneIndex >= 0 ? 100 : 0);
 @endphp
 
 @extends('layouts.app')
@@ -31,32 +25,55 @@
 
     <section class="section section--tight" data-reveal>
         <div class="site-container">
-            @if ($items !== [])
-                <nav class="roadmap-rail" style="--roadmap-count: {{ count($items) }}" aria-label="{{ t('roadmap.rail_label') }}">
-                    <div class="roadmap-rail__track" aria-hidden="true">
-                        <span class="roadmap-rail__progress" style="--rail-progress: {{ round($railProgress, 2) }}%"></span>
+            @if ($rail !== [])
+                <nav
+                    class="roadmap-rail"
+                    style="--roadmap-count: {{ count($rail) }}; --rail-progress: {{ round($railProgress, 2) }}%"
+                    aria-label="{{ t('roadmap.rail_label') }}"
+                    data-roadmap-rail
+                >
+                    <div class="roadmap-rail__scroll">
+                        <div class="roadmap-rail__plot">
+                            <div class="roadmap-rail__track" aria-hidden="true">
+                                <span class="roadmap-rail__progress"></span>
+                            </div>
+                            <ol class="roadmap-rail__list">
+                                @foreach ($rail as $node)
+                                    @php
+                                        $status = $node['status'] ?? 'planned';
+                                        $type = $node['type'] ?? 'milestone';
+                                        $preview = $node['preview'] ?? null;
+                                        $nodeClass = $type === 'patch' ? 'is-patch' : 'is-'.$status;
+                                    @endphp
+                                    <li class="roadmap-rail__item{{ $type === 'patch' ? ' is-patch' : '' }}">
+                                        <a
+                                            class="roadmap-rail__node {{ $nodeClass }}"
+                                            href="{{ $node['href'] }}"
+                                            @if ($preview)
+                                                data-roadmap-preview
+                                                data-preview-title="{{ $preview['title'] }}"
+                                                data-preview-date="{{ $preview['date'] }}"
+                                                data-preview-href="{{ $preview['href'] }}"
+                                                data-preview-bullets="{{ e(json_encode($preview['bullets'], JSON_UNESCAPED_UNICODE)) }}"
+                                            @endif
+                                        >
+                                            <span class="roadmap-rail__dot" aria-hidden="true"></span>
+                                            <span class="roadmap-rail__version">{{ $node['label'] }}</span>
+                                            @if (! empty($node['date']))
+                                                <span class="roadmap-rail__date">{{ $node['date'] }}</span>
+                                            @endif
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ol>
+                        </div>
                     </div>
-                    <ol class="roadmap-rail__list">
-                        @foreach ($items as $index => $item)
-                            @php
-                                $status = $item['status'] ?? 'planned';
-                                $versionId = 'v-'.str_replace('.', '-', (string) ($item['version'] ?? $index));
-                                $shortVersion = preg_replace('/^(\d+\.\d+).*$/', '$1', (string) ($item['version'] ?? ''));
-                            @endphp
-                            <li class="roadmap-rail__item">
-                                <a
-                                    class="roadmap-rail__node is-{{ $status }}"
-                                    href="#{{ $versionId }}"
-                                >
-                                    <span class="roadmap-rail__dot" aria-hidden="true"></span>
-                                    <span class="roadmap-rail__version">v{{ $shortVersion !== '' ? $shortVersion : ($item['version'] ?? '') }}</span>
-                                    @if (! empty($item['date']))
-                                        <span class="roadmap-rail__date">{{ $item['date'] }}</span>
-                                    @endif
-                                </a>
-                            </li>
-                        @endforeach
-                    </ol>
+                    <div class="roadmap-rail__tip" data-roadmap-tip hidden>
+                        <p class="roadmap-rail__tip-title" data-roadmap-tip-title></p>
+                        <p class="roadmap-rail__tip-date" data-roadmap-tip-date hidden></p>
+                        <ul class="roadmap-rail__tip-list" data-roadmap-tip-list></ul>
+                        <a class="roadmap-rail__tip-link" data-roadmap-tip-link href="#">{{ t('roadmap.changelog_preview') }}</a>
+                    </div>
                 </nav>
             @endif
 

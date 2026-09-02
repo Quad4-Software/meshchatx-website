@@ -23,5 +23,11 @@
         </main>
         <x-footer />
     </div>
+    <div class="pwa-toast" data-pwa-toast hidden role="status" aria-live="polite"></div>
+    <script type="application/json" data-pwa-i18n>{!! json_encode([
+        'updating' => t('pwa.updating'),
+        'offline' => t('pwa.offline'),
+        'online' => t('pwa.online'),
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
 </body>
 </html>

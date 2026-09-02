@@ -8,6 +8,7 @@ return [
     'github_releases' => 'https://github.com/Quad4-Software/MeshChatX/releases',
     'github_releases_atom' => 'https://github.com/Quad4-Software/MeshChatX/releases.atom',
     'github_changelog' => 'https://github.com/Quad4-Software/MeshChatX/blob/master/CHANGELOG.md',
+    'github_changelog_raw' => 'https://raw.githubusercontent.com/Quad4-Software/MeshChatX/master/CHANGELOG.md',
     'github_clone' => 'https://github.com/Quad4-Software/MeshChatX.git',
     'github_pkgbuild' => 'https://github.com/Quad4-Software/MeshChatX/blob/master/packaging/arch/PKGBUILD',
     'rngit_rns' => 'rns://06a54b505bb67b25ef3f8097e8001edc/public/MeshChatX',
@@ -73,19 +74,20 @@ return [
         ['label_key' => 'nav.docs', 'route' => 'docs'],
         ['label_key' => 'nav.git', 'route' => 'git'],
         ['label_key' => 'nav.interfaces', 'route' => 'interfaces'],
-        ['label_key' => 'footer.changelog', 'external' => 'github_changelog'],
+        ['label_key' => 'footer.changelog', 'route' => 'changelog'],
         ['label_key' => 'nav.branding', 'route' => 'branding'],
         ['label_key' => 'footer.license', 'route' => 'license'],
         ['label_key' => 'footer.privacy', 'route' => 'privacy'],
     ],
 
-    'pages' => ['home', 'download', 'docs', 'roadmap', 'interfaces', 'branding', 'contact', 'donate', 'license', 'privacy', 'git'],
+    'pages' => ['home', 'download', 'docs', 'roadmap', 'changelog', 'interfaces', 'branding', 'contact', 'donate', 'license', 'privacy', 'git'],
 
     'sitemap' => [
         'home',
         'download',
         'docs',
         'roadmap',
+        'changelog',
         'interfaces',
         'branding',
         'contact',
@@ -138,5 +140,8 @@ return [
     ],
 
     'releases_cache_seconds' => (int) env('RELEASES_CACHE_SECONDS', 3600),
+    'changelog_cache_seconds' => (int) env('CHANGELOG_CACHE_SECONDS', 3600),
+    'changelog_per_page' => (int) env('CHANGELOG_PER_PAGE', 10),
+    'changelog_rss_limit' => (int) env('CHANGELOG_RSS_LIMIT', 40),
     'rns_directory_cache_seconds' => (int) env('RNS_DIRECTORY_CACHE_SECONDS', 259200),
 ];

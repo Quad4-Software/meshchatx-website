@@ -50,8 +50,8 @@ return [
     [
         'version' => '5.0.0',
         'date' => 'February 2027',
-        'title' => 'Last Feature Release',
-        'desc' => 'Last planned feature release. After 5.0.0, MeshChatX moves to maintenance: security fixes, bug fixes, performance fixes, Electron updates, and dependency bumps.',
+        'title' => 'Major release',
+        'desc' => 'Planned 5.0.0 milestone. Feature work continues after this release. Concrete items will be listed here when the scope is locked.',
         'features' => [],
         'status' => 'planned',
     ],

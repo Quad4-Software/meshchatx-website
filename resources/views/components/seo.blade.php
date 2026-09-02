@@ -24,7 +24,7 @@
     $ogLocales = $site['og_locales'] ?? [];
     $ogLocale = $ogLocales[$locale] ?? 'en_US';
     $locales = $site['locales'] ?? ['en'];
-    $robots = $isError
+    $robots = $isError || $page === 'offline'
         ? 'noindex, nofollow'
         : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
@@ -91,10 +91,12 @@
             'license' => t('footer.license'),
             'privacy' => t('footer.privacy'),
             'roadmap' => t('nav.roadmap'),
+            'changelog' => t('footer.changelog'),
             'branding' => t('nav.branding'),
             'git' => t('nav.git'),
             'interfaces' => t('nav.interfaces'),
             'docs' => t('nav.docs'),
+            'offline' => t('offline.h1'),
             default => ucfirst($page),
         };
         $crumbs = [
@@ -168,4 +170,12 @@
 <link rel="apple-touch-icon" href="/logo.webp">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ $domain }}/sitemap.xml">
+@if (($page ?? '') === 'changelog')
+    <link
+        rel="alternate"
+        type="application/rss+xml"
+        title="{{ t('changelog.rss_title') }}"
+        href="{{ $domain }}/changelog.xml"
+    >
+@endif
 <script type="application/ld+json">{!! str_replace('<', '\u003c', json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) !!}</script>

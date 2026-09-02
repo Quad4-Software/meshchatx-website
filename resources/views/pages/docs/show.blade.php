@@ -9,6 +9,8 @@
     $exportTxt = locale_route('docs.export', ['slug' => $slug, 'format' => 'txt']);
     $exportAllMd = locale_route('docs.export-all', ['format' => 'md']);
     $exportAllTxt = locale_route('docs.export-all', ['format' => 'txt']);
+    $exportAllPdf = locale_route('docs.export-all', ['format' => 'pdf']);
+    $exportAllEpub = locale_route('docs.export-all', ['format' => 'epub']);
 @endphp
 
 @extends('layouts.app')
@@ -59,6 +61,8 @@
                     <div class="docs-export docs-export--stack" role="group" aria-label="{{ t('docs.export_all') }}">
                         <a class="docs-export__btn" href="{{ $exportAllMd }}">MD</a>
                         <a class="docs-export__btn" href="{{ $exportAllTxt }}">TXT</a>
+                        <a class="docs-export__btn" href="{{ $exportAllPdf }}">PDF</a>
+                        <a class="docs-export__btn" href="{{ $exportAllEpub }}">EPUB</a>
                     </div>
                 </div>
             </div>

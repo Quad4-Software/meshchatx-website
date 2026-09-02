@@ -73,6 +73,8 @@ class SecurityHeaders
         $directives[] = 'style-src '.implode(' ', array_unique($styleSrc));
         $directives[] = 'script-src '.implode(' ', array_unique($scriptSrc));
         $directives[] = 'connect-src '.implode(' ', array_unique($connectSrc));
+        $directives[] = "worker-src 'self'";
+        $directives[] = "manifest-src 'self'";
 
         if (! app()->environment('local')) {
             $directives[] = 'upgrade-insecure-requests';

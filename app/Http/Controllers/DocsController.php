@@ -69,17 +69,17 @@ class DocsController extends Controller
     {
         $format = strtolower((string) $request->route('format', ''));
 
-        if (! in_array($format, ['md', 'txt'], true)) {
+        if (! in_array($format, ['md', 'txt', 'pdf', 'epub'], true)) {
             throw new NotFoundHttpException;
         }
 
         $filename = 'meshchatx-docs.'.$format;
-        $body = $format === 'md'
-            ? $this->docs->exportAllMarkdown()
-            : $this->docs->exportAllPlainText();
-        $contentType = $format === 'md'
-            ? 'text/markdown; charset=UTF-8'
-            : 'text/plain; charset=UTF-8';
+        [$body, $contentType] = match ($format) {
+            'md' => [$this->docs->exportAllMarkdown(), 'text/markdown; charset=UTF-8'],
+            'txt' => [$this->docs->exportAllPlainText(), 'text/plain; charset=UTF-8'],
+            'pdf' => [$this->docs->exportAllPdf(), 'application/pdf'],
+            'epub' => [$this->docs->exportAllEpub(), 'application/epub+zip'],
+        };
 
         return response($body, 200, [
             'Content-Type' => $contentType,

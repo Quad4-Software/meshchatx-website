@@ -36,7 +36,7 @@ Archived pages use the same renderer as the live browser based on the stored pag
 
 ## Mesh Server (page nodes)
 
-**Tools → Mesh Server** lets you run a nomadnetwork.node destination locally.
+**Tools -> Mesh Server** lets you run a nomadnetwork.node destination locally.
 
 Typical workflow:
 
@@ -86,7 +86,7 @@ Read **NomadNet page formats** for security rules, Markdown quirks, and API beha
 
 ## Micron editor
 
-**Tools → Micron editor** helps author .mu pages before you upload them to your node.
+**Tools -> Micron editor** helps author .mu pages before you upload them to your node.
 
 ## See also
 

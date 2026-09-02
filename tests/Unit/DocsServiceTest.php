@@ -54,4 +54,17 @@ class DocsServiceTest extends TestCase
         $this->assertStringContainsString('# LXMF messaging', $all);
         $this->assertStringContainsString('# Linux sandboxing', $all);
     }
+
+    public function test_export_all_pdf_and_epub_are_valid_binaries(): void
+    {
+        $docs = app(DocsService::class);
+
+        $pdf = $docs->exportAllPdf();
+        $this->assertStringStartsWith('%PDF', $pdf);
+        $this->assertGreaterThan(1000, strlen($pdf));
+
+        $epub = $docs->exportAllEpub();
+        $this->assertStringStartsWith('PK', $epub);
+        $this->assertGreaterThan(500, strlen($epub));
+    }
 }

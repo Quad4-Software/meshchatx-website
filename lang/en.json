@@ -18,7 +18,9 @@
       "branding": "Branding | MeshChatX",
       "error": "Error | MeshChatX",
       "git": "Git | MeshChatX",
-      "docs": "Docs | MeshChatX"
+      "docs": "Docs | MeshChatX",
+      "changelog": "Changelog | MeshChatX",
+      "offline": "Offline | MeshChatX"
     },
     "og_image_alt": "MeshChatX logo",
     "desc": {
@@ -29,11 +31,13 @@
       "license": "Licensing for the meshchatx.com website (0BSD) and the MeshChatX application (0BSD + MIT).",
       "privacy": "How meshchatx.com handles data when you visit the Site.",
       "roadmap": "MeshChatX planned releases, in-progress work, and completed milestones.",
+      "changelog": "Released MeshChatX versions with notes from the upstream CHANGELOG.",
       "interfaces": "Online Reticulum interfaces cached from directory.rns.recipes, with config blocks for ~/.reticulum/config.",
       "branding": "MeshChatX logos, icons, and brand colors for press and product use.",
       "error": "This page could not be shown as requested.",
       "git": "Clone MeshChatX from rngit over Reticulum, or use the GitHub and LavaForge mirrors.",
-      "docs": "MeshChatX documentation from the application docs bundle: install, messaging, LXST calls, NomadNet, interfaces, and platform guides."
+      "docs": "MeshChatX documentation from the application docs bundle: install, messaging, LXST calls, NomadNet, interfaces, and platform guides.",
+      "offline": "You are offline. Open a cached MeshChatX page or reconnect."
     }
   },
   "error": {
@@ -249,7 +253,38 @@
     "status_done": "Done",
     "status_progress": "In Progress",
     "status_planned": "Planned",
-    "status_upcoming": "Upcoming"
+    "status_upcoming": "Upcoming",
+    "status_released": "Released",
+    "changelog_preview": "Read full changelog"
+  },
+  "changelog": {
+    "h1": "Changelog",
+    "lead": "Version notes from the MeshChatX repository, newest first. Unreleased work stays at the top until it ships.",
+    "rss": "RSS feed",
+    "rss_title": "MeshChatX Changelog RSS",
+    "source": "View on GitHub",
+    "empty": "Changelog could not be loaded right now. Try again later, or open it on GitHub.",
+    "toc": "Versions",
+    "released": "Released",
+    "unreleased": "Unreleased",
+    "load_more": "Load more versions",
+    "loading": "Loading more versions…"
+  },
+  "offline": {
+    "h1": "You are offline",
+    "lead": "This page is not in the offline cache. Reconnect, or open home, docs, interfaces, or changelog if you visited them before.",
+    "retry": "Try again",
+    "home": "Home",
+    "available": "Offline-ready pages",
+    "link_home": "Home",
+    "link_docs": "Docs",
+    "link_interfaces": "Interfaces",
+    "link_changelog": "Changelog"
+  },
+  "pwa": {
+    "updating": "New version ready. Reloading…",
+    "offline": "You are offline",
+    "online": "Back online. Checking for updates…"
   },
   "branding": {
     "h1": "Branding",
