@@ -1,286 +1,412 @@
 {
-  "a11y": {
-    "skip": "Zum Inhalt springen"
-  },
-  "brand": {
-    "name": "MeshChatX"
-  },
-  "meta": {
-    "title": {
-      "home": "MeshChatX",
-      "download": "Download | MeshChatX",
-      "contact": "Kontakt | MeshChatX",
-      "donate": "Spenden | MeshChatX",
-      "license": "Lizenz | MeshChatX",
-      "privacy": "Datenschutz | MeshChatX",
-      "roadmap": "Roadmap | MeshChatX",
-      "interfaces": "Interfaces | MeshChatX",
-      "error": "Fehler | MeshChatX"
+    "a11y": {
+        "skip": "Zum Inhalt springen"
     },
-    "og_image_alt": "MeshChatX-Logo",
-    "desc": {
-      "home": "MeshChatX-Client für Messaging, Anrufe und NomadNet über Reticulum. Keine zentralen Server.",
-      "download": "MeshChatX für Windows, Linux, macOS, Docker oder Python herunterladen. Dezentrale Kommunikation über Reticulum.",
-      "contact": "Kontakt zu MeshChatX per LXMF (Reticulum) oder E-Mail an team@quad4.io.",
-      "donate": "Unterstütze MeshChatX über Ko-fi, Buy Me a Coffee oder mit Monero (XMR).",
-      "license": "Lizenzierung der Website meshchatx.com (0BSD) und der MeshChatX-Anwendung (0BSD + MIT).",
-      "privacy": "Wie meshchatx.com mit Daten umgeht, wenn Sie die Website besuchen.",
-      "roadmap": "Geplante MeshChatX-Releases, laufende Arbeiten und abgeschlossene Meilensteine.",
-      "interfaces": "Online-Reticulum-Interfaces von directory.rns.recipes, mit Config-Blöcken für ~/.reticulum/config.",
-      "error": "Diese Seite konnte nicht wie gewünscht angezeigt werden."
-    }
-  },
-  "error": {
-    "title_404": "Seite nicht gefunden",
-    "lead_404": "Die angeforderte Seite fehlt, wurde verschoben oder der Link ist ungültig. Über die Schaltfläche unten kehren Sie zur Startseite zurück.",
-    "title_4xx": "Anfrage konnte nicht abgeschlossen werden",
-    "lead_4xx": "Der Server konnte diese Anfrage in dieser Form nicht verarbeiten.",
-    "title_5xx": "Etwas ist schiefgelaufen",
-    "lead_5xx": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
-    "cta_home": "Zur Startseite",
-    "cta_download": "MeshChatX herunterladen"
-  },
-  "nav": {
-    "primary": "Hauptnavigation",
-    "features": "Funktionen",
-    "showcase": "Screenshots",
-    "donate": "Spenden",
-    "contact": "Kontakt",
-    "roadmap": "Roadmap",
-    "interfaces": "Interfaces",
-    "git": "Git",
-    "download": "Download",
-    "toggle_theme": "Design wechseln",
-    "mobile_menu": "Menü öffnen",
-    "mobile_menu_close": "Menü schließen",
-    "mobile_nav": "Mobil",
-    "docs": "Docs"
-  },
-  "lang": {
-    "label": "Sprache",
-    "pick": "Sprache wählen",
-    "en": "English",
-    "de": "Deutsch",
-    "ru": "Russisch",
-    "it": "Italienisch",
-    "zh": "Chinesisch"
-  },
-  "footer": {
-    "tagline": "Messaging, Anrufe und NomadNet über das Reticulum-Netzwerk.",
-    "community": "Community",
-    "legal": "Rechtliches",
-    "source": "Quellcode (GitHub)",
-    "changelog": "Änderungsprotokoll",
-    "license": "Lizenz",
-    "privacy": "Datenschutz",
-    "license_badge": "MIT + 0BSD",
-    "meta_copyright": "© 2026 MeshChatX.",
-    "meta_site": "MeshChatX ist ein <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>-Projekt."
-  },
-  "contact": {
-    "h1": "Kontakt",
-    "panel_title": "Kontakt per LXMF",
-    "copy_title": "LXMF-Adresse kopieren",
-    "panel_email": "E-Mail",
-    "email_lead": "Für allgemeine Fragen erreichen Sie das Quad4-Team per E-Mail.",
-    "email": "team@quad4.io",
-    "copy_email": "E-Mail-Adresse kopieren"
-  },
-  "donate": {
-    "h1": "MeshChatX unterstützen",
-    "lead": "MeshChatX entsteht für die Community. Deine Spende hilft bei Entwicklung und Infrastruktur.",
-    "xmr_only": "Kryptowährung: nur Monero (XMR).",
-    "monero": "Monero",
-    "copy_xmr": "Monero-Adresse kopieren",
-    "platforms_title": "Ko-fi & Buy Me a Coffee",
-    "kofi": "Ko-fi",
-    "bmac": "Buy Me a Coffee"
-  },
-  "license": {
-    "h1": "Lizenz",
-    "intro": "Die öffentliche Website meshchatx.com und der zugehörige Code dieser Website stehen unter 0BSD (Copyright Quad4). Die MeshChatX-Anwendung steht unter 0BSD und MIT. Die vollständigen Anwendungslizenztexte folgen unten.",
-    "h2_website": "Website",
-    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
-    "h2_app": "Anwendung MeshChatX",
-    "app_intro": "Diese Bedingungen gelten für den Quellcode und die verteilten Builds von MeshChatX.",
-    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
-  },
-  "privacy": {
-    "h1": "Datenschutz",
-    "updated": "Stand: 12. Juli 2026",
-    "p_scope": "Diese Erklärung beschreibt, wie die öffentliche Marketing-Website unter meshchatx.com (die \"Website\") Informationen verarbeitet, wenn Sie Seiten der Website besuchen. Sie gilt nicht für die MeshChatX-Anwendung, Reticulum oder Drittanbieterdienste, die Sie separat nutzen.",
-    "h2_analytics": "Analyse und Datenanfragen",
-    "p_analytics": "Download-, Versions- und Interface-Verzeichnisdaten kommen von dieser Website. Nach Ablauf des Caches holt die Website öffentliche GitHub-Release-Metadaten für MeshChatX und die eingereichte Online-Liste von directory.rns.recipes. Das ist keine Werbung und dient nicht dem Aufbau eines Personenprofils.",
-    "p_analytics_detail": "Auf der Start- und der Download-Seite lesen wir Versionsinformationen aus einer statischen Datei, die von derselben Website ausgeliefert wird. Es werden keine personenbezogenen Daten für Analysen erfasst, und Ihr Surfverhalten wird nicht mit Drittanbieter-Analysediensten geteilt. Wenn Sie Download- oder Quelllinks nutzen, gehen diese Anfragen an den jeweiligen Host, wenn Sie darauf klicken.",
-    "h2_rights": "Ihre Rechte (EWR und UK)",
-    "p_rights": "Je nach Wohnsitz können Sie Rechte auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung personenbezogener Daten sowie auf Beschwerde bei einer Aufsichtsbehörde haben. Diese Marketing-Website verarbeitet nur das Nötigste. Bei konkreten Anfragen zu dieser Website kontaktieren Sie uns wie unten angegeben. Wir antworten im Rahmen des geltenden Rechts.",
-    "h2_contact": "Kontakt",
-    "p_contact": "Bei Datenschutzfragen zu dieser Website nutzen Sie bitte die <a href=\"/de/contact\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">Kontaktseite</a>."
-  },
-  "home": {
-    "hero": {
-      "h1": "Alles-in-einem-Reticulum-Client",
-      "lead": "MeshChatX ist ein All-in-One-Reticulum-Client mit Messaging, Anrufen und einem NomadNet-Browser."
+    "brand": {
+        "name": "MeshChatX"
     },
-    "platform": {
-      "macos": "macOS",
-      "linux": "Linux",
-      "windows": "Windows",
-      "docker": "Docker",
-      "python": "Python",
-      "android": "Android"
+    "meta": {
+        "title": {
+            "home": "MeshChatX",
+            "download": "Download | MeshChatX",
+            "contact": "Kontakt | MeshChatX",
+            "donate": "Spenden | MeshChatX",
+            "license": "Lizenz | MeshChatX",
+            "privacy": "Datenschutz | MeshChatX",
+            "roadmap": "Roadmap | MeshChatX",
+            "interfaces": "Interfaces | MeshChatX",
+            "error": "Fehler | MeshChatX",
+            "branding": "Branding | MeshChatX",
+            "git": "Git | MeshChatX",
+            "docs": "Docs | MeshChatX",
+            "changelog": "Änderungsprotokoll | MeshChatX",
+            "offline": "Offline | MeshChatX"
+        },
+        "og_image_alt": "MeshChatX-Logo",
+        "desc": {
+            "home": "MeshChatX-Client für Messaging, Anrufe und NomadNet über Reticulum. Keine zentralen Server.",
+            "download": "MeshChatX für Windows, Linux, macOS, Docker oder Python herunterladen. Dezentrale Kommunikation über Reticulum.",
+            "contact": "Kontakt zu MeshChatX per LXMF (Reticulum) oder E-Mail an team@quad4.io.",
+            "donate": "Unterstütze MeshChatX über Ko-fi, Buy Me a Coffee oder mit Monero (XMR).",
+            "license": "Lizenzierung der Website meshchatx.com (0BSD) und der MeshChatX-Anwendung (0BSD + MIT).",
+            "privacy": "Wie meshchatx.com mit Daten umgeht, wenn Sie die Website besuchen.",
+            "roadmap": "Geplante MeshChatX-Releases, laufende Arbeiten und abgeschlossene Meilensteine.",
+            "interfaces": "Online-Reticulum-Interfaces von directory.rns.recipes, mit Config-Blöcken für ~/.reticulum/config.",
+            "error": "Diese Seite konnte nicht wie gewünscht angezeigt werden.",
+            "changelog": "Veröffentlichte MeshChatX-Versionen mit Notizen aus dem Upstream-CHANGELOG.",
+            "branding": "MeshChatX-Logos, Icons und Markenfarben für Presse und Produktnutzung.",
+            "git": "MeshChatX per rngit über Reticulum klonen oder die Spiegel auf GitHub und LavaForge nutzen.",
+            "docs": "MeshChatX-Dokumentation aus dem App-Docs-Paket: Installation, Messaging, LXST-Anrufe, NomadNet, Interfaces und Plattformleitfäden.",
+            "offline": "Sie sind offline. Öffnen Sie eine zwischengespeicherte MeshChatX-Seite oder stellen Sie die Verbindung wieder her."
+        }
     },
-    "showcase": {
-      "mobile": "Mobil",
-      "desktop": "Desktop"
+    "error": {
+        "title_404": "Seite nicht gefunden",
+        "lead_404": "Die angeforderte Seite fehlt, wurde verschoben oder der Link ist ungültig. Über die Schaltfläche unten kehren Sie zur Startseite zurück.",
+        "title_4xx": "Anfrage konnte nicht abgeschlossen werden",
+        "lead_4xx": "Der Server konnte diese Anfrage in dieser Form nicht verarbeiten.",
+        "title_5xx": "Etwas ist schiefgelaufen",
+        "lead_5xx": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+        "cta_home": "Zur Startseite",
+        "cta_download": "MeshChatX herunterladen",
+        "title_400": "Ungültige Anfrage",
+        "lead_400": "Die Anfrage war fehlerhaft oder unvollständig. Prüfen Sie die URL und versuchen Sie es erneut.",
+        "title_401": "Anmeldung erforderlich",
+        "lead_401": "Sie müssen sich anmelden, bevor Sie diese Seite öffnen können.",
+        "title_403": "Zugriff verweigert",
+        "lead_403": "Sie haben keine Berechtigung, diese Seite zu sehen.",
+        "title_405": "Methode nicht erlaubt",
+        "lead_405": "Diese URL akzeptiert die verwendete HTTP-Methode nicht.",
+        "title_408": "Zeitüberschreitung",
+        "lead_408": "Der Server hat nicht länger auf die Anfrage gewartet. Versuchen Sie es erneut.",
+        "title_419": "Seite abgelaufen",
+        "lead_419": "Das Formular- oder Sitzungstoken ist abgelaufen. Laden Sie die Seite neu und senden Sie erneut.",
+        "title_429": "Zu viele Anfragen",
+        "lead_429": "Sie haben in kurzer Zeit zu viele Anfragen gesendet. Warten Sie einen Moment und versuchen Sie es erneut.",
+        "title_500": "Serverfehler",
+        "lead_500": "Auf dem Server ist ein unerwarteter Fehler aufgetreten. Versuchen Sie es später erneut.",
+        "title_502": "Fehlerhaftes Gateway",
+        "lead_502": "Ein Upstream-Dienst hat eine ungültige Antwort geliefert. Versuchen Sie es später erneut.",
+        "title_503": "Dienst nicht verfügbar",
+        "lead_503": "Die Website ist vorübergehend wegen Wartung oder Überlastung nicht erreichbar.",
+        "title_504": "Gateway-Zeitüberschreitung",
+        "lead_504": "Ein Upstream-Dienst hat nicht rechtzeitig geantwortet. Versuchen Sie es später erneut."
     },
-    "cap": {
-      "messaging": "Messaging",
-      "calls": "Anrufe",
-      "browser": "Browser",
-      "file_transfer": "Dateitransfer",
-      "bots": "Bots",
-      "micron": "Micron-Editor",
-      "archiver": "Archivierer",
-      "mapping": "Kartierung",
-      "discovery": "Interface-Discovery",
-      "identities": "Mehrere Identitäten",
-      "banishment": "Bann",
-      "backups": "Auto-Backups und Snapshots",
-      "customizable": "Anpassbar",
-      "telemetry": "Telemetrie (LXMF)",
-      "host_pages": "Host-Seiten",
-      "soon": "(demnächst)",
-      "more": "+ mehr"
+    "nav": {
+        "primary": "Hauptnavigation",
+        "features": "Funktionen",
+        "showcase": "Screenshots",
+        "donate": "Spenden",
+        "contact": "Kontakt",
+        "roadmap": "Roadmap",
+        "interfaces": "Interfaces",
+        "git": "Git",
+        "download": "Download",
+        "toggle_theme": "Design wechseln",
+        "mobile_menu": "Menü öffnen",
+        "mobile_menu_close": "Menü schließen",
+        "mobile_nav": "Mobil",
+        "docs": "Docs",
+        "branding": "Branding"
     },
-    "cta": {
-      "download": "Download",
-      "source": "Quellcode ansehen"
+    "lang": {
+        "label": "Sprache",
+        "pick": "Sprache wählen",
+        "en": "English",
+        "de": "Deutsch",
+        "ru": "Russisch",
+        "it": "Italienisch",
+        "zh": "Chinesisch"
     },
-    "section": {
-      "infra_h2": "Keine zentralen Server",
-      "infra_lead": "Der Verkehr läuft über Reticulum-Mesh-Links, nicht über ein von MeshChatX betriebenes Backend."
+    "footer": {
+        "tagline": "Messaging, Anrufe und NomadNet über das Reticulum-Netzwerk.",
+        "community": "Community",
+        "legal": "Rechtliches",
+        "source": "Quellcode (GitHub)",
+        "changelog": "Änderungsprotokoll",
+        "license": "Lizenz",
+        "privacy": "Datenschutz",
+        "license_badge": "MIT + 0BSD",
+        "meta_copyright": "© 2026 MeshChatX.",
+        "meta_site": "MeshChatX ist ein <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>-Projekt."
     },
-    "feature": {
-      "decentralized_h3": "Dezentral",
-      "decentralized_p": "Auf Reticulum aufgebaut. Keine von MeshChatX betriebenen Nachrichtenserver. Identitäten und Nachrichtenverlauf bleiben auf deinem Gerät.",
-      "crypto_h3": "Offene Kryptografie",
-      "crypto_p": "Reticulum veröffentlicht sein Krypto-Design in einer offenen Spezifikation. MeshChatX nutzt diesen Stack unverändert.",
-      "crypto_link": "Spezifikation lesen",
-      "mesh_h3": "Mesh-Netzwerk",
-      "mesh_p": "MeshChatX läuft über Internet-Links, Funk, LoRa und andere Transporte, die Reticulum unterstützt.",
-      "platform_h3": "Plattformunterstützung",
-      "platform_p": "Desktop (Electron) und Web (Docker oder Python). Android als APK und über Termux.",
-      "sandbox_h3": "Native OS-Sandbox",
-      "sandbox_p": "Windows-Desktop-Builds laufen in :appcontainer. Linux-Builds nutzen :landlock und :seccomp, wo der Kernel das unterstützt."
+    "contact": {
+        "h1": "Kontakt",
+        "panel_title": "Kontakt per LXMF",
+        "copy_title": "LXMF-Adresse kopieren",
+        "panel_email": "E-Mail",
+        "email_lead": "Für allgemeine Fragen erreichen Sie das Quad4-Team per E-Mail.",
+        "email": "team@quad4.io",
+        "copy_email": "E-Mail-Adresse kopieren",
+        "click_copy": "Adresse anklicken zum Kopieren",
+        "copied": "Kopiert"
     },
-    "security": {
-      "h2": "Sicherheit & Integrität",
-      "lead": "Desktop-Releases liefern Provenance-Attestierungen, Paketintegritätsprüfungen und native OS-Sandboxing, wo die Plattform es zulässt.",
-      "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> Stufe 3 Provenance für Release-Builds.",
-      "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR-Integrität</a> erkennt Manipulationen an gepackten Anwendungsressourcen.",
-      "bullet_sandbox": "Native OS-Sandbox: <a href=\"https://learn.microsoft.com/en-us/windows/win32/secauthz/appcontainer-for-legacy-applications-\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">AppContainer</a> unter Windows, <a href=\"https://landlock.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Landlock</a> und <a href=\"https://www.kernel.org/doc/html/latest/userspace-api/seccomp_filter.html\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">seccomp-bpf</a> unter Linux.",
-      "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> Cosign-Signaturen für nachprüfbare Artefakte, wo anwendbar.",
-      "bullet_sast": "Statische Analyse und Dependency-Scanning mit Trivy, pip-audit, Ruff und CodeQL in der Delivery-Pipeline.",
-      "bullet_csp": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#7-define-a-content-security-policy\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">CSP</a> plus strenge Defaults für Remote-Inhalte in der Electron-Shell (einschließlich CORS-Disziplin, wo relevant).",
-      "bullet_transport": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#1-only-load-secure-content\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">HTTPS und WSS</a> standardmäßig für Remote-Seiten und Transporte, wo unterstützt."
+    "donate": {
+        "h1": "MeshChatX unterstützen",
+        "lead": "MeshChatX entsteht für die Community. Deine Spende hilft bei Entwicklung und Infrastruktur.",
+        "xmr_only": "Kryptowährung: nur Monero (XMR).",
+        "monero": "Monero",
+        "copy_xmr": "Monero-Adresse kopieren",
+        "platforms_title": "Ko-fi & Buy Me a Coffee",
+        "kofi": "Ko-fi",
+        "bmac": "Buy Me a Coffee",
+        "click_copy": "Adresse anklicken zum Kopieren",
+        "copied": "Kopiert"
     },
-    "split": {
-      "h2_line1": "Anonym",
-      "h2_line2": "& ohne Konto",
-      "item1_h4": "Mehrere Identitäten",
-      "item1_p": "Erzeuge so viele Identitäten, wie du brauchst. Wechsle zwischen ihnen, ohne ihre Datenspeicher zu vermischen.",
-      "item2_h4": "Keine Altersprüfung",
-      "item2_p": "Kein Ausweis, keine Telefonnummer, keine E-Mail. Zugang ohne Identitätsprüfung durch Dritte.",
-      "item3_h4": "Keine Zensur",
-      "item3_p": "Nachrichten verbreiten sich im Mesh. Lokale Archive halten den Verlauf bereit, wenn ein entfernter Peer offline ist."
+    "license": {
+        "h1": "Lizenz",
+        "intro": "Die öffentliche Website meshchatx.com und der zugehörige Code dieser Website stehen unter 0BSD (Copyright Quad4). Die MeshChatX-Anwendung steht unter 0BSD und MIT. Die vollständigen Anwendungslizenztexte folgen unten.",
+        "h2_website": "Website",
+        "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+        "h2_app": "Anwendung MeshChatX",
+        "app_intro": "Diese Bedingungen gelten für den Quellcode und die verteilten Builds von MeshChatX.",
+        "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
     },
-    "videos": {
-      "h2": "Videos",
-      "lead": "MeshChatX-Videos",
-      "youtube_title": "MeshChatX auf YouTube",
-      "youtube_title_2": "MeshChatX auf YouTube",
-      "play": "Video abspielen: :title"
-    }
-  },
-  "roadmap": {
-    "h1": "Roadmap",
-    "lead": "Große MeshChatX-Releases kommen etwa alle zwei bis drei Monate. Jeder Eintrag listet die geplante Arbeit für diese Version.",
-    "notice": "Termine und Funktionen können sich mit den Prioritäten ändern.",
-    "rail_label": "Release-Zeitachse",
-    "status_done": "Fertig",
-    "status_progress": "In Arbeit",
-    "status_planned": "Geplant",
-    "status_upcoming": "Als Nächstes"
-  },
-  "js": {
-    "theme": {
-      "toggle_dark": "Zum Dunkelmodus wechseln",
-      "toggle_light": "Zum Hellmodus wechseln",
-      "mobile_dark": "Dunkelmodus",
-      "mobile_light": "Hellmodus"
-    },
-    "showcase": {
-      "tab0": "Start",
-      "tab1": "Nachrichten",
-      "tab2": "Kontakte",
-      "tab3": "Anrufe",
-      "tab4": "Interfaces",
-      "tab5": "Karte",
-      "tab6": "Nomadnet",
-      "tab7": "Visualisierer",
-      "tab8": "Dienstprogramme",
-      "tab9": "Einstellungen",
-      "tab10": "Identität",
-      "tab11": "Über",
-      "desktop_fmt": "Desktop - %s - Screenshot",
-      "mobile_fmt": "Mobil - %s"
+    "privacy": {
+        "h1": "Datenschutz",
+        "updated": "Stand: 12. Juli 2026",
+        "p_scope": "Diese Erklärung beschreibt, wie die öffentliche Marketing-Website unter meshchatx.com (die \"Website\") Informationen verarbeitet, wenn Sie Seiten der Website besuchen. Sie gilt nicht für die MeshChatX-Anwendung, Reticulum oder Drittanbieterdienste, die Sie separat nutzen.",
+        "h2_analytics": "Analyse und Datenanfragen",
+        "p_analytics": "Download-, Versions- und Interface-Verzeichnisdaten kommen von dieser Website. Nach Ablauf des Caches holt die Website öffentliche GitHub-Release-Metadaten für MeshChatX und die eingereichte Online-Liste von directory.rns.recipes. Das ist keine Werbung und dient nicht dem Aufbau eines Personenprofils.",
+        "p_analytics_detail": "Auf der Start- und der Download-Seite lesen wir Versionsinformationen aus einer statischen Datei, die von derselben Website ausgeliefert wird. Es werden keine personenbezogenen Daten für Analysen erfasst, und Ihr Surfverhalten wird nicht mit Drittanbieter-Analysediensten geteilt. Wenn Sie Download- oder Quelllinks nutzen, gehen diese Anfragen an den jeweiligen Host, wenn Sie darauf klicken.",
+        "h2_rights": "Ihre Rechte (EWR und UK)",
+        "p_rights": "Je nach Wohnsitz können Sie Rechte auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung personenbezogener Daten sowie auf Beschwerde bei einer Aufsichtsbehörde haben. Diese Marketing-Website verarbeitet nur das Nötigste. Bei konkreten Anfragen zu dieser Website kontaktieren Sie uns wie unten angegeben. Wir antworten im Rahmen des geltenden Rechts.",
+        "h2_contact": "Kontakt",
+        "p_contact": "Bei Datenschutzfragen zu dieser Website nutzen Sie bitte die <a href=\"/de/contact\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">Kontaktseite</a>.",
+        "h2_no_tracking": "Kein Tracking, keine Telemetrie, keine Werbung",
+        "p_no_tracking": "Wir erfassen keine Analyse-Telemetrie, schalten keine Werbung und verfolgen Sie nicht über das Web. Die Website lädt keine Drittanbieter-Analyse-, Werbe- oder Social-Tracking-Pixel.",
+        "h2_cookies": "Cookies und lokaler Speicher",
+        "p_cookies": "Cookies oder Browser-Speicher der Website sind streng funktional. Sie speichern nur Einstellungen, die Sie wählen oder die Ihr Browser bereits signalisiert.",
+        "p_cookies_detail": "Dazu gehören Design (hell, dunkel oder System) und Sprache, wenn Sie eine Locale wählen oder beim ersten Besuch der Accept-Language-Header Ihres Browsers ausgewertet wird. Das dient nicht der Werbung, dem Profiling oder dem Tracking über Websites hinweg."
     },
     "home": {
-      "version_here": "MeshChatX v%s ist da"
+        "hero": {
+            "h1": "Alles-in-einem-Reticulum-Client",
+            "lead": "MeshChatX ist ein All-in-One-Reticulum-Client mit Messaging, Anrufen und einem NomadNet-Browser."
+        },
+        "platform": {
+            "macos": "macOS",
+            "linux": "Linux",
+            "windows": "Windows",
+            "docker": "Docker",
+            "python": "Python",
+            "android": "Android"
+        },
+        "showcase": {
+            "mobile": "Mobil",
+            "desktop": "Desktop"
+        },
+        "cap": {
+            "messaging": "Messaging",
+            "calls": "Anrufe",
+            "browser": "Browser",
+            "file_transfer": "Dateitransfer",
+            "bots": "Bots",
+            "micron": "Micron-Editor",
+            "archiver": "Archivierer",
+            "mapping": "Kartierung",
+            "discovery": "Interface-Discovery",
+            "identities": "Mehrere Identitäten",
+            "banishment": "Bann",
+            "backups": "Auto-Backups und Snapshots",
+            "customizable": "Anpassbar",
+            "telemetry": "Telemetrie (LXMF)",
+            "host_pages": "Host-Seiten",
+            "soon": "(demnächst)",
+            "more": "+ mehr"
+        },
+        "cta": {
+            "download": "Download",
+            "source": "Quellcode ansehen"
+        },
+        "section": {
+            "infra_h2": "Keine zentralen Server",
+            "infra_lead": "Der Verkehr läuft über Reticulum-Mesh-Links, nicht über ein von MeshChatX betriebenes Backend."
+        },
+        "feature": {
+            "decentralized_h3": "Dezentral",
+            "decentralized_p": "Auf Reticulum aufgebaut. Keine von MeshChatX betriebenen Nachrichtenserver. Identitäten und Nachrichtenverlauf bleiben auf deinem Gerät.",
+            "crypto_h3": "Offene Kryptografie",
+            "crypto_p": "Reticulum veröffentlicht sein Krypto-Design in einer offenen Spezifikation. MeshChatX nutzt diesen Stack unverändert.",
+            "crypto_link": "Spezifikation lesen",
+            "mesh_h3": "Mesh-Netzwerk",
+            "mesh_p": "MeshChatX läuft über Internet-Links, Funk, LoRa und andere Transporte, die Reticulum unterstützt.",
+            "platform_h3": "Plattformunterstützung",
+            "platform_p": "Desktop (Electron) und Web (Docker oder Python). Android als APK und über Termux.",
+            "sandbox_h3": "Native OS-Sandbox",
+            "sandbox_p": "Windows-Desktop-Builds laufen in :appcontainer. Linux-Builds nutzen :landlock und :seccomp, wo der Kernel das unterstützt."
+        },
+        "security": {
+            "h2": "Sicherheit & Integrität",
+            "lead": "Desktop-Releases liefern Provenance-Attestierungen, Paketintegritätsprüfungen und native OS-Sandboxing, wo die Plattform es zulässt.",
+            "bullet_slsa": "<a href=\"https://slsa.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">SLSA</a> Stufe 3 Provenance für Release-Builds.",
+            "bullet_asar": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/asar-integrity\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">ASAR-Integrität</a> erkennt Manipulationen an gepackten Anwendungsressourcen.",
+            "bullet_sandbox": "Native OS-Sandbox: <a href=\"https://learn.microsoft.com/en-us/windows/win32/secauthz/appcontainer-for-legacy-applications-\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">AppContainer</a> unter Windows, <a href=\"https://landlock.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Landlock</a> und <a href=\"https://www.kernel.org/doc/html/latest/userspace-api/seccomp_filter.html\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">seccomp-bpf</a> unter Linux.",
+            "bullet_sigstore": "<a href=\"https://www.sigstore.dev/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">Sigstore</a> Cosign-Signaturen für nachprüfbare Artefakte, wo anwendbar.",
+            "bullet_sast": "Statische Analyse und Dependency-Scanning mit Trivy, pip-audit, Ruff und CodeQL in der Delivery-Pipeline.",
+            "bullet_csp": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#7-define-a-content-security-policy\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">CSP</a> plus strenge Defaults für Remote-Inhalte in der Electron-Shell (einschließlich CORS-Disziplin, wo relevant).",
+            "bullet_transport": "<a href=\"https://www.electronjs.org/docs/latest/tutorial/security#1-only-load-secure-content\" class=\"mcx-link-blue\" style=\"text-decoration:underline\" target=\"_blank\" rel=\"noopener noreferrer\">HTTPS und WSS</a> standardmäßig für Remote-Seiten und Transporte, wo unterstützt."
+        },
+        "split": {
+            "h2_line1": "Anonym",
+            "h2_line2": "& ohne Konto",
+            "item1_h4": "Mehrere Identitäten",
+            "item1_p": "Erzeuge so viele Identitäten, wie du brauchst. Wechsle zwischen ihnen, ohne ihre Datenspeicher zu vermischen.",
+            "item2_h4": "Keine Altersprüfung",
+            "item2_p": "Kein Ausweis, keine Telefonnummer, keine E-Mail. Zugang ohne Identitätsprüfung durch Dritte.",
+            "item3_h4": "Keine Zensur",
+            "item3_p": "Nachrichten verbreiten sich im Mesh. Lokale Archive halten den Verlauf bereit, wenn ein entfernter Peer offline ist."
+        },
+        "videos": {
+            "h2": "Videos",
+            "lead": "MeshChatX-Videos",
+            "youtube_title": "MeshChatX auf YouTube",
+            "youtube_title_2": "MeshChatX auf YouTube",
+            "play": "Video abspielen: :title"
+        }
     },
-    "download": {
-      "no_release": "Keine Release-Informationen verfügbar.",
-      "latest": "Neuestes",
-      "stable": "stabil",
-      "prerelease": "Vorabversion",
-      "channel_stable": "Stabil",
-      "channel_pre": "Vorabversion",
-      "fetch_error": "Releases konnten nicht geladen werden",
-      "github_fallback": "GitHub-Releases",
-      "published_prefix": "veröffentlicht",
-      "published_just_now": "gerade veröffentlicht"
-    }
-  },
-  "ifx": {
-    "h1": "Interfaces",
-    "lead": "Online-Reticulum-Interfaces aus directory.rns.recipes. Kopiere einen Block nach ~/.reticulum/config unter [interfaces]. Diese Website hält eine lokale Kopie und aktualisiert sie alle 72 Stunden.",
-    "count": "%n online",
-    "source": "directory.rns.recipes",
-    "api": "JSON-API",
-    "updated": "Zwischengespeichert %s",
-    "stale": "Zwischengespeicherte Kopie. directory.rns.recipes hat nicht geantwortet.",
-    "search_label": "Interfaces suchen",
-    "search_placeholder": "Name, Host, Typ oder Netz",
-    "filter_all": "Alle",
-    "filter_type": "Interface-Typ",
-    "filter_network": "Netz",
-    "copy": "Config kopieren",
-    "copied": "Kopiert",
-    "config": "Config",
-    "empty": "Keine Interfaces in der lokalen Kopie.",
-    "no_results": "Keine Interfaces passen zur Suche.",
-    "type": {
-      "tcp": "TCP",
-      "backbone": "Backbone",
-      "i2p": "I2P",
-      "udp": "UDP"
+    "roadmap": {
+        "h1": "Roadmap",
+        "lead": "Große MeshChatX-Releases kommen etwa alle zwei bis drei Monate. Jeder Eintrag listet die geplante Arbeit für diese Version.",
+        "notice": "Termine und Funktionen können sich mit den Prioritäten ändern.",
+        "rail_label": "Release-Zeitachse",
+        "status_done": "Fertig",
+        "status_progress": "In Arbeit",
+        "status_planned": "Geplant",
+        "status_upcoming": "Als Nächstes",
+        "status_released": "Veröffentlicht",
+        "changelog_preview": "Vollständiges Änderungsprotokoll"
     },
-    "network": {
-      "clearnet": "Clearnet",
-      "yggdrasil": "Yggdrasil",
-      "i2p": "I2P",
-      "other": "Andere"
+    "js": {
+        "theme": {
+            "toggle_dark": "Zum Dunkelmodus wechseln",
+            "toggle_light": "Zum Hellmodus wechseln",
+            "mobile_dark": "Dunkelmodus",
+            "mobile_light": "Hellmodus"
+        },
+        "showcase": {
+            "tab0": "Start",
+            "tab1": "Nachrichten",
+            "tab2": "Kontakte",
+            "tab3": "Anrufe",
+            "tab4": "Interfaces",
+            "tab5": "Karte",
+            "tab6": "Nomadnet",
+            "tab7": "Visualisierer",
+            "tab8": "Dienstprogramme",
+            "tab9": "Einstellungen",
+            "tab10": "Identität",
+            "tab11": "Über",
+            "desktop_fmt": "Desktop - %s - Screenshot",
+            "mobile_fmt": "Mobil - %s"
+        },
+        "home": {
+            "version_here": "MeshChatX v%s ist da"
+        },
+        "download": {
+            "no_release": "Keine Release-Informationen verfügbar.",
+            "latest": "Neuestes",
+            "stable": "stabil",
+            "prerelease": "Vorabversion",
+            "channel_stable": "Stabil",
+            "channel_pre": "Vorabversion",
+            "fetch_error": "Releases konnten nicht geladen werden",
+            "github_fallback": "GitHub-Releases",
+            "published_prefix": "veröffentlicht",
+            "published_just_now": "gerade veröffentlicht"
+        }
+    },
+    "ifx": {
+        "h1": "Interfaces",
+        "lead": "Online-Reticulum-Interfaces aus directory.rns.recipes. Kopiere einen Block nach ~/.reticulum/config unter [interfaces]. Diese Website hält eine lokale Kopie und aktualisiert sie alle 72 Stunden.",
+        "count": "%n online",
+        "source": "directory.rns.recipes",
+        "api": "JSON-API",
+        "updated": "Zwischengespeichert %s",
+        "stale": "Zwischengespeicherte Kopie. directory.rns.recipes hat nicht geantwortet.",
+        "search_label": "Interfaces suchen",
+        "search_placeholder": "Name, Host, Typ oder Netz",
+        "filter_all": "Alle",
+        "filter_type": "Interface-Typ",
+        "filter_network": "Netz",
+        "copy": "Config kopieren",
+        "copied": "Kopiert",
+        "config": "Config",
+        "empty": "Keine Interfaces in der lokalen Kopie.",
+        "no_results": "Keine Interfaces passen zur Suche.",
+        "type": {
+            "tcp": "TCP",
+            "backbone": "Backbone",
+            "i2p": "I2P",
+            "udp": "UDP"
+        },
+        "network": {
+            "clearnet": "Clearnet",
+            "yggdrasil": "Yggdrasil",
+            "i2p": "I2P",
+            "other": "Andere"
+        }
+    },
+    "changelog": {
+        "h1": "Änderungsprotokoll",
+        "lead": "Versionsnotizen aus dem MeshChatX-Repository, neueste zuerst. Unveröffentlichte Arbeit bleibt oben, bis sie ausgeliefert wird.",
+        "rss": "RSS-Feed",
+        "rss_title": "MeshChatX Änderungsprotokoll RSS",
+        "source": "Auf GitHub ansehen",
+        "empty": "Das Änderungsprotokoll konnte gerade nicht geladen werden. Später erneut versuchen oder auf GitHub öffnen.",
+        "toc": "Versionen",
+        "released": "Veröffentlicht",
+        "unreleased": "Unveröffentlicht",
+        "load_more": "Weitere Versionen laden",
+        "loading": "Weitere Versionen werden geladen…"
+    },
+    "offline": {
+        "h1": "Sie sind offline",
+        "lead": "Diese Seite liegt nicht im Offline-Cache. Stellen Sie die Verbindung wieder her oder öffnen Sie Start, Docs, Interfaces oder Änderungsprotokoll, falls Sie sie zuvor besucht haben.",
+        "retry": "Erneut versuchen",
+        "home": "Start",
+        "available": "Offline verfügbare Seiten",
+        "link_home": "Start",
+        "link_docs": "Docs",
+        "link_interfaces": "Interfaces",
+        "link_changelog": "Änderungsprotokoll"
+    },
+    "pwa": {
+        "updating": "Neue Version bereit. Wird neu geladen…",
+        "offline": "Sie sind offline",
+        "online": "Wieder online. Suche nach Updates…"
+    },
+    "branding": {
+        "h1": "Branding",
+        "lead": "Offizielle MeshChatX-Markenzeichen, Icons und Farben für Pressekit, Docs und Stores.",
+        "colors_h2": "Farben",
+        "colors_lead": "Primärpalette von meshchatx.com.",
+        "lockup_h2": "Logo mit Text",
+        "lockup_lead": "Markenzeichen plus MeshChatX in Outfit. PNG und WebP bleiben transparent in dunkler und heller Schrift. Helles JPG auf Weiß. Dunkles JPG auf Fast-Schwarz.",
+        "logo_h2": "Logo",
+        "logo_lead": "Volles Markenzeichen in gängigen Exportgrößen. PNG und WebP mit Transparenz. JPG-Varianten auf Weiß oder Fast-Schwarz.",
+        "icon_h2": "App-Icons",
+        "icon_lead": "Quadratische Icons mit Pixelgröße auf jeder Karte. Inklusive ICO für ältere Favicons.",
+        "wordmark_h2": "Wortmarke",
+        "wordmark_lead": "Navbar-Markenzeichen, nach Höhe in Pixeln skaliert."
+    },
+    "git": {
+        "h1": "Quell-Repositories",
+        "lead": "rngit ist Git über Reticulum und der kanonische Baum. GitHub und LavaForge sind öffentliche Spiegel für CI und Releases.",
+        "primary_badge": "Kanonisch",
+        "mirror_badge": "Spiegel",
+        "open_repo": "Repository öffnen",
+        "clone_rns": "Über Reticulum klonen",
+        "nomadnet": "NomadNet",
+        "click_copy": "Zum Kopieren klicken",
+        "copied": "Kopiert",
+        "copy_cmd": "Kopieren",
+        "rngit_h3": "rngit",
+        "rngit_lead": "Git über Reticulum. Im Mesh klonen oder die NomadNet-Repo-Seite öffnen. Kein Clearnet-Endpunkt.",
+        "github_h3": "GitHub",
+        "github_lead": "Öffentlicher Spiegel für Releases, CI und Distribution. Für die meisten Mitwirkenden geeignet.",
+        "lavaforge_h3": "LavaForge",
+        "lavaforge_lead": "Community-Forge-Spiegel. Nützlich, wenn Sie bereits auf LavaForge arbeiten."
+    },
+    "docs": {
+        "meta_suffix": "MeshChatX Docs",
+        "nav_label": "Dokumentation",
+        "search_placeholder": "Docs durchsuchen...",
+        "search_empty": "Keine passenden Seiten.",
+        "menu": "Docs-Menü",
+        "breadcrumb": "Brotkrumen",
+        "export": "Exportieren",
+        "export_all": "Alle Docs herunterladen",
+        "toc": "Auf dieser Seite",
+        "pager": "Seitennavigation",
+        "prev": "Zurück",
+        "next": "Weiter",
+        "group": {
+            "start": "Start",
+            "use": "Funktionen",
+            "authoring": "Schreiben",
+            "platforms": "Plattformleitfäden",
+            "ops": "Betrieb"
+        }
     }
-  }
 }
