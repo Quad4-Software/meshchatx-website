@@ -101,8 +101,12 @@
         "pick": "Scegli lingua",
         "en": "English",
         "de": "Deutsch",
-        "ru": "Русский",
+        "es": "Español",
+        "fi": "Suomi",
+        "fr": "Français",
         "it": "Italiano",
+        "nl": "Nederlands",
+        "ru": "Русский",
         "zh": "中文"
     },
     "footer": {
@@ -187,6 +191,7 @@
         },
         "cap": {
             "messaging": "Messaggistica",
+            "rrc": "RRC",
             "calls": "Chiamate",
             "browser": "Browser",
             "file_transfer": "Trasferimento file",
@@ -212,20 +217,22 @@
         },
         "section": {
             "infra_h2": "Nessun server aziendale",
-            "infra_lead": "I messaggi viaggiano su collegamenti Reticulum che configuri tu. MeshChatX non ospita la chat."
+            "infra_lead": "MeshChatX non ospita la tua chat. I messaggi viaggiano su collegamenti che configuri tu."
         },
         "feature": {
-            "decentralized_h3": "La chat resta sul dispositivo",
-            "decentralized_p": "Non esiste un server di messaggi MeshChatX. Identità e cronologia restano sul dispositivo che usi.",
-            "crypto_h3": "Crittografia pubblicata",
-            "crypto_p": "Reticulum pubblica come funziona la crittografia. MeshChatX usa quella crittografia senza modifiche.",
-            "crypto_link": "Come funziona",
-            "mesh_h3": "Internet, Wi-Fi o radio",
-            "mesh_p": "Stessa app in rete locale, su internet o via radio, LoRa incluso. Reticulum trasporta il traffico sul collegamento che gli dai.",
-            "platform_h3": "Computer, browser o telefono",
-            "platform_p": "App desktop per Windows, macOS e Linux. Usala nel browser, o installa un APK Android. Termux resta per l'installazione da riga di comando.",
-            "sandbox_h3": "Il sistema limita l'app",
-            "sandbox_p": "Le build desktop Windows girano in :appcontainer. Le build Linux usano :landlock e :seccomp, che limitano cosa l'app può toccare sul computer."
+            "crypto_h3": "Messaggi cifrati",
+            "crypto_p": "Le chat usano la crittografia Reticulum. È la rete su cui gira MeshChatX.",
+            "crypto_link": "Reticulum Crypto",
+            "no_cloud_h3": "Nessun data center",
+            "no_cloud_p": "Nessun data center aziendale sta in mezzo. Il traffico resta tra chi parla.",
+            "no_account_h3": "Nessuna registrazione",
+            "no_account_p": "Niente telefono, email o username. Installalo e inizia.",
+            "tunnels_h3": "Internet, radio o mesh",
+            "tunnels_p": "Reticulum funziona su Wi-Fi o internet aperto, radio e LoRa, o percorsi come I2P e Yggdrasil.",
+            "languages_h3": "Tante lingue",
+            "languages_p": "MeshChatX è disponibile in nove lingue. Scegline una per questa pagina.",
+            "local_h3": "Salvato sul tuo dispositivo",
+            "local_p": "Identità e cronologia restano sul dispositivo che installi. Non teniamo una copia."
         },
         "security": {
             "h2": "Sicurezza e integrità",
@@ -246,7 +253,7 @@
             "item2_h4": "Nessuna verifica dell'età",
             "item2_p": "Nessun documento, telefono o email. Non devi dimostrare a terzi chi sei per entrare.",
             "item3_h4": "Nessuna censura",
-            "item3_p": "Non c'è un interruttore MeshChatX che cancella una conversazione per tutti. Le copie restano sui dispositivi che già le hanno, anche se l'altra persona è offline."
+            "item3_p": "Reticulum è fatto perché terzi non possano controllare o censurare la comunicazione. Non c’è un interruttore centrale che possa spegnere le persone."
         },
         "videos": {
             "h2": "Video",
@@ -301,6 +308,7 @@
             "prerelease": "pre-release",
             "channel_stable": "Stabile",
             "channel_pre": "Pre-release",
+            "select_version": "Versione",
             "fetch_error": "Impossibile caricare le release",
             "github_fallback": "Release su GitHub",
             "published_prefix": "pubblicato",
@@ -443,8 +451,8 @@
         "stat_packages": "pacchetti",
         "stat_edges": "archi",
         "showing": "%shown di %total",
-        "focus_hint": "Seleziona un pacchetto per ispezionarne il vicinato.",
-        "reset_focus": "Mostra manifest",
+        "focus_hint": "Trascina il canvas per spostarti. Scorri per lo zoom. Trascina i nodi per riordinare.",
+        "reset_focus": "Reimposta vista",
         "manifests": "Lockfile e manifest",
         "loading": "Caricamento SBOM…",
         "error": "Impossibile caricare l'SBOM per questa versione.",
@@ -468,6 +476,10 @@
         "col_type": "Tipo",
         "lead_short": "SBOM CycloneDX dalle release GitHub. Memorizzato nella cache di questo sito.",
         "toggle_list": "Pacchetti",
-        "toggle_inspector": "Dettagli"
+        "toggle_inspector": "Dettagli",
+        "matches": "Pacchetti corrispondenti",
+        "more_deps": "altri %n",
+        "deps_count": "%n dipendenze",
+        "load_more": "Carica altri"
     }
 }

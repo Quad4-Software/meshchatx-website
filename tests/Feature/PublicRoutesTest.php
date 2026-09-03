@@ -21,7 +21,7 @@ class PublicRoutesTest extends TestCase
 
     public function test_locale_prefixed_home_responds_ok(): void
     {
-        foreach (['de', 'ru', 'it', 'zh'] as $locale) {
+        foreach (config('meshchatx.prefixed_locales') as $locale) {
             $this->get('/'.$locale)->assertOk();
             $this->get('/'.$locale.'/download')->assertOk();
         }

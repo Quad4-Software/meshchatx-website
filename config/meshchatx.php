@@ -32,15 +32,19 @@ return [
     'quad4_url' => 'https://quad4.io/',
     'website_license_url' => 'https://github.com/MeshChatX/website/blob/master/LICENSE',
 
-    'locales' => ['en', 'de', 'ru', 'it', 'zh'],
+    'locales' => ['en', 'de', 'es', 'fi', 'fr', 'it', 'nl', 'ru', 'zh'],
     'default_locale' => 'en',
-    'prefixed_locales' => ['de', 'ru', 'it', 'zh'],
+    'prefixed_locales' => ['de', 'es', 'fi', 'fr', 'it', 'nl', 'ru', 'zh'],
 
     'og_locales' => [
         'en' => 'en_US',
         'de' => 'de_DE',
-        'ru' => 'ru_RU',
+        'es' => 'es_ES',
+        'fi' => 'fi_FI',
+        'fr' => 'fr_FR',
         'it' => 'it_IT',
+        'nl' => 'nl_NL',
+        'ru' => 'ru_RU',
         'zh' => 'zh_CN',
     ],
 
@@ -109,6 +113,7 @@ return [
 
     'capabilities' => [
         'messaging',
+        'rrc',
         'calls',
         'browser',
         'file_transfer',

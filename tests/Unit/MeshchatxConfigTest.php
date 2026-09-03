@@ -76,7 +76,7 @@ class MeshchatxConfigTest extends TestCase
         $en = $flatten(json_decode((string) file_get_contents(lang_path('en.json')), true, 512, JSON_THROW_ON_ERROR));
         $enDownload = $flatten(json_decode((string) file_get_contents(lang_path('en.download.json')), true, 512, JSON_THROW_ON_ERROR));
 
-        foreach (['de', 'ru', 'it', 'zh'] as $locale) {
+        foreach (config('meshchatx.prefixed_locales') as $locale) {
             $localeKeys = $flatten(json_decode((string) file_get_contents(lang_path($locale.'.json')), true, 512, JSON_THROW_ON_ERROR));
             $downloadKeys = $flatten(json_decode((string) file_get_contents(lang_path($locale.'.download.json')), true, 512, JSON_THROW_ON_ERROR));
 

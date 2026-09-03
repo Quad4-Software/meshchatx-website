@@ -6,8 +6,10 @@
     "nojs_banner_title": "JavaScript отключён",
     "nojs_banner_text": "Прямые ссылки на загрузки и актуальные метаданные релизов подгружаются при включённом JavaScript. Команды Docker и Podman ниже работают как указано. Ссылку на страницу релизов для установщиков и wheel см. в следующем блоке.",
     "sbom": "SBOM",
+    "sha256": "SHA256",
+    "copy_sha256": "Скопировать контрольную сумму SHA256",
     "github_fallback": "Релизы на GitHub",
-    "github_also": "Также на",
+    "github_also": "Также см.:",
     "github_releases": "Релизы на GitHub",
     "releases_atom": "Лента релизов (Atom)",
     "tabs": {
@@ -17,7 +19,8 @@
       "docker": "Docker / Podman",
       "python": "Python",
       "android": "Android",
-      "umbrel": "Umbrel"
+      "umbrel": "Umbrel",
+      "flatpak": "Flatpak"
     },
     "macos": {
       "h2": "macOS",
@@ -156,7 +159,8 @@
       "android_hint": "APK / Termux",
       "docker_hint": "Контейнеры",
       "python_hint": "PyPI / .whl",
-      "umbrel_hint": "Магазин приложений"
+      "umbrel_hint": "Магазин приложений",
+      "flatpak_hint": "Пакет"
     },
     "cta": {
       "download_for": "Скачать для %s",
@@ -164,6 +168,16 @@
       "interfaces": "Каталог интерфейсов",
       "dependencies": "Зависимости (SBOM)",
       "open_tab": "Другие платформы"
+    },
+    "download_server": "Сервер загрузки",
+    "download_server_bunny": "BunnyCDN",
+    "download_server_github": "GitHub",
+    "flatpak": {
+      "h2": "Flatpak",
+      "friendly": "Установите Flatpak-пакет на любой Linux-дистрибутив с Flatpak.",
+      "btn": "Скачать .flatpak",
+      "no_bundle": "В этом выпуске нет Flatpak-пакета.",
+      "install": "Установка / Запуск"
     }
   }
 }

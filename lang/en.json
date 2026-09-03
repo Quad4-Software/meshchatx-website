@@ -101,9 +101,13 @@
         "pick": "Choose language",
         "en": "English",
         "de": "Deutsch",
-        "ru": "Russian",
-        "it": "Italian",
-        "zh": "Chinese"
+        "es": "Español",
+        "fi": "Suomi",
+        "fr": "Français",
+        "it": "Italiano",
+        "nl": "Nederlands",
+        "ru": "Русский",
+        "zh": "中文"
     },
     "footer": {
         "tagline": "Messaging, calls, and NomadNet over the Reticulum network.",
@@ -187,6 +191,7 @@
         },
         "cap": {
             "messaging": "Messaging",
+            "rrc": "RRC",
             "calls": "Calls",
             "browser": "Browser",
             "file_transfer": "File Transfer",
@@ -212,20 +217,22 @@
         },
         "section": {
             "infra_h2": "No company servers",
-            "infra_lead": "Messages move over Reticulum links you set up. MeshChatX does not host the chat."
+            "infra_lead": "MeshChatX does not host your chat. Messages move over links you set up."
         },
         "feature": {
-            "decentralized_h3": "Your device keeps the chat",
-            "decentralized_p": "There is no MeshChatX message server. Your identity and message history stay on the device you use.",
-            "crypto_h3": "Published encryption",
-            "crypto_p": "Reticulum publishes how the encryption works. MeshChatX uses that design unchanged.",
-            "crypto_link": "Read how it works",
-            "mesh_h3": "Internet, Wi-Fi, or radio",
-            "mesh_p": "Same app on a home network, over the internet, or over radio including LoRa. Reticulum carries traffic on the link you give it.",
-            "platform_h3": "Computer, browser, or phone",
-            "platform_p": "Desktop apps for Windows, macOS, & Linux. Use it in a browser, or install an Android APK. Termux is there if you want a command-line install.",
-            "sandbox_h3": "The OS restricts the app",
-            "sandbox_p": "Windows desktop builds run inside :appcontainer. Linux builds use :landlock and :seccomp, which limit what the app can reach on the machine."
+            "crypto_h3": "Encrypted messages",
+            "crypto_p": "Chats use Reticulum encryption. That is the network MeshChatX runs on.",
+            "crypto_link": "Reticulum Crypto",
+            "no_cloud_h3": "No data centers",
+            "no_cloud_p": "No company data centers sit in the middle. Traffic stays between the people talking.",
+            "no_account_h3": "No signup",
+            "no_account_p": "No phone number, email, or username. Install it and start.",
+            "tunnels_h3": "Internet, radio, or mesh",
+            "tunnels_p": "Reticulum works over Wi-Fi or the open internet, radio and LoRa, or paths like I2P and Yggdrasil.",
+            "languages_h3": "Many languages",
+            "languages_p": "MeshChatX is available in nine languages. Pick one for this page.",
+            "local_h3": "Saved on your device",
+            "local_p": "Your identity and history stay on the device you install. We do not keep a copy."
         },
         "security": {
             "h2": "Security & integrity",
@@ -246,7 +253,7 @@
             "item2_h4": "No Age Verification",
             "item2_p": "No government ID, phone number, or email. You don't pass a third-party identity check to join.",
             "item3_h4": "No Censorship",
-            "item3_p": "There is no MeshChatX switch that deletes a conversation for everyone. Copies stay on devices that already have them, including when the other person is offline."
+            "item3_p": "Reticulum is built so outside parties cannot control or censor the communication. There is no central switch that can shut people off."
         },
         "videos": {
             "h2": "Videos",
@@ -344,6 +351,7 @@
             "prerelease": "pre-release",
             "channel_stable": "Stable",
             "channel_pre": "Pre-release / Nightly",
+            "select_version": "Version",
             "fetch_error": "Failed to load download index",
             "github_fallback": "GitHub releases",
             "published_prefix": "published",
@@ -407,8 +415,8 @@
         "stat_packages": "packages",
         "stat_edges": "edges",
         "showing": "Showing %shown of %total",
-        "focus_hint": "Select a package to inspect its neighborhood.",
-        "reset_focus": "Show manifests",
+        "focus_hint": "Drag the canvas to pan. Scroll to zoom. Drag nodes to rearrange.",
+        "reset_focus": "Reset view",
         "manifests": "Lockfiles and manifests",
         "loading": "Loading SBOM…",
         "error": "Could not load the SBOM for this version.",
@@ -429,7 +437,11 @@
         "col_version": "Version",
         "col_ecosystem": "Ecosystem",
         "col_license": "License",
-        "col_type": "Type"
+        "col_type": "Type",
+        "matches": "Matching packages",
+        "more_deps": "%n more",
+        "deps_count": "%n deps",
+        "load_more": "Load more"
     },
     "git": {
         "h1": "Source repositories",

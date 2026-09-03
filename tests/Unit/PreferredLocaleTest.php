@@ -14,7 +14,7 @@ class PreferredLocaleTest extends TestCase
             'HTTP_ACCEPT_LANGUAGE' => 'fr-FR,fr;q=0.9,de-DE;q=0.8,en;q=0.7',
         ]);
 
-        $this->assertSame('de', PreferredLocale::fromAcceptLanguage($request));
+        $this->assertSame('fr', PreferredLocale::fromAcceptLanguage($request));
     }
 
     public function test_cookie_wins_in_resolve(): void

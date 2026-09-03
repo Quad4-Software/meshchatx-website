@@ -6,8 +6,10 @@
     "nojs_banner_title": "已关闭 JavaScript",
     "nojs_banner_text": "直接下载链接与实时版本元数据在启用 JavaScript 后加载。下方的 Docker 与 Podman 命令可按所示使用。下一节中的发布链接用于获取带版本号的安装包与 wheel。",
     "sbom": "SBOM",
+    "sha256": "SHA256",
+    "copy_sha256": "复制 SHA256 校验和",
     "github_fallback": "GitHub 发布",
-    "github_also": "也可前往",
+    "github_also": "另见：",
     "github_releases": "GitHub 发布",
     "releases_atom": "发布订阅 (Atom)",
     "tabs": {
@@ -17,7 +19,8 @@
       "docker": "Docker / Podman",
       "python": "Python",
       "android": "Android",
-      "umbrel": "Umbrel"
+      "umbrel": "Umbrel",
+      "flatpak": "Flatpak"
     },
     "macos": {
       "h2": "macOS",
@@ -156,7 +159,8 @@
       "android_hint": "APK / Termux",
       "docker_hint": "容器",
       "python_hint": "PyPI / .whl",
-      "umbrel_hint": "应用商店"
+      "umbrel_hint": "应用商店",
+      "flatpak_hint": "软件包"
     },
     "cta": {
       "download_for": "下载适用于 %s",
@@ -164,6 +168,16 @@
       "interfaces": "接口目录",
       "dependencies": "依赖项（SBOM）",
       "open_tab": "其他平台"
+    },
+    "download_server": "下载服务器",
+    "download_server_bunny": "BunnyCDN",
+    "download_server_github": "GitHub",
+    "flatpak": {
+      "h2": "Flatpak",
+      "friendly": "在已安装 Flatpak 的任意 Linux 发行版上安装该软件包。",
+      "btn": "下载 .flatpak",
+      "no_bundle": "此版本没有 Flatpak 软件包。",
+      "install": "安装 / 运行"
     }
   }
 }
