@@ -20,7 +20,8 @@
             "git": "Git | MeshChatX",
             "docs": "Документация | MeshChatX",
             "changelog": "Список изменений | MeshChatX",
-            "offline": "Офлайн | MeshChatX"
+            "offline": "Офлайн | MeshChatX",
+            "dependency": "Зависимости | MeshChatX"
         },
         "og_image_alt": "Логотип MeshChatX",
         "desc": {
@@ -37,7 +38,8 @@
             "branding": "Логотипы, иконки и цвета MeshChatX для прессы и продукта.",
             "git": "Клонируйте MeshChatX через rngit по Reticulum или используйте зеркала GitHub и LavaForge.",
             "docs": "Документация MeshChatX из пакета docs приложения: установка, сообщения, звонки LXST, NomadNet, интерфейсы и руководства по платформам.",
-            "offline": "Вы офлайн. Откройте кэшированную страницу MeshChatX или восстановите соединение."
+            "offline": "Вы офлайн. Откройте кэшированную страницу MeshChatX или восстановите соединение.",
+            "dependency": "CycloneDX SBOM релизов MeshChatX: граф пакетов, лицензии и цепочка поставок по версии."
         }
     },
     "error": {
@@ -82,12 +84,17 @@
         "interfaces": "Интерфейсы",
         "git": "Git",
         "download": "Скачать",
-        "toggle_theme": "Переключить тему",
+        "toggle_theme": "Тема",
         "mobile_menu": "Открыть меню",
         "mobile_menu_close": "Закрыть меню",
         "mobile_nav": "Мобильная версия",
         "docs": "Документация",
-        "branding": "Брендинг"
+        "branding": "Брендинг",
+        "dependency": "Зависимости",
+        "secondary": "Ещё",
+        "theme_light": "Светлая",
+        "theme_dark": "Тёмная",
+        "theme_system": "Системная"
     },
     "lang": {
         "label": "Язык",
@@ -108,7 +115,9 @@
         "privacy": "Конфиденциальность",
         "license_badge": "MIT + 0BSD",
         "meta_copyright": "© 2026 MeshChatX.",
-        "meta_site": "MeshChatX - проект <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>."
+        "meta_site": "MeshChatX - проект <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>.",
+        "product": "Продукт",
+        "explore": "Обзор"
     },
     "contact": {
         "h1": "Контакты",
@@ -197,24 +206,26 @@
         },
         "cta": {
             "download": "Скачать",
-            "source": "Исходный код"
+            "source": "Исходный код",
+            "docs": "Документация",
+            "download_for": "Скачать для %s"
         },
         "section": {
-            "infra_h2": "Без центральных серверов",
-            "infra_lead": "Трафик идёт по mesh-каналам Reticulum, а не через backend, которым управляет MeshChatX."
+            "infra_h2": "Без серверов компании",
+            "infra_lead": "Сообщения идут по каналам Reticulum, которые настраиваете вы. MeshChatX не хранит чат на своих серверах."
         },
         "feature": {
-            "decentralized_h3": "Децентрализация",
-            "decentralized_p": "На базе Reticulum. Без серверов сообщений под управлением MeshChatX. Идентичности и история сообщений остаются на вашем устройстве.",
-            "crypto_h3": "Открытая криптография",
-            "crypto_p": "Reticulum публикует свою криптографию в открытой спецификации. MeshChatX использует этот стек без изменений.",
-            "crypto_link": "Читать спецификацию",
-            "mesh_h3": "Mesh-сеть",
-            "mesh_p": "MeshChatX работает через интернет, радио, LoRa и другие транспорты, которые поддерживает Reticulum.",
-            "platform_h3": "Поддержка платформ",
-            "platform_p": "Desktop (Electron) и web (Docker или Python). Android как APK и через Termux.",
-            "sandbox_h3": "Нативная песочница ОС",
-            "sandbox_p": "Десктопные сборки Windows работают в :appcontainer. Сборки Linux используют :landlock и :seccomp, где это поддерживает ядро."
+            "decentralized_h3": "Чат остаётся на устройстве",
+            "decentralized_p": "Сервера сообщений MeshChatX нет. Личность и история сообщений остаются на устройстве, которым вы пользуетесь.",
+            "crypto_h3": "Опубликованное шифрование",
+            "crypto_p": "Reticulum публикует, как устроено шифрование. MeshChatX берёт этот дизайн без изменений.",
+            "crypto_link": "Как это устроено",
+            "mesh_h3": "Интернет, Wi-Fi или радио",
+            "mesh_p": "То же приложение в домашней сети, через интернет или по радио, включая LoRa. Reticulum несёт трафик по тому каналу, который вы ему дали.",
+            "platform_h3": "Компьютер, браузер или телефон",
+            "platform_p": "Десктопные приложения для Windows, macOS и Linux. Можно в браузере или Android APK. Termux остаётся для установки из командной строки.",
+            "sandbox_h3": "ОС ограничивает приложение",
+            "sandbox_p": "Десктопные сборки Windows работают в :appcontainer. Сборки Linux используют :landlock и :seccomp, которые ограничивают, к чему приложение может получить доступ на машине."
         },
         "security": {
             "h2": "Безопасность и целостность",
@@ -230,12 +241,12 @@
         "split": {
             "h2_line1": "Анонимно",
             "h2_line2": "и без аккаунта",
-            "item1_h4": "Несколько личностей",
-            "item1_p": "Создавайте столько личностей, сколько нужно. Переключайтесь между ними, не смешивая их хранилища данных.",
+            "item1_h4": "Отдельные личности",
+            "item1_p": "Создавайте сколько нужно и переключайтесь между ними. У каждой свои сообщения и файлы.",
             "item2_h4": "Без проверки возраста",
-            "item2_p": "Без документов, телефона или почты. Доступ без проверки личности третьей стороной.",
+            "item2_p": "Без документов, телефона и почты. Чтобы войти, не нужно сдавать третьей стороне проверку личности.",
             "item3_h4": "Без цензуры",
-            "item3_p": "Сообщения распространяются по mesh. Локальные архивы хранят историю, когда удалённый пир офлайн."
+            "item3_p": "У MeshChatX нет выключателя, который удаляет переписку у всех. Копии остаются на устройствах, где они уже есть, даже если собеседник офлайн."
         },
         "videos": {
             "h2": "Видео",
@@ -294,7 +305,9 @@
             "github_fallback": "Релизы на GitHub",
             "published_prefix": "опубликовано",
             "published_just_now": "только что опубликовано"
-        }
+        },
+        "copied": "Скопировано",
+        "copy_failed": "Не удалось скопировать"
     },
     "ifx": {
         "h1": "Интерфейсы",
@@ -408,5 +421,53 @@
             "platforms": "Платформы",
             "ops": "Эксплуатация"
         }
+    },
+    "dep": {
+        "h1": "Зависимости",
+        "lead": "CycloneDX SBOM из GitHub-релизов MeshChatX. Выберите версию, чтобы просмотреть пакеты, лицензии и рёбра зависимостей. Артефакты релизов кэшируются на этом сайте, чтобы не дергать GitHub на каждый просмотр.",
+        "api": "JSON API",
+        "source": "GitHub Releases",
+        "tool": "Собрано с помощью %s",
+        "version": "Релиз",
+        "search_label": "Поиск пакетов",
+        "search_placeholder": "Имя, версия, экосистема, лицензия или purl",
+        "filter_ecosystem": "Экосистема",
+        "filter_all": "Все",
+        "download": "Скачать SBOM",
+        "release": "Заметки релиза",
+        "views": "Виды",
+        "view_graph": "Граф",
+        "view_tree": "Дерево",
+        "view_table": "Таблица",
+        "package_list": "Пакеты",
+        "stat_packages": "пакетов",
+        "stat_edges": "рёбер",
+        "showing": "%shown из %total",
+        "focus_hint": "Выберите пакет, чтобы увидеть соседние зависимости.",
+        "reset_focus": "Показать манифесты",
+        "manifests": "Lockfile и манифесты",
+        "loading": "Загрузка SBOM…",
+        "error": "Не удалось загрузить SBOM для этой версии.",
+        "empty": "SBOM релизов пока нет.",
+        "no_versions": "Нет версий",
+        "no_sbom": "Нет SBOM для этой версии.",
+        "no_results": "Нет пакетов по этому запросу.",
+        "depends_on": "Зависит от",
+        "used_by": "Используется в",
+        "none": "Нет",
+        "prerelease": "пререлизная",
+        "stable": "стабильная",
+        "copied": "Скопировано",
+        "unknown_license": "Неизвестно",
+        "close_detail": "Закрыть",
+        "purl": "Package URL",
+        "col_name": "Имя",
+        "col_version": "Версия",
+        "col_ecosystem": "Экосистема",
+        "col_license": "Лицензия",
+        "col_type": "Тип",
+        "lead_short": "CycloneDX SBOM из GitHub-релизов. Кэшируется на этом сайте.",
+        "toggle_list": "Пакеты",
+        "toggle_inspector": "Сведения"
     }
 }

@@ -83,14 +83,38 @@
                     </div>
                 </div>
 
-                <button
-                    type="button"
-                    class="theme-toggle tool-icon-btn"
-                    data-theme-toggle
-                    aria-label="{{ t('nav.toggle_theme') }}"
-                >
-                    <x-icon name="theme" size="xs" />
-                </button>
+                <div class="lang-picker" data-theme-picker>
+                    <button
+                        type="button"
+                        class="lang-picker__trigger tool-icon-btn"
+                        data-theme-trigger
+                        aria-expanded="false"
+                        aria-haspopup="listbox"
+                        aria-label="{{ t('nav.toggle_theme') }}"
+                    >
+                        <x-icon name="theme" size="xs" />
+                    </button>
+                    <div class="lang-picker__menu" role="listbox" aria-label="{{ t('nav.toggle_theme') }}">
+                        <button
+                            type="button"
+                            class="lang-picker__option"
+                            role="option"
+                            data-theme-option="light"
+                        >{{ t('nav.theme_light') }}</button>
+                        <button
+                            type="button"
+                            class="lang-picker__option"
+                            role="option"
+                            data-theme-option="dark"
+                        >{{ t('nav.theme_dark') }}</button>
+                        <button
+                            type="button"
+                            class="lang-picker__option"
+                            role="option"
+                            data-theme-option="system"
+                        >{{ t('nav.theme_system') }}</button>
+                    </div>
+                </div>
 
                 <a class="btn btn--solid btn--sm site-header__cta" href="{{ $downloadUrl }}">{{ t('nav.download') }}</a>
 
@@ -124,6 +148,18 @@
                 >{{ $link['label'] }}</a>
             @endforeach
             <a class="btn btn--solid mobile-nav__download" href="{{ $downloadUrl }}">{{ t('nav.download') }}</a>
+            @if (! empty($site['mobile_nav_secondary']))
+                <div class="mobile-nav__secondary" aria-label="{{ t('nav.secondary') }}">
+                    @foreach ($site['mobile_nav_secondary'] as $item)
+                        @php $link = $navItem($item); @endphp
+                        <a
+                            class="nav-link nav-link--secondary{{ $link['active'] ? ' is-active' : '' }}"
+                            href="{{ $link['href'] }}"
+                            @if ($link['external']) target="_blank" rel="noopener noreferrer" @endif
+                        >{{ $link['label'] }}</a>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </nav>
 </div>

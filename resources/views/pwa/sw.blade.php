@@ -69,7 +69,11 @@ self.addEventListener('fetch', (event) => {
         url.pathname === '/sitemap.xml' ||
         url.pathname === '/changelog.xml' ||
         url.pathname === '/robots.txt' ||
+        url.pathname === '/llms.txt' ||
+        url.pathname === '/llms-full.txt' ||
+        url.pathname === '/docs/llms.txt' ||
         url.pathname.startsWith('/docs/export-all/') ||
+        /\/docs\/[^/]+\.md$/.test(url.pathname) ||
         /\/docs\/[^/]+\/export\//.test(url.pathname)
     ) {
         return;

@@ -6,6 +6,7 @@ use App\Services\ChangelogService;
 use App\Services\DocsService;
 use App\Services\GithubReleasesService;
 use App\Services\RnsDirectoryService;
+use App\Services\SbomService;
 use App\Support\SiteUri;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(RnsDirectoryService::class);
         $this->app->singleton(DocsService::class);
         $this->app->singleton(ChangelogService::class);
+        $this->app->singleton(SbomService::class);
     }
 
     /**
@@ -59,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
             'website_license_url' => config('meshchatx.website_license_url'),
             'sitemap' => config('meshchatx.sitemap'),
             'nav' => config('meshchatx.nav'),
+            'mobile_nav_secondary' => config('meshchatx.mobile_nav_secondary'),
             'footer_nav' => config('meshchatx.footer_nav'),
             'contact' => config('meshchatx.contact'),
             'donate' => config('meshchatx.donate'),

@@ -5,6 +5,7 @@ use App\Http\Controllers\ChangelogController;
 use App\Http\Controllers\ChangelogEntriesController;
 use App\Http\Controllers\ChangelogRssController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DependencyController;
 use App\Http\Controllers\DocsController;
 use App\Http\Controllers\DonateController;
 use App\Http\Controllers\DownloadController;
@@ -13,11 +14,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterfacesApiController;
 use App\Http\Controllers\InterfacesController;
 use App\Http\Controllers\LicenseController;
+use App\Http\Controllers\LlmsTxtController;
 use App\Http\Controllers\OfflineController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\ReleasesApiController;
 use App\Http\Controllers\RoadmapController;
 use App\Http\Controllers\RobotsController;
+use App\Http\Controllers\SbomApiController;
+use App\Http\Controllers\SbomCatalogApiController;
 use App\Http\Controllers\ServiceWorkerController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 $registerPages = function (): void {
     Route::get('/', HomeController::class)->name('home');
     Route::get('/download', DownloadController::class)->name('download');
+    Route::get('/dependency', DependencyController::class)->name('dependency');
     Route::get('/roadmap', RoadmapController::class)->name('roadmap');
     Route::get('/changelog', ChangelogController::class)->name('changelog');
     Route::get('/changelog/entries', ChangelogEntriesController::class)->name('changelog.entries');
@@ -37,13 +42,18 @@ $registerPages = function (): void {
     Route::get('/interfaces', InterfacesController::class)->name('interfaces');
     Route::get('/offline', OfflineController::class)->name('offline');
     Route::get('/docs', [DocsController::class, 'index'])->name('docs');
+    Route::get('/docs/llms.txt', [LlmsTxtController::class, 'docs'])->name('docs.llms');
     Route::get('/docs/export-all/{format}', [DocsController::class, 'exportAll'])
         ->where('format', 'md|txt|pdf|epub')
         ->name('docs.export-all');
+    Route::get('/docs/{slug}.md', [DocsController::class, 'markdown'])
+        ->where('slug', '[a-z0-9\-]+')
+        ->name('docs.markdown');
     Route::get('/docs/{slug}/export/{format}', [DocsController::class, 'export'])
         ->where('format', 'md|txt')
         ->name('docs.export');
     Route::get('/docs/{slug}', [DocsController::class, 'show'])
+        ->where('slug', '[a-z0-9\-]+')
         ->name('docs.show');
 };
 
@@ -59,5 +69,11 @@ Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('/changelog.xml', ChangelogRssController::class)->name('changelog.rss');
 Route::get('/sw.js', ServiceWorkerController::class)->name('pwa.sw');
 Route::get('/robots.txt', RobotsController::class)->name('robots');
+Route::get('/llms.txt', [LlmsTxtController::class, 'index'])->name('llms');
+Route::get('/llms-full.txt', [LlmsTxtController::class, 'full'])->name('llms.full');
 Route::get('/api/mcx-releases', ReleasesApiController::class)->name('api.mcx-releases');
 Route::get('/api/mcx-interfaces', InterfacesApiController::class)->name('api.mcx-interfaces');
+Route::get('/api/mcx-sbom', SbomCatalogApiController::class)->name('api.mcx-sbom');
+Route::get('/api/mcx-sbom/{version}', SbomApiController::class)
+    ->where('version', '[A-Za-z0-9._+-]+')
+    ->name('api.mcx-sbom.version');

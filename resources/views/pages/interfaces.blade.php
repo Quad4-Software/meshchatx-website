@@ -106,6 +106,9 @@
         <div class="site-container site-container--wide">
             @if ($items === [])
                 <p class="section__lead">{{ t('ifx.empty') }}</p>
+                <p class="section__lead">
+                    <a href="{{ $directory['source'] }}" target="_blank" rel="noopener noreferrer">{{ t('ifx.source') }}</a>
+                </p>
             @else
                 <div class="ifx" data-ifx>
                     <div class="ifx-toolbar">

@@ -61,26 +61,35 @@ return [
     ],
 
     'nav' => [
-        ['label_key' => 'nav.features', 'href' => '#features', 'home_only' => true],
-        ['label_key' => 'nav.download', 'route' => 'download'],
         ['label_key' => 'nav.docs', 'route' => 'docs'],
+        ['label_key' => 'nav.git', 'route' => 'git'],
+        ['label_key' => 'nav.contact', 'route' => 'contact'],
+    ],
+
+    'mobile_nav_secondary' => [
         ['label_key' => 'nav.roadmap', 'route' => 'roadmap'],
         ['label_key' => 'nav.donate', 'route' => 'donate'],
-        ['label_key' => 'nav.contact', 'route' => 'contact'],
-        ['label_key' => 'nav.git', 'route' => 'git'],
+        ['label_key' => 'nav.interfaces', 'route' => 'interfaces'],
+        ['label_key' => 'nav.dependency', 'route' => 'dependency'],
+        ['label_key' => 'footer.changelog', 'route' => 'changelog'],
     ],
 
     'footer_nav' => [
-        ['label_key' => 'nav.docs', 'route' => 'docs'],
-        ['label_key' => 'nav.git', 'route' => 'git'],
-        ['label_key' => 'nav.interfaces', 'route' => 'interfaces'],
-        ['label_key' => 'footer.changelog', 'route' => 'changelog'],
-        ['label_key' => 'nav.branding', 'route' => 'branding'],
-        ['label_key' => 'footer.license', 'route' => 'license'],
-        ['label_key' => 'footer.privacy', 'route' => 'privacy'],
+        ['group' => 'product', 'label_key' => 'nav.download', 'route' => 'download'],
+        ['group' => 'product', 'label_key' => 'nav.docs', 'route' => 'docs'],
+        ['group' => 'product', 'label_key' => 'nav.roadmap', 'route' => 'roadmap'],
+        ['group' => 'product', 'label_key' => 'nav.git', 'route' => 'git'],
+        ['group' => 'explore', 'label_key' => 'nav.interfaces', 'route' => 'interfaces'],
+        ['group' => 'explore', 'label_key' => 'nav.dependency', 'route' => 'dependency'],
+        ['group' => 'explore', 'label_key' => 'footer.changelog', 'route' => 'changelog'],
+        ['group' => 'explore', 'label_key' => 'nav.branding', 'route' => 'branding'],
+        ['group' => 'explore', 'label_key' => 'nav.donate', 'route' => 'donate'],
+        ['group' => 'explore', 'label_key' => 'nav.contact', 'route' => 'contact'],
+        ['group' => 'legal', 'label_key' => 'footer.license', 'route' => 'license'],
+        ['group' => 'legal', 'label_key' => 'footer.privacy', 'route' => 'privacy'],
     ],
 
-    'pages' => ['home', 'download', 'docs', 'roadmap', 'changelog', 'interfaces', 'branding', 'contact', 'donate', 'license', 'privacy', 'git'],
+    'pages' => ['home', 'download', 'docs', 'roadmap', 'changelog', 'interfaces', 'dependency', 'branding', 'contact', 'donate', 'license', 'privacy', 'git'],
 
     'sitemap' => [
         'home',
@@ -89,6 +98,7 @@ return [
         'roadmap',
         'changelog',
         'interfaces',
+        'dependency',
         'branding',
         'contact',
         'donate',
@@ -144,4 +154,5 @@ return [
     'changelog_per_page' => (int) env('CHANGELOG_PER_PAGE', 10),
     'changelog_rss_limit' => (int) env('CHANGELOG_RSS_LIMIT', 40),
     'rns_directory_cache_seconds' => (int) env('RNS_DIRECTORY_CACHE_SECONDS', 259200),
+    'sbom_cache_seconds' => (int) env('SBOM_CACHE_SECONDS', 2592000),
 ];

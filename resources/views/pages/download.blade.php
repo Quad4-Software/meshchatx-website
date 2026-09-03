@@ -114,6 +114,68 @@ YAML;
                     <a class="channel-toggle__btn{{ $channel === 'prerelease' ? ' is-active' : '' }}" href="{{ $preQs }}">{{ t('js.download.channel_pre') }}</a>
                 </div>
 
+                @php
+                    $heroPlatforms = [
+                        'windows' => [
+                            'label' => t('dl.tabs.windows'),
+                            'url' => $winInstaller ?: $winPortable,
+                        ],
+                        'macos' => [
+                            'label' => t('dl.tabs.macos'),
+                            'url' => $macDmg,
+                        ],
+                        'linux' => [
+                            'label' => t('dl.tabs.linux'),
+                            'url' => $appAmd ?: $appArm,
+                        ],
+                        'android' => [
+                            'label' => t('dl.tabs.android'),
+                            'url' => $apkUrl,
+                        ],
+                        'docker' => [
+                            'label' => t('dl.tabs.docker'),
+                            'url' => null,
+                        ],
+                        'python' => [
+                            'label' => t('dl.tabs.python'),
+                            'url' => $wheelUrl,
+                        ],
+                        'umbrel' => [
+                            'label' => t('dl.tabs.umbrel'),
+                            'url' => $site['umbrel_url'] ?? null,
+                        ],
+                    ];
+                    $docsGettingStarted = locale_route('docs.show', ['slug' => 'getting-started']);
+                    $ctaTemplate = t('dl.cta.download_for');
+                @endphp
+
+                <div
+                    class="download-hero-cta"
+                    data-download-hero
+                    data-cta-template="{{ $ctaTemplate }}"
+                    data-fallback-platform="linux"
+                >
+                    @foreach ($heroPlatforms as $platformId => $meta)
+                        <script type="application/json" data-download-hero-platform="{{ $platformId }}">{!! json_encode([
+                            'id' => $platformId,
+                            'label' => $meta['label'],
+                            'url' => $meta['url'],
+                        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
+                    @endforeach
+                    <div class="download-hero-cta__actions">
+                        <a
+                            class="btn btn--solid"
+                            data-download-hero-btn
+                            href="#linux"
+                            hidden
+                        >
+                            <x-icon name="download" size="xs" />
+                            <span data-download-hero-label>{{ t('dl.cta.download_for', ['s' => t('dl.tabs.linux')]) }}</span>
+                        </a>
+                        <a class="btn btn--ghost" href="{{ $docsGettingStarted }}">{{ t('dl.cta.next_steps') }}</a>
+                    </div>
+                </div>
+
                 <p class="download-hero-meta__links">
                     {{ t('dl.github_also') }}
                     <a href="{{ $site['github_releases'] }}" target="_blank" rel="noopener noreferrer">{{ t('dl.github_releases') }}</a>
@@ -123,6 +185,10 @@ YAML;
                         ·
                         <a href="{{ $sbomUrl }}" download>{{ t('dl.sbom') }}</a>
                     @endif
+                    ·
+                    <a href="{{ locale_route('interfaces') }}">{{ t('dl.cta.interfaces') }}</a>
+                    ·
+                    <a href="{{ locale_route('dependency') }}">{{ t('dl.cta.dependencies') }}</a>
                 </p>
             </div>
         </div>

@@ -9,7 +9,7 @@ class PublicRoutesTest extends TestCase
 {
     public function test_english_pages_respond_ok(): void
     {
-        foreach (['/', '/download', '/docs', '/roadmap', '/changelog', '/interfaces', '/branding', '/contact', '/donate', '/license', '/privacy', '/git', '/offline'] as $path) {
+        foreach (['/', '/download', '/docs', '/roadmap', '/changelog', '/interfaces', '/dependency', '/branding', '/contact', '/donate', '/license', '/privacy', '/git', '/offline'] as $path) {
             if ($path === '/docs') {
                 $this->get($path)->assertRedirect();
 
@@ -35,7 +35,12 @@ class PublicRoutesTest extends TestCase
 
         $this->get('/robots.txt')
             ->assertOk()
-            ->assertSee('Sitemap:', false);
+            ->assertSee('Sitemap:', false)
+            ->assertSee('/llms.txt', false);
+
+        $this->get('/llms.txt')
+            ->assertOk()
+            ->assertSee('# MeshChatX', false);
     }
 
     public function test_releases_api_responds_json(): void
@@ -69,6 +74,9 @@ class PublicRoutesTest extends TestCase
             ->assertSee('data-nav-scrim', false)
             ->assertSee('data-site-header', false)
             ->assertSee('mobile-nav__inner', false)
+            ->assertSee('mobile-nav__secondary', false)
+            ->assertSee('data-theme-picker', false)
+            ->assertSee('data-theme-option="system"', false)
             ->assertSee('menu-toggle__icon--open', false)
             ->assertSee('menu-toggle__icon--close', false)
             ->assertSee('data-label-close', false);
@@ -116,8 +124,8 @@ MD, 200),
 
         $this->get('/roadmap')
             ->assertOk()
-            ->assertSee('February 2027', false)
-            ->assertSee('November 2026', false)
+            ->assertSee('December 2026', false)
+            ->assertSee('September 2026', false)
             ->assertSee('roadmap-rail', false)
             ->assertSee('roadmap-timeline', false)
             ->assertSee('Release timeline', false)

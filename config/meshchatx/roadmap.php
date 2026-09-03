@@ -36,7 +36,7 @@ return [
     ],
     [
         'version' => '4.9.0',
-        'date' => 'November 2026',
+        'date' => 'September 2026',
         'title' => 'Map, UI, and Codebase Cleanup',
         'desc' => 'Map updates, UI cleanup, RRC LXMFy bots, and codebase cleanup ahead of 5.0.0.',
         'features' => [
@@ -49,10 +49,15 @@ return [
     ],
     [
         'version' => '5.0.0',
-        'date' => 'February 2027',
-        'title' => 'Major release',
-        'desc' => 'Planned 5.0.0 milestone. Feature work continues after this release. Concrete items will be listed here when the scope is locked.',
-        'features' => [],
+        'date' => 'December 2026',
+        'title' => 'Codebase Cleanup, Performance, and Memory',
+        'desc' => 'Cleanup of the MeshChatX codebase so later feature work is cheaper to ship, plus performance and memory-use work. Feature work continues after this release.',
+        'features' => [
+            ['text' => 'Codebase cleanup'],
+            ['text' => 'Maintainability work'],
+            ['text' => 'Performance'],
+            ['text' => 'Lower memory use'],
+        ],
         'status' => 'planned',
     ],
 ];

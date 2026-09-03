@@ -35,11 +35,12 @@ function resolveTheme(preference) {
 }
 
 function applyTheme(preference) {
-    const resolved = resolveTheme(preference || 'system');
+    const pref = preference || getStoredTheme() || 'system';
+    const resolved = resolveTheme(pref);
     const root = document.documentElement;
     root.classList.toggle('dark', resolved === 'dark');
     root.classList.toggle('light', resolved === 'light');
-    root.dataset.theme = preference || getStoredTheme() || 'system';
+    root.dataset.theme = pref;
     root.style.colorScheme = resolved;
 
     const meta = document.getElementById('mcx-theme-color');
@@ -47,10 +48,21 @@ function applyTheme(preference) {
         meta.setAttribute('content', resolved === 'dark' ? '#09090b' : '#fafafa');
     }
 
-    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
-        const next = resolved === 'dark' ? 'light' : 'dark';
-        button.setAttribute('aria-label', `Switch to ${next} theme`);
-        button.dataset.themeState = resolved;
+    document.querySelectorAll('[data-theme-picker]').forEach((picker) => {
+        picker.dataset.themeState = resolved;
+        picker.dataset.themePreference = pref;
+        picker.querySelectorAll('[data-theme-option]').forEach((option) => {
+            const active = option.getAttribute('data-theme-option') === pref;
+            option.classList.toggle('is-active', active);
+            option.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+    });
+}
+
+function closeThemePickers() {
+    document.querySelectorAll('[data-theme-picker].is-open').forEach((root) => {
+        root.classList.remove('is-open');
+        root.querySelector('[data-theme-trigger]')?.setAttribute('aria-expanded', 'false');
     });
 }
 
@@ -66,13 +78,46 @@ function initTheme() {
         }
     });
 
-    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
-        button.addEventListener('click', () => {
-            const current = getStoredTheme() || 'system';
-            const resolved = resolveTheme(current);
-            const next = resolved === 'dark' ? 'light' : 'dark';
-            setStoredTheme(next);
-            applyTheme(next);
+    document.querySelectorAll('[data-theme-picker]').forEach((root) => {
+        const trigger = root.querySelector('[data-theme-trigger]');
+        if (!trigger) {
+            return;
+        }
+
+        trigger.addEventListener('click', () => {
+            const open = !root.classList.contains('is-open');
+            closeLangPickers();
+            document.querySelectorAll('[data-theme-picker].is-open').forEach((other) => {
+                if (other !== root) {
+                    other.classList.remove('is-open');
+                    other
+                        .querySelector('[data-theme-trigger]')
+                        ?.setAttribute('aria-expanded', 'false');
+                }
+            });
+            if (open) {
+                setMobileNavOpen(false);
+            }
+            root.classList.toggle('is-open', open);
+            trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+
+        root.querySelectorAll('[data-theme-option]').forEach((option) => {
+            option.addEventListener('click', () => {
+                const next = option.getAttribute('data-theme-option') || 'system';
+                setStoredTheme(next);
+                applyTheme(next);
+                closeThemePickers();
+            });
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        document.querySelectorAll('[data-theme-picker].is-open').forEach((root) => {
+            if (!root.contains(event.target)) {
+                root.classList.remove('is-open');
+                root.querySelector('[data-theme-trigger]')?.setAttribute('aria-expanded', 'false');
+            }
         });
     });
 }
@@ -144,6 +189,7 @@ function initMobileMenu() {
 
         if (open) {
             closeLangPickers();
+            closeThemePickers();
             syncHeaderHeight();
         }
     };
@@ -165,6 +211,7 @@ function initMobileMenu() {
         if (event.key === 'Escape') {
             setOpen(false);
             closeLangPickers();
+            closeThemePickers();
             return;
         }
 
@@ -201,23 +248,74 @@ function initMobileMenu() {
     syncHeaderHeight();
 }
 
+function siteToastCopy() {
+    const node = document.querySelector('[data-pwa-i18n]');
+    if (!(node instanceof HTMLScriptElement)) {
+        return { copied: 'Copied', copy_failed: 'Copy failed' };
+    }
+    try {
+        return JSON.parse(node.textContent || '{}');
+    } catch {
+        return { copied: 'Copied', copy_failed: 'Copy failed' };
+    }
+}
+
+function showToast(message, { sticky = false } = {}) {
+    const toast = document.querySelector('[data-site-toast], [data-pwa-toast]');
+    if (!(toast instanceof HTMLElement) || !message) {
+        return;
+    }
+    toast.textContent = message;
+    toast.hidden = false;
+    toast.classList.add('is-visible');
+    window.clearTimeout(showToast._timer);
+    if (!sticky) {
+        showToast._timer = window.setTimeout(() => {
+            toast.classList.remove('is-visible');
+            toast.hidden = true;
+        }, 3200);
+    }
+}
+
 function initCopyButtons() {
+    const labels = siteToastCopy();
+
     const copyText = async (text) => {
         try {
             await navigator.clipboard.writeText(text);
             return true;
         } catch {
-            const area = document.createElement('textarea');
-            area.value = text;
-            area.setAttribute('readonly', '');
-            area.style.position = 'absolute';
-            area.style.left = '-9999px';
-            document.body.appendChild(area);
-            area.select();
-            document.execCommand('copy');
-            document.body.removeChild(area);
-            return true;
+            try {
+                const area = document.createElement('textarea');
+                area.value = text;
+                area.setAttribute('readonly', '');
+                area.style.position = 'absolute';
+                area.style.left = '-9999px';
+                document.body.appendChild(area);
+                area.select();
+                document.execCommand('copy');
+                document.body.removeChild(area);
+                return true;
+            } catch {
+                return false;
+            }
         }
+    };
+
+    const markCopied = (el, copiedLabel) => {
+        const label = el.textContent;
+        el.classList.add('is-copied');
+        if (copiedLabel && el.matches('button, .copy-btn, .dep-purl')) {
+            el.textContent = copiedLabel;
+            window.setTimeout(() => {
+                el.classList.remove('is-copied');
+                el.textContent = label;
+            }, 1600);
+            return;
+        }
+        window.setTimeout(() => {
+            el.classList.remove('is-copied');
+        }, 1600);
     };
 
     document.querySelectorAll('[data-copy]').forEach((button) => {
@@ -234,15 +332,14 @@ function initCopyButtons() {
                 return;
             }
 
-            await copyText(text);
-
-            const label = button.textContent;
-            button.classList.add('is-copied');
-            button.textContent = button.getAttribute('data-copied-label') || 'Copied';
-            window.setTimeout(() => {
-                button.classList.remove('is-copied');
-                button.textContent = label;
-            }, 1600);
+            const ok = await copyText(text);
+            const copied = button.getAttribute('data-copied-label') || labels.copied || 'Copied';
+            if (ok) {
+                markCopied(button, copied);
+                showToast(copied);
+            } else {
+                showToast(labels.copy_failed || 'Copy failed');
+            }
         });
     });
 
@@ -253,7 +350,13 @@ function initCopyButtons() {
                 return;
             }
 
-            await copyText(text);
+            const ok = await copyText(text);
+            const copied = el.getAttribute('data-copied-label') || labels.copied || 'Copied';
+
+            if (!ok) {
+                showToast(labels.copy_failed || 'Copy failed');
+                return;
+            }
 
             el.classList.add('is-copied');
             el.setAttribute('aria-live', 'polite');
@@ -261,13 +364,14 @@ function initCopyButtons() {
             const hint = el.parentElement?.querySelector(
                 '.git-card__hint, .contact-panel__hint, .donate-panel__hint',
             );
-            const copied = el.getAttribute('data-copied-label') || 'Copied';
             let previousHint = '';
 
             if (hint) {
                 previousHint = hint.textContent;
                 hint.textContent = copied;
             }
+
+            showToast(copied);
 
             window.setTimeout(() => {
                 el.classList.remove('is-copied');
@@ -476,9 +580,18 @@ function initShowcase() {
             }
         };
 
+        let inView = true;
+        const pauseAutoplay = () => {
+            if (timer) {
+                window.clearInterval(timer);
+                timer = null;
+            }
+        };
+
         const startAutoplay = () => {
             if (
                 manual ||
+                !inView ||
                 delay < 1000 ||
                 document.hidden ||
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -493,14 +606,28 @@ function initShowcase() {
 
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                if (timer) {
-                    window.clearInterval(timer);
-                    timer = null;
-                }
+                pauseAutoplay();
                 return;
             }
             startAutoplay();
         });
+
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        inView = entry.isIntersecting && entry.intersectionRatio > 0.2;
+                        if (inView) {
+                            startAutoplay();
+                        } else {
+                            pauseAutoplay();
+                        }
+                    });
+                },
+                { threshold: [0, 0.2, 0.5] },
+            );
+            io.observe(root);
+        }
 
         tabs.forEach((tab) => {
             tab.addEventListener('click', () => {
@@ -528,6 +655,105 @@ function initShowcase() {
     });
 }
 
+function detectDownloadPlatform() {
+    const ua = navigator.userAgent || '';
+    if (/android/i.test(ua)) {
+        return 'android';
+    }
+    if (/iphone|ipad|ipod/i.test(ua)) {
+        return 'macos';
+    }
+    if (/win/i.test(ua)) {
+        return 'windows';
+    }
+    if (/mac/i.test(ua)) {
+        return 'macos';
+    }
+    if (/linux|cros|x11/i.test(ua)) {
+        return 'linux';
+    }
+    return 'linux';
+}
+
+function formatDownloadCta(template, platformLabel) {
+    if (!template) {
+        return platformLabel;
+    }
+    return template.includes('%s')
+        ? template.replace('%s', platformLabel)
+        : `${template} ${platformLabel}`;
+}
+
+function initHomeDownloadHint() {
+    document.querySelectorAll('[data-home-download]').forEach((link) => {
+        if (!(link instanceof HTMLAnchorElement)) {
+            return;
+        }
+        const platform = detectDownloadPlatform();
+        const base = link.getAttribute('data-download-base') || link.href;
+        const template = link.getAttribute('data-cta-template') || '';
+        let labels = {};
+        try {
+            labels = JSON.parse(link.getAttribute('data-platform-labels') || '{}');
+        } catch {
+            labels = {};
+        }
+        const label = labels[platform] || platform;
+        link.href = `${base}#${platform}`;
+        link.textContent = formatDownloadCta(template, label);
+    });
+}
+
+function syncDownloadHero(platformId) {
+    const hero = document.querySelector('[data-download-hero]');
+    if (!(hero instanceof HTMLElement)) {
+        return;
+    }
+
+    const btn = hero.querySelector('[data-download-hero-btn]');
+    const labelNode = hero.querySelector('[data-download-hero-label]');
+    if (!(btn instanceof HTMLAnchorElement)) {
+        return;
+    }
+
+    let meta = null;
+    const script = hero.querySelector(`[data-download-hero-platform="${platformId}"]`);
+    if (script instanceof HTMLScriptElement) {
+        try {
+            meta = JSON.parse(script.textContent || '{}');
+        } catch {
+            meta = null;
+        }
+    }
+
+    const template = hero.getAttribute('data-cta-template') || '';
+    const label = meta?.label || platformId;
+    const url = typeof meta?.url === 'string' && meta.url !== '' ? meta.url : `#${platformId}`;
+    const cta = formatDownloadCta(template, label);
+    const isExternal = /^https?:\/\//i.test(url);
+    const isAsset = isExternal && platformId !== 'umbrel';
+
+    btn.href = url;
+    btn.hidden = false;
+    if (isAsset) {
+        btn.setAttribute('download', '');
+    } else {
+        btn.removeAttribute('download');
+    }
+    if (isExternal && platformId === 'umbrel') {
+        btn.setAttribute('target', '_blank');
+        btn.setAttribute('rel', 'noopener noreferrer');
+    } else {
+        btn.removeAttribute('target');
+        btn.removeAttribute('rel');
+    }
+    if (labelNode) {
+        labelNode.textContent = cta;
+    } else {
+        btn.textContent = cta;
+    }
+}
+
 function initDownloadChannels() {
     document.querySelectorAll('[data-download]').forEach((root) => {
         const tabs = Array.from(root.querySelectorAll('[data-download-tab]'));
@@ -547,6 +773,7 @@ function initDownloadChannels() {
                 panel.classList.toggle('is-active', active);
                 panel.hidden = !active;
             });
+            syncDownloadHero(id);
             if (syncHash && window.history?.replaceState) {
                 window.history.replaceState(null, '', `#${id}`);
             }
@@ -561,14 +788,20 @@ function initDownloadChannels() {
 
         const hashId = (window.location.hash || '').replace(/^#/, '');
         const fromHash = tabs.find((tab) => tab.getAttribute('data-download-tab') === hashId);
+        const detected = detectDownloadPlatform();
+        const detectedTab = tabs.find((tab) => tab.getAttribute('data-download-tab') === detected);
         const initial =
             fromHash?.getAttribute('data-download-tab') ||
+            detectedTab?.getAttribute('data-download-tab') ||
             tabs
                 .find((tab) => tab.classList.contains('is-active'))
                 ?.getAttribute('data-download-tab') ||
             tabs[0]?.getAttribute('data-download-tab');
         if (initial) {
-            showPanel(initial, false);
+            showPanel(initial, Boolean(fromHash));
+            if (!fromHash && detectedTab && window.history?.replaceState) {
+                window.history.replaceState(null, '', `#${initial}`);
+            }
         }
 
         window.addEventListener('hashchange', () => {
@@ -706,6 +939,7 @@ function initLangPicker() {
 
         trigger.addEventListener('click', () => {
             const open = !root.classList.contains('is-open');
+            closeThemePickers();
             document.querySelectorAll('[data-lang-picker].is-open').forEach((other) => {
                 if (other !== root) {
                     other.classList.remove('is-open');
@@ -804,6 +1038,13 @@ function initDocs() {
         sidebar.classList.toggle('is-open', open);
         sidebarToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
         document.documentElement.classList.toggle('docs-nav-open', open);
+        if (open) {
+            window.requestAnimationFrame(() => {
+                sidebar
+                    .querySelector('.docs-nav__link.is-active')
+                    ?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+            });
+        }
     };
 
     sidebarToggle?.addEventListener('click', () => {
@@ -1259,26 +1500,1053 @@ function pwaI18n() {
 }
 
 function showPwaToast(message, { sticky = false } = {}) {
-    const toast = document.querySelector('[data-pwa-toast]');
-    if (!(toast instanceof HTMLElement)) {
-        return;
-    }
-    toast.textContent = message;
-    toast.hidden = false;
-    toast.classList.add('is-visible');
-    window.clearTimeout(showPwaToast._timer);
-    if (!sticky) {
-        showPwaToast._timer = window.setTimeout(() => {
-            toast.classList.remove('is-visible');
-            toast.hidden = true;
-        }, 3200);
-    }
+    showToast(message, { sticky });
 }
 
 function initOfflineRetry() {
     document.querySelector('[data-offline-retry]')?.addEventListener('click', () => {
         window.location.reload();
     });
+}
+
+function parseJsonScript(root, selector, fallback) {
+    const node = root.querySelector(selector);
+    if (!(node instanceof HTMLScriptElement)) {
+        return fallback;
+    }
+    try {
+        return JSON.parse(node.textContent || '');
+    } catch {
+        return fallback;
+    }
+}
+
+function initDependencyViewer() {
+    const root = document.querySelector('[data-dep]');
+    if (!(root instanceof HTMLElement)) {
+        return;
+    }
+
+    const i18n = parseJsonScript(root, '[data-dep-i18n]', {});
+    const catalogUrl = root.getAttribute('data-catalog-url') || '/api/mcx-sbom';
+    const sbomBase = root.getAttribute('data-sbom-base') || '/api/mcx-sbom';
+    const logoUrl = root.getAttribute('data-logo') || '/logo.webp';
+
+    const versionSelect = root.querySelector('[data-dep-version]');
+    const searchInput = root.querySelector('[data-dep-search]');
+    const ecoGroup = root.querySelector('[data-dep-ecosystems]');
+    const statusEl = root.querySelector('[data-dep-status]');
+    const layout = root.querySelector('[data-dep-layout]');
+    const listEl = root.querySelector('[data-dep-list]');
+    const listMeta = root.querySelector('[data-dep-list-meta]');
+    const statsEl = root.querySelector('[data-dep-stats]');
+    const graphSvg = root.querySelector('[data-dep-graph]');
+    const graphWrap = root.querySelector('[data-dep-graph-wrap]');
+    const graphHint = root.querySelector('[data-dep-graph-hint]');
+    const resetBtn = root.querySelector('[data-dep-reset]');
+    const treeEl = root.querySelector('[data-dep-tree]');
+    const tableBody = root.querySelector('[data-dep-table]');
+    const detail = root.querySelector('[data-dep-detail]');
+    const detailLogo = root.querySelector('[data-dep-detail-logo]');
+    const downloadLink = root.querySelector('[data-dep-download]');
+    const releaseLink = root.querySelector('[data-dep-release]');
+    const toggleListBtns = root.querySelectorAll('[data-dep-toggle-list]');
+    const rail = root.querySelector('[data-dep-rail]');
+
+    let catalog = parseJsonScript(root, '[data-dep-catalog]', {
+        versions: [],
+        defaultVersion: null,
+    });
+    let sbom = parseJsonScript(root, '[data-dep-sbom]', null);
+    let eco = '';
+    let focusId = null;
+    let view = 'table';
+    let outgoing = new Map();
+    let incoming = new Map();
+    let nodeById = new Map();
+    let simTimer = 0;
+    let loading = false;
+    let listOpen = true;
+
+    const nodeLabel = (node) => node?.label || node?.name || '';
+
+    const isAppNode = (node) =>
+        Boolean(node?.logo || node?.kind === 'app' || node?.id === sbom?.rootId);
+
+    const isManifestNode = (node) =>
+        Boolean(node?.kind === 'manifest' || (sbom?.manifestIds || []).includes(node?.id));
+
+    const setStatus = (message, visible) => {
+        if (!(statusEl instanceof HTMLElement)) {
+            return;
+        }
+        if (message) {
+            statusEl.textContent = message;
+        }
+        statusEl.hidden = !visible;
+    };
+
+    const formatShowing = (shown, total) => {
+        const template = i18n.showing || '%shown of %total';
+        return template.replace('%shown', String(shown)).replace('%total', String(total));
+    };
+
+    const topEntries = (obj, limit = 3) => {
+        if (!obj || typeof obj !== 'object') {
+            return [];
+        }
+        return Object.entries(obj)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, limit);
+    };
+
+    const syncQuery = () => {
+        if (!window.history?.replaceState) {
+            return;
+        }
+        const url = new URL(window.location.href);
+        const selected = root.getAttribute('data-selected') || '';
+        if (selected) {
+            url.searchParams.set('v', selected);
+        }
+        const q = (searchInput instanceof HTMLInputElement ? searchInput.value : '').trim();
+        if (q) {
+            url.searchParams.set('q', q);
+        } else {
+            url.searchParams.delete('q');
+        }
+        window.history.replaceState(null, '', url.toString());
+    };
+
+    const syncPanels = () => {
+        if (rail instanceof HTMLElement) {
+            rail.hidden = !listOpen;
+        }
+        if (layout instanceof HTMLElement) {
+            layout.classList.toggle('is-list-open', listOpen);
+            layout.classList.toggle(
+                'is-inspector-open',
+                detail instanceof HTMLElement && !detail.hidden,
+            );
+        }
+        toggleListBtns.forEach((btn) => {
+            btn.setAttribute('aria-pressed', listOpen ? 'true' : 'false');
+            btn.classList.toggle('is-active', listOpen);
+        });
+    };
+
+    const indexGraph = (payload) => {
+        outgoing = new Map();
+        incoming = new Map();
+        nodeById = new Map();
+        (payload.nodes || []).forEach((node) => {
+            nodeById.set(node.id, node);
+            outgoing.set(node.id, []);
+            incoming.set(node.id, []);
+        });
+        (payload.edges || []).forEach(([from, to]) => {
+            if (!outgoing.has(from) || !incoming.has(to)) {
+                return;
+            }
+            outgoing.get(from).push(to);
+            incoming.get(to).push(from);
+        });
+    };
+
+    const filteredNodes = () => {
+        if (!sbom) {
+            return [];
+        }
+        const needle = (searchInput instanceof HTMLInputElement ? searchInput.value : '')
+            .trim()
+            .toLowerCase();
+        return (sbom.nodes || []).filter((node) => {
+            if (eco && node.ecosystem !== eco) {
+                return false;
+            }
+            if (!needle) {
+                return true;
+            }
+            const hay = [
+                node.label,
+                node.name,
+                node.version,
+                node.ecosystem,
+                node.license,
+                node.purl,
+                node.type,
+                node.kind,
+            ]
+                .filter(Boolean)
+                .join(' ')
+                .toLowerCase();
+            return hay.includes(needle);
+        });
+    };
+
+    const renderEcosystems = () => {
+        if (!(ecoGroup instanceof HTMLElement) || !sbom) {
+            return;
+        }
+        const entries = topEntries(sbom.stats?.ecosystems || {}, 8);
+        ecoGroup.replaceChildren();
+        const all = document.createElement('button');
+        all.type = 'button';
+        all.className = 'channel-toggle__btn' + (eco === '' ? ' is-active' : '');
+        all.setAttribute('data-dep-eco', '');
+        all.textContent = i18n.ecosystem_all || 'All';
+        ecoGroup.append(all);
+        entries.forEach(([name]) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'channel-toggle__btn' + (eco === name ? ' is-active' : '');
+            btn.setAttribute('data-dep-eco', name);
+            btn.textContent = name;
+            ecoGroup.append(btn);
+        });
+    };
+
+    const renderStats = () => {
+        if (!(statsEl instanceof HTMLElement)) {
+            return;
+        }
+        if (!sbom) {
+            statsEl.hidden = true;
+            return;
+        }
+        statsEl.hidden = false;
+        const packages = root.querySelector('[data-dep-stat-packages]');
+        const edges = root.querySelector('[data-dep-stat-edges]');
+        const ecoStat = root.querySelector('[data-dep-stat-ecosystems]');
+        const licStat = root.querySelector('[data-dep-stat-licenses]');
+        if (packages) {
+            packages.textContent = String(sbom.stats?.components ?? 0);
+        }
+        if (edges) {
+            edges.textContent = String(sbom.stats?.edges ?? 0);
+        }
+        if (ecoStat) {
+            ecoStat.textContent = topEntries(sbom.stats?.ecosystems || {}, 4)
+                .map(([k, v]) => `${k} ${v}`)
+                .join(' · ');
+        }
+        if (licStat) {
+            licStat.textContent = topEntries(sbom.stats?.licenses || {}, 4)
+                .map(([k, v]) => `${k} ${v}`)
+                .join(' · ');
+        }
+    };
+
+    const syncLinks = () => {
+        if (downloadLink instanceof HTMLAnchorElement) {
+            if (sbom?.sourceUrl) {
+                downloadLink.href = sbom.sourceUrl;
+                downloadLink.hidden = false;
+                downloadLink.setAttribute('download', '');
+            } else {
+                downloadLink.hidden = true;
+            }
+        }
+        if (releaseLink instanceof HTMLAnchorElement) {
+            if (sbom?.releaseUrl) {
+                releaseLink.href = sbom.releaseUrl;
+                releaseLink.hidden = false;
+            } else {
+                releaseLink.hidden = true;
+            }
+        }
+        if (searchInput instanceof HTMLInputElement) {
+            searchInput.disabled = !sbom;
+        }
+    };
+
+    const selectFocus = (id) => {
+        focusId = id;
+        const atRoot = id === null || id === sbom?.rootId;
+        if (resetBtn instanceof HTMLElement) {
+            resetBtn.hidden = atRoot;
+        }
+        renderList();
+        renderGraph();
+        renderDetail();
+        renderTable();
+        if (treeEl instanceof HTMLElement && view === 'tree') {
+            highlightTree();
+        }
+        syncPanels();
+    };
+
+    const renderDetail = () => {
+        if (!(detail instanceof HTMLElement)) {
+            return;
+        }
+        const node = focusId !== null ? nodeById.get(focusId) : null;
+        if (!node || focusId === sbom?.rootId) {
+            detail.hidden = true;
+            syncPanels();
+            return;
+        }
+        detail.hidden = false;
+        const setText = (sel, value) => {
+            const el = detail.querySelector(sel);
+            if (el) {
+                el.textContent = value || '-';
+            }
+        };
+        setText('[data-dep-detail-name]', nodeLabel(node));
+        setText('[data-dep-detail-version]', node.version);
+        setText('[data-dep-detail-eco]', node.ecosystem);
+        setText('[data-dep-detail-license]', node.license || i18n.unknown_license || 'Unknown');
+        setText('[data-dep-detail-type]', node.type);
+        if (detailLogo instanceof HTMLImageElement) {
+            detailLogo.hidden = !isAppNode(node);
+        }
+        const purlBtn = detail.querySelector('[data-dep-detail-purl]');
+        if (purlBtn instanceof HTMLElement) {
+            purlBtn.textContent = node.purl || node.name || '-';
+            if (node.purl) {
+                purlBtn.setAttribute('data-copy-text', node.purl);
+            } else {
+                purlBtn.removeAttribute('data-copy-text');
+            }
+        }
+
+        const fillList = (sel, ids) => {
+            const ul = detail.querySelector(sel);
+            if (!(ul instanceof HTMLElement)) {
+                return;
+            }
+            ul.replaceChildren();
+            if (!ids.length) {
+                const li = document.createElement('li');
+                li.className = 'dep-detail__empty';
+                li.textContent = i18n.none || 'None';
+                ul.append(li);
+                return;
+            }
+            ids.slice(0, 48).forEach((id) => {
+                const target = nodeById.get(id);
+                if (!target) {
+                    return;
+                }
+                const li = document.createElement('li');
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'dep-link';
+                btn.textContent = target.version
+                    ? `${nodeLabel(target)}@${target.version}`
+                    : nodeLabel(target);
+                btn.addEventListener('click', () => selectFocus(id));
+                li.append(btn);
+                ul.append(li);
+            });
+        };
+
+        fillList('[data-dep-detail-deps]', outgoing.get(node.id) || []);
+        fillList('[data-dep-detail-used]', incoming.get(node.id) || []);
+        syncPanels();
+    };
+
+    const renderList = () => {
+        if (!(listEl instanceof HTMLElement)) {
+            return;
+        }
+        const nodes = filteredNodes();
+        const limit = 160;
+        const slice = nodes.slice(0, limit);
+        if (listMeta instanceof HTMLElement) {
+            listMeta.textContent = formatShowing(slice.length, nodes.length);
+        }
+        listEl.replaceChildren();
+        slice.forEach((node) => {
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'dep-list__item' + (focusId === node.id ? ' is-active' : '');
+            btn.setAttribute('role', 'option');
+            btn.setAttribute('aria-selected', focusId === node.id ? 'true' : 'false');
+
+            if (isAppNode(node)) {
+                const img = document.createElement('img');
+                img.className = 'dep-list__mark';
+                img.src = logoUrl;
+                img.alt = '';
+                img.width = 18;
+                img.height = 18;
+                img.decoding = 'async';
+                btn.append(img);
+            } else {
+                const spacer = document.createElement('span');
+                spacer.className = 'dep-list__mark--spacer';
+                spacer.setAttribute('aria-hidden', 'true');
+                btn.append(spacer);
+            }
+
+            const name = document.createElement('span');
+            name.className = 'dep-list__name';
+            name.textContent = nodeLabel(node);
+            btn.append(name);
+            if (node.version) {
+                const ver = document.createElement('span');
+                ver.className = 'dep-list__ver';
+                ver.textContent = node.version;
+                btn.append(ver);
+            }
+            if (node.ecosystem || isManifestNode(node)) {
+                const badge = document.createElement('span');
+                badge.className = 'dep-list__eco';
+                badge.textContent = node.ecosystem || node.kind || '';
+                btn.append(badge);
+            }
+            btn.addEventListener('click', () => selectFocus(node.id));
+            li.append(btn);
+            listEl.append(li);
+        });
+    };
+
+    const renderTable = () => {
+        if (!(tableBody instanceof HTMLElement)) {
+            return;
+        }
+        const nodes = filteredNodes().slice(0, 250);
+        tableBody.replaceChildren();
+        nodes.forEach((node) => {
+            const tr = document.createElement('tr');
+            if (focusId === node.id) {
+                tr.classList.add('is-active');
+            }
+            const cells = [
+                nodeLabel(node),
+                node.version || '-',
+                node.ecosystem || '-',
+                node.license || i18n.unknown_license || '-',
+                node.type || '-',
+            ];
+            cells.forEach((text, index) => {
+                const td = document.createElement('td');
+                if (index === 0) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'dep-link';
+                    btn.textContent = text;
+                    btn.addEventListener('click', () => selectFocus(node.id));
+                    td.append(btn);
+                } else {
+                    td.textContent = text;
+                }
+                tr.append(td);
+            });
+            tableBody.append(tr);
+        });
+    };
+
+    const renderTree = () => {
+        if (!(treeEl instanceof HTMLElement) || !sbom) {
+            return;
+        }
+        treeEl.replaceChildren();
+        const rootId = sbom.rootId;
+        const manifests =
+            Array.isArray(sbom.manifestIds) && sbom.manifestIds.length
+                ? sbom.manifestIds
+                : rootId !== null && rootId !== undefined
+                  ? outgoing.get(rootId) || []
+                  : [];
+
+        const title = document.createElement('p');
+        title.className = 'dep-tree__title';
+        title.textContent = i18n.manifests || 'Manifests';
+        treeEl.append(title);
+
+        const buildBranch = (id, depth, path) => {
+            if (path.has(id) || depth > 4) {
+                return null;
+            }
+            const node = nodeById.get(id);
+            if (!node) {
+                return null;
+            }
+            const nextPath = new Set(path);
+            nextPath.add(id);
+            const details = document.createElement(depth === 0 ? 'div' : 'details');
+            if (depth > 0) {
+                details.open = depth < 2;
+            }
+            details.className = 'dep-tree__node' + (focusId === id ? ' is-active' : '');
+            details.dataset.nodeId = String(id);
+
+            const label = document.createElement(depth === 0 ? 'button' : 'summary');
+            if (depth === 0) {
+                label.type = 'button';
+                label.className = 'dep-tree__manifest';
+            }
+            label.textContent = node.version
+                ? `${nodeLabel(node)}@${node.version}`
+                : nodeLabel(node);
+            label.addEventListener('click', (event) => {
+                if (depth > 0 && event.target !== label) {
+                    return;
+                }
+                selectFocus(id);
+            });
+            details.append(label);
+
+            const children = (outgoing.get(id) || []).slice(0, depth === 0 ? 48 : 28);
+            if (children.length && depth < 4) {
+                const wrap = document.createElement('div');
+                wrap.className = 'dep-tree__children';
+                children.forEach((childId) => {
+                    const child = buildBranch(childId, depth + 1, nextPath);
+                    if (child) {
+                        wrap.append(child);
+                    }
+                });
+                details.append(wrap);
+            }
+            return details;
+        };
+
+        manifests.forEach((id) => {
+            const branch = buildBranch(id, 0, new Set(rootId !== null ? [rootId] : []));
+            if (branch) {
+                treeEl.append(branch);
+            }
+        });
+    };
+
+    const highlightTree = () => {
+        if (!(treeEl instanceof HTMLElement)) {
+            return;
+        }
+        treeEl.querySelectorAll('.dep-tree__node').forEach((node) => {
+            node.classList.toggle(
+                'is-active',
+                node.getAttribute('data-node-id') === String(focusId),
+            );
+        });
+    };
+
+    const graphSize = () => {
+        const rect = graphWrap?.getBoundingClientRect();
+        const width = Math.max(640, Math.floor(rect?.width || 960));
+        const height = Math.max(420, Math.floor(rect?.height || 560));
+        return { width, height };
+    };
+
+    const graphNodesForFocus = () => {
+        if (!sbom) {
+            return { nodes: [], links: [] };
+        }
+        const ids = new Set();
+        const links = [];
+        if (focusId === null || focusId === sbom.rootId) {
+            const rootId = sbom.rootId;
+            if (rootId !== null && rootId !== undefined) {
+                ids.add(rootId);
+            }
+            (sbom.manifestIds || []).forEach((id) => ids.add(id));
+            (sbom.manifestIds || []).slice(0, 10).forEach((mid) => {
+                (outgoing.get(mid) || []).slice(0, 14).forEach((id) => ids.add(id));
+            });
+            if (ids.size < 8) {
+                filteredNodes()
+                    .slice(0, 40)
+                    .forEach((node) => ids.add(node.id));
+            }
+        } else {
+            ids.add(focusId);
+            (outgoing.get(focusId) || []).forEach((id) => ids.add(id));
+            (incoming.get(focusId) || []).forEach((id) => ids.add(id));
+            (outgoing.get(focusId) || []).slice(0, 16).forEach((id) => {
+                (outgoing.get(id) || []).slice(0, 5).forEach((child) => ids.add(child));
+            });
+        }
+
+        (sbom.edges || []).forEach(([from, to]) => {
+            if (ids.has(from) && ids.has(to)) {
+                links.push({ source: from, target: to });
+            }
+        });
+
+        return {
+            nodes: [...ids].map((id) => nodeById.get(id)).filter(Boolean),
+            links,
+        };
+    };
+
+    const renderGraph = () => {
+        if (!(graphSvg instanceof SVGElement) || !sbom) {
+            return;
+        }
+        window.clearTimeout(simTimer);
+        const { width, height } = graphSize();
+        graphSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        graphSvg.setAttribute('width', String(width));
+        graphSvg.setAttribute('height', String(height));
+
+        const { nodes, links } = graphNodesForFocus();
+        if (graphHint instanceof HTMLElement) {
+            const focusNode = focusId !== null ? nodeById.get(focusId) : null;
+            graphHint.textContent = focusNode
+                ? `${nodeLabel(focusNode)}${focusNode.version ? '@' + focusNode.version : ''}`
+                : i18n.focus_hint || '';
+        }
+
+        const cx = width / 2;
+        const cy = height / 2;
+        const baseRadius = Math.min(width, height) * 0.28;
+        const positions = new Map();
+        nodes.forEach((node, index) => {
+            const angle = (index / Math.max(nodes.length, 1)) * Math.PI * 2 - Math.PI / 2;
+            const ring =
+                node.id === focusId || node.id === sbom.rootId
+                    ? 0
+                    : baseRadius + (index % 6) * Math.max(18, baseRadius * 0.08);
+            positions.set(node.id, {
+                x: cx + Math.cos(angle) * ring,
+                y: cy + Math.sin(angle) * ring,
+                vx: 0,
+                vy: 0,
+            });
+        });
+
+        const draw = () => {
+            while (graphSvg.firstChild) {
+                graphSvg.removeChild(graphSvg.firstChild);
+            }
+            const ns = 'http://www.w3.org/2000/svg';
+            const gLinks = document.createElementNS(ns, 'g');
+            gLinks.setAttribute('class', 'dep-graph__links');
+            links.forEach((link) => {
+                const a = positions.get(link.source);
+                const b = positions.get(link.target);
+                if (!a || !b) {
+                    return;
+                }
+                const line = document.createElementNS(ns, 'line');
+                line.setAttribute('x1', String(a.x));
+                line.setAttribute('y1', String(a.y));
+                line.setAttribute('x2', String(b.x));
+                line.setAttribute('y2', String(b.y));
+                line.setAttribute('class', 'dep-graph__edge');
+                gLinks.append(line);
+            });
+            graphSvg.append(gLinks);
+
+            const gNodes = document.createElementNS(ns, 'g');
+            gNodes.setAttribute('class', 'dep-graph__nodes');
+            nodes.forEach((node) => {
+                const pos = positions.get(node.id);
+                if (!pos) {
+                    return;
+                }
+                const group = document.createElementNS(ns, 'g');
+                group.setAttribute(
+                    'class',
+                    'dep-graph__node' + (node.id === focusId ? ' is-focus' : ''),
+                );
+                group.setAttribute('transform', `translate(${pos.x} ${pos.y})`);
+                group.style.cursor = 'pointer';
+                group.addEventListener('click', () => selectFocus(node.id));
+
+                const app = isAppNode(node);
+                const manifest = isManifestNode(node);
+                const radius = app ? 22 : manifest ? 14 : 9;
+
+                if (app) {
+                    const ring = document.createElementNS(ns, 'circle');
+                    ring.setAttribute('r', String(radius + 4));
+                    ring.setAttribute('class', 'dep-graph__logo-ring');
+                    group.append(ring);
+
+                    const clipId = `dep-clip-${node.id}`;
+                    const defs = document.createElementNS(ns, 'defs');
+                    const clip = document.createElementNS(ns, 'clipPath');
+                    clip.setAttribute('id', clipId);
+                    const clipCircle = document.createElementNS(ns, 'circle');
+                    clipCircle.setAttribute('r', String(radius));
+                    clip.append(clipCircle);
+                    defs.append(clip);
+                    group.append(defs);
+
+                    const image = document.createElementNS(ns, 'image');
+                    image.setAttribute('href', logoUrl);
+                    image.setAttributeNS('http://www.w3.org/1999/xlink', 'href', logoUrl);
+                    image.setAttribute('x', String(-radius));
+                    image.setAttribute('y', String(-radius));
+                    image.setAttribute('width', String(radius * 2));
+                    image.setAttribute('height', String(radius * 2));
+                    image.setAttribute('clip-path', `url(#${clipId})`);
+                    image.setAttribute('class', 'dep-graph__logo');
+                    group.append(image);
+                } else {
+                    const circle = document.createElementNS(ns, 'circle');
+                    circle.setAttribute('r', String(radius));
+                    circle.setAttribute(
+                        'class',
+                        'dep-graph__dot' +
+                            (manifest ? ' is-manifest' : '') +
+                            (node.ecosystem === 'npm' ? ' is-npm' : '') +
+                            (node.ecosystem === 'pypi' ? ' is-pypi' : ''),
+                    );
+                    group.append(circle);
+                }
+
+                const label = document.createElementNS(ns, 'text');
+                label.setAttribute('class', 'dep-graph__label');
+                label.setAttribute('y', String(radius + 16));
+                label.setAttribute('text-anchor', 'middle');
+                const raw = nodeLabel(node);
+                label.textContent = raw.length > 26 ? raw.slice(0, 24) + '…' : raw;
+                group.append(label);
+
+                if (node.version && !app) {
+                    const sub = document.createElementNS(ns, 'text');
+                    sub.setAttribute('class', 'dep-graph__label dep-graph__label--sub');
+                    sub.setAttribute('y', String(radius + 28));
+                    sub.setAttribute('text-anchor', 'middle');
+                    sub.textContent = node.version;
+                    group.append(sub);
+                }
+
+                gNodes.append(group);
+            });
+            graphSvg.append(gNodes);
+        };
+
+        const tick = () => {
+            const repel = Math.max(2800, width * height * 0.004);
+            const linkLen = Math.max(100, Math.min(width, height) * 0.16);
+            for (let step = 0; step < 22; step++) {
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const a = positions.get(nodes[i].id);
+                        const b = positions.get(nodes[j].id);
+                        let dx = a.x - b.x;
+                        let dy = a.y - b.y;
+                        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                        const force = repel / (dist * dist);
+                        dx = (dx / dist) * force;
+                        dy = (dy / dist) * force;
+                        a.vx += dx;
+                        a.vy += dy;
+                        b.vx -= dx;
+                        b.vy -= dy;
+                    }
+                }
+                links.forEach((link) => {
+                    const a = positions.get(link.source);
+                    const b = positions.get(link.target);
+                    let dx = b.x - a.x;
+                    let dy = b.y - a.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+                    const force = (dist - linkLen) * 0.025;
+                    dx = (dx / dist) * force;
+                    dy = (dy / dist) * force;
+                    a.vx += dx;
+                    a.vy += dy;
+                    b.vx -= dx;
+                    b.vy -= dy;
+                });
+                nodes.forEach((node) => {
+                    const p = positions.get(node.id);
+                    p.vx += (cx - p.x) * 0.005;
+                    p.vy += (cy - p.y) * 0.005;
+                    p.vx *= 0.74;
+                    p.vy *= 0.74;
+                    p.x = Math.max(48, Math.min(width - 48, p.x + p.vx));
+                    p.y = Math.max(48, Math.min(height - 48, p.y + p.vy));
+                });
+            }
+            draw();
+        };
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            draw();
+            return;
+        }
+        let frames = 0;
+        const run = () => {
+            tick();
+            frames += 1;
+            if (frames < 14) {
+                simTimer = window.setTimeout(run, 28);
+            }
+        };
+        run();
+    };
+
+    const setView = (next) => {
+        view = next;
+        root.querySelectorAll('[data-dep-view]').forEach((btn) => {
+            const active = btn.getAttribute('data-dep-view') === next;
+            btn.classList.toggle('is-active', active);
+            btn.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        root.querySelectorAll('[data-dep-panel]').forEach((panel) => {
+            const active = panel.getAttribute('data-dep-panel') === next;
+            panel.classList.toggle('is-active', active);
+            panel.hidden = !active;
+        });
+        if (next === 'tree') {
+            renderTree();
+        }
+        if (next === 'table') {
+            renderTable();
+        }
+        if (next === 'graph') {
+            window.requestAnimationFrame(() => renderGraph());
+        }
+    };
+
+    const applySbom = (payload) => {
+        sbom = payload;
+        eco = '';
+        focusId = payload?.rootId ?? null;
+        if (payload) {
+            indexGraph(payload);
+        } else {
+            outgoing = new Map();
+            incoming = new Map();
+            nodeById = new Map();
+        }
+        if (layout instanceof HTMLElement) {
+            layout.hidden = !payload;
+        }
+        syncLinks();
+        renderStats();
+        renderEcosystems();
+        renderList();
+        renderDetail();
+        renderTable();
+        renderTree();
+        window.requestAnimationFrame(() => renderGraph());
+        setStatus(i18n.empty || '', !payload && !(catalog.versions || []).length);
+        syncPanels();
+    };
+
+    const fillVersionSelect = () => {
+        if (!(versionSelect instanceof HTMLSelectElement)) {
+            return;
+        }
+        const current = versionSelect.value || root.getAttribute('data-selected') || '';
+        versionSelect.replaceChildren();
+        const versions = catalog.versions || [];
+        if (!versions.length) {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = i18n.no_sbom || 'No SBOM releases';
+            versionSelect.append(option);
+            versionSelect.disabled = true;
+            return;
+        }
+        versionSelect.disabled = false;
+        versions.forEach((row) => {
+            const option = document.createElement('option');
+            option.value = row.version;
+            option.textContent = row.isPrerelease
+                ? `${row.tag} (${i18n.prerelease || 'pre'})`
+                : row.tag;
+            if (row.version === current || row.tag === current) {
+                option.selected = true;
+            }
+            versionSelect.append(option);
+        });
+        if (!versionSelect.value && versions[0]) {
+            versionSelect.value = versions[0].version;
+        }
+    };
+
+    const loadVersion = async (version) => {
+        if (!version || loading) {
+            return;
+        }
+        loading = true;
+        setStatus(i18n.loading || 'Loading…', true);
+        if (layout instanceof HTMLElement) {
+            layout.classList.add('is-loading');
+        }
+        try {
+            const response = await fetch(`${sbomBase}/${encodeURIComponent(version)}`, {
+                headers: { Accept: 'application/json' },
+                credentials: 'same-origin',
+            });
+            if (!response.ok) {
+                throw new Error('sbom fetch failed');
+            }
+            const payload = await response.json();
+            applySbom(payload);
+            root.setAttribute('data-selected', payload.version || version);
+            syncQuery();
+            setStatus('', false);
+        } catch {
+            applySbom(null);
+            setStatus(i18n.error || 'Could not load SBOM.', true);
+        } finally {
+            loading = false;
+            if (layout instanceof HTMLElement) {
+                layout.classList.remove('is-loading');
+            }
+        }
+    };
+
+    const warmCaches = () => {
+        const versions = (catalog.versions || []).filter((row) => !row.cached).slice(0, 12);
+        let index = 0;
+        const next = () => {
+            if (index >= versions.length) {
+                fetch(`${catalogUrl}?warm=1`, {
+                    headers: { Accept: 'application/json' },
+                    credentials: 'same-origin',
+                }).catch(() => {});
+                return;
+            }
+            const row = versions[index];
+            index += 1;
+            fetch(`${sbomBase}/${encodeURIComponent(row.version)}`, {
+                headers: { Accept: 'application/json' },
+                credentials: 'same-origin',
+            })
+                .catch(() => {})
+                .finally(() => {
+                    window.setTimeout(next, 400);
+                });
+        };
+        if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(() => next(), { timeout: 4000 });
+        } else {
+            window.setTimeout(next, 1500);
+        }
+    };
+
+    versionSelect?.addEventListener('change', () => {
+        if (versionSelect instanceof HTMLSelectElement) {
+            void loadVersion(versionSelect.value);
+        }
+    });
+
+    searchInput?.addEventListener('input', () => {
+        renderList();
+        renderTable();
+        if (focusId === null || focusId === sbom?.rootId) {
+            renderGraph();
+        }
+        syncQuery();
+    });
+
+    ecoGroup?.addEventListener('click', (event) => {
+        const btn = event.target.closest('[data-dep-eco]');
+        if (!(btn instanceof HTMLElement)) {
+            return;
+        }
+        eco = btn.getAttribute('data-dep-eco') || '';
+        ecoGroup.querySelectorAll('[data-dep-eco]').forEach((node) => {
+            node.classList.toggle('is-active', (node.getAttribute('data-dep-eco') || '') === eco);
+        });
+        renderList();
+        renderTable();
+    });
+
+    root.querySelectorAll('[data-dep-view]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            setView(btn.getAttribute('data-dep-view') || 'table');
+        });
+    });
+
+    toggleListBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            listOpen = !listOpen;
+            syncPanels();
+        });
+    });
+
+    root.querySelectorAll('[data-dep-toggle-inspector]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            if (!(detail instanceof HTMLElement)) {
+                return;
+            }
+            if (detail.hidden) {
+                selectFocus(focusId || sbom?.rootId || null);
+            } else {
+                detail.hidden = true;
+                syncPanels();
+            }
+        });
+    });
+
+    resetBtn?.addEventListener('click', () => {
+        selectFocus(sbom?.rootId ?? null);
+    });
+
+    detail?.querySelector('[data-dep-detail-close]')?.addEventListener('click', () => {
+        selectFocus(sbom?.rootId ?? null);
+    });
+
+    detail?.querySelector('[data-dep-detail-purl]')?.addEventListener('click', async (event) => {
+        const btn = event.currentTarget;
+        if (!(btn instanceof HTMLElement)) {
+            return;
+        }
+        const text = btn.getAttribute('data-copy-text') || '';
+        if (!text) {
+            return;
+        }
+        const labels = siteToastCopy();
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch {
+            showToast(labels.copy_failed || 'Copy failed');
+            return;
+        }
+        const copied = btn.getAttribute('data-copied-label') || labels.copied || 'Copied';
+        const prev = btn.textContent;
+        btn.textContent = copied;
+        showToast(copied);
+        window.setTimeout(() => {
+            btn.textContent = prev;
+        }, 1400);
+    });
+
+    if (graphWrap && 'ResizeObserver' in window) {
+        let resizeTimer = 0;
+        const observer = new ResizeObserver(() => {
+            window.clearTimeout(resizeTimer);
+            resizeTimer = window.setTimeout(() => {
+                if (view === 'graph' && sbom) {
+                    renderGraph();
+                }
+            }, 80);
+        });
+        observer.observe(graphWrap);
+    }
+
+    window.addEventListener('resize', () => {
+        if (view === 'graph' && sbom) {
+            window.requestAnimationFrame(() => renderGraph());
+        }
+    });
+
+    fillVersionSelect();
+    const initialQuery = new URL(window.location.href).searchParams.get('q') || '';
+    if (searchInput instanceof HTMLInputElement && initialQuery) {
+        searchInput.value = initialQuery;
+    }
+    syncPanels();
+    if (sbom) {
+        applySbom(sbom);
+        setView('table');
+        setStatus('', false);
+    } else if ((catalog.versions || []).length) {
+        const initial =
+            root.getAttribute('data-selected') ||
+            catalog.defaultVersion ||
+            catalog.versions[0].version;
+        void loadVersion(initial).then(() => setView('table'));
+    } else {
+        setStatus(i18n.empty || '', true);
+    }
+
+    warmCaches();
 }
 
 function initPwa() {
@@ -1350,6 +2618,7 @@ function boot() {
     initMobileMenu();
     initCopyButtons();
     initShowcase();
+    initHomeDownloadHint();
     initDownloadChannels();
     initInterfaceDirectory();
     initLangPicker();
@@ -1359,6 +2628,7 @@ function boot() {
     initRoadmapRail();
     initChangelog();
     initOfflineRetry();
+    initDependencyViewer();
     initPwa();
 }
 

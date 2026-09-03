@@ -53,6 +53,66 @@ class GithubReleasesService
         });
     }
 
+    /**
+     * Releases that ship a CycloneDX SBOM asset, newest first.
+     *
+     * @return list<array{version: string, tag: string, publishedAt: string, isPrerelease: bool, releaseUrl: string, sbomUrl: string}>
+     */
+    public function sbomReleases(): array
+    {
+        $out = [];
+
+        foreach ($this->cachedReleases() as $release) {
+            $sbomUrl = $this->sbomUrlFromAssets($release['assets'] ?? []);
+            if ($sbomUrl === null) {
+                continue;
+            }
+
+            $tag = (string) $release['tag_name'];
+            $out[] = [
+                'version' => $this->versionDisplay($tag),
+                'tag' => $tag,
+                'publishedAt' => (string) $release['published_at'],
+                'isPrerelease' => ((bool) ($release['prerelease'] ?? false)) || $this->isPrereleaseTag($tag),
+                'releaseUrl' => (string) $release['html_url'],
+                'sbomUrl' => $sbomUrl,
+            ];
+        }
+
+        usort($out, function (array $a, array $b): int {
+            $byDate = strcmp($b['publishedAt'], $a['publishedAt']);
+            if ($byDate !== 0) {
+                return $byDate;
+            }
+
+            return $this->compareVersionDesc($a['tag'], $b['tag']);
+        });
+
+        return $out;
+    }
+
+    /**
+     * @param  list<array{name?: string, browser_download_url?: string}|mixed>  $assets
+     */
+    private function sbomUrlFromAssets(array $assets): ?string
+    {
+        foreach ($assets as $asset) {
+            if (! is_array($asset)) {
+                continue;
+            }
+            $name = $asset['name'] ?? null;
+            $url = $asset['browser_download_url'] ?? null;
+            if (! is_string($name) || ! is_string($url)) {
+                continue;
+            }
+            if (preg_match('/sbom\.cyclonedx\.json$/i', $name)) {
+                return $url;
+            }
+        }
+
+        return null;
+    }
+
     private function cacheTtl(): int
     {
         return max(60, min((int) config('meshchatx.releases_cache_seconds', 3600), 86400));

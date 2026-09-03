@@ -17,7 +17,12 @@
 
 @section('content')
     <div class="docs-shell" data-docs-shell>
-        <aside class="docs-sidebar" data-docs-sidebar aria-label="{{ t('docs.nav_label') }}">
+        <aside
+            id="docs-mobile-nav"
+            class="docs-sidebar"
+            data-docs-sidebar
+            aria-label="{{ t('docs.nav_label') }}"
+        >
             <div class="docs-sidebar__inner">
                 <button
                     type="button"
@@ -95,6 +100,19 @@
                     <a class="docs-export__btn" href="{{ $exportTxt }}">TXT</a>
                 </div>
             </div>
+
+            @if (count($doc['headings']) > 0)
+                <details class="docs-toc-mobile">
+                    <summary class="docs-toc-mobile__summary">{{ t('docs.toc') }}</summary>
+                    <ul class="docs-toc__list docs-toc-mobile__list">
+                        @foreach ($doc['headings'] as $heading)
+                            <li class="docs-toc__item docs-toc__item--h{{ $heading['level'] }}">
+                                <a href="#{{ $heading['id'] }}">{{ $heading['text'] }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </details>
+            @endif
 
             <article class="docs-article">
                 <header class="docs-article__header">

@@ -21,6 +21,8 @@ class DocsPageTest extends TestCase
             ->assertSee('data-docs-search', false)
             ->assertSee('Search docs', false)
             ->assertSee('docs-nav', false)
+            ->assertSee('id="docs-mobile-nav"', false)
+            ->assertSee('docs-toc-mobile', false)
             ->assertSee('Getting started', false)
             ->assertSee('Download all docs', false);
     }

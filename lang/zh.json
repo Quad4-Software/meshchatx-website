@@ -20,7 +20,8 @@
             "git": "Git | MeshChatX",
             "docs": "文档 | MeshChatX",
             "changelog": "更新日志 | MeshChatX",
-            "offline": "离线 | MeshChatX"
+            "offline": "离线 | MeshChatX",
+            "dependency": "依赖 | MeshChatX"
         },
         "og_image_alt": "MeshChatX 标志",
         "desc": {
@@ -37,7 +38,8 @@
             "branding": "MeshChatX 徽标、图标与品牌色，供媒体与产品使用。",
             "git": "通过 Reticulum 上的 rngit 克隆 MeshChatX，或使用 GitHub 与 LavaForge 镜像。",
             "docs": "来自应用文档包的 MeshChatX 文档：安装、消息、LXST 通话、NomadNet、接口与平台指南。",
-            "offline": "你处于离线状态。打开已缓存的 MeshChatX 页面，或重新连接网络。"
+            "offline": "你处于离线状态。打开已缓存的 MeshChatX 页面，或重新连接网络。",
+            "dependency": "按版本浏览 MeshChatX 发布附带的 CycloneDX SBOM：包依赖图、许可证与供应链。"
         }
     },
     "error": {
@@ -82,12 +84,17 @@
         "interfaces": "接口",
         "git": "Git",
         "download": "下载",
-        "toggle_theme": "切换主题",
+        "toggle_theme": "主题",
         "mobile_menu": "打开菜单",
         "mobile_menu_close": "关闭菜单",
         "mobile_nav": "移动端",
         "docs": "文档",
-        "branding": "品牌"
+        "branding": "品牌",
+        "dependency": "依赖",
+        "secondary": "更多",
+        "theme_light": "浅色",
+        "theme_dark": "深色",
+        "theme_system": "系统"
     },
     "lang": {
         "label": "语言",
@@ -108,7 +115,9 @@
         "privacy": "隐私政策",
         "license_badge": "MIT + 0BSD",
         "meta_copyright": "© 2026 MeshChatX。",
-        "meta_site": "MeshChatX 是 <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a> 的项目。"
+        "meta_site": "MeshChatX 是 <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a> 的项目。",
+        "product": "产品",
+        "explore": "探索"
     },
     "contact": {
         "h1": "联系",
@@ -197,24 +206,26 @@
         },
         "cta": {
             "download": "下载",
-            "source": "查看源代码"
+            "source": "查看源代码",
+            "docs": "文档",
+            "download_for": "下载适用于 %s"
         },
         "section": {
-            "infra_h2": "无中心服务器",
-            "infra_lead": "流量走 Reticulum 网状链路，不经过 MeshChatX 运营的后端。"
+            "infra_h2": "没有公司服务器",
+            "infra_lead": "消息走你配置的 Reticulum 链路。MeshChatX 不托管聊天。"
         },
         "feature": {
-            "decentralized_h3": "去中心化",
-            "decentralized_p": "基于 Reticulum。没有由 MeshChatX 运营的消息服务器。身份与消息历史保存在你的设备上。",
-            "crypto_h3": "公开密码学",
-            "crypto_p": "Reticulum 在公开规范中说明其密码学设计。MeshChatX 原样使用该技术栈。",
-            "crypto_link": "阅读规范",
-            "mesh_h3": "网状网络",
-            "mesh_p": "MeshChatX 可运行于互联网链路、无线电、LoRa，以及 Reticulum 支持的其他传输方式。",
-            "platform_h3": "平台支持",
-            "platform_p": "桌面（Electron）与 Web（Docker 或 Python）。Android 提供 APK，也可通过 Termux 使用。",
-            "sandbox_h3": "系统原生沙箱",
-            "sandbox_p": "Windows 桌面构建运行在 :appcontainer 中。Linux 构建在内核支持时使用 :landlock 与 :seccomp。"
+            "decentralized_h3": "聊天留在你的设备上",
+            "decentralized_p": "没有 MeshChatX 消息服务器。身份和消息记录留在你使用的设备上。",
+            "crypto_h3": "可查阅的加密",
+            "crypto_p": "Reticulum 公开说明加密如何工作。MeshChatX 原样使用该设计。",
+            "crypto_link": "阅读原理",
+            "mesh_h3": "互联网、Wi-Fi 或无线电",
+            "mesh_p": "同一应用可用于家庭网络、互联网，或无线电（含 LoRa）。Reticulum 在你提供的链路上传数据。",
+            "platform_h3": "电脑、浏览器或手机",
+            "platform_p": "Windows、macOS 和 Linux 桌面应用。也可在浏览器里用，或装 Android APK。需要命令行安装时用 Termux。",
+            "sandbox_h3": "系统限制应用",
+            "sandbox_p": "Windows 桌面构建运行在 :appcontainer 中。Linux 构建使用 :landlock 与 :seccomp，限制应用能碰到机器的哪些部分。"
         },
         "security": {
             "h2": "安全与完整性",
@@ -230,12 +241,12 @@
         "split": {
             "h2_line1": "匿名",
             "h2_line2": "且无需账号",
-            "item1_h4": "多身份",
-            "item1_p": "按需创建多个身份。在身份之间切换时不会混用各自的数据存储。",
+            "item1_h4": "分开的身份",
+            "item1_p": "按需创建并切换。每个身份各自保存消息和文件。",
             "item2_h4": "无需年龄验证",
-            "item2_p": "无需政府证件、手机号或邮箱。接入时无第三方身份核验。",
+            "item2_p": "无需政府证件、手机号或邮箱。加入时不必向第三方证明你是谁。",
             "item3_h4": "无审查",
-            "item3_p": "消息在网状网络中传播。远程对等节点离线时，本地归档仍可提供历史记录。"
+            "item3_p": "没有 MeshChatX 开关能替所有人删掉一段对话。已经收到的副本仍留在那些设备上，对方离线也一样。"
         },
         "videos": {
             "h2": "视频",
@@ -294,7 +305,9 @@
             "github_fallback": "GitHub 发布",
             "published_prefix": "发布于",
             "published_just_now": "刚刚发布"
-        }
+        },
+        "copied": "已复制",
+        "copy_failed": "复制失败"
     },
     "ifx": {
         "h1": "接口",
@@ -408,5 +421,53 @@
             "platforms": "平台指南",
             "ops": "运维"
         }
+    },
+    "dep": {
+        "h1": "依赖",
+        "lead": "MeshChatX GitHub 发布附带的 CycloneDX SBOM。选择版本可查看软件包、许可证与依赖边。本站会缓存发布资产，避免反复请求 GitHub。",
+        "api": "JSON API",
+        "source": "GitHub Releases",
+        "tool": "由 %s 生成",
+        "version": "版本",
+        "search_label": "搜索软件包",
+        "search_placeholder": "名称、版本、生态、许可证或 purl",
+        "filter_ecosystem": "生态",
+        "filter_all": "全部",
+        "download": "下载 SBOM",
+        "release": "发布说明",
+        "views": "视图",
+        "view_graph": "图",
+        "view_tree": "树",
+        "view_table": "表",
+        "package_list": "软件包",
+        "stat_packages": "个软件包",
+        "stat_edges": "条边",
+        "showing": "显示 %shown / %total",
+        "focus_hint": "选择一个软件包以查看其邻域。",
+        "reset_focus": "显示清单",
+        "manifests": "锁文件与清单",
+        "loading": "正在加载 SBOM…",
+        "error": "无法加载此版本的 SBOM。",
+        "empty": "尚无可用的发布 SBOM。",
+        "no_versions": "无版本",
+        "no_sbom": "此版本没有 SBOM。",
+        "no_results": "没有匹配的软件包。",
+        "depends_on": "依赖于",
+        "used_by": "被用于",
+        "none": "无",
+        "prerelease": "预发布",
+        "stable": "稳定",
+        "copied": "已复制",
+        "unknown_license": "未知",
+        "close_detail": "关闭",
+        "purl": "Package URL",
+        "col_name": "名称",
+        "col_version": "版本",
+        "col_ecosystem": "生态",
+        "col_license": "许可证",
+        "col_type": "类型",
+        "lead_short": "来自 GitHub 发布的 CycloneDX SBOM。本站会缓存。",
+        "toggle_list": "软件包",
+        "toggle_inspector": "详情"
     }
 }

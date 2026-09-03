@@ -20,7 +20,8 @@
             "git": "Git | MeshChatX",
             "docs": "Docs | MeshChatX",
             "changelog": "Änderungsprotokoll | MeshChatX",
-            "offline": "Offline | MeshChatX"
+            "offline": "Offline | MeshChatX",
+            "dependency": "Abhängigkeiten | MeshChatX"
         },
         "og_image_alt": "MeshChatX-Logo",
         "desc": {
@@ -37,7 +38,8 @@
             "branding": "MeshChatX-Logos, Icons und Markenfarben für Presse und Produktnutzung.",
             "git": "MeshChatX per rngit über Reticulum klonen oder die Spiegel auf GitHub und LavaForge nutzen.",
             "docs": "MeshChatX-Dokumentation aus dem App-Docs-Paket: Installation, Messaging, LXST-Anrufe, NomadNet, Interfaces und Plattformleitfäden.",
-            "offline": "Sie sind offline. Öffnen Sie eine zwischengespeicherte MeshChatX-Seite oder stellen Sie die Verbindung wieder her."
+            "offline": "Sie sind offline. Öffnen Sie eine zwischengespeicherte MeshChatX-Seite oder stellen Sie die Verbindung wieder her.",
+            "dependency": "CycloneDX-SBOMs der MeshChatX-Releases: Paketgraph, Lizenzen und die Lieferkette nach Version."
         }
     },
     "error": {
@@ -82,12 +84,17 @@
         "interfaces": "Interfaces",
         "git": "Git",
         "download": "Download",
-        "toggle_theme": "Design wechseln",
+        "toggle_theme": "Design",
         "mobile_menu": "Menü öffnen",
         "mobile_menu_close": "Menü schließen",
         "mobile_nav": "Mobil",
         "docs": "Docs",
-        "branding": "Branding"
+        "branding": "Branding",
+        "dependency": "Abhängigkeiten",
+        "secondary": "Mehr",
+        "theme_light": "Hell",
+        "theme_dark": "Dunkel",
+        "theme_system": "System"
     },
     "lang": {
         "label": "Sprache",
@@ -108,7 +115,9 @@
         "privacy": "Datenschutz",
         "license_badge": "MIT + 0BSD",
         "meta_copyright": "© 2026 MeshChatX.",
-        "meta_site": "MeshChatX ist ein <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>-Projekt."
+        "meta_site": "MeshChatX ist ein <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>-Projekt.",
+        "product": "Produkt",
+        "explore": "Entdecken"
     },
     "contact": {
         "h1": "Kontakt",
@@ -197,24 +206,26 @@
         },
         "cta": {
             "download": "Download",
-            "source": "Quellcode ansehen"
+            "source": "Quellcode ansehen",
+            "docs": "Doku",
+            "download_for": "Download für %s"
         },
         "section": {
-            "infra_h2": "Keine zentralen Server",
-            "infra_lead": "Der Verkehr läuft über Reticulum-Mesh-Links, nicht über ein von MeshChatX betriebenes Backend."
+            "infra_h2": "Keine Firmenserver",
+            "infra_lead": "Nachrichten laufen über Reticulum-Verbindungen, die du einrichtest. MeshChatX hostet den Chat nicht."
         },
         "feature": {
-            "decentralized_h3": "Dezentral",
-            "decentralized_p": "Auf Reticulum aufgebaut. Keine von MeshChatX betriebenen Nachrichtenserver. Identitäten und Nachrichtenverlauf bleiben auf deinem Gerät.",
-            "crypto_h3": "Offene Kryptografie",
-            "crypto_p": "Reticulum veröffentlicht sein Krypto-Design in einer offenen Spezifikation. MeshChatX nutzt diesen Stack unverändert.",
-            "crypto_link": "Spezifikation lesen",
-            "mesh_h3": "Mesh-Netzwerk",
-            "mesh_p": "MeshChatX läuft über Internet-Links, Funk, LoRa und andere Transporte, die Reticulum unterstützt.",
-            "platform_h3": "Plattformunterstützung",
-            "platform_p": "Desktop (Electron) und Web (Docker oder Python). Android als APK und über Termux.",
-            "sandbox_h3": "Native OS-Sandbox",
-            "sandbox_p": "Windows-Desktop-Builds laufen in :appcontainer. Linux-Builds nutzen :landlock und :seccomp, wo der Kernel das unterstützt."
+            "decentralized_h3": "Dein Gerät behält den Chat",
+            "decentralized_p": "Es gibt keinen MeshChatX-Nachrichtenserver. Identität und Nachrichtenverlauf bleiben auf dem Gerät, das du nutzt.",
+            "crypto_h3": "Nachlesbare Verschlüsselung",
+            "crypto_p": "Reticulum veröffentlicht, wie die Verschlüsselung funktioniert. MeshChatX nutzt dieses Design unverändert.",
+            "crypto_link": "So funktioniert es",
+            "mesh_h3": "Internet, WLAN oder Funk",
+            "mesh_p": "Dieselbe App im Heimnetz, über das Internet oder über Funk inklusive LoRa. Reticulum trägt den Verkehr über die Verbindung, die du vorgibst.",
+            "platform_h3": "Rechner, Browser oder Handy",
+            "platform_p": "Desktop-Apps für Windows, macOS und Linux. Im Browser nutzbar, oder als Android-APK. Termux bleibt für die Kommandozeile.",
+            "sandbox_h3": "Das OS beschränkt die App",
+            "sandbox_p": "Windows-Desktop-Builds laufen in :appcontainer. Linux-Builds nutzen :landlock und :seccomp, die begrenzen, worauf die App auf dem Rechner zugreifen kann."
         },
         "security": {
             "h2": "Sicherheit & Integrität",
@@ -230,12 +241,12 @@
         "split": {
             "h2_line1": "Anonym",
             "h2_line2": "& ohne Konto",
-            "item1_h4": "Mehrere Identitäten",
-            "item1_p": "Erzeuge so viele Identitäten, wie du brauchst. Wechsle zwischen ihnen, ohne ihre Datenspeicher zu vermischen.",
+            "item1_h4": "Getrennte Identitäten",
+            "item1_p": "Lege so viele an, wie du brauchst, und wechsle dazwischen. Jede behält eigene Nachrichten und Dateien.",
             "item2_h4": "Keine Altersprüfung",
-            "item2_p": "Kein Ausweis, keine Telefonnummer, keine E-Mail. Zugang ohne Identitätsprüfung durch Dritte.",
+            "item2_p": "Kein Ausweis, keine Telefonnummer, keine E-Mail. Du musst keiner dritten Partei nachweisen, wer du bist.",
             "item3_h4": "Keine Zensur",
-            "item3_p": "Nachrichten verbreiten sich im Mesh. Lokale Archive halten den Verlauf bereit, wenn ein entfernter Peer offline ist."
+            "item3_p": "Es gibt keinen MeshChatX-Schalter, der eine Unterhaltung für alle löscht. Kopien bleiben auf Geräten, die sie schon haben, auch wenn die andere Person offline ist."
         },
         "videos": {
             "h2": "Videos",
@@ -294,7 +305,9 @@
             "github_fallback": "GitHub-Releases",
             "published_prefix": "veröffentlicht",
             "published_just_now": "gerade veröffentlicht"
-        }
+        },
+        "copied": "Kopiert",
+        "copy_failed": "Kopieren fehlgeschlagen"
     },
     "ifx": {
         "h1": "Interfaces",
@@ -408,5 +421,53 @@
             "platforms": "Plattformleitfäden",
             "ops": "Betrieb"
         }
+    },
+    "dep": {
+        "h1": "Abhängigkeiten",
+        "lead": "CycloneDX-SBOMs aus den MeshChatX-GitHub-Releases. Wähle eine Version, um Pakete, Lizenzen und Abhängigkeitskanten zu prüfen. Release-Assets werden auf dieser Website zwischengespeichert, damit GitHub nicht dauernd angefragt wird.",
+        "api": "JSON-API",
+        "source": "GitHub Releases",
+        "tool": "Erzeugt mit %s",
+        "version": "Release",
+        "search_label": "Pakete suchen",
+        "search_placeholder": "Name, Version, Ökosystem, Lizenz oder purl",
+        "filter_ecosystem": "Ökosystem",
+        "filter_all": "Alle",
+        "download": "SBOM herunterladen",
+        "release": "Release-Notizen",
+        "views": "Ansichten",
+        "view_graph": "Graph",
+        "view_tree": "Baum",
+        "view_table": "Tabelle",
+        "package_list": "Pakete",
+        "stat_packages": "Pakete",
+        "stat_edges": "Kanten",
+        "showing": "%shown von %total",
+        "focus_hint": "Wähle ein Paket, um die Nachbarschaft zu sehen.",
+        "reset_focus": "Manifeste zeigen",
+        "manifests": "Lockfiles und Manifeste",
+        "loading": "SBOM wird geladen…",
+        "error": "SBOM für diese Version konnte nicht geladen werden.",
+        "empty": "Noch keine Release-SBOMs verfügbar.",
+        "no_versions": "Keine Versionen",
+        "no_sbom": "Kein SBOM für diese Version.",
+        "no_results": "Keine Pakete passen zur Suche.",
+        "depends_on": "Hängt ab von",
+        "used_by": "Verwendet von",
+        "none": "Keine",
+        "prerelease": "Vorabversion",
+        "stable": "stabil",
+        "copied": "Kopiert",
+        "unknown_license": "Unbekannt",
+        "close_detail": "Schließen",
+        "purl": "Package URL",
+        "col_name": "Name",
+        "col_version": "Version",
+        "col_ecosystem": "Ökosystem",
+        "col_license": "Lizenz",
+        "col_type": "Typ",
+        "lead_short": "CycloneDX-SBOM aus GitHub-Releases. Zwischengespeichert auf dieser Website.",
+        "toggle_list": "Pakete",
+        "toggle_inspector": "Details"
     }
 }

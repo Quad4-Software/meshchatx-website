@@ -34,6 +34,7 @@ class SeoMetaTest extends TestCase
             ->assertSee('/download', false)
             ->assertSee('/de/download', false)
             ->assertSee('/interfaces', false)
+            ->assertSee('/dependency', false)
             ->assertSee('hreflang', false);
     }
 }

@@ -12,16 +12,26 @@ class MeshchatxConfigTest extends TestCase
         $this->assertSame('MeshChatX', config('meshchatx.name'));
         $this->assertContains('en', config('meshchatx.locales'));
         $this->assertNotEmpty(config('meshchatx.nav'));
+        $this->assertSame(
+            ['nav.docs', 'nav.git', 'nav.contact'],
+            array_column(config('meshchatx.nav'), 'label_key'),
+        );
         $this->assertNotContains('nav.forum', array_column(config('meshchatx.nav'), 'label_key'));
         $this->assertNotContains('nav.forum', array_column(config('meshchatx.footer_nav'), 'label_key'));
         $this->assertNotContains('nav.interfaces', array_column(config('meshchatx.nav'), 'label_key'));
         $this->assertContains('nav.interfaces', array_column(config('meshchatx.footer_nav'), 'label_key'));
+        $this->assertContains('nav.download', array_column(config('meshchatx.footer_nav'), 'label_key'));
+        $this->assertContains('nav.roadmap', array_column(config('meshchatx.mobile_nav_secondary'), 'label_key'));
         $this->assertContains('interfaces', config('meshchatx.pages'));
         $this->assertContains('docs', config('meshchatx.pages'));
         $this->assertContains('changelog', config('meshchatx.pages'));
         $this->assertContains('changelog', config('meshchatx.sitemap'));
         $this->assertContains('nav.docs', array_column(config('meshchatx.nav'), 'label_key'));
         $this->assertContains('nav.docs', array_column(config('meshchatx.footer_nav'), 'label_key'));
+        $this->assertSame(
+            ['product', 'explore', 'legal'],
+            array_values(array_unique(array_column(config('meshchatx.footer_nav'), 'group'))),
+        );
         $this->assertNotEmpty(config('meshchatx.documentation.groups'));
         $this->assertNotEmpty(config('meshchatx.sitemap'));
         $this->assertNotEmpty(config('meshchatx.roadmap'));

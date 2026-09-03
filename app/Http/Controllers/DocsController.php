@@ -38,6 +38,21 @@ class DocsController extends Controller
         ]);
     }
 
+    public function markdown(Request $request): Response
+    {
+        $slug = (string) $request->route('slug', '');
+
+        if (! $this->isValidSlug($slug) || ! $this->docs->exists($slug)) {
+            throw new NotFoundHttpException;
+        }
+
+        return response($this->docs->rawMarkdown($slug), 200, [
+            'Content-Type' => 'text/markdown; charset=UTF-8',
+            'Cache-Control' => 'public, max-age=3600',
+            'Link' => '</docs/'.$slug.'>; rel="canonical", </docs/'.$slug.'.md>; rel="alternate"; type="text/markdown", </llms.txt>; rel="describedby", </docs/llms.txt>; rel="describedby"',
+        ]);
+    }
+
     public function export(Request $request): Response
     {
         $slug = (string) $request->route('slug', '');
@@ -59,10 +74,16 @@ class DocsController extends Controller
             ? 'text/markdown; charset=UTF-8'
             : 'text/plain; charset=UTF-8';
 
-        return response($body, 200, [
+        $headers = [
             'Content-Type' => $contentType,
             'Content-Disposition' => 'attachment; filename="'.$filename.'"',
-        ]);
+        ];
+
+        if ($format === 'md') {
+            $headers['Link'] = '</docs/'.$slug.'.md>; rel="alternate"; type="text/markdown", </llms.txt>; rel="describedby", </docs/llms.txt>; rel="describedby"';
+        }
+
+        return response($body, 200, $headers);
     }
 
     public function exportAll(Request $request): Response

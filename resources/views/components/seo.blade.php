@@ -170,6 +170,16 @@
 <link rel="apple-touch-icon" href="/logo.webp">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ $domain }}/sitemap.xml">
+<link rel="describedby" href="{{ $domain }}/llms.txt" title="llms.txt">
+@if (($page ?? '') === 'docs' && ! empty($routeParams['slug']))
+    <link
+        rel="alternate"
+        type="text/markdown"
+        title="Markdown"
+        href="{{ locale_route('docs.markdown', ['slug' => $routeParams['slug']]) }}"
+    >
+    <link rel="describedby" href="{{ $domain }}/docs/llms.txt" title="docs llms.txt">
+@endif
 @if (($page ?? '') === 'changelog')
     <link
         rel="alternate"

@@ -59,6 +59,11 @@ class DownloadPageTest extends TestCase
             ->assertSee('https://example.test/android.apk', false)
             ->assertSee('https://example.test/mac.dmg', false)
             ->assertSee('Download .dmg', false)
-            ->assertSee('https://example.test/sbom.cyclonedx.json', false);
+            ->assertSee('https://example.test/sbom.cyclonedx.json', false)
+            ->assertSee('data-download-hero', false)
+            ->assertSee('Next: Getting started', false)
+            ->assertSee('/docs/getting-started', false)
+            ->assertSee('/interfaces', false)
+            ->assertSee('/dependency', false);
     }
 }

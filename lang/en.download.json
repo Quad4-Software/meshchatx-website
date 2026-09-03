@@ -157,6 +157,13 @@
       "docker_hint": "Containers",
       "python_hint": "PyPI / .whl",
       "umbrel_hint": "App store"
+    },
+    "cta": {
+      "download_for": "Download for %s",
+      "next_steps": "Next: Getting started",
+      "interfaces": "Interfaces directory",
+      "dependencies": "Dependencies (SBOM)",
+      "open_tab": "Browse other platforms"
     }
   }
 }

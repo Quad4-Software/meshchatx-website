@@ -1,30 +1,36 @@
 @php
-    $community = [];
-    $legal = [];
+    $groups = [
+        'product' => [],
+        'explore' => [],
+        'legal' => [],
+    ];
     foreach ($site['footer_nav'] as $item) {
+        $group = $item['group'] ?? 'explore';
+        if (! array_key_exists($group, $groups)) {
+            $group = 'explore';
+        }
         if (! empty($item['external'])) {
-            $community[] = [
+            $groups[$group][] = [
                 'label' => t($item['label_key']),
                 'href' => $site[$item['external']] ?? config('meshchatx.'.$item['external']),
                 'external' => true,
+                'route' => null,
             ];
         } elseif (! empty($item['route'])) {
-            $entry = [
+            $groups[$group][] = [
                 'label' => t($item['label_key']),
                 'href' => locale_route($item['route']),
                 'external' => false,
                 'route' => $item['route'],
             ];
-            if (in_array($item['route'], ['license', 'privacy'], true)) {
-                $legal[] = $entry;
-            } else {
-                $community[] = $entry;
-            }
         }
     }
-    $community[] = ['label' => t('nav.roadmap'), 'href' => locale_route('roadmap'), 'external' => false];
-    $community[] = ['label' => t('nav.donate'), 'href' => locale_route('donate'), 'external' => false];
-    $community[] = ['label' => t('nav.contact'), 'href' => locale_route('contact'), 'external' => false];
+
+    $columns = [
+        ['key' => 'product', 'heading' => t('footer.product'), 'links' => $groups['product']],
+        ['key' => 'explore', 'heading' => t('footer.explore'), 'links' => $groups['explore']],
+        ['key' => 'legal', 'heading' => t('footer.legal'), 'links' => $groups['legal']],
+    ];
 
     $metaSite = t('footer.meta_site');
     $metaSite = preg_replace('/href="[^"]*"/', 'href="'.e($site['quad4_url']).'"', $metaSite) ?? $metaSite;
@@ -50,31 +56,25 @@
                 <p class="site-footer__tagline">{{ t('footer.tagline') }}</p>
             </div>
             <div class="site-footer__columns">
-                <div>
-                    <h2 class="site-footer__heading">{{ t('footer.community') }}</h2>
-                    <div class="site-footer__links">
-                        @foreach ($community as $link)
-                            <a
-                                class="site-footer__link"
-                                href="{{ $link['href'] }}"
-                                @if (! empty($link['external'])) target="_blank" rel="noopener noreferrer" @endif
-                            >{{ $link['label'] }}</a>
-                        @endforeach
+                @foreach ($columns as $column)
+                    <div>
+                        <h2 class="site-footer__heading">{{ $column['heading'] }}</h2>
+                        <div class="site-footer__links">
+                            @foreach ($column['links'] as $link)
+                                <a
+                                    class="site-footer__link"
+                                    href="{{ $link['href'] }}"
+                                    @if (! empty($link['external'])) target="_blank" rel="noopener noreferrer" @endif
+                                >
+                                    {{ $link['label'] }}
+                                    @if (($link['route'] ?? '') === 'license')
+                                        <span>{{ t('footer.license_badge') }}</span>
+                                    @endif
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <h2 class="site-footer__heading">{{ t('footer.legal') }}</h2>
-                    <div class="site-footer__links">
-                        @foreach ($legal as $link)
-                            <a class="site-footer__link" href="{{ $link['href'] }}">
-                                {{ $link['label'] }}
-                                @if (($link['route'] ?? '') === 'license')
-                                    <span>{{ t('footer.license_badge') }}</span>
-                                @endif
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
         <div class="site-footer__bottom">

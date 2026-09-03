@@ -17,6 +17,7 @@ Stack: Laravel 13, Blade, Tailwind CSS 4, Vite, pnpm 11. Requires PHP 8.5.
 | Download | `/download` |
 | Roadmap | `/roadmap` |
 | Interfaces | `/interfaces` |
+| Dependencies | `/dependency` |
 | Branding | `/branding` |
 | Contact | `/contact` |
 | Donate | `/donate` |
@@ -24,8 +25,12 @@ Stack: Laravel 13, Blade, Tailwind CSS 4, Vite, pnpm 11. Requires PHP 8.5.
 | Privacy | `/privacy` |
 | Git | `/git` |
 | Sitemap | `/sitemap.xml` |
+| robots.txt | `/robots.txt` |
+| llms.txt | `/llms.txt`, `/llms-full.txt`, `/docs/llms.txt` |
+| Docs markdown | `/docs/{slug}.md`, `/docs/export-all/md` |
 | Releases API | `/api/mcx-releases` |
 | Interfaces API | `/api/mcx-interfaces` |
+| SBOM API | `/api/mcx-sbom`, `/api/mcx-sbom/{version}` |
 
 Locales: English has no prefix. Prefixed: `de`, `ru`, `it`, `zh`.
 
