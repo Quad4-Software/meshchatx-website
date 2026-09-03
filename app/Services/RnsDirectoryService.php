@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Support\SafeText;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
@@ -11,6 +12,10 @@ class RnsDirectoryService
     private const CACHE_PAYLOAD = 'meshchatx.rns.directory.payload';
 
     private const CACHE_STALE = 'meshchatx.rns.directory.stale';
+
+    private const MAX_SEARCH_LENGTH = 128;
+
+    private const MAX_FILTER_LENGTH = 64;
 
     /**
      * @return array{
@@ -28,9 +33,9 @@ class RnsDirectoryService
         $base = $this->cachedPayload();
         $items = $base['interfaces'];
 
-        $search = is_string($search) ? trim($search) : '';
-        $type = is_string($type) ? trim($type) : '';
-        $network = is_string($network) ? trim($network) : '';
+        $search = is_string($search) ? $this->clip($search, self::MAX_SEARCH_LENGTH) : '';
+        $type = is_string($type) ? $this->clip($type, self::MAX_FILTER_LENGTH) : '';
+        $network = is_string($network) ? $this->clip($network, self::MAX_FILTER_LENGTH) : '';
 
         if ($search !== '' || $type !== '' || $network !== '') {
             $needle = mb_strtolower($search);
@@ -85,36 +90,76 @@ class RnsDirectoryService
             return $cached;
         }
 
-        $fresh = $this->fetchPayload();
-        if ($fresh !== null) {
-            $ttl = $this->cacheTtl();
-            Cache::put(self::CACHE_PAYLOAD, $fresh, $ttl);
-            Cache::put(self::CACHE_STALE, $fresh, $this->staleTtl($ttl));
-            $this->writeSnapshot($fresh);
+        try {
+            return Cache::lock('meshchatx.rns.directory.fetch', 25)
+                ->block(10, function () {
+                    $cached = Cache::get(self::CACHE_PAYLOAD);
+                    if (is_array($cached) && $this->isPayload($cached)) {
+                        return $cached;
+                    }
 
-            return $fresh;
+                    $fresh = $this->fetchPayload();
+                    if ($fresh !== null) {
+                        $ttl = $this->cacheTtl();
+                        Cache::put(self::CACHE_PAYLOAD, $fresh, $ttl);
+                        Cache::put(self::CACHE_STALE, $fresh, $this->staleTtl($ttl));
+                        $this->writeSnapshot($fresh);
+
+                        return $fresh;
+                    }
+
+                    $stale = Cache::get(self::CACHE_STALE);
+                    if (is_array($stale) && $this->isPayload($stale)) {
+                        $stale['stale'] = true;
+                        Cache::put(self::CACHE_PAYLOAD, $stale, min(300, $this->cacheTtl()));
+
+                        return $stale;
+                    }
+
+                    $snapshot = $this->readSnapshot() ?? $this->readBootstrap();
+                    if ($snapshot !== null) {
+                        $snapshot['stale'] = true;
+                        Cache::put(self::CACHE_PAYLOAD, $snapshot, min(300, $this->cacheTtl()));
+
+                        return $snapshot;
+                    }
+
+                    $empty = $this->emptyPayload();
+                    Cache::put(self::CACHE_PAYLOAD, $empty, 60);
+
+                    return $empty;
+                });
+        } catch (LockTimeoutException) {
+            $stale = Cache::get(self::CACHE_STALE);
+            if (is_array($stale) && $this->isPayload($stale)) {
+                $stale['stale'] = true;
+
+                return $stale;
+            }
+
+            $snapshot = $this->readSnapshot() ?? $this->readBootstrap();
+            if ($snapshot !== null) {
+                $snapshot['stale'] = true;
+
+                return $snapshot;
+            }
+
+            return $this->emptyPayload();
+        }
+    }
+
+    private function clip(string $value, int $max): string
+    {
+        $value = trim($value);
+        if ($value === '') {
+            return '';
         }
 
-        $stale = Cache::get(self::CACHE_STALE);
-        if (is_array($stale) && $this->isPayload($stale)) {
-            $stale['stale'] = true;
-            Cache::put(self::CACHE_PAYLOAD, $stale, min(300, $this->cacheTtl()));
-
-            return $stale;
+        if (mb_strlen($value) <= $max) {
+            return $value;
         }
 
-        $snapshot = $this->readSnapshot() ?? $this->readBootstrap();
-        if ($snapshot !== null) {
-            $snapshot['stale'] = true;
-            Cache::put(self::CACHE_PAYLOAD, $snapshot, min(300, $this->cacheTtl()));
-
-            return $snapshot;
-        }
-
-        $empty = $this->emptyPayload();
-        Cache::put(self::CACHE_PAYLOAD, $empty, 60);
-
-        return $empty;
+        return mb_substr($value, 0, $max);
     }
 
     /**

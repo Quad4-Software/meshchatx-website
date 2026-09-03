@@ -20,6 +20,29 @@ class SafeHtmlTest extends TestCase
         $this->assertStringNotContainsString('javascript:', $html);
     }
 
+    public function test_rejects_whitespace_smuggled_javascript_href(): void
+    {
+        $html = SafeHtml::sanitize('<a href="java'."\t".'script:alert(1)">x</a>');
+
+        $this->assertStringNotContainsString('href=', $html);
+        $this->assertStringNotContainsString('javascript', strtolower($html));
+    }
+
+    public function test_rejects_newline_smuggled_javascript_href(): void
+    {
+        $html = SafeHtml::sanitize('<a href="java'."\n".'script:alert(1)">x</a>');
+
+        $this->assertStringNotContainsString('href=', $html);
+    }
+
+    public function test_strips_unsafe_heading_ids(): void
+    {
+        $html = SafeHtml::sanitize('<h2 id="&#34; onclick=alert(1) x=">t</h2>');
+
+        $this->assertStringNotContainsString('onclick', $html);
+        $this->assertStringNotContainsString(' id=', $html);
+    }
+
     public function test_keeps_safe_links_and_forces_noopener(): void
     {
         $html = SafeHtml::sanitize(

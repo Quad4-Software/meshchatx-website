@@ -1,6 +1,7 @@
 <?php
 
 use App\Support\LocaleUrl;
+use App\Support\SafeHtml;
 use App\Support\SiteTranslator;
 
 if (! function_exists('t')) {
@@ -32,10 +33,11 @@ if (! function_exists('current_locale')) {
 
 if (! function_exists('clean_site_html')) {
     /**
-     * Strip legacy link classes and inline styles from translation HTML.
+     * Sanitize translation HTML (whitelist tags) and drop legacy link chrome.
      */
     function clean_site_html(string $html): string
     {
+        $html = SafeHtml::sanitize($html);
         $html = preg_replace('/\s*class="mcx-link-blue"/', '', $html) ?? $html;
 
         return preg_replace('/\s*style="[^"]*"/', '', $html) ?? $html;

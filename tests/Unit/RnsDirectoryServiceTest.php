@@ -107,6 +107,32 @@ class RnsDirectoryServiceTest extends TestCase
         $this->assertSame('Clear TCP', $search['interfaces'][0]['name']);
     }
 
+    public function test_search_strings_are_length_capped(): void
+    {
+        Http::fake([
+            'directory.rns.recipes/*' => Http::response([
+                'data' => [
+                    [
+                        'id' => 1,
+                        'name' => 'Clear TCP',
+                        'type' => 'tcp',
+                        'typeName' => 'TCPClientInterface',
+                        'network' => 'clearnet',
+                        'host' => 'tcp.example',
+                        'port' => 4242,
+                        'status' => 'online',
+                        'config' => '',
+                    ],
+                ],
+            ], 200),
+        ]);
+
+        $huge = str_repeat('x', 500);
+        $payload = app(RnsDirectoryService::class)->payload($huge);
+        $this->assertSame(0, $payload['count']);
+        $this->assertSame(1, $payload['total']);
+    }
+
     public function test_uses_stale_cache_when_upstream_fails(): void
     {
         Cache::put('meshchatx.rns.directory.stale', [

@@ -125,6 +125,10 @@ class SafeHtml
                 $el->removeAttribute($name);
             }
 
+            if ($lower === 'id' && ! self::isSafeId($value)) {
+                $el->removeAttribute($name);
+            }
+
             if ($lower === 'target' && $value !== '_blank') {
                 $el->removeAttribute($name);
             }
@@ -142,6 +146,11 @@ class SafeHtml
         }
     }
 
+    private static function isSafeId(string $id): bool
+    {
+        return preg_match('/\A[A-Za-z][A-Za-z0-9._:-]*\z/', $id) === 1;
+    }
+
     private static function isSafeUri(string $uri, bool $allowRelative): bool
     {
         $uri = trim(html_entity_decode($uri, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
@@ -149,16 +158,22 @@ class SafeHtml
             return false;
         }
 
+        // Collapse ASCII controls and whitespace so java\tscript: cannot look scheme-less.
+        $compact = preg_replace('/[\x00-\x20\x7F]+/', '', $uri) ?? '';
+        if ($compact === '') {
+            return false;
+        }
+
+        if (preg_match('#\A([a-z][a-z0-9+.-]*):#i', $compact, $matches) === 1) {
+            $scheme = strtolower($matches[1]);
+
+            return in_array($scheme, ['http', 'https', 'mailto'], true);
+        }
+
         if ($allowRelative && (str_starts_with($uri, '/') || str_starts_with($uri, '#'))) {
-            return ! str_contains($uri, ':');
+            return ! str_contains($compact, ':');
         }
 
-        if (! preg_match('#\A([a-z][a-z0-9+.-]*):#i', $uri, $matches)) {
-            return $allowRelative;
-        }
-
-        $scheme = strtolower($matches[1]);
-
-        return in_array($scheme, ['http', 'https', 'mailto'], true);
+        return $allowRelative;
     }
 }

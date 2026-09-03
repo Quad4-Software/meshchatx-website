@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Support\SafeHtml;
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use League\CommonMark\Environment\Environment;
@@ -234,24 +235,38 @@ class ChangelogService
             return $cached;
         }
 
-        $fresh = $this->fetchMarkdown();
-        if ($fresh !== '') {
-            Cache::put(self::CACHE_RAW, $fresh, $ttl);
-            Cache::put(self::CACHE_RAW_STALE, $fresh, max($ttl * 12, 43200));
+        try {
+            return Cache::lock('meshchatx.changelog.fetch', 25)
+                ->block(10, function () use ($ttl) {
+                    $cached = Cache::get(self::CACHE_RAW);
+                    if (is_string($cached)) {
+                        return $cached;
+                    }
 
-            return $fresh;
+                    $fresh = $this->fetchMarkdown();
+                    if ($fresh !== '') {
+                        Cache::put(self::CACHE_RAW, $fresh, $ttl);
+                        Cache::put(self::CACHE_RAW_STALE, $fresh, max($ttl * 12, 43200));
+
+                        return $fresh;
+                    }
+
+                    $stale = Cache::get(self::CACHE_RAW_STALE);
+                    if (is_string($stale) && $stale !== '') {
+                        Cache::put(self::CACHE_RAW, $stale, min(300, $ttl));
+
+                        return $stale;
+                    }
+
+                    Cache::put(self::CACHE_RAW, '', 60);
+
+                    return '';
+                });
+        } catch (LockTimeoutException) {
+            $stale = Cache::get(self::CACHE_RAW_STALE);
+
+            return is_string($stale) ? $stale : '';
         }
-
-        $stale = Cache::get(self::CACHE_RAW_STALE);
-        if (is_string($stale) && $stale !== '') {
-            Cache::put(self::CACHE_RAW, $stale, min(300, $ttl));
-
-            return $stale;
-        }
-
-        Cache::put(self::CACHE_RAW, '', 60);
-
-        return '';
     }
 
     private function cacheTtl(): int

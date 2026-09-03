@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Support\SafeHtml;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
@@ -114,20 +115,31 @@ class DocsService
 
     public function exportAllPdf(): string
     {
-        $options = new Options;
-        $options->set('isRemoteEnabled', false);
-        $options->set('isHtml5ParserEnabled', true);
-        $options->set('defaultFont', 'DejaVu Sans');
+        $key = 'meshchatx.docs.export.pdf.'.app()->getLocale().'.'.$this->bundleFingerprint();
 
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml($this->bundleHtmlDocument());
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
+        return Cache::remember($key, 3600, function () {
+            $options = new Options;
+            $options->set('isRemoteEnabled', false);
+            $options->set('isHtml5ParserEnabled', true);
+            $options->set('defaultFont', 'DejaVu Sans');
 
-        return (string) $dompdf->output();
+            $dompdf = new Dompdf($options);
+            $dompdf->loadHtml($this->bundleHtmlDocument());
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            return (string) $dompdf->output();
+        });
     }
 
     public function exportAllEpub(): string
+    {
+        $key = 'meshchatx.docs.export.epub.'.app()->getLocale().'.'.$this->bundleFingerprint();
+
+        return Cache::remember($key, 3600, fn () => $this->buildEpubArchive());
+    }
+
+    private function buildEpubArchive(): string
     {
         $tmp = tempnam(sys_get_temp_dir(), 'mcx-docs-epub-');
         if ($tmp === false) {
@@ -591,6 +603,21 @@ XHTML;
         }
 
         return $slugs;
+    }
+
+    private function bundleFingerprint(): string
+    {
+        $parts = [app()->getLocale()];
+        foreach ($this->orderedSlugs() as $slug) {
+            $path = $this->resolvePath($slug);
+            if ($path === null) {
+                continue;
+            }
+            $mtime = @filemtime($path);
+            $parts[] = $slug.':'.($mtime === false ? '0' : (string) $mtime);
+        }
+
+        return hash('xxh128', implode('|', $parts));
     }
 
     /**
