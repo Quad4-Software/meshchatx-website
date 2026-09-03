@@ -32,7 +32,9 @@ $registerPages = function (): void {
     Route::get('/dependency', DependencyController::class)->name('dependency');
     Route::get('/roadmap', RoadmapController::class)->name('roadmap');
     Route::get('/changelog', ChangelogController::class)->name('changelog');
-    Route::get('/changelog/entries', ChangelogEntriesController::class)->name('changelog.entries');
+    Route::get('/changelog/entries', ChangelogEntriesController::class)
+        ->middleware('throttle:mcx-api')
+        ->name('changelog.entries');
     Route::get('/branding', BrandingController::class)->name('branding');
     Route::get('/contact', ContactController::class)->name('contact');
     Route::get('/donate', DonateController::class)->name('donate');
@@ -44,6 +46,7 @@ $registerPages = function (): void {
     Route::get('/docs', [DocsController::class, 'index'])->name('docs');
     Route::get('/docs/llms.txt', [LlmsTxtController::class, 'docs'])->name('docs.llms');
     Route::get('/docs/export-all/{format}', [DocsController::class, 'exportAll'])
+        ->middleware('throttle:mcx-docs-export')
         ->where('format', 'md|txt|pdf|epub')
         ->name('docs.export-all');
     Route::get('/docs/{slug}.md', [DocsController::class, 'markdown'])
@@ -60,7 +63,7 @@ $registerPages = function (): void {
 Route::middleware('locale')->group($registerPages);
 
 Route::prefix('{locale}')
-    ->whereIn('locale', config('meshchatx.prefixed_locales', ['de', 'ru', 'it', 'zh']))
+    ->whereIn('locale', config('meshchatx.prefixed_locales', ['de', 'es', 'fi', 'fr', 'it', 'nl', 'ru', 'zh']))
     ->middleware('locale')
     ->name('locale.')
     ->group($registerPages);
@@ -71,9 +74,15 @@ Route::get('/sw.js', ServiceWorkerController::class)->name('pwa.sw');
 Route::get('/robots.txt', RobotsController::class)->name('robots');
 Route::get('/llms.txt', [LlmsTxtController::class, 'index'])->name('llms');
 Route::get('/llms-full.txt', [LlmsTxtController::class, 'full'])->name('llms.full');
-Route::get('/api/mcx-releases', ReleasesApiController::class)->name('api.mcx-releases');
-Route::get('/api/mcx-interfaces', InterfacesApiController::class)->name('api.mcx-interfaces');
-Route::get('/api/mcx-sbom', SbomCatalogApiController::class)->name('api.mcx-sbom');
-Route::get('/api/mcx-sbom/{version}', SbomApiController::class)
-    ->where('version', '[A-Za-z0-9._+-]+')
-    ->name('api.mcx-sbom.version');
+
+Route::middleware('throttle:mcx-api')->group(function (): void {
+    Route::get('/api/mcx-releases', ReleasesApiController::class)->name('api.mcx-releases');
+    Route::get('/api/mcx-interfaces', InterfacesApiController::class)->name('api.mcx-interfaces');
+    Route::get('/api/mcx-sbom', SbomCatalogApiController::class)->name('api.mcx-sbom');
+});
+
+Route::middleware('throttle:mcx-sbom')->group(function (): void {
+    Route::get('/api/mcx-sbom/{version}', SbomApiController::class)
+        ->where('version', '[A-Za-z0-9._+-]{1,64}')
+        ->name('api.mcx-sbom.version');
+});
