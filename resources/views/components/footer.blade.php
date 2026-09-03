@@ -34,7 +34,11 @@
 
     $metaSite = clean_site_html(t('footer.meta_site'));
     $metaSite = preg_replace('/href="[^"]*"/', 'href="'.e($site['quad4_url']).'"', $metaSite) ?? $metaSite;
-    $metaSite = preg_replace('/\s*class="[^"]*"/', ' class="site-footer__link"', $metaSite) ?? $metaSite;
+    if (str_contains($metaSite, 'class="')) {
+        $metaSite = preg_replace('/\s*class="[^"]*"/', ' class="site-footer__link"', $metaSite) ?? $metaSite;
+    } else {
+        $metaSite = preg_replace('/<a\b/', '<a class="site-footer__link"', $metaSite, 1) ?? $metaSite;
+    }
 @endphp
 
 <footer class="site-footer">

@@ -589,6 +589,17 @@
         color: #ffffff;
     }
 
+    html.dark .btn--solid {
+        border-color: #1e3a8a;
+        background: #1d4ed8;
+        color: #ffffff;
+    }
+
+    html.dark .btn--solid:hover {
+        background: #1e40af;
+        color: #ffffff;
+    }
+
     .btn--ghost {
         border: 1px solid var(--color-line);
         background: var(--color-surface);
@@ -1494,6 +1505,9 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.35rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
     }
 
     .feature-langs__link {
@@ -1526,6 +1540,11 @@
         border-color: color-mix(in oklab, var(--color-accent) 55%, var(--color-line));
         background: color-mix(in oklab, var(--color-accent) 12%, var(--color-surface));
         color: var(--color-accent-soft);
+    }
+
+    html.dark .feature-langs__link:hover,
+    html.dark .feature-langs__link.is-active {
+        color: var(--color-accent-muted);
     }
 
     .feature-langs__link:focus-visible {
@@ -1862,6 +1881,11 @@
         color: var(--color-accent-soft);
     }
 
+    html.dark .download-pick__btn:hover,
+    html.dark .download-pick__btn.is-active {
+        color: var(--color-accent-muted);
+    }
+
     .download-pick__icon {
         color: var(--color-accent);
         line-height: 1;
@@ -2123,6 +2147,10 @@
         color: var(--color-accent-soft);
         border-color: color-mix(in oklab, var(--color-accent) 40%, var(--color-line));
         background: color-mix(in oklab, var(--color-accent) 8%, var(--color-surface));
+    }
+
+    html.dark .channel-toggle__btn.is-active {
+        color: var(--color-accent-muted);
     }
 
     .asset-list {
@@ -3061,6 +3089,19 @@
         border-top: 1px solid var(--color-line-soft);
         font-size: 0.875rem;
         text-align: center;
+    }
+
+    .site-footer__bottom a,
+    .site-footer__bottom .site-footer__link {
+        color: var(--color-ink);
+        text-decoration: underline;
+        text-underline-offset: 0.15em;
+    }
+
+    html.dark .site-footer__link:hover,
+    html.dark .site-footer__bottom a:hover,
+    html.dark .site-footer__bottom .site-footer__link:hover {
+        color: var(--color-accent-muted);
     }
 
     .version-badge {

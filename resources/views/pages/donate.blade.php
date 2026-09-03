@@ -24,7 +24,7 @@
                         class="copyable-address"
                         data-copy-text="{{ $xmr }}"
                         data-copied-label="{{ t('donate.copied') }}"
-                        aria-label="{{ t('donate.copy_xmr') }}"
+                        aria-label="{{ t('donate.copy_xmr') }}: {{ $xmr }}"
                     >{{ $xmr }}</button>
                     <p class="donate-panel__hint">{{ t('donate.click_copy') }}</p>
                 </div>

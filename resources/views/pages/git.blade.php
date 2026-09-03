@@ -81,7 +81,7 @@
                                         class="copyable-address"
                                         data-copy-text="{{ $command['cmd'] }}"
                                         data-copied-label="{{ t('git.copied') }}"
-                                        aria-label="{{ t('git.copy_cmd') }}"
+                                        aria-label="{{ t('git.copy_cmd') }}: {{ $command['cmd'] }}"
                                     >{{ $command['cmd'] }}</button>
                                     <p class="git-card__hint">{{ t('git.click_copy') }}</p>
                                 </div>

@@ -23,7 +23,7 @@
                         class="copyable-address"
                         data-copy-text="{{ $lxmf }}"
                         data-copied-label="{{ t('contact.copied') }}"
-                        aria-label="{{ t('contact.copy_title') }}"
+                        aria-label="{{ t('contact.copy_title') }}: {{ $lxmf }}"
                     >{{ $lxmf }}</button>
                     <p class="contact-panel__hint">{{ t('contact.click_copy') }}</p>
                 </div>
@@ -36,7 +36,7 @@
                         class="copyable-address"
                         data-copy-text="{{ $email }}"
                         data-copied-label="{{ t('contact.copied') }}"
-                        aria-label="{{ t('contact.copy_email') }}"
+                        aria-label="{{ t('contact.copy_email') }}: {{ $email }}"
                     >{{ $email }}</button>
                     <p class="contact-panel__hint">{{ t('contact.click_copy') }}</p>
                 </div>

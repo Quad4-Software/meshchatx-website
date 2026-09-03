@@ -157,20 +157,21 @@
                     <h3 class="feature-langs-bar__title">{{ t('home.feature.languages_h3') }}</h3>
                     <p class="feature-langs-bar__body">{{ t('home.feature.languages_p') }}</p>
                 </div>
-                <div class="feature-langs" role="list" aria-label="{{ t('lang.label') }}">
+                <ul class="feature-langs" aria-label="{{ t('lang.label') }}">
                     @foreach ($site['locales'] as $code)
-                        <a
-                            class="feature-langs__link{{ $code === $currentLocale ? ' is-active' : '' }}"
-                            href="{{ \App\Support\LocaleUrl::switchLocale($code) }}"
-                            role="listitem"
-                            hreflang="{{ $code }}"
-                            lang="{{ $code }}"
-                            title="{{ t('lang.'.$code) }}"
-                            aria-label="{{ t('lang.'.$code) }}"
-                            @if ($code === $currentLocale) aria-current="true" @endif
-                        >{{ $langShort($code) }}</a>
+                        <li>
+                            <a
+                                class="feature-langs__link{{ $code === $currentLocale ? ' is-active' : '' }}"
+                                href="{{ \App\Support\LocaleUrl::switchLocale($code) }}"
+                                hreflang="{{ $code }}"
+                                lang="{{ $code }}"
+                                title="{{ t('lang.'.$code) }}"
+                                aria-label="{{ $langShort($code) }}: {{ t('lang.'.$code) }}"
+                                @if ($code === $currentLocale) aria-current="true" @endif
+                            >{{ $langShort($code) }}</a>
+                        </li>
                     @endforeach
-                </div>
+                </ul>
             </div>
         </div>
     </section>

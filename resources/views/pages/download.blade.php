@@ -316,6 +316,7 @@ YAML;
                                 data-copy-text=""
                                 aria-label="{{ t('dl.copy_sha256') }}"
                                 title="{{ t('dl.copy_sha256') }}"
+                                data-copy-aria-prefix="{{ t('dl.copy_sha256') }}"
                             ></button>
                         </div>
                         <div class="download-hero-cta__actions">

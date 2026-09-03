@@ -784,10 +784,18 @@ function syncDownloadHero(platformId) {
         if (sha256 !== '') {
             checksumValue.textContent = sha256;
             checksumValue.setAttribute('data-copy-text', sha256);
+            const ariaPrefix = checksumValue.getAttribute('data-copy-aria-prefix') || '';
+            if (ariaPrefix !== '') {
+                checksumValue.setAttribute('aria-label', `${ariaPrefix}: ${sha256}`);
+            }
             checksum.hidden = false;
         } else {
             checksumValue.textContent = '';
             checksumValue.setAttribute('data-copy-text', '');
+            const ariaPrefix = checksumValue.getAttribute('data-copy-aria-prefix');
+            if (ariaPrefix) {
+                checksumValue.setAttribute('aria-label', ariaPrefix);
+            }
             checksum.hidden = true;
         }
     }
