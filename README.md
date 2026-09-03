@@ -4,7 +4,7 @@ Public marketing site for [MeshChatX](https://github.com/Quad4-Software/MeshChat
 
 Stack: PHP 8.5, Laravel 13, Blade, Vite 8, Tailwind CSS 4, pnpm 11.
 
-Locales: `en` (unprefixed), `de`, `ru`, `it`, `zh`.
+Locales: `en` (unprefixed), `de`, `es`, `fi`, `fr`, `it`, `nl`, `ru`, `zh`.
 
 ## Setup
 
