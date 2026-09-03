@@ -11,6 +11,6 @@ class ReleasesApiController extends Controller
     {
         return response()
             ->json($releases->payload())
-            ->header('Cache-Control', 'private, max-age=30');
+            ->header('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
     }
 }

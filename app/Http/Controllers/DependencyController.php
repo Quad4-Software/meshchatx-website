@@ -12,9 +12,12 @@ class DependencyController extends Controller
     {
         $catalog = $sbom->catalog();
         $requested = $request->query('v');
-        $version = is_string($requested) && $requested !== ''
-            ? $requested
-            : ($catalog['defaultVersion'] ?? null);
+        $version = null;
+        if (is_string($requested) && $requested !== '' && strlen($requested) <= 64) {
+            $version = $requested;
+        } else {
+            $version = $catalog['defaultVersion'] ?? null;
+        }
 
         $payload = is_string($version) ? $sbom->forVersion($version) : null;
         if ($payload === null && is_string($catalog['defaultVersion'] ?? null)) {

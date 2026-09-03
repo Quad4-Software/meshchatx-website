@@ -2,16 +2,29 @@
 
 namespace App\Services;
 
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class SbomService
 {
-    private const CACHE_PAYLOAD_PREFIX = 'meshchatx.sbom.payload.v2.';
+    private const CACHE_PAYLOAD_PREFIX = 'meshchatx.sbom.payload.v3.';
 
     private const CACHE_RAW_PREFIX = 'meshchatx.sbom.raw.';
 
     private const CACHE_MISS_PREFIX = 'meshchatx.sbom.miss.';
+
+    private const CACHE_UNKNOWN_PREFIX = 'meshchatx.sbom.unknown.';
+
+    private const CACHE_CATALOG = 'meshchatx.sbom.catalog.v1';
+
+    private const MAX_VERSION_LENGTH = 64;
+
+    private const FETCH_TIMEOUT_SECONDS = 20;
+
+    private const LOCK_SECONDS = 30;
+
+    private const LOCK_WAIT_SECONDS = 8;
 
     public function __construct(
         private readonly GithubReleasesService $releases,
@@ -22,6 +35,11 @@ class SbomService
      */
     public function catalog(): array
     {
+        $cached = Cache::get(self::CACHE_CATALOG);
+        if (is_array($cached) && isset($cached['versions'], $cached['defaultVersion'], $cached['source'])) {
+            return $cached;
+        }
+
         $versions = [];
         foreach ($this->releases->sbomReleases() as $row) {
             $key = $this->cacheKey($row['version'], $row['tag']);
@@ -47,11 +65,15 @@ class SbomService
             $default = $versions[0]['version'];
         }
 
-        return [
+        $catalog = [
             'versions' => $versions,
             'defaultVersion' => $default,
             'source' => (string) config('meshchatx.github_releases'),
         ];
+
+        Cache::put(self::CACHE_CATALOG, $catalog, 60);
+
+        return $catalog;
     }
 
     /**
@@ -61,8 +83,20 @@ class SbomService
      */
     public function forVersion(string $version): ?array
     {
-        $release = $this->findRelease($version);
+        $needle = trim($version);
+        if ($needle === '' || strlen($needle) > self::MAX_VERSION_LENGTH) {
+            return null;
+        }
+
+        $unknownKey = self::CACHE_UNKNOWN_PREFIX.hash('xxh128', strtolower($needle));
+        if (Cache::has($unknownKey)) {
+            return null;
+        }
+
+        $release = $this->findRelease($needle);
         if ($release === null) {
+            Cache::put($unknownKey, 1, 60);
+
             return null;
         }
 
@@ -76,26 +110,49 @@ class SbomService
             return null;
         }
 
-        $raw = $this->fetchRaw($release['sbomUrl'], $key);
-        if ($raw === null) {
-            Cache::put(self::CACHE_MISS_PREFIX.$key, 1, 300);
+        try {
+            return Cache::lock('meshchatx.sbom.lock.'.$key, self::LOCK_SECONDS)
+                ->block(self::LOCK_WAIT_SECONDS, function () use ($release, $key) {
+                    $cached = Cache::get(self::CACHE_PAYLOAD_PREFIX.$key);
+                    if (is_array($cached) && $this->isPayload($cached)) {
+                        return $cached;
+                    }
+
+                    if (Cache::has(self::CACHE_MISS_PREFIX.$key)) {
+                        return null;
+                    }
+
+                    $raw = $this->fetchRaw($release['sbomUrl'], $key);
+                    if ($raw === null) {
+                        Cache::put(self::CACHE_MISS_PREFIX.$key, 1, 300);
+
+                        return null;
+                    }
+
+                    $payload = $this->normalize($raw, $release);
+                    Cache::put(self::CACHE_PAYLOAD_PREFIX.$key, $payload, $this->cacheTtl());
+                    Cache::forget(self::CACHE_MISS_PREFIX.$key);
+                    Cache::forget(self::CACHE_CATALOG);
+
+                    return $payload;
+                });
+        } catch (LockTimeoutException) {
+            $cached = Cache::get(self::CACHE_PAYLOAD_PREFIX.$key);
+            if (is_array($cached) && $this->isPayload($cached)) {
+                return $cached;
+            }
 
             return null;
         }
-
-        $payload = $this->normalize($raw, $release);
-        Cache::put(self::CACHE_PAYLOAD_PREFIX.$key, $payload, $this->cacheTtl());
-        Cache::forget(self::CACHE_MISS_PREFIX.$key);
-
-        return $payload;
     }
 
     /**
      * Fetch and cache SBOMs that are not yet stored. Returns how many were newly cached.
+     * Intended for artisan / scheduler use, not anonymous HTTP.
      */
     public function warmMissing(int $limit = 8): int
     {
-        $limit = max(0, min($limit, 40));
+        $limit = max(0, min($limit, 20));
         if ($limit === 0) {
             return 0;
         }
@@ -130,11 +187,6 @@ class SbomService
      */
     private function findRelease(string $needle): ?array
     {
-        $needle = trim($needle);
-        if ($needle === '') {
-            return null;
-        }
-
         $normalized = ltrim($needle, 'vV');
 
         foreach ($this->releases->sbomReleases() as $row) {
@@ -160,7 +212,12 @@ class SbomService
         }
 
         try {
-            $response = Http::timeout(45)
+            if (! $this->isAllowedSbomUrl($url)) {
+                return null;
+            }
+
+            $response = Http::timeout(self::FETCH_TIMEOUT_SECONDS)
+                ->connectTimeout(5)
                 ->withHeaders([
                     'Accept' => 'application/json',
                     'User-Agent' => 'meshchatx-website',
@@ -369,11 +426,7 @@ class SbomService
 
     private function displayLabel(string $name, ?string $purl, string $kind): string
     {
-        if ($kind === 'app') {
-            return 'MeshChatX';
-        }
-
-        if ($name === '.' || $name === '') {
+        if ($kind === 'app' || $name === '.' || $name === '') {
             return 'MeshChatX';
         }
 
@@ -383,24 +436,12 @@ class SbomService
             return $base !== '' ? $base : $name;
         }
 
-        $hay = strtolower($name.' '.($purl ?? ''));
-        if (str_contains($hay, 'reticulum-meshchatx')) {
-            return 'MeshChatX';
-        }
-
         return $name;
     }
 
     private function nodeKind(string $name, ?string $purl, string $type): string
     {
-        $hay = strtolower($name.' '.($purl ?? ''));
         if ($name === '.' || $name === '') {
-            return 'app';
-        }
-        if (str_contains($hay, 'reticulum-meshchatx')) {
-            return 'app';
-        }
-        if (preg_match('/(?:^|[\/])reticulum[_-]meshchatx(?:@|$)/', $hay)) {
             return 'app';
         }
 
@@ -554,5 +595,42 @@ class SbomService
     private function isPayload(array $payload): bool
     {
         return isset($payload['nodes'], $payload['edges'], $payload['stats'], $payload['version']);
+    }
+
+    private function isAllowedSbomUrl(string $url): bool
+    {
+        $parts = parse_url($url);
+        if (! is_array($parts)) {
+            return false;
+        }
+
+        $scheme = strtolower((string) ($parts['scheme'] ?? ''));
+        $host = strtolower((string) ($parts['host'] ?? ''));
+        if ($scheme !== 'https' || $host === '') {
+            return false;
+        }
+
+        if (filter_var($host, FILTER_VALIDATE_IP) !== false) {
+            return false;
+        }
+
+        $allowedExact = ['github.com'];
+        $allowedSuffix = ['.github.com', '.githubusercontent.com', '.b-cdn.net'];
+
+        if (in_array($host, $allowedExact, true)) {
+            return true;
+        }
+        foreach ($allowedSuffix as $suffix) {
+            if (str_ends_with($host, $suffix)) {
+                return true;
+            }
+        }
+
+        $cdnHost = parse_url((string) config('services.bunny.cdn_base', ''), PHP_URL_HOST);
+        if (is_string($cdnHost) && $cdnHost !== '' && strcasecmp($host, $cdnHost) === 0) {
+            return true;
+        }
+
+        return false;
     }
 }

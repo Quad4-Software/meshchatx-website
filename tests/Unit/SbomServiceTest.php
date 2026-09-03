@@ -31,7 +31,7 @@ class SbomServiceTest extends TestCase
                 'assets' => [
                     [
                         'name' => 'sbom.cyclonedx.json',
-                        'browser_download_url' => 'https://example.test/sbom-4.8.5.json',
+                        'browser_download_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/download/v4.8.5/sbom.cyclonedx.json',
                     ],
                 ],
             ],
@@ -44,7 +44,7 @@ class SbomServiceTest extends TestCase
                 'assets' => [
                     [
                         'name' => 'sbom.cyclonedx.json',
-                        'browser_download_url' => 'https://example.test/sbom-nightly.json',
+                        'browser_download_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/download/nightly/sbom.cyclonedx.json',
                     ],
                 ],
             ],
@@ -140,7 +140,7 @@ class SbomServiceTest extends TestCase
     {
         Http::fake([
             'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
-            'example.test/sbom-4.8.5.json' => Http::response($this->bomFixture(), 200),
+            'github.com/Quad4-Software/MeshChatX/releases/download/v4.8.5/sbom.cyclonedx.json' => Http::response($this->bomFixture(), 200),
         ]);
 
         $service = app(SbomService::class);
@@ -161,6 +161,19 @@ class SbomServiceTest extends TestCase
         $this->assertSame('MeshChatX', $root['label']);
         $this->assertSame('app', $root['kind']);
         $this->assertTrue($root['logo']);
+        $appNodes = array_values(array_filter(
+            $payload['nodes'],
+            fn (array $node): bool => ($node['kind'] ?? '') === 'app' || ! empty($node['logo']),
+        ));
+        $this->assertCount(1, $appNodes);
+        $pkg = array_values(array_filter(
+            $payload['nodes'],
+            fn (array $node): bool => ($node['name'] ?? '') === 'reticulum-meshchatx',
+        ))[0] ?? null;
+        $this->assertNotNull($pkg);
+        $this->assertSame('reticulum-meshchatx', $pkg['label']);
+        $this->assertSame('package', $pkg['kind']);
+        $this->assertFalse($pkg['logo']);
 
         Http::assertSentCount(2);
 
@@ -184,7 +197,7 @@ class SbomServiceTest extends TestCase
 
         $rows = app(GithubReleasesService::class)->sbomReleases();
         $this->assertCount(2, $rows);
-        $this->assertSame('https://example.test/sbom-nightly.json', $rows[0]['sbomUrl']);
+        $this->assertSame('https://github.com/Quad4-Software/MeshChatX/releases/download/nightly/sbom.cyclonedx.json', $rows[0]['sbomUrl']);
     }
 
     public function test_missing_version_returns_null(): void
@@ -194,5 +207,103 @@ class SbomServiceTest extends TestCase
         ]);
 
         $this->assertNull(app(SbomService::class)->forVersion('9.9.9'));
+    }
+
+    public function test_unknown_version_is_negatively_cached(): void
+    {
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
+        ]);
+
+        $service = app(SbomService::class);
+        $this->assertNull($service->forVersion('nope-1.0.0'));
+        Http::assertSentCount(1);
+
+        $this->assertNull($service->forVersion('nope-1.0.0'));
+        Http::assertSentCount(1);
+    }
+
+    public function test_failed_sbom_fetch_is_negatively_cached(): void
+    {
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
+            'github.com/Quad4-Software/MeshChatX/releases/download/v4.8.5/sbom.cyclonedx.json' => Http::response('gone', 404),
+        ]);
+
+        $service = app(SbomService::class);
+        $this->assertNull($service->forVersion('4.8.5'));
+        Http::assertSentCount(2);
+
+        $this->assertNull($service->forVersion('4.8.5'));
+        Http::assertSentCount(2);
+    }
+
+    public function test_rejects_oversized_version_strings(): void
+    {
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
+        ]);
+
+        $this->assertNull(app(SbomService::class)->forVersion(str_repeat('a', 65)));
+        Http::assertSentCount(0);
+    }
+
+    public function test_rejects_non_allowlisted_sbom_fetch_hosts(): void
+    {
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response([
+                [
+                    'tag_name' => 'v4.8.5',
+                    'published_at' => '2026-08-21T12:00:00Z',
+                    'prerelease' => false,
+                    'draft' => false,
+                    'html_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/tag/v4.8.5',
+                    'assets' => [
+                        [
+                            'name' => 'sbom.cyclonedx.json',
+                            'browser_download_url' => 'https://evil.example/sbom.json',
+                        ],
+                    ],
+                ],
+            ], 200),
+            'evil.example/*' => Http::response($this->bomFixture(), 200),
+        ]);
+
+        $this->assertNull(app(SbomService::class)->forVersion('4.8.5'));
+        Http::assertSent(fn ($request): bool => str_contains($request->url(), 'api.github.com'));
+        Http::assertNotSent(fn ($request): bool => str_contains($request->url(), 'evil.example'));
+    }
+
+    public function test_catalog_is_cached_briefly(): void
+    {
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
+        ]);
+
+        $service = app(SbomService::class);
+        $first = $service->catalog();
+        Cache::flush();
+        Cache::put('meshchatx.sbom.catalog.v1', $first, 60);
+
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response([], 500),
+        ]);
+
+        $second = $service->catalog();
+        $this->assertSame($first['defaultVersion'], $second['defaultVersion']);
+        $this->assertCount(2, $second['versions']);
+    }
+
+    public function test_warm_missing_fetches_uncached_only(): void
+    {
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
+            'github.com/Quad4-Software/MeshChatX/releases/download/v4.8.5/sbom.cyclonedx.json' => Http::response($this->bomFixture(), 200),
+            'github.com/Quad4-Software/MeshChatX/releases/download/nightly/sbom.cyclonedx.json' => Http::response($this->bomFixture(), 200),
+        ]);
+
+        $service = app(SbomService::class);
+        $this->assertSame(1, $service->warmMissing(1));
+        $this->assertSame(1, $service->warmMissing(1));
     }
 }

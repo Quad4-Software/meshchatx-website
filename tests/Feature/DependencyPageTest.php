@@ -29,7 +29,7 @@ class DependencyPageTest extends TestCase
                 'assets' => [
                     [
                         'name' => 'sbom.cyclonedx.json',
-                        'browser_download_url' => 'https://example.test/sbom-4.8.5.json',
+                        'browser_download_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/download/v4.8.5/sbom.cyclonedx.json',
                     ],
                 ],
             ],
@@ -75,7 +75,7 @@ class DependencyPageTest extends TestCase
     {
         Http::fake([
             'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
-            'example.test/sbom-4.8.5.json' => Http::response($this->bomFixture(), 200),
+            'github.com/Quad4-Software/MeshChatX/releases/download/v4.8.5/sbom.cyclonedx.json' => Http::response($this->bomFixture(), 200),
         ]);
 
         $this->get('/dependency')
@@ -100,7 +100,7 @@ class DependencyPageTest extends TestCase
     {
         Http::fake([
             'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
-            'example.test/sbom-4.8.5.json' => Http::response($this->bomFixture(), 200),
+            'github.com/Quad4-Software/MeshChatX/releases/download/v4.8.5/sbom.cyclonedx.json' => Http::response($this->bomFixture(), 200),
         ]);
 
         $this->getJson('/api/mcx-sbom')
@@ -108,20 +108,49 @@ class DependencyPageTest extends TestCase
             ->assertJsonPath('defaultVersion', '4.8.5')
             ->assertJsonStructure(['versions', 'defaultVersion', 'source']);
 
-        $this->getJson('/api/mcx-sbom/4.8.5')
+        $version = $this->getJson('/api/mcx-sbom/4.8.5')
             ->assertOk()
             ->assertJsonPath('version', '4.8.5')
             ->assertJsonStructure(['nodes', 'edges', 'stats', 'rootId', 'sourceUrl']);
+        $this->assertStringContainsString('max-age=3600', (string) $version->headers->get('Cache-Control'));
+        $this->assertStringContainsString('public', (string) $version->headers->get('Cache-Control'));
 
         $this->getJson('/api/mcx-sbom/9.9.9')
             ->assertNotFound();
+    }
+
+    public function test_warm_query_does_not_trigger_upstream_sbom_fetch(): void
+    {
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
+            'github.com/Quad4-Software/MeshChatX/releases/download/v4.8.5/sbom.cyclonedx.json' => Http::response($this->bomFixture(), 200),
+        ]);
+
+        $this->getJson('/api/mcx-sbom?warm=1')->assertOk();
+
+        Http::assertSent(function ($request): bool {
+            return str_contains($request->url(), 'api.github.com');
+        });
+        Http::assertNotSent(function ($request): bool {
+            return str_contains($request->url(), 'github.com/Quad4-Software/MeshChatX/releases/download');
+        });
+    }
+
+    public function test_oversized_version_path_is_rejected(): void
+    {
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
+        ]);
+
+        $this->getJson('/api/mcx-sbom/'.str_repeat('a', 65))->assertNotFound();
+        Http::assertSentCount(0);
     }
 
     public function test_locale_dependency_page_responds(): void
     {
         Http::fake([
             'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
-            'example.test/sbom-4.8.5.json' => Http::response($this->bomFixture(), 200),
+            'github.com/Quad4-Software/MeshChatX/releases/download/v4.8.5/sbom.cyclonedx.json' => Http::response($this->bomFixture(), 200),
         ]);
 
         $this->get('/de/dependency')->assertOk();

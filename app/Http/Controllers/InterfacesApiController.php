@@ -20,6 +20,6 @@ class InterfacesApiController extends Controller
                 is_string($type) ? $type : null,
                 is_string($network) ? $network : null,
             ))
-            ->header('Cache-Control', 'public, max-age=3600');
+            ->header('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
     }
 }
