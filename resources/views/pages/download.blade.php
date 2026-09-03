@@ -1,35 +1,98 @@
 @php
     $page = 'download';
     $channel = $channel ?? 'stable';
-    $releases = $releases ?? ['stable' => null, 'prerelease' => null, 'githubFallbackUrl' => $site['github_releases']];
-    $active = $channel === 'prerelease'
+    $releases = $releases ?? ['stable' => null, 'prerelease' => null, 'githubFallbackUrl' => $site['github_releases'], 'versions' => ['stable' => [], 'prerelease' => []]];
+    $versions = $versions ?? ($releases['versions'][$channel] ?? []);
+    $active = $active ?? ($channel === 'prerelease'
         ? ($releases['prerelease'] ?? $releases['stable'] ?? null)
-        : ($releases['stable'] ?? $releases['prerelease'] ?? null);
+        : ($releases['stable'] ?? $releases['prerelease'] ?? null));
+    $selectedTag = $selectedTag ?? (is_array($active) ? (string) ($active['tag'] ?? $active['version'] ?? '') : '');
+    $selectedSource = $selectedSource ?? (is_array($active) ? (string) ($active['downloadServer'] ?? 'github') : 'github');
+    $downloadServers = $downloadServers ?? (is_array($active) && is_array($active['downloadServers'] ?? null)
+        ? $active['downloadServers']
+        : []);
     $pre = $releases['prerelease'] ?? null;
+    $channelLatest = $channel === 'prerelease'
+        ? ($releases['prerelease'] ?? null)
+        : ($releases['stable'] ?? null);
+    $isChannelLatest = is_array($active) && is_array($channelLatest)
+        && (
+            ($active['tag'] ?? null) === ($channelLatest['tag'] ?? null)
+            || ($active['version'] ?? null) === ($channelLatest['version'] ?? null)
+        );
 
-    $pick = function (?array $row, ?array $fallback, string $field): ?string {
-        $from = is_array($row) ? ($row[$field] ?? null) : null;
-        if (is_string($from) && $from !== '') {
-            return $from;
+    $pickAsset = function (?array $row, ?array $fallback, string $urlField): array {
+        $shaField = (string) preg_replace('/Url$/', 'Sha256', $urlField);
+        foreach ([$row, $fallback] as $candidate) {
+            if (! is_array($candidate)) {
+                continue;
+            }
+            $url = $candidate[$urlField] ?? null;
+            if (! is_string($url) || $url === '') {
+                continue;
+            }
+            $sha = $candidate[$shaField] ?? null;
+
+            return [
+                'url' => $url,
+                'sha256' => is_string($sha) && $sha !== '' ? $sha : null,
+            ];
         }
-        $alt = is_array($fallback) ? ($fallback[$field] ?? null) : null;
 
-        return is_string($alt) && $alt !== '' ? $alt : null;
+        return ['url' => null, 'sha256' => null];
     };
 
-    $macDmg = $pick($active, $pre, 'macDmgUrl');
-    $appAmd = $pick($active, $pre, 'appImageAmd64Url');
-    $appArm = $pick($active, $pre, 'appImageArm64Url');
-    $debA = $pick($active, $pre, 'debAmd64Url');
-    $debR = $pick($active, $pre, 'debArm64Url');
-    $rpmA = $pick($active, $pre, 'rpmAmd64Url');
-    $flat = $pick($active, $pre, 'flatpakUrl');
-    $alpineApk = $pick($active, $pre, 'alpineApkUrl');
-    $winInstaller = $pick($active, $pre, 'winInstallerUrl');
-    $winPortable = $pick($active, $pre, 'winPortableUrl');
-    $apkUrl = $pick($active, $pre, 'apkUrl');
-    $wheelUrl = $pick($active, $pre, 'wheelUrl');
-    $sbomUrl = $pick($active, $pre, 'sbomUrl');
+    // Only fill missing platform assets from the channel's latest prerelease when
+    // showing that channel's latest release. A specific older version stays pure.
+    $assetFallback = $isChannelLatest ? $pre : null;
+
+    $macDmgAsset = $pickAsset($active, $assetFallback, 'macDmgUrl');
+    $appAmdAsset = $pickAsset($active, $assetFallback, 'appImageAmd64Url');
+    $appArmAsset = $pickAsset($active, $assetFallback, 'appImageArm64Url');
+    $debAAsset = $pickAsset($active, $assetFallback, 'debAmd64Url');
+    $debRAsset = $pickAsset($active, $assetFallback, 'debArm64Url');
+    $rpmAAsset = $pickAsset($active, $assetFallback, 'rpmAmd64Url');
+    $flatAsset = $pickAsset($active, $assetFallback, 'flatpakUrl');
+    $alpineApkAsset = $pickAsset($active, $assetFallback, 'alpineApkUrl');
+    $winInstallerAsset = $pickAsset($active, $assetFallback, 'winInstallerUrl');
+    $winPortableAsset = $pickAsset($active, $assetFallback, 'winPortableUrl');
+    $apkAsset = $pickAsset($active, $assetFallback, 'apkUrl');
+    $wheelAsset = $pickAsset($active, $assetFallback, 'wheelUrl');
+    $sbomAsset = $pickAsset($active, $assetFallback, 'sbomUrl');
+
+    $macDmg = $macDmgAsset['url'];
+    $macDmgSha = $macDmgAsset['sha256'];
+    $appAmd = $appAmdAsset['url'];
+    $appAmdSha = $appAmdAsset['sha256'];
+    $appArm = $appArmAsset['url'];
+    $appArmSha = $appArmAsset['sha256'];
+    $debA = $debAAsset['url'];
+    $debASha = $debAAsset['sha256'];
+    $debR = $debRAsset['url'];
+    $debRSha = $debRAsset['sha256'];
+    $rpmA = $rpmAAsset['url'];
+    $rpmASha = $rpmAAsset['sha256'];
+    $flat = $flatAsset['url'];
+    $flatSha = $flatAsset['sha256'];
+    $alpineApk = $alpineApkAsset['url'];
+    $alpineApkSha = $alpineApkAsset['sha256'];
+    $winInstaller = $winInstallerAsset['url'];
+    $winInstallerSha = $winInstallerAsset['sha256'];
+    $winPortable = $winPortableAsset['url'];
+    $winPortableSha = $winPortableAsset['sha256'];
+    $apkUrl = $apkAsset['url'];
+    $apkSha = $apkAsset['sha256'];
+    $wheelUrl = $wheelAsset['url'];
+    $wheelSha = $wheelAsset['sha256'];
+    $sbomUrl = $sbomAsset['url'];
+
+    $downloadServer = in_array($selectedSource, ['bunny', 'github'], true)
+        ? $selectedSource
+        : ((is_array($downloadServers) && in_array('bunny', $downloadServers, true)) ? 'bunny' : 'github');
+    $canChooseServer = is_array($downloadServers) && count($downloadServers) > 1;
+
+    $stableQs = locale_route('download').'?channel=stable'.($canChooseServer ? '&source='.rawurlencode($downloadServer) : '');
+    $preQs = locale_route('download').'?channel=prerelease'.($canChooseServer ? '&source='.rawurlencode($downloadServer) : '');
 
     $pkg = $site['pypi_package'];
     $hub = $site['docker_hub'];
@@ -70,16 +133,14 @@ YAML;
         'uvx' => "uvx --from {$pkg} meshchatx",
     ];
 
-    $stableQs = locale_route('download').'?channel=stable';
-    $preQs = locale_route('download').'?channel=prerelease';
     $tabs = [
         ['id' => 'windows', 'icon' => 'windows', 'label' => t('dl.tabs.windows'), 'hint' => t('dl.pick.windows_hint')],
         ['id' => 'macos', 'icon' => 'apple', 'label' => t('dl.tabs.macos'), 'hint' => t('dl.pick.macos_hint')],
         ['id' => 'linux', 'icon' => 'linux', 'label' => t('dl.tabs.linux'), 'hint' => t('dl.pick.linux_hint')],
+        ['id' => 'flatpak', 'icon' => 'flatpak', 'label' => t('dl.tabs.flatpak'), 'hint' => t('dl.pick.flatpak_hint')],
         ['id' => 'android', 'icon' => 'android', 'label' => t('dl.tabs.android'), 'hint' => t('dl.pick.android_hint')],
         ['id' => 'docker', 'icon' => 'docker', 'label' => t('dl.tabs.docker'), 'hint' => t('dl.pick.docker_hint')],
         ['id' => 'python', 'icon' => 'python', 'label' => t('dl.tabs.python'), 'hint' => t('dl.pick.python_hint')],
-        ['id' => 'umbrel', 'icon' => 'umbrel', 'label' => t('dl.tabs.umbrel'), 'hint' => t('dl.pick.umbrel_hint')],
     ];
 @endphp
 
@@ -99,50 +160,106 @@ YAML;
             </noscript>
 
             <div class="download-hero-meta">
+                <div class="download-hero-controls">
+                    <div class="channel-toggle">
+                        <a class="channel-toggle__btn{{ $channel === 'stable' ? ' is-active' : '' }}" href="{{ $stableQs }}">{{ t('js.download.channel_stable') }}</a>
+                        <a class="channel-toggle__btn{{ $channel === 'prerelease' ? ' is-active' : '' }}" href="{{ $preQs }}">{{ t('js.download.channel_pre') }}</a>
+                    </div>
+
+                    @if ($versions !== [])
+                        <label class="download-version">
+                            <span class="download-version__label">{{ t('js.download.select_version') }}</span>
+                            <select
+                                class="dep-select download-version__select"
+                                data-download-version
+                                data-download-version-base="{{ locale_route('download') }}"
+                                data-download-version-channel="{{ $channel }}"
+                                data-download-version-source="{{ $canChooseServer ? $downloadServer : '' }}"
+                                aria-label="{{ t('js.download.select_version') }}"
+                            >
+                                @foreach ($versions as $row)
+                                    <option
+                                        value="{{ $row['tag'] }}"
+                                        @selected($selectedTag !== '' && ($selectedTag === $row['tag'] || $selectedTag === $row['version']))
+                                    >{{ $row['version'] }}</option>
+                                @endforeach
+                            </select>
+                        </label>
+                    @endif
+                </div>
+
                 @if (is_array($active) && ! empty($active['version']))
                     <p class="version-badge version-badge--fade">
-                        {{ t('js.download.latest') }}
+                        @if ($isChannelLatest)
+                            {{ t('js.download.latest') }}
+                        @endif
                         v{{ $active['version'] }}
                         ({{ $channel === 'prerelease' ? t('js.download.prerelease') : t('js.download.stable') }})
                     </p>
+                    @if ($canChooseServer)
+                        <label class="download-version download-server-pick">
+                            <span class="download-version__label">{{ t('dl.download_server') }}</span>
+                            <select
+                                class="dep-select download-version__select"
+                                data-download-source
+                                data-download-source-base="{{ locale_route('download') }}"
+                                data-download-source-channel="{{ $channel }}"
+                                data-download-source-version="{{ $selectedTag }}"
+                                aria-label="{{ t('dl.download_server') }}"
+                            >
+                                @foreach ($downloadServers as $server)
+                                    <option value="{{ $server }}" @selected($downloadServer === $server)>
+                                        {{ $server === 'bunny' ? t('dl.download_server_bunny') : t('dl.download_server_github') }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </label>
+                    @elseif ($downloadServers !== [])
+                        <p class="download-server" data-download-server="{{ $downloadServer }}">
+                            <span class="download-server__label">{{ t('dl.download_server') }}</span>
+                            <span class="download-server__value">{{ $downloadServer === 'bunny' ? t('dl.download_server_bunny') : t('dl.download_server_github') }}</span>
+                        </p>
+                    @endif
                 @else
                     <p class="section__lead">{{ t('js.download.no_release') }}</p>
                 @endif
-
-                <div class="channel-toggle">
-                    <a class="channel-toggle__btn{{ $channel === 'stable' ? ' is-active' : '' }}" href="{{ $stableQs }}">{{ t('js.download.channel_stable') }}</a>
-                    <a class="channel-toggle__btn{{ $channel === 'prerelease' ? ' is-active' : '' }}" href="{{ $preQs }}">{{ t('js.download.channel_pre') }}</a>
-                </div>
 
                 @php
                     $heroPlatforms = [
                         'windows' => [
                             'label' => t('dl.tabs.windows'),
                             'url' => $winInstaller ?: $winPortable,
+                            'sha256' => $winInstaller ? $winInstallerSha : $winPortableSha,
                         ],
                         'macos' => [
                             'label' => t('dl.tabs.macos'),
                             'url' => $macDmg,
+                            'sha256' => $macDmgSha,
                         ],
                         'linux' => [
                             'label' => t('dl.tabs.linux'),
                             'url' => $appAmd ?: $appArm,
+                            'sha256' => $appAmd ? $appAmdSha : $appArmSha,
+                        ],
+                        'flatpak' => [
+                            'label' => t('dl.tabs.flatpak'),
+                            'url' => $flat,
+                            'sha256' => $flatSha,
                         ],
                         'android' => [
                             'label' => t('dl.tabs.android'),
                             'url' => $apkUrl,
+                            'sha256' => $apkSha,
                         ],
                         'docker' => [
                             'label' => t('dl.tabs.docker'),
                             'url' => null,
+                            'sha256' => null,
                         ],
                         'python' => [
                             'label' => t('dl.tabs.python'),
                             'url' => $wheelUrl,
-                        ],
-                        'umbrel' => [
-                            'label' => t('dl.tabs.umbrel'),
-                            'url' => $site['umbrel_url'] ?? null,
+                            'sha256' => $wheelSha,
                         ],
                     ];
                     $docsGettingStarted = locale_route('docs.show', ['slug' => 'getting-started']);
@@ -160,19 +277,33 @@ YAML;
                             'id' => $platformId,
                             'label' => $meta['label'],
                             'url' => $meta['url'],
+                            'sha256' => $meta['sha256'],
                         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
                     @endforeach
-                    <div class="download-hero-cta__actions">
-                        <a
-                            class="btn btn--solid"
-                            data-download-hero-btn
-                            href="#linux"
-                            hidden
-                        >
-                            <x-icon name="download" size="xs" />
-                            <span data-download-hero-label>{{ t('dl.cta.download_for', ['s' => t('dl.tabs.linux')]) }}</span>
-                        </a>
-                        <a class="btn btn--ghost" href="{{ $docsGettingStarted }}">{{ t('dl.cta.next_steps') }}</a>
+                    <div class="download-hero-cta__stack">
+                        <div class="download-checksum" data-download-hero-checksum hidden>
+                            <span class="download-checksum__label">{{ t('dl.sha256') }}</span>
+                            <button
+                                type="button"
+                                class="download-checksum__value"
+                                data-download-hero-checksum-value
+                                data-copy-text=""
+                                aria-label="{{ t('dl.copy_sha256') }}"
+                                title="{{ t('dl.copy_sha256') }}"
+                            ></button>
+                        </div>
+                        <div class="download-hero-cta__actions">
+                            <a
+                                class="btn btn--solid"
+                                data-download-hero-btn
+                                href="#linux"
+                                hidden
+                            >
+                                <x-icon name="download" size="xs" />
+                                <span data-download-hero-label>{{ t('dl.cta.download_for', ['s' => t('dl.tabs.linux')]) }}</span>
+                            </a>
+                            <a class="btn btn--ghost" href="{{ $docsGettingStarted }}">{{ t('dl.cta.next_steps') }}</a>
+                        </div>
                     </div>
                 </div>
 
@@ -223,13 +354,19 @@ YAML;
                 <p class="version-badge">{{ t('dl.windows.badge_64') }}</p>
                 <div class="download-panel__actions">
                     @if ($winInstaller)
-                        <a class="btn btn--solid" href="{{ $winInstaller }}" download>
-                            <x-icon name="download" size="xs" />
-                            {{ t('dl.windows.btn_installer') }}
-                        </a>
+                        <div class="download-artifact">
+                            <x-download-checksum :sha256="$winInstallerSha" />
+                            <a class="btn btn--solid" href="{{ $winInstaller }}" download>
+                                <x-icon name="download" size="xs" />
+                                {{ t('dl.windows.btn_installer') }}
+                            </a>
+                        </div>
                     @endif
                     @if ($winPortable)
-                        <a class="btn btn--ghost" href="{{ $winPortable }}" download>{{ t('dl.windows.btn_portable') }}</a>
+                        <div class="download-artifact">
+                            <x-download-checksum :sha256="$winPortableSha" />
+                            <a class="btn btn--ghost" href="{{ $winPortable }}" download>{{ t('dl.windows.btn_portable') }}</a>
+                        </div>
                     @endif
                 </div>
                 @if (! $winInstaller && ! $winPortable)
@@ -248,10 +385,13 @@ YAML;
                 @else
                     <p class="download-panel__intro">{{ t('dl.macos.friendly') }}</p>
                     <div class="download-panel__actions">
-                        <a class="btn btn--solid" href="{{ $macDmg }}" download>
-                            <x-icon name="download" size="xs" />
-                            {{ t('dl.macos.btn_dmg') }}
-                        </a>
+                        <div class="download-artifact">
+                            <x-download-checksum :sha256="$macDmgSha" />
+                            <a class="btn btn--solid" href="{{ $macDmg }}" download>
+                                <x-icon name="download" size="xs" />
+                                {{ t('dl.macos.btn_dmg') }}
+                            </a>
+                        </div>
                     </div>
                 @endif
             </div>
@@ -264,13 +404,19 @@ YAML;
                 <p class="download-panel__intro">{{ t('dl.linux.appimage_intro') }}</p>
                 <div class="download-panel__actions">
                     @if ($appAmd)
-                        <a class="btn btn--solid" href="{{ $appAmd }}" download>
-                            <x-icon name="download" size="xs" />
-                            {{ t('dl.linux.btn_appimage_amd64') }}
-                        </a>
+                        <div class="download-artifact">
+                            <x-download-checksum :sha256="$appAmdSha" />
+                            <a class="btn btn--solid" href="{{ $appAmd }}" download>
+                                <x-icon name="download" size="xs" />
+                                {{ t('dl.linux.btn_appimage_amd64') }}
+                            </a>
+                        </div>
                     @endif
                     @if ($appArm)
-                        <a class="btn btn--ghost" href="{{ $appArm }}" download>{{ t('dl.linux.btn_appimage_arm64') }}</a>
+                        <div class="download-artifact">
+                            <x-download-checksum :sha256="$appArmSha" />
+                            <a class="btn btn--ghost" href="{{ $appArm }}" download>{{ t('dl.linux.btn_appimage_arm64') }}</a>
+                        </div>
                     @endif
                 </div>
                 @if (! $appAmd && ! $appArm)
@@ -286,17 +432,28 @@ YAML;
                 </div>
 
                 <details class="download-advanced">
-                    <summary>{{ t('dl.more_options') }}</summary>
+                    <x-download-more-options :icons="[
+                        ['file' => 'debian', 'label' => 'Debian'],
+                        ['file' => 'fedora', 'label' => 'Fedora / RPM'],
+                        ['file' => 'alpinelinux', 'label' => 'Alpine'],
+                        ['file' => 'archlinux', 'label' => 'Arch Linux'],
+                    ]" />
                     <div class="download-stack">
                         <div>
                             <h3 class="download-panel__subhead">{{ t('dl.linux.deb') }}</h3>
                             <p class="download-panel__intro">{{ t('dl.linux.deb_intro') }}</p>
                             <div class="download-panel__actions">
                                 @if ($debA)
-                                    <a class="btn btn--solid" href="{{ $debA }}" download>{{ t('dl.linux.btn_deb_amd64') }}</a>
+                                    <div class="download-artifact">
+                                        <x-download-checksum :sha256="$debASha" />
+                                        <a class="btn btn--solid" href="{{ $debA }}" download>{{ t('dl.linux.btn_deb_amd64') }}</a>
+                                    </div>
                                 @endif
                                 @if ($debR)
-                                    <a class="btn btn--ghost" href="{{ $debR }}" download>{{ t('dl.linux.btn_deb_arm64') }}</a>
+                                    <div class="download-artifact">
+                                        <x-download-checksum :sha256="$debRSha" />
+                                        <a class="btn btn--ghost" href="{{ $debR }}" download>{{ t('dl.linux.btn_deb_arm64') }}</a>
+                                    </div>
                                 @endif
                             </div>
                             @if (! $debA && ! $debR)
@@ -319,7 +476,10 @@ sudo apt -f install</code></pre>
                             <p class="download-panel__intro">{{ t('dl.linux.rpm_intro') }}</p>
                             <div class="download-panel__actions">
                                 @if ($rpmA)
-                                    <a class="btn btn--solid" href="{{ $rpmA }}" download>{{ t('dl.linux.btn_rpm_amd64') }}</a>
+                                    <div class="download-artifact">
+                                        <x-download-checksum :sha256="$rpmASha" />
+                                        <a class="btn btn--solid" href="{{ $rpmA }}" download>{{ t('dl.linux.btn_rpm_amd64') }}</a>
+                                    </div>
                                 @endif
                             </div>
                             @if (! $rpmA)
@@ -341,7 +501,10 @@ sudo zypper install ./MeshChatX-*.rpm</code></pre>
                             <p class="download-panel__intro">{{ t('dl.linux.alpine_intro') }}</p>
                             <div class="download-panel__actions">
                                 @if ($alpineApk)
-                                    <a class="btn btn--solid" href="{{ $alpineApk }}" download>{{ t('dl.linux.btn_alpine') }}</a>
+                                    <div class="download-artifact">
+                                        <x-download-checksum :sha256="$alpineApkSha" />
+                                        <a class="btn btn--solid" href="{{ $alpineApk }}" download>{{ t('dl.linux.btn_alpine') }}</a>
+                                    </div>
                                 @endif
                             </div>
                             @if (! $alpineApk)
@@ -353,26 +516,6 @@ sudo zypper install ./MeshChatX-*.rpm</code></pre>
                                     <button type="button" class="copy-btn" data-copy="#cmd-alpine" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
                                 </div>
                                 <pre class="command-block__body" id="cmd-alpine"><code>sudo apk add --allow-untrusted ./ReticulumMeshChatX-*-linux-alpine-*.apk</code></pre>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 class="download-panel__subhead">{{ t('dl.linux.flatpak') }}</h3>
-                            <p class="download-panel__intro">{{ t('dl.linux.flatpak_intro') }}</p>
-                            <div class="download-panel__actions">
-                                @if ($flat)
-                                    <a class="btn btn--solid" href="{{ $flat }}" download>{{ t('dl.linux.btn_flatpak') }}</a>
-                                @endif
-                            </div>
-                            @if (! $flat)
-                                <p class="download-panel__intro">{{ t('dl.linux.no_flatpak') }}</p>
-                            @endif
-                            <div class="command-block">
-                                <div class="command-block__header">
-                                    <span>{{ t('dl.linux.install') }}</span>
-                                    <button type="button" class="copy-btn" data-copy="#cmd-flatpak" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
-                                </div>
-                                <pre class="command-block__body" id="cmd-flatpak"><code>flatpak install ./MeshChatX-*.flatpak</code></pre>
                             </div>
                         </div>
 
@@ -431,6 +574,36 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 </details>
             </div>
 
+            <div class="download-panel" id="flatpak" data-download-panel="flatpak" hidden>
+                <h2 class="section__title">{{ t('dl.flatpak.h2') }}</h2>
+                <p class="download-panel__intro">{{ t('dl.flatpak.friendly') }}</p>
+
+                <div class="download-panel__actions">
+                    @if ($flat)
+                        <div class="download-artifact">
+                            <x-download-checksum :sha256="$flatSha" />
+                            <a class="btn btn--solid" href="{{ $flat }}" download>
+                                <x-icon name="download" size="xs" />
+                                {{ t('dl.flatpak.btn') }}
+                            </a>
+                        </div>
+                    @else
+                        <p class="download-panel__intro">{{ t('dl.flatpak.no_bundle') }}</p>
+                    @endif
+                </div>
+
+                @if ($flat)
+                    <div class="command-block">
+                        <div class="command-block__header">
+                            <span>{{ t('dl.flatpak.install') }}</span>
+                            <button type="button" class="copy-btn" data-copy="#cmd-flatpak" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
+                        </div>
+                        <pre class="command-block__body" id="cmd-flatpak"><code>flatpak install --user ./ReticulumMeshChatX-*.flatpak
+flatpak run io.quad4.MeshChatX</code></pre>
+                    </div>
+                @endif
+            </div>
+
             <div class="download-panel" id="docker" data-download-panel="docker" hidden>
                 <h2 class="section__title">{{ t('dl.containers.h2') }}</h2>
                 <p class="download-panel__intro">{{ t('dl.containers.friendly') }}</p>
@@ -446,7 +619,11 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 </div>
 
                 <details class="download-advanced">
-                    <summary>{{ t('dl.more_options') }}</summary>
+                    <x-download-more-options :icons="[
+                        ['file' => 'docker', 'label' => 'Docker'],
+                        ['file' => 'podman', 'label' => 'Podman'],
+                        ['file' => 'umbrel', 'label' => 'Umbrel'],
+                    ]" />
                     <div class="download-stack" data-channel-group>
                         <div class="channel-toggle">
                             <button type="button" class="channel-toggle__btn is-active" data-channel="docker">{{ t('dl.containers.docker') }}</button>
@@ -505,6 +682,19 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                             </div>
                         </div>
                     </div>
+
+                    <div class="download-stack">
+                        <div>
+                            <h3 class="download-panel__subhead">{{ t('dl.umbrel.h2') }}</h3>
+                            <p class="download-panel__intro">{{ t('dl.umbrel.intro') }}</p>
+                            <div class="download-panel__actions">
+                                <a class="btn btn--solid" href="{{ $site['umbrel_url'] }}" target="_blank" rel="noopener noreferrer">
+                                    <x-icon name="open" size="xs" />
+                                    {{ t('dl.umbrel.btn') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </details>
 
                 <p class="download-panel__intro">
@@ -521,10 +711,13 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
 
                 @if (is_string($wheelUrl) && $wheelUrl !== '')
                     <div class="download-panel__actions">
-                        <a class="btn btn--solid" href="{{ $wheelUrl }}" download>
-                            <x-icon name="download" size="xs" />
-                            {{ t('dl.python.btn_whl') }}
-                        </a>
+                        <div class="download-artifact">
+                            <x-download-checksum :sha256="$wheelSha" />
+                            <a class="btn btn--solid" href="{{ $wheelUrl }}" download>
+                                <x-icon name="download" size="xs" />
+                                {{ t('dl.python.btn_whl') }}
+                            </a>
+                        </div>
                     </div>
                 @endif
 
@@ -537,7 +730,11 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 </div>
 
                 <details class="download-advanced">
-                    <summary>{{ t('dl.more_options') }}</summary>
+                    <x-download-more-options :icons="[
+                        ['file' => 'python', 'label' => 'Python / pip'],
+                        ['file' => 'poetry', 'label' => 'Poetry'],
+                        ['file' => 'uv', 'label' => 'uv'],
+                    ]" />
                     <div class="download-stack">
                         @foreach (['pipx', 'poetry', 'uv', 'uvx'] as $kind)
                             <div class="command-block">
@@ -580,10 +777,13 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                     <p class="version-badge">{{ t('dl.android.badge') }}</p>
                 @else
                     <div class="download-panel__actions">
-                        <a class="btn btn--solid" href="{{ $apkUrl }}" download>
-                            <x-icon name="download" size="xs" />
-                            {{ t('dl.android.btn_apk') }}
-                        </a>
+                        <div class="download-artifact">
+                            <x-download-checksum :sha256="$apkSha" />
+                            <a class="btn btn--solid" href="{{ $apkUrl }}" download>
+                                <x-icon name="download" size="xs" />
+                                {{ t('dl.android.btn_apk') }}
+                            </a>
+                        </div>
                     </div>
                 @endif
                 <p>
@@ -623,17 +823,6 @@ pkg install build-essential</code></pre>
                         </div>
                     </div>
                 </details>
-            </div>
-
-            <div class="download-panel" id="umbrel" data-download-panel="umbrel" hidden>
-                <h2 class="section__title">{{ t('dl.umbrel.h2') }}</h2>
-                <p class="download-panel__intro">{{ t('dl.umbrel.intro') }}</p>
-                <div class="download-panel__actions">
-                    <a class="btn btn--solid" href="{{ $site['umbrel_url'] }}" target="_blank" rel="noopener noreferrer">
-                        <x-icon name="open" size="xs" />
-                        {{ t('dl.umbrel.btn') }}
-                    </a>
-                </div>
             </div>
         </div>
     </section>
