@@ -116,6 +116,7 @@ COPY --chown=www-data:www-data artisan ./
 COPY --chown=www-data:www-data app ./app
 COPY --chown=www-data:www-data bootstrap ./bootstrap
 COPY --chown=www-data:www-data config ./config
+COPY --chown=www-data:www-data content ./content
 COPY --chown=www-data:www-data database ./database
 COPY --chown=www-data:www-data lang ./lang
 COPY --chown=www-data:www-data public ./public
