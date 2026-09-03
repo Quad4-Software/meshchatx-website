@@ -32,6 +32,10 @@
         'app_name' => t('brand.name'),
         'toggle_list' => t('dep.toggle_list'),
         'toggle_inspector' => t('dep.toggle_inspector'),
+        'matches' => t('dep.matches'),
+        'more_deps' => t('dep.more_deps'),
+        'deps_count' => t('dep.deps_count'),
+        'load_more' => t('dep.load_more'),
     ];
 @endphp
 
@@ -136,19 +140,23 @@
                 </div>
 
                 <div class="dep-panel is-active" data-dep-panel="table" role="tabpanel">
-                    <div class="dep-table-wrap">
-                        <table class="dep-table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">{{ t('dep.col_name') }}</th>
-                                    <th scope="col">{{ t('dep.col_version') }}</th>
-                                    <th scope="col">{{ t('dep.col_ecosystem') }}</th>
-                                    <th scope="col">{{ t('dep.col_license') }}</th>
-                                    <th scope="col">{{ t('dep.col_type') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody data-dep-table></tbody>
-                        </table>
+                    <div class="dep-table-shell">
+                        <p class="dep-table-meta" data-dep-table-meta></p>
+                        <div class="dep-table-wrap" data-dep-table-wrap>
+                            <table class="dep-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">{{ t('dep.col_name') }}</th>
+                                        <th scope="col">{{ t('dep.col_version') }}</th>
+                                        <th scope="col">{{ t('dep.col_ecosystem') }}</th>
+                                        <th scope="col">{{ t('dep.col_license') }}</th>
+                                        <th scope="col">{{ t('dep.col_type') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-dep-table></tbody>
+                            </table>
+                            <p class="dep-empty" data-dep-table-empty hidden>{{ t('dep.no_results') }}</p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -32,10 +32,9 @@
         ['key' => 'legal', 'heading' => t('footer.legal'), 'links' => $groups['legal']],
     ];
 
-    $metaSite = t('footer.meta_site');
+    $metaSite = clean_site_html(t('footer.meta_site'));
     $metaSite = preg_replace('/href="[^"]*"/', 'href="'.e($site['quad4_url']).'"', $metaSite) ?? $metaSite;
-    $metaSite = preg_replace('/\s*class="mcx-link-blue"/', ' class="site-footer__link"', $metaSite) ?? $metaSite;
-    $metaSite = preg_replace('/\s*style="[^"]*"/', '', $metaSite) ?? $metaSite;
+    $metaSite = preg_replace('/\s*class="[^"]*"/', ' class="site-footer__link"', $metaSite) ?? $metaSite;
 @endphp
 
 <footer class="site-footer">

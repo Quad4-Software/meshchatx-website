@@ -3,25 +3,17 @@
     $downloadBase = locale_route('download');
     $gitUrl = locale_route('git');
     $firstTab = $showcaseTabs[0] ?? 'tab-11-home.webp';
-    $docs = $site['docs'] ?? [];
-    $sandboxLinks = [
-        'appcontainer' => '<a href="'.e($docs['appcontainer'] ?? '#').'" target="_blank" rel="noopener noreferrer">AppContainer</a>',
-        'landlock' => '<a href="'.e($docs['landlock'] ?? '#').'" target="_blank" rel="noopener noreferrer">Landlock</a>',
-        'seccomp' => '<a href="'.e($docs['seccomp'] ?? '#').'" target="_blank" rel="noopener noreferrer">seccomp-bpf</a>',
-    ];
+    $currentLocale = current_locale();
     $features = [
-        ['icon' => 'orbit', 'title' => 'home.feature.decentralized_h3', 'body' => 'home.feature.decentralized_p'],
         ['icon' => 'shield-lock', 'title' => 'home.feature.crypto_h3', 'body' => 'home.feature.crypto_p', 'link' => true],
-        ['icon' => 'web', 'title' => 'home.feature.mesh_h3', 'body' => 'home.feature.mesh_p'],
-        ['icon' => 'monitor', 'title' => 'home.feature.platform_h3', 'body' => 'home.feature.platform_p'],
-        [
-            'icon' => 'shield-check',
-            'title' => 'home.feature.sandbox_h3',
-            'body' => 'home.feature.sandbox_p',
-            'html' => true,
-            'replace' => $sandboxLinks,
-        ],
+        ['icon' => 'orbit', 'title' => 'home.feature.no_cloud_h3', 'body' => 'home.feature.no_cloud_p'],
+        ['icon' => 'card-account-details-outline', 'title' => 'home.feature.no_account_h3', 'body' => 'home.feature.no_account_p'],
+        ['icon' => 'web', 'title' => 'home.feature.tunnels_h3', 'body' => 'home.feature.tunnels_p'],
+        ['icon' => 'monitor', 'title' => 'home.feature.local_h3', 'body' => 'home.feature.local_p'],
     ];
+    $langShort = static function (string $code): string {
+        return $code === 'zh' ? '中文' : strtoupper($code);
+    };
     $docsUrl = locale_route('docs');
     $capLabels = [];
     foreach ($capabilities as $key) {
@@ -144,25 +136,41 @@
                 <h2 class="section__title">{{ t('home.section.infra_h2') }}</h2>
                 <p class="section__lead">{{ t('home.section.infra_lead') }}</p>
             </div>
-            <div class="feature-grid">
+            <div class="feature-grid feature-grid--home">
                 @foreach ($features as $feature)
                     <article class="feature-item">
                         <div class="feature-item__icon" aria-hidden="true">
                             <x-icon :name="$feature['icon']" size="sm" />
                         </div>
-                        <h3 class="feature-item__title">{{ t($feature['title']) }}</h3>
-                        @if (! empty($feature['html']))
-                            <p class="feature-item__body">{!! clean_site_html(t($feature['body'], $feature['replace'] ?? [])) !!}</p>
-                        @else
+                        <div class="feature-item__copy">
+                            <h3 class="feature-item__title">{{ t($feature['title']) }}</h3>
                             <p class="feature-item__body">{{ t($feature['body']) }}</p>
-                        @endif
-                        @if (! empty($feature['link']))
-                            <p class="feature-item__body">
-                                <a href="{{ $site['reticulum_crypto'] }}" target="_blank" rel="noopener noreferrer">{{ t('home.feature.crypto_link') }}</a>
-                            </p>
-                        @endif
+                            @if (! empty($feature['link']))
+                                <a class="feature-item__link" href="{{ $site['reticulum_crypto'] }}" target="_blank" rel="noopener noreferrer">{{ t('home.feature.crypto_link') }}</a>
+                            @endif
+                        </div>
                     </article>
                 @endforeach
+            </div>
+            <div class="feature-langs-bar">
+                <div class="feature-langs-bar__copy">
+                    <h3 class="feature-langs-bar__title">{{ t('home.feature.languages_h3') }}</h3>
+                    <p class="feature-langs-bar__body">{{ t('home.feature.languages_p') }}</p>
+                </div>
+                <div class="feature-langs" role="list" aria-label="{{ t('lang.label') }}">
+                    @foreach ($site['locales'] as $code)
+                        <a
+                            class="feature-langs__link{{ $code === $currentLocale ? ' is-active' : '' }}"
+                            href="{{ \App\Support\LocaleUrl::switchLocale($code) }}"
+                            role="listitem"
+                            hreflang="{{ $code }}"
+                            lang="{{ $code }}"
+                            title="{{ t('lang.'.$code) }}"
+                            aria-label="{{ t('lang.'.$code) }}"
+                            @if ($code === $currentLocale) aria-current="true" @endif
+                        >{{ $langShort($code) }}</a>
+                    @endforeach
+                </div>
             </div>
         </div>
     </section>

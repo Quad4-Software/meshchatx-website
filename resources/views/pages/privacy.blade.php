@@ -1,9 +1,7 @@
 @php
     $page = 'privacy';
-    $pContact = t('privacy.p_contact');
+    $pContact = clean_site_html(t('privacy.p_contact'));
     $pContact = preg_replace('/href="[^"]*"/', 'href="'.e(locale_route('contact')).'"', $pContact) ?? $pContact;
-    $pContact = preg_replace('/\s*class="mcx-link-blue"/', '', $pContact) ?? $pContact;
-    $pContact = preg_replace('/\s*style="[^"]*"/', '', $pContact) ?? $pContact;
 @endphp
 
 @extends('layouts.app')
