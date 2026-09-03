@@ -11,5 +11,6 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->withoutVite();
+        config(['services.bunny.access_key' => '']);
     }
 }

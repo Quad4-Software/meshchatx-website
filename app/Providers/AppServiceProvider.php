@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\BunnyStorageService;
 use App\Services\ChangelogService;
 use App\Services\DocsService;
 use App\Services\GithubReleasesService;
@@ -18,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(BunnyStorageService::class);
         $this->app->singleton(GithubReleasesService::class);
         $this->app->singleton(RnsDirectoryService::class);
         $this->app->singleton(DocsService::class);
