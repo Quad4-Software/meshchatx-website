@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
@@ -15,12 +16,87 @@ class GithubReleasesService
 
     private const CACHE_VERSIONS = 'meshchatx.releases.versions';
 
+    private const CACHE_CHANNEL_VERSIONS = 'meshchatx.releases.channel_versions';
+
     /**
-     * @return array{stable: ?array<string, mixed>, prerelease: ?array<string, mixed>, githubFallbackUrl: string}
+     * @var list<array<string, mixed>>|null
+     */
+    private ?array $releasesMemo = null;
+
+    /**
+     * @var list<array{version: string, tag: string, publishedAt: string, isPrerelease: bool, releaseUrl: string, sbomUrl: string}>|null
+     */
+    private ?array $sbomReleasesMemo = null;
+
+    public function __construct(
+        private readonly BunnyStorageService $bunny,
+    ) {}
+
+    /**
+     * @return array{
+     *     stable: ?array<string, mixed>,
+     *     prerelease: ?array<string, mixed>,
+     *     githubFallbackUrl: string,
+     *     versions: array{stable: list<array{tag: string, version: string, publishedAt: string}>, prerelease: list<array{tag: string, version: string, publishedAt: string}>}
+     * }
      */
     public function payload(): array
     {
         return Cache::remember(self::CACHE_PAYLOAD, $this->cacheTtl(), fn () => $this->buildPayload());
+    }
+
+    /**
+     * @return list<array{tag: string, version: string, publishedAt: string}>
+     */
+    public function versionsForChannel(bool $wantPrerelease): array
+    {
+        $all = Cache::remember(self::CACHE_CHANNEL_VERSIONS, $this->cacheTtl(), function () {
+            $stable = [];
+            $prerelease = [];
+
+            foreach ($this->cachedReleases() as $release) {
+                $tag = (string) $release['tag_name'];
+                $row = [
+                    'tag' => $tag,
+                    'version' => $this->versionDisplay($tag),
+                    'publishedAt' => (string) $release['published_at'],
+                ];
+                $isPre = ((bool) ($release['prerelease'] ?? false)) || $this->isPrereleaseTag($tag);
+                if ($isPre) {
+                    $prerelease[] = $row;
+                } else {
+                    $stable[] = $row;
+                }
+            }
+
+            return [
+                'stable' => $stable,
+                'prerelease' => $prerelease,
+            ];
+        });
+
+        return $wantPrerelease ? $all['prerelease'] : $all['stable'];
+    }
+
+    /**
+     * @return ?array<string, mixed>
+     */
+    public function releaseForTag(string $tag): ?array
+    {
+        $tag = trim($tag);
+        if ($tag === '') {
+            return null;
+        }
+
+        $bare = $this->versionDisplay($tag);
+        foreach ($this->cachedReleases() as $release) {
+            $candidate = (string) $release['tag_name'];
+            if ($candidate === $tag || $this->versionDisplay($candidate) === $bare) {
+                return $this->rowFromRelease($release);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -60,6 +136,10 @@ class GithubReleasesService
      */
     public function sbomReleases(): array
     {
+        if ($this->sbomReleasesMemo !== null) {
+            return $this->sbomReleasesMemo;
+        }
+
         $out = [];
 
         foreach ($this->cachedReleases() as $release) {
@@ -88,7 +168,7 @@ class GithubReleasesService
             return $this->compareVersionDesc($a['tag'], $b['tag']);
         });
 
-        return $out;
+        return $this->sbomReleasesMemo = $out;
     }
 
     /**
@@ -126,45 +206,76 @@ class GithubReleasesService
      */
     private function cachedReleases(): array
     {
+        if ($this->releasesMemo !== null) {
+            return $this->releasesMemo;
+        }
+
         $ttl = $this->cacheTtl();
         $cached = Cache::get(self::CACHE_RAW);
         if (is_array($cached)) {
-            return $cached;
+            return $this->releasesMemo = $cached;
         }
 
-        $fresh = $this->fetchReleases();
-        if ($fresh !== []) {
-            Cache::put(self::CACHE_RAW, $fresh, $ttl);
-            Cache::put(self::CACHE_RAW_STALE, $fresh, max($ttl * 12, 43200));
+        try {
+            return $this->releasesMemo = Cache::lock('meshchatx.releases.fetch', 25)
+                ->block(10, function () use ($ttl) {
+                    $cached = Cache::get(self::CACHE_RAW);
+                    if (is_array($cached)) {
+                        return $cached;
+                    }
 
-            return $fresh;
+                    $fresh = $this->fetchReleases();
+                    if ($fresh !== []) {
+                        Cache::put(self::CACHE_RAW, $fresh, $ttl);
+                        Cache::put(self::CACHE_RAW_STALE, $fresh, max($ttl * 12, 43200));
+
+                        return $fresh;
+                    }
+
+                    $stale = Cache::get(self::CACHE_RAW_STALE);
+                    if (is_array($stale) && $stale !== []) {
+                        Cache::put(self::CACHE_RAW, $stale, min(300, $ttl));
+
+                        return $stale;
+                    }
+
+                    Cache::put(self::CACHE_RAW, [], 60);
+
+                    return [];
+                });
+        } catch (LockTimeoutException) {
+            $stale = Cache::get(self::CACHE_RAW_STALE);
+            if (is_array($stale) && $stale !== []) {
+                return $this->releasesMemo = $stale;
+            }
+
+            return $this->releasesMemo = [];
         }
-
-        $stale = Cache::get(self::CACHE_RAW_STALE);
-        if (is_array($stale) && $stale !== []) {
-            Cache::put(self::CACHE_RAW, $stale, min(300, $ttl));
-
-            return $stale;
-        }
-
-        Cache::put(self::CACHE_RAW, [], 60);
-
-        return [];
     }
 
     /**
-     * @return array{stable: ?array<string, mixed>, prerelease: ?array<string, mixed>, githubFallbackUrl: string}
+     * @return array{
+     *     stable: ?array<string, mixed>,
+     *     prerelease: ?array<string, mixed>,
+     *     githubFallbackUrl: string,
+     *     versions: array{stable: list<array{tag: string, version: string, publishedAt: string}>, prerelease: list<array{tag: string, version: string, publishedAt: string}>}
+     * }
      */
     private function buildPayload(): array
     {
         $fallback = (string) config('meshchatx.github_releases');
         $releases = $this->cachedReleases();
+        $versions = [
+            'stable' => $this->versionsForChannel(false),
+            'prerelease' => $this->versionsForChannel(true),
+        ];
 
         if ($releases === []) {
             return [
                 'stable' => null,
                 'prerelease' => null,
                 'githubFallbackUrl' => $fallback,
+                'versions' => $versions,
             ];
         }
 
@@ -175,6 +286,7 @@ class GithubReleasesService
             'stable' => $stable ? $this->rowFromRelease($stable) : null,
             'prerelease' => $pre ? $this->rowFromRelease($pre) : null,
             'githubFallbackUrl' => $fallback,
+            'versions' => $versions,
         ];
     }
 
@@ -241,9 +353,15 @@ class GithubReleasesService
                     }
                     $name = $asset['name'] ?? null;
                     $download = $asset['browser_download_url'] ?? null;
-                    if (is_string($name) && is_string($download)) {
-                        $assets[] = ['name' => $name, 'browser_download_url' => $download];
+                    if (! is_string($name) || ! is_string($download)) {
+                        continue;
                     }
+                    $digest = $asset['digest'] ?? null;
+                    $assets[] = [
+                        'name' => $name,
+                        'browser_download_url' => $download,
+                        'sha256' => is_string($digest) ? $this->normalizeSha256($digest) : null,
+                    ];
                 }
 
                 $out[] = [
@@ -373,45 +491,197 @@ class GithubReleasesService
     }
 
     /**
+     * Normalize GitHub asset digests (sha256:hex) or bare hex to lowercase hex.
+     */
+    private function normalizeSha256(?string $digest): ?string
+    {
+        if (! is_string($digest) || $digest === '') {
+            return null;
+        }
+
+        $digest = trim($digest);
+        if (preg_match('/^sha256:([a-f0-9]{64})$/i', $digest, $m) === 1) {
+            return strtolower($m[1]);
+        }
+        if (preg_match('/^[a-f0-9]{64}$/i', $digest) === 1) {
+            return strtolower($digest);
+        }
+
+        return null;
+    }
+
+    /**
      * @param  array<string, mixed>  $release
      * @return array<string, mixed>
      */
     private function rowFromRelease(array $release): array
     {
-        $files = [];
+        $tag = (string) $release['tag_name'];
+        $githubFiles = [];
         foreach ($release['assets'] as $asset) {
-            $files[] = [
+            $sha = $asset['sha256'] ?? null;
+            $githubFiles[] = [
                 'base' => (string) $asset['name'],
                 'url' => (string) $asset['browser_download_url'],
+                'sha256' => is_string($sha) ? $this->normalizeSha256($sha) : null,
             ];
         }
 
-        $version = $this->versionDisplay((string) $release['tag_name']);
+        $bunnyFiles = $this->bunnyFilesForTag($githubFiles, $tag);
+
+        $version = $this->versionDisplay($tag);
         $isPre = (bool) $release['prerelease'];
-        $urls = $this->matchFileUrls($files, $version, $isPre);
+        $githubUrls = $this->matchFileUrls($githubFiles, $version, $isPre);
+        $bunnyUrls = $bunnyFiles === []
+            ? []
+            : $this->matchFileUrls($bunnyFiles, $version, $isPre);
+
+        $servers = [];
+        if ($this->hasDownloadableUrl($bunnyUrls)) {
+            $servers[] = 'bunny';
+        }
+        if ($this->hasDownloadableUrl($githubUrls)) {
+            $servers[] = 'github';
+        }
+
+        $preferred = in_array('bunny', $servers, true) ? 'bunny' : 'github';
+        $urls = $preferred === 'bunny' && $bunnyUrls !== [] ? $bunnyUrls : $githubUrls;
 
         return array_merge([
             'version' => $version,
+            'tag' => $tag,
             'releaseUrl' => (string) $release['html_url'],
             'publishedAt' => (string) $release['published_at'],
             'isPrerelease' => $isPre,
+            'downloadServer' => $preferred,
+            'downloadServers' => $servers,
+            'assetsByServer' => [
+                'bunny' => $bunnyUrls,
+                'github' => $githubUrls,
+            ],
         ], $urls);
     }
 
     /**
-     * @param  list<array{base: string, url: string}>  $files
+     * Apply a concrete download server onto a release row's flat URL fields.
+     *
+     * @param  array<string, mixed>  $row
+     * @return array<string, mixed>
+     */
+    public function withDownloadServer(array $row, ?string $source): array
+    {
+        $servers = $row['downloadServers'] ?? [];
+        if (! is_array($servers)) {
+            $servers = [];
+        }
+        $servers = array_values(array_filter(
+            $servers,
+            static fn (mixed $s): bool => $s === 'bunny' || $s === 'github',
+        ));
+
+        $chosen = is_string($source) ? $source : '';
+        if (! in_array($chosen, $servers, true)) {
+            $chosen = in_array('bunny', $servers, true)
+                ? 'bunny'
+                : (string) ($servers[0] ?? 'github');
+        }
+
+        $bundle = $row['assetsByServer'][$chosen] ?? null;
+        if (is_array($bundle) && $bundle !== []) {
+            $row = array_merge($row, $bundle);
+        }
+
+        $row['downloadServer'] = $chosen;
+        $row['downloadServers'] = $servers;
+
+        return $row;
+    }
+
+    /**
+     * @param  list<array{base: string, url: string, sha256: ?string}>  $githubFiles
+     * @return list<array{base: string, url: string, sha256: ?string}>
+     */
+    private function bunnyFilesForTag(array $githubFiles, string $tag): array
+    {
+        $bunny = $this->bunny->assetsByName($tag);
+        if ($bunny === []) {
+            return [];
+        }
+
+        if ($githubFiles === []) {
+            $out = [];
+            foreach ($bunny as $asset) {
+                $out[] = [
+                    'base' => $asset['name'],
+                    'url' => $asset['url'],
+                    'sha256' => $asset['sha256'],
+                ];
+            }
+
+            return $out;
+        }
+
+        $out = [];
+        foreach ($githubFiles as $file) {
+            $hit = $bunny[strtolower($file['base'])] ?? null;
+            if (! is_array($hit)) {
+                continue;
+            }
+            $sha = $hit['sha256'] ?? null;
+            $out[] = [
+                'base' => $file['base'],
+                'url' => $hit['url'],
+                'sha256' => is_string($sha) && $sha !== '' ? $sha : $file['sha256'],
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * @param  array<string, mixed>  $urls
+     */
+    private function hasDownloadableUrl(array $urls): bool
+    {
+        foreach ($urls as $key => $value) {
+            if (! is_string($key) || ! str_ends_with($key, 'Url')) {
+                continue;
+            }
+            if (is_string($value) && $value !== '') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param  list<array{base: string, url: string, sha256: ?string}>  $files
      * @return array<string, ?string>
      */
     private function matchFileUrls(array $files, string $versionDisplay, bool $isPrerelease): array
     {
-        $byBase = function (callable $pred) use ($files): ?string {
+        /**
+         * @return ?array{url: string, sha256: ?string}
+         */
+        $byBase = function (callable $pred) use ($files): ?array {
             $match = array_find(
                 $files,
                 fn (array $file): bool => $pred(strtolower($file['base'])),
             );
 
-            return is_array($match) ? $match['url'] : null;
+            if (! is_array($match)) {
+                return null;
+            }
+
+            return [
+                'url' => $match['url'],
+                'sha256' => $match['sha256'],
+            ];
         };
+
+        $urlOf = static fn (?array $hit): ?string => is_array($hit) ? $hit['url'] : null;
+        $shaOf = static fn (?array $hit): ?string => is_array($hit) ? $hit['sha256'] : null;
 
         $notMacWinAppImage = fn (string $n): bool => str_ends_with($n, '.appimage')
             && ! preg_match('/(darwin|macos|\bmac\b|windows|\bwin\b)/i', $n);
@@ -441,19 +711,23 @@ class GithubReleasesService
             $files,
             fn (array $file): bool => str_ends_with(strtolower($file['base']), '.whl'),
         );
-        $wheelUrl = is_array($wheel) ? $wheel['url'] : null;
+        $wheelHit = is_array($wheel)
+            ? ['url' => $wheel['url'], 'sha256' => $wheel['sha256']]
+            : null;
         $wheelBase = is_array($wheel) ? $wheel['base'] : null;
 
-        $macDmgUrl = $byBase(fn (string $n): bool => str_ends_with($n, '.dmg') && ! str_ends_with($n, '.dmg.sha256'));
-        if ($macDmgUrl === null && $isPrerelease && is_string($wheelBase)) {
+        $macDmg = $byBase(fn (string $n): bool => str_ends_with($n, '.dmg')
+            && ! str_ends_with($n, '.dmg.sha256')
+            && ! str_contains($n, '.cosign.'));
+        if ($macDmg === null && $isPrerelease && is_string($wheelBase)) {
             if (preg_match('/^reticulum_meshchatx-([\d.]+)-py3-none-any\.whl$/i', $wheelBase, $m)) {
                 $guess = strtolower("ReticulumMeshChatX-v{$m[1]}-mac-universal.dmg");
-                $macDmgUrl = $byBase(fn (string $n): bool => $n === $guess);
+                $macDmg = $byBase(fn (string $n): bool => $n === $guess);
             }
         }
-        if ($macDmgUrl === null && $isPrerelease && preg_match('/^(\d+\.\d+\.\d+)/', $versionDisplay, $m)) {
+        if ($macDmg === null && $isPrerelease && preg_match('/^(\d+\.\d+\.\d+)/', $versionDisplay, $m)) {
             $guess = strtolower("ReticulumMeshChatX-v{$m[1]}-mac-universal.dmg");
-            $macDmgUrl = $byBase(fn (string $n): bool => $n === $guess);
+            $macDmg = $byBase(fn (string $n): bool => $n === $guess);
         }
 
         $winInstaller = array_find(
@@ -464,24 +738,51 @@ class GithubReleasesService
             $files,
             fn (array $file): bool => (bool) preg_match('/win.*portable\.exe$/i', $file['base']),
         );
+        $winInstallerHit = is_array($winInstaller)
+            ? ['url' => $winInstaller['url'], 'sha256' => $winInstaller['sha256']]
+            : null;
+        $winPortableHit = is_array($winPortable)
+            ? ['url' => $winPortable['url'], 'sha256' => $winPortable['sha256']]
+            : null;
+
+        $debAmd64 = $byBase(fn (string $n): bool => str_ends_with($n, '.deb') && preg_match('/(amd64|x86_64)/', $n));
+        $debArm64 = $byBase(fn (string $n): bool => str_ends_with($n, '.deb') && preg_match('/(arm64|aarch64)/', $n));
+        $rpmAmd64 = $byBase(fn (string $n): bool => str_ends_with($n, '.rpm') && preg_match('/(amd64|x86_64)/', $n));
+        $apk = $byBase(fn (string $n): bool => str_ends_with($n, '.apk')
+            && ! str_contains($n, 'alpine')
+            && ! str_contains($n, 'linux'));
+        $alpineApk = $byBase(fn (string $n): bool => str_ends_with($n, '.apk')
+            && str_contains($n, 'alpine'));
+        $flatpak = $byBase(fn (string $n): bool => str_ends_with($n, '.flatpak'));
+        $sbom = $byBase(fn (string $n): bool => (bool) preg_match('/sbom\.cyclonedx\.json$/i', $n));
 
         return [
-            'appImageAmd64Url' => $appImageAmd64,
-            'appImageArm64Url' => $appImageArm64,
-            'debAmd64Url' => $byBase(fn (string $n): bool => str_ends_with($n, '.deb') && preg_match('/(amd64|x86_64)/', $n)),
-            'debArm64Url' => $byBase(fn (string $n): bool => str_ends_with($n, '.deb') && preg_match('/(arm64|aarch64)/', $n)),
-            'rpmAmd64Url' => $byBase(fn (string $n): bool => str_ends_with($n, '.rpm') && preg_match('/(amd64|x86_64)/', $n)),
-            'wheelUrl' => $wheelUrl,
-            'winInstallerUrl' => is_array($winInstaller) ? $winInstaller['url'] : null,
-            'winPortableUrl' => is_array($winPortable) ? $winPortable['url'] : null,
-            'macDmgUrl' => $macDmgUrl,
-            'apkUrl' => $byBase(fn (string $n): bool => str_ends_with($n, '.apk')
-                && ! str_contains($n, 'alpine')
-                && ! str_contains($n, 'linux')),
-            'alpineApkUrl' => $byBase(fn (string $n): bool => str_ends_with($n, '.apk')
-                && str_contains($n, 'alpine')),
-            'flatpakUrl' => $byBase(fn (string $n): bool => str_ends_with($n, '.flatpak')),
-            'sbomUrl' => $byBase(fn (string $n): bool => (bool) preg_match('/sbom\.cyclonedx\.json$/i', $n)),
+            'appImageAmd64Url' => $urlOf($appImageAmd64),
+            'appImageAmd64Sha256' => $shaOf($appImageAmd64),
+            'appImageArm64Url' => $urlOf($appImageArm64),
+            'appImageArm64Sha256' => $shaOf($appImageArm64),
+            'debAmd64Url' => $urlOf($debAmd64),
+            'debAmd64Sha256' => $shaOf($debAmd64),
+            'debArm64Url' => $urlOf($debArm64),
+            'debArm64Sha256' => $shaOf($debArm64),
+            'rpmAmd64Url' => $urlOf($rpmAmd64),
+            'rpmAmd64Sha256' => $shaOf($rpmAmd64),
+            'wheelUrl' => $urlOf($wheelHit),
+            'wheelSha256' => $shaOf($wheelHit),
+            'winInstallerUrl' => $urlOf($winInstallerHit),
+            'winInstallerSha256' => $shaOf($winInstallerHit),
+            'winPortableUrl' => $urlOf($winPortableHit),
+            'winPortableSha256' => $shaOf($winPortableHit),
+            'macDmgUrl' => $urlOf($macDmg),
+            'macDmgSha256' => $shaOf($macDmg),
+            'apkUrl' => $urlOf($apk),
+            'apkSha256' => $shaOf($apk),
+            'alpineApkUrl' => $urlOf($alpineApk),
+            'alpineApkSha256' => $shaOf($alpineApk),
+            'flatpakUrl' => $urlOf($flatpak),
+            'flatpakSha256' => $shaOf($flatpak),
+            'sbomUrl' => $urlOf($sbom),
+            'sbomSha256' => $shaOf($sbom),
         ];
     }
 }

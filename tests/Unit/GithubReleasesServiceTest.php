@@ -13,6 +13,7 @@ class GithubReleasesServiceTest extends TestCase
     {
         parent::setUp();
         Cache::flush();
+        config(['services.bunny.access_key' => '']);
     }
 
     public function test_prerelease_channel_picks_newest_nightly_over_older_rc(): void
@@ -72,6 +73,122 @@ class GithubReleasesServiceTest extends TestCase
         $this->assertTrue($payload['prerelease']['isPrerelease'] ?? false);
         $this->assertSame('https://example.test/nightly.AppImage', $payload['prerelease']['appImageAmd64Url'] ?? null);
         $this->assertSame('https://example.test/nightly.apk', $payload['prerelease']['apkUrl'] ?? null);
+        $this->assertSame('nightly-2026.08.04-af76f09', $payload['versions']['prerelease'][0]['tag'] ?? null);
+    }
+
+    public function test_prefers_bunny_cdn_urls_when_storage_has_matching_assets(): void
+    {
+        config([
+            'services.bunny.storage_zone' => 'meshchatx',
+            'services.bunny.access_key' => 'test-key',
+            'services.bunny.storage_endpoint' => 'https://la.storage.bunnycdn.com',
+            'services.bunny.cdn_base' => 'https://meshchatx.b-cdn.net',
+        ]);
+
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response([
+                [
+                    'tag_name' => 'nightly-2026.09.03-0cc046e',
+                    'published_at' => '2026-09-03T13:00:00Z',
+                    'prerelease' => true,
+                    'draft' => false,
+                    'html_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/tag/nightly-2026.09.03-0cc046e',
+                    'assets' => [
+                        [
+                            'name' => 'ReticulumMeshChatX-v4.8.6-android-universal.apk',
+                            'browser_download_url' => 'https://example.test/android.apk',
+                            'digest' => 'sha256:1111111111111111111111111111111111111111111111111111111111111111',
+                        ],
+                        [
+                            'name' => 'ReticulumMeshChatX-v4.8.6-linux-x86_64.AppImage',
+                            'browser_download_url' => 'https://example.test/linux.AppImage',
+                        ],
+                    ],
+                ],
+            ], 200),
+            'la.storage.bunnycdn.com/meshchatx/' => Http::response([
+                ['ObjectName' => 'nightly', 'IsDirectory' => true],
+            ], 200),
+            'la.storage.bunnycdn.com/meshchatx/nightly/' => Http::response([
+                [
+                    'ObjectName' => 'nightly-2026.09.03-0cc046e',
+                    'IsDirectory' => true,
+                    'DateCreated' => '2026-09-03T13:02:40',
+                ],
+            ], 200),
+            'la.storage.bunnycdn.com/meshchatx/nightly/nightly-2026.09.03-0cc046e/' => Http::response([
+                [
+                    'ObjectName' => 'ReticulumMeshChatX-v4.8.6-linux-x86_64.AppImage',
+                    'IsDirectory' => false,
+                    'Checksum' => 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+                ],
+                ['ObjectName' => 'android', 'IsDirectory' => true],
+            ], 200),
+            'la.storage.bunnycdn.com/meshchatx/nightly/nightly-2026.09.03-0cc046e/android/' => Http::response([
+                [
+                    'ObjectName' => 'ReticulumMeshChatX-v4.8.6-android-universal.apk',
+                    'IsDirectory' => false,
+                    'Checksum' => 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
+                ],
+            ], 200),
+        ]);
+
+        $payload = app(GithubReleasesService::class)->payload();
+        $pre = $payload['prerelease'] ?? null;
+
+        $this->assertSame(
+            'https://meshchatx.b-cdn.net/nightly/nightly-2026.09.03-0cc046e/android/ReticulumMeshChatX-v4.8.6-android-universal.apk',
+            $pre['apkUrl'] ?? null,
+        );
+        $this->assertSame(
+            'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+            $pre['apkSha256'] ?? null,
+        );
+        $this->assertSame(
+            'https://meshchatx.b-cdn.net/nightly/nightly-2026.09.03-0cc046e/ReticulumMeshChatX-v4.8.6-linux-x86_64.AppImage',
+            $pre['appImageAmd64Url'] ?? null,
+        );
+        $this->assertSame('bunny', $pre['downloadServer'] ?? null);
+        $this->assertSame(['bunny', 'github'], $pre['downloadServers'] ?? null);
+        $this->assertSame(
+            'https://example.test/android.apk',
+            $pre['assetsByServer']['github']['apkUrl'] ?? null,
+        );
+    }
+
+    public function test_falls_back_to_github_when_bunny_lookup_fails(): void
+    {
+        config([
+            'services.bunny.storage_zone' => 'meshchatx',
+            'services.bunny.access_key' => 'test-key',
+            'services.bunny.storage_endpoint' => 'https://la.storage.bunnycdn.com',
+            'services.bunny.cdn_base' => 'https://meshchatx.b-cdn.net',
+        ]);
+
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response([
+                [
+                    'tag_name' => 'v4.8.5',
+                    'published_at' => '2026-08-20T00:00:00Z',
+                    'prerelease' => false,
+                    'draft' => false,
+                    'html_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/tag/v4.8.5',
+                    'assets' => [
+                        [
+                            'name' => 'ReticulumMeshChatX-v4.8.5-linux-x86_64.AppImage',
+                            'browser_download_url' => 'https://example.test/stable.AppImage',
+                        ],
+                    ],
+                ],
+            ], 200),
+            'la.storage.bunnycdn.com/*' => Http::response('nope', 500),
+        ]);
+
+        $payload = app(GithubReleasesService::class)->payload();
+
+        $this->assertSame('https://example.test/stable.AppImage', $payload['stable']['appImageAmd64Url'] ?? null);
+        $this->assertSame('github', $payload['stable']['downloadServer'] ?? null);
+        $this->assertSame(['github'], $payload['stable']['downloadServers'] ?? null);
     }
 
     public function test_release_assets_map_wheel_alpine_android_dmg_and_sbom(): void
@@ -88,26 +205,32 @@ class GithubReleasesServiceTest extends TestCase
                         [
                             'name' => 'ReticulumMeshChatX-v4.8.3-linux-alpine-x64.apk',
                             'browser_download_url' => 'https://example.test/alpine.apk',
+                            'digest' => 'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                         ],
                         [
                             'name' => 'app-release-signed.apk',
                             'browser_download_url' => 'https://example.test/android.apk',
+                            'digest' => 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
                         ],
                         [
                             'name' => 'reticulum_meshchatx-4.8.3-py3-none-any.whl',
                             'browser_download_url' => 'https://example.test/meshchatx.whl',
+                            'digest' => 'sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
                         ],
                         [
                             'name' => 'ReticulumMeshChatX-v4.8.3-mac-universal.dmg',
                             'browser_download_url' => 'https://example.test/mac.dmg',
+                            'digest' => 'sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
                         ],
                         [
                             'name' => 'ReticulumMeshChatX-v4.8.3-mac-universal.dmg.cosign.bundle',
                             'browser_download_url' => 'https://example.test/mac.dmg.cosign.bundle',
+                            'digest' => 'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
                         ],
                         [
                             'name' => 'sbom.cyclonedx.json',
-                            'browser_download_url' => 'https://example.test/sbom.cyclonedx.json',
+                            'browser_download_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/download/v4.8.3/sbom.cyclonedx.json',
+                            'digest' => 'sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
                         ],
                     ],
                 ],
@@ -118,10 +241,15 @@ class GithubReleasesServiceTest extends TestCase
 
         $this->assertIsArray($stable);
         $this->assertSame('https://example.test/meshchatx.whl', $stable['wheelUrl'] ?? null);
+        $this->assertSame('cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc', $stable['wheelSha256'] ?? null);
         $this->assertSame('https://example.test/alpine.apk', $stable['alpineApkUrl'] ?? null);
+        $this->assertSame('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', $stable['alpineApkSha256'] ?? null);
         $this->assertSame('https://example.test/android.apk', $stable['apkUrl'] ?? null);
+        $this->assertSame('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', $stable['apkSha256'] ?? null);
         $this->assertSame('https://example.test/mac.dmg', $stable['macDmgUrl'] ?? null);
-        $this->assertSame('https://example.test/sbom.cyclonedx.json', $stable['sbomUrl'] ?? null);
+        $this->assertSame('dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', $stable['macDmgSha256'] ?? null);
+        $this->assertSame('https://github.com/Quad4-Software/MeshChatX/releases/download/v4.8.3/sbom.cyclonedx.json', $stable['sbomUrl'] ?? null);
+        $this->assertSame('ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', $stable['sbomSha256'] ?? null);
         $this->assertNotSame($stable['apkUrl'], $stable['alpineApkUrl']);
     }
 
