@@ -39,7 +39,7 @@ class LlmsTxtService
             '- [Full docs markdown]('.$domain.'/docs/export-all/md): Every documentation page in one markdown file.',
             '- [llms-full.txt]('.$domain.'/llms-full.txt): This index plus the full documentation text.',
             '- [Docs llms.txt]('.$domain.'/docs/llms.txt): Documentation-only agent index.',
-            '- [Releases API]('.$domain.'/api/mcx-releases): Stable and prerelease download assets as JSON.',
+            '- [Releases API]('.$domain.'/api/mcx-releases): Stable, beta, and testing download assets as JSON.',
             '- [Interfaces API]('.$domain.'/api/mcx-interfaces): Reticulum interface directory snapshot as JSON.',
             '- [SBOM API]('.$domain.'/api/mcx-sbom): CycloneDX software bill of materials catalog and per-version payloads.',
             '- [Sitemap]('.$domain.'/sitemap.xml): All public HTML pages and locales.',

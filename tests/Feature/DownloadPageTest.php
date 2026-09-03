@@ -88,7 +88,10 @@ class DownloadPageTest extends TestCase
             ->assertSee('data-download-panel="flatpak"', false)
             ->assertDontSee('data-download-panel="umbrel"', false)
             ->assertSee('Get on Umbrel', false)
-            ->assertSee('More install options', false);
+            ->assertSee('More install options', false)
+            ->assertSee('https://cdn.meshchatx.com/flatpak/meshchatx-stable.flatpakref', false)
+            ->assertSee('com.quad4.meshchatx', false)
+            ->assertSee('cdn.meshchatx.com/flatpak/meshchatx.flatpakrepo', false);
     }
 
     public function test_download_page_shows_bunny_download_server(): void
@@ -97,7 +100,7 @@ class DownloadPageTest extends TestCase
             'services.bunny.storage_zone' => 'meshchatx',
             'services.bunny.access_key' => 'test-key',
             'services.bunny.storage_endpoint' => 'https://la.storage.bunnycdn.com',
-            'services.bunny.cdn_base' => 'https://meshchatx.b-cdn.net',
+            'services.bunny.cdn_base' => 'https://cdn.meshchatx.com',
         ]);
 
         Http::fake([
@@ -138,14 +141,17 @@ class DownloadPageTest extends TestCase
             ], 200),
         ]);
 
-        $this->get('/download?channel=prerelease')
+        $this->get('/download?channel=testing')
             ->assertOk()
             ->assertSee('Download server', false)
             ->assertSee('BunnyCDN', false)
             ->assertSee('GitHub', false)
             ->assertSee('data-download-source', false)
             ->assertSee('Also see:', false)
-            ->assertSee('https://meshchatx.b-cdn.net/nightly/nightly-2026.09.03-0cc046e/android/ReticulumMeshChatX-v4.8.6-android-universal.apk', false);
+            ->assertSee('https://cdn.meshchatx.com/nightly/nightly-2026.09.03-0cc046e/android/ReticulumMeshChatX-v4.8.6-android-universal.apk', false)
+            ->assertSee('channel=beta', false)
+            ->assertSee('channel=testing', false)
+            ->assertSee('Testing', false);
     }
 
     public function test_download_page_can_switch_to_github_source(): void
@@ -154,7 +160,7 @@ class DownloadPageTest extends TestCase
             'services.bunny.storage_zone' => 'meshchatx',
             'services.bunny.access_key' => 'test-key',
             'services.bunny.storage_endpoint' => 'https://la.storage.bunnycdn.com',
-            'services.bunny.cdn_base' => 'https://meshchatx.b-cdn.net',
+            'services.bunny.cdn_base' => 'https://cdn.meshchatx.com',
         ]);
 
         Http::fake([
@@ -195,11 +201,11 @@ class DownloadPageTest extends TestCase
             ], 200),
         ]);
 
-        $this->get('/download?channel=prerelease&source=github')
+        $this->get('/download?channel=testing&source=github')
             ->assertOk()
             ->assertSee('data-download-source', false)
             ->assertSee('https://example.test/android.apk', false)
-            ->assertDontSee('https://meshchatx.b-cdn.net/nightly/nightly-2026.09.03-0cc046e/android/ReticulumMeshChatX-v4.8.6-android-universal.apk', false);
+            ->assertDontSee('https://cdn.meshchatx.com/nightly/nightly-2026.09.03-0cc046e/android/ReticulumMeshChatX-v4.8.6-android-universal.apk', false);
     }
 
     public function test_download_page_hides_source_dropdown_when_only_github(): void
@@ -249,7 +255,7 @@ class DownloadPageTest extends TestCase
             ], 200),
         ]);
 
-        $this->get('/download?channel=prerelease&v=nightly-2026.09.03-0cc046e')
+        $this->get('/download?channel=testing&v=nightly-2026.09.03-0cc046e')
             ->assertOk()
             ->assertSee('data-download-server="github"', false)
             ->assertSee('GitHub', false)

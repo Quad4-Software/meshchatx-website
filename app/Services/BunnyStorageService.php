@@ -8,9 +8,16 @@ use Illuminate\Support\Facades\Http;
 
 class BunnyStorageService
 {
-    private const CACHE_CATALOG = 'meshchatx.bunny.catalog';
+    private const ASSET_TRACKS = ['release', 'testing', 'beta', 'nightly'];
 
-    private const CACHE_CATALOG_STALE = 'meshchatx.bunny.catalog.stale';
+    private const TRACK_ALIASES = [
+        'nightly' => 'testing',
+        'preview' => 'beta',
+    ];
+
+    private const CACHE_CATALOG = 'meshchatx.bunny.catalog.v2';
+
+    private const CACHE_CATALOG_STALE = 'meshchatx.bunny.catalog.stale.v2';
 
     /**
      * @var array{versions: array<string, array{channel: string, tag: string, path: string, publishedAt: string}>}|null
@@ -153,12 +160,17 @@ class BunnyStorageService
             if (($entry['IsDirectory'] ?? false) !== true) {
                 continue;
             }
-            $channel = (string) ($entry['ObjectName'] ?? '');
-            if ($channel === '' || str_starts_with($channel, '.')) {
+            $track = (string) ($entry['ObjectName'] ?? '');
+            if ($track === '' || str_starts_with($track, '.')) {
+                continue;
+            }
+            if (! in_array($track, self::ASSET_TRACKS, true)) {
                 continue;
             }
 
-            foreach ($this->listDirectory($channel) as $child) {
+            $productChannel = self::TRACK_ALIASES[$track] ?? ($track === 'release' ? 'stable' : $track);
+
+            foreach ($this->listDirectory($track) as $child) {
                 if (($child['IsDirectory'] ?? false) !== true) {
                     continue;
                 }
@@ -168,9 +180,9 @@ class BunnyStorageService
                 }
 
                 $published = (string) ($child['DateCreated'] ?? $child['LastChanged'] ?? '');
-                $path = $channel.'/'.$tag;
+                $path = $track.'/'.$tag;
                 $versions[$tag] = [
-                    'channel' => $channel,
+                    'channel' => $productChannel,
                     'tag' => $tag,
                     'path' => $path,
                     'publishedAt' => $published !== '' ? $published : gmdate('c'),

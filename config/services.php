@@ -43,7 +43,7 @@ return [
         'storage_zone' => env('BUNNY_STORAGE_ZONE', 'meshchatx'),
         'access_key' => env('BUNNY_STORAGE_ACCESS_KEY'),
         'storage_endpoint' => env('BUNNY_STORAGE_ENDPOINT', 'https://la.storage.bunnycdn.com'),
-        'cdn_base' => env('BUNNY_CDN_BASE', 'https://meshchatx.b-cdn.net'),
+        'cdn_base' => env('BUNNY_CDN_BASE', 'https://cdn.meshchatx.com'),
     ],
 
 ];

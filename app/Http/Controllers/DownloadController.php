@@ -10,12 +10,10 @@ class DownloadController extends Controller
 {
     public function __invoke(Request $request, GithubReleasesService $releases): View
     {
-        $channel = $request->query('channel') === 'prerelease'
-            ? 'prerelease'
-            : 'stable';
+        $channel = $releases->normalizeChannel($request->query('channel'));
 
         $payload = $releases->payload();
-        $versions = $releases->versionsForChannel($channel === 'prerelease');
+        $versions = $releases->versionsForChannel($channel);
         $requested = trim((string) $request->query('v', ''));
         $requestedSource = trim((string) $request->query('source', ''));
 
@@ -28,31 +26,23 @@ class DownloadController extends Controller
         }
 
         if ($active === null) {
-            $active = $channel === 'prerelease'
-                ? ($payload['prerelease'] ?? $payload['stable'] ?? null)
-                : ($payload['stable'] ?? $payload['prerelease'] ?? null);
+            $active = is_array($payload[$channel] ?? null) ? $payload[$channel] : null;
         }
 
         if (is_array($active)) {
             $active = $releases->withDownloadServer($active, $requestedSource !== '' ? $requestedSource : null);
         }
 
-        $pre = $payload['prerelease'] ?? null;
-        if (is_array($pre) && is_array($active)) {
-            $pre = $releases->withDownloadServer($pre, (string) ($active['downloadServer'] ?? ''));
-        } elseif (is_array($pre)) {
-            $pre = $releases->withDownloadServer($pre, $requestedSource !== '' ? $requestedSource : null);
-        }
+        $sourceForChannels = is_array($active)
+            ? (string) ($active['downloadServer'] ?? '')
+            : ($requestedSource !== '' ? $requestedSource : null);
 
-        if (is_array($payload['stable'] ?? null)) {
-            $payload['stable'] = $releases->withDownloadServer(
-                $payload['stable'],
-                is_array($active) ? (string) ($active['downloadServer'] ?? '') : null,
-            );
+        foreach (GithubReleasesService::CHANNELS as $name) {
+            if (is_array($payload[$name] ?? null)) {
+                $payload[$name] = $releases->withDownloadServer($payload[$name], $sourceForChannels);
+            }
         }
-        if (is_array($payload['prerelease'] ?? null)) {
-            $payload['prerelease'] = $pre;
-        }
+        $payload['prerelease'] = $payload['testing'] ?? null;
 
         return view('pages.download', [
             'releases' => $payload,
@@ -72,8 +62,13 @@ class DownloadController extends Controller
      */
     private function releaseMatchesChannel(array $release, string $channel): bool
     {
-        $isPre = ($release['isPrerelease'] ?? false) === true;
+        $releaseChannel = (string) ($release['channel'] ?? '');
+        if ($releaseChannel !== '') {
+            return $releaseChannel === $channel;
+        }
 
-        return $channel === 'prerelease' ? $isPre : ! $isPre;
+        return $channel === 'stable'
+            ? ($release['isPrerelease'] ?? false) !== true
+            : ($release['isPrerelease'] ?? false) === true;
     }
 }

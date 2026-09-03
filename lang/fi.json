@@ -350,12 +350,16 @@
             "stable": "vakaa",
             "prerelease": "pre-release",
             "channel_stable": "Vakaa",
-            "channel_pre": "Pre-release / Nightly",
+            "channel_pre": "Testing",
             "select_version": "Versio",
             "fetch_error": "Latausindeksiä ei voitu ladata",
             "github_fallback": "GitHub-julkaisut",
             "published_prefix": "julkaistu",
-            "published_just_now": "julkaistu juuri nyt"
+            "published_just_now": "julkaistu juuri nyt",
+            "beta": "beta",
+            "testing": "testing",
+            "channel_beta": "Beta",
+            "channel_testing": "Testing"
         },
         "copied": "Kopioitu",
         "copy_failed": "Kopiointi epäonnistui"

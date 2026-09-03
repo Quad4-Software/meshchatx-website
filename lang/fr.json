@@ -350,12 +350,16 @@
             "stable": "stable",
             "prerelease": "pre-release",
             "channel_stable": "Stable",
-            "channel_pre": "Pre-release / Nightly",
+            "channel_pre": "Test",
             "select_version": "Version",
             "fetch_error": "Échec du chargement de l'index de téléchargement",
             "github_fallback": "Releases GitHub",
             "published_prefix": "publié",
-            "published_just_now": "publié à l'instant"
+            "published_just_now": "publié à l'instant",
+            "beta": "bêta",
+            "testing": "test",
+            "channel_beta": "Bêta",
+            "channel_testing": "Test"
         },
         "copied": "Copié",
         "copy_failed": "Échec de la copie"

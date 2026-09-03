@@ -307,12 +307,16 @@
             "stable": "stabil",
             "prerelease": "Vorabversion",
             "channel_stable": "Stabil",
-            "channel_pre": "Vorabversion",
+            "channel_pre": "Testing",
             "select_version": "Version",
             "fetch_error": "Releases konnten nicht geladen werden",
             "github_fallback": "GitHub-Releases",
             "published_prefix": "veröffentlicht",
-            "published_just_now": "gerade veröffentlicht"
+            "published_just_now": "gerade veröffentlicht",
+            "beta": "Beta",
+            "testing": "Testing",
+            "channel_beta": "Beta",
+            "channel_testing": "Testing"
         },
         "copied": "Kopiert",
         "copy_failed": "Kopieren fehlgeschlagen"

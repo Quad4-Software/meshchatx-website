@@ -307,12 +307,16 @@
             "stable": "стабильный",
             "prerelease": "пре-релиз",
             "channel_stable": "Стабильный",
-            "channel_pre": "Пре-релиз",
+            "channel_pre": "Тестовая",
             "select_version": "Версия",
             "fetch_error": "Не удалось загрузить релизы",
             "github_fallback": "Релизы на GitHub",
             "published_prefix": "опубликовано",
-            "published_just_now": "только что опубликовано"
+            "published_just_now": "только что опубликовано",
+            "beta": "бета",
+            "testing": "тестовая",
+            "channel_beta": "Бета",
+            "channel_testing": "Тестовая"
         },
         "copied": "Скопировано",
         "copy_failed": "Не удалось скопировать"

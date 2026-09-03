@@ -307,12 +307,16 @@
             "stable": "稳定版",
             "prerelease": "预发布",
             "channel_stable": "稳定",
-            "channel_pre": "预发布",
+            "channel_pre": "试验",
             "select_version": "版本",
             "fetch_error": "获取版本失败",
             "github_fallback": "GitHub 发布",
             "published_prefix": "发布于",
-            "published_just_now": "刚刚发布"
+            "published_just_now": "刚刚发布",
+            "beta": "测试版",
+            "testing": "试验",
+            "channel_beta": "测试版",
+            "channel_testing": "试验"
         },
         "copied": "已复制",
         "copy_failed": "复制失败"

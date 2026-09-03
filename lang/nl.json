@@ -350,12 +350,16 @@
             "stable": "stabiel",
             "prerelease": "pre-release",
             "channel_stable": "Stabiel",
-            "channel_pre": "Pre-release / Nightly",
+            "channel_pre": "Testing",
             "select_version": "Versie",
             "fetch_error": "Downloadindex laden mislukt",
             "github_fallback": "GitHub-releases",
             "published_prefix": "gepubliceerd",
-            "published_just_now": "zojuist gepubliceerd"
+            "published_just_now": "zojuist gepubliceerd",
+            "beta": "beta",
+            "testing": "testing",
+            "channel_beta": "Beta",
+            "channel_testing": "Testing"
         },
         "copied": "Gekopieerd",
         "copy_failed": "Kopiëren mislukt"

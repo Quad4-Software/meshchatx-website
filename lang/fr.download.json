@@ -174,7 +174,14 @@
     "download_server_github": "GitHub",
     "flatpak": {
       "h2": "Flatpak",
-      "friendly": "Installez le paquet Flatpak sur toute distro Linux avec Flatpak.",
+      "friendly": "Install from the MeshChatX Flatpak remote, or download a single-file .flatpak bundle for this release.",
+      "remote_h3": "CDN remote",
+      "remote_intro": "Branches match the download channels: stable, beta, and testing. The remote is not live on the CDN yet. Commands below are ready when it is.",
+      "remote_install": "Install from .flatpakref",
+      "remote_add": "Add remote only",
+      "remote_note": "If you still have the old GitHub Pages Flatpak remote, remove it first with flatpak remote-delete meshchatx.",
+      "bundle_h3": "Single-file bundle",
+      "bundle_intro": ".flatpak files still ship on each release and on Bunny under testing|beta|release/<tag>/.",
       "btn": "Télécharger .flatpak",
       "no_bundle": "Pas de paquet Flatpak dans cette version.",
       "install": "Installer / Lancer"

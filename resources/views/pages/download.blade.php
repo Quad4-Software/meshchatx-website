@@ -1,20 +1,22 @@
 @php
     $page = 'download';
     $channel = $channel ?? 'stable';
-    $releases = $releases ?? ['stable' => null, 'prerelease' => null, 'githubFallbackUrl' => $site['github_releases'], 'versions' => ['stable' => [], 'prerelease' => []]];
+    $releases = $releases ?? [
+        'stable' => null,
+        'beta' => null,
+        'testing' => null,
+        'prerelease' => null,
+        'githubFallbackUrl' => $site['github_releases'],
+        'versions' => ['stable' => [], 'beta' => [], 'testing' => [], 'prerelease' => []],
+    ];
     $versions = $versions ?? ($releases['versions'][$channel] ?? []);
-    $active = $active ?? ($channel === 'prerelease'
-        ? ($releases['prerelease'] ?? $releases['stable'] ?? null)
-        : ($releases['stable'] ?? $releases['prerelease'] ?? null));
+    $active = $active ?? (is_array($releases[$channel] ?? null) ? $releases[$channel] : null);
     $selectedTag = $selectedTag ?? (is_array($active) ? (string) ($active['tag'] ?? $active['version'] ?? '') : '');
     $selectedSource = $selectedSource ?? (is_array($active) ? (string) ($active['downloadServer'] ?? 'github') : 'github');
     $downloadServers = $downloadServers ?? (is_array($active) && is_array($active['downloadServers'] ?? null)
         ? $active['downloadServers']
         : []);
-    $pre = $releases['prerelease'] ?? null;
-    $channelLatest = $channel === 'prerelease'
-        ? ($releases['prerelease'] ?? null)
-        : ($releases['stable'] ?? null);
+    $channelLatest = is_array($releases[$channel] ?? null) ? $releases[$channel] : null;
     $isChannelLatest = is_array($active) && is_array($channelLatest)
         && (
             ($active['tag'] ?? null) === ($channelLatest['tag'] ?? null)
@@ -42,9 +44,7 @@
         return ['url' => null, 'sha256' => null];
     };
 
-    // Only fill missing platform assets from the channel's latest prerelease when
-    // showing that channel's latest release. A specific older version stays pure.
-    $assetFallback = $isChannelLatest ? $pre : null;
+    $assetFallback = null;
 
     $macDmgAsset = $pickAsset($active, $assetFallback, 'macDmgUrl');
     $appAmdAsset = $pickAsset($active, $assetFallback, 'appImageAmd64Url');
@@ -91,8 +91,33 @@
         : ((is_array($downloadServers) && in_array('bunny', $downloadServers, true)) ? 'bunny' : 'github');
     $canChooseServer = is_array($downloadServers) && count($downloadServers) > 1;
 
-    $stableQs = locale_route('download').'?channel=stable'.($canChooseServer ? '&source='.rawurlencode($downloadServer) : '');
-    $preQs = locale_route('download').'?channel=prerelease'.($canChooseServer ? '&source='.rawurlencode($downloadServer) : '');
+    $channelQs = function (string $name) use ($canChooseServer, $downloadServer): string {
+        $qs = locale_route('download').'?channel='.rawurlencode($name);
+        if ($canChooseServer) {
+            $qs .= '&source='.rawurlencode($downloadServer);
+        }
+
+        return $qs;
+    };
+
+    $channelLabel = match ($channel) {
+        'beta' => t('js.download.beta'),
+        'testing' => t('js.download.testing'),
+        default => t('js.download.stable'),
+    };
+
+    $flatpakCdnBase = rtrim((string) ($site['flatpak_cdn_base'] ?? 'https://cdn.meshchatx.com/flatpak'), '/');
+    $flatpakAppId = (string) ($site['flatpak_app_id'] ?? 'com.quad4.meshchatx');
+    $flatpakRefName = match ($channel) {
+        'beta' => 'meshchatx-beta.flatpakref',
+        'testing' => 'meshchatx-testing.flatpakref',
+        default => 'meshchatx-stable.flatpakref',
+    };
+    $flatpakRefUrl = $flatpakCdnBase.'/'.$flatpakRefName;
+    $flatpakRepoUrl = $flatpakCdnBase.'/meshchatx.flatpakrepo';
+    $flatpakInstallFrom = "flatpak install --from {$flatpakRefUrl}\nflatpak run {$flatpakAppId}\nflatpak update";
+    $flatpakRemoteAdd = "flatpak remote-add --if-not-exists meshchatx \\\n  {$flatpakRepoUrl}\nflatpak install meshchatx {$flatpakAppId}//{$channel}";
+    $flatpakBundleInstall = "flatpak install --user ./ReticulumMeshChatX-*.flatpak\nflatpak run {$flatpakAppId}";
 
     $pkg = $site['pypi_package'];
     $hub = $site['docker_hub'];
@@ -162,8 +187,9 @@ YAML;
             <div class="download-hero-meta">
                 <div class="download-hero-controls">
                     <div class="channel-toggle">
-                        <a class="channel-toggle__btn{{ $channel === 'stable' ? ' is-active' : '' }}" href="{{ $stableQs }}">{{ t('js.download.channel_stable') }}</a>
-                        <a class="channel-toggle__btn{{ $channel === 'prerelease' ? ' is-active' : '' }}" href="{{ $preQs }}">{{ t('js.download.channel_pre') }}</a>
+                        <a class="channel-toggle__btn{{ $channel === 'stable' ? ' is-active' : '' }}" href="{{ $channelQs('stable') }}">{{ t('js.download.channel_stable') }}</a>
+                        <a class="channel-toggle__btn{{ $channel === 'beta' ? ' is-active' : '' }}" href="{{ $channelQs('beta') }}">{{ t('js.download.channel_beta') }}</a>
+                        <a class="channel-toggle__btn{{ $channel === 'testing' ? ' is-active' : '' }}" href="{{ $channelQs('testing') }}">{{ t('js.download.channel_testing') }}</a>
                     </div>
 
                     @if ($versions !== [])
@@ -194,7 +220,7 @@ YAML;
                             {{ t('js.download.latest') }}
                         @endif
                         v{{ $active['version'] }}
-                        ({{ $channel === 'prerelease' ? t('js.download.prerelease') : t('js.download.stable') }})
+                        ({{ $channelLabel }})
                     </p>
                     @if ($canChooseServer)
                         <label class="download-version download-server-pick">
@@ -578,6 +604,26 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 <h2 class="section__title">{{ t('dl.flatpak.h2') }}</h2>
                 <p class="download-panel__intro">{{ t('dl.flatpak.friendly') }}</p>
 
+                <h3 class="download-panel__subhead">{{ t('dl.flatpak.remote_h3') }}</h3>
+                <p class="download-panel__intro">{{ t('dl.flatpak.remote_intro') }}</p>
+                <div class="command-block">
+                    <div class="command-block__header">
+                        <span>{{ t('dl.flatpak.remote_install') }}</span>
+                        <button type="button" class="copy-btn" data-copy="#cmd-flatpak-remote" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
+                    </div>
+                    <pre class="command-block__body" id="cmd-flatpak-remote"><code>{{ $flatpakInstallFrom }}</code></pre>
+                </div>
+                <div class="command-block">
+                    <div class="command-block__header">
+                        <span>{{ t('dl.flatpak.remote_add') }}</span>
+                        <button type="button" class="copy-btn" data-copy="#cmd-flatpak-repo" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
+                    </div>
+                    <pre class="command-block__body" id="cmd-flatpak-repo"><code>{{ $flatpakRemoteAdd }}</code></pre>
+                </div>
+                <p class="download-panel__intro">{{ t('dl.flatpak.remote_note') }}</p>
+
+                <h3 class="download-panel__subhead">{{ t('dl.flatpak.bundle_h3') }}</h3>
+                <p class="download-panel__intro">{{ t('dl.flatpak.bundle_intro') }}</p>
                 <div class="download-panel__actions">
                     @if ($flat)
                         <div class="download-artifact">
@@ -598,8 +644,7 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                             <span>{{ t('dl.flatpak.install') }}</span>
                             <button type="button" class="copy-btn" data-copy="#cmd-flatpak" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
                         </div>
-                        <pre class="command-block__body" id="cmd-flatpak"><code>flatpak install --user ./ReticulumMeshChatX-*.flatpak
-flatpak run io.quad4.MeshChatX</code></pre>
+                        <pre class="command-block__body" id="cmd-flatpak"><code>{{ $flatpakBundleInstall }}</code></pre>
                     </div>
                 @endif
             </div>

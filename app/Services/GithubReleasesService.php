@@ -12,11 +12,14 @@ class GithubReleasesService
 
     private const CACHE_RAW_STALE = 'meshchatx.releases.raw.stale';
 
-    private const CACHE_PAYLOAD = 'meshchatx.releases.payload';
+    private const CACHE_PAYLOAD = 'meshchatx.releases.payload.v2';
 
     private const CACHE_VERSIONS = 'meshchatx.releases.versions';
 
-    private const CACHE_CHANNEL_VERSIONS = 'meshchatx.releases.channel_versions';
+    private const CACHE_CHANNEL_VERSIONS = 'meshchatx.releases.channel_versions.v2';
+
+    /** @var list<string> */
+    public const CHANNELS = ['stable', 'beta', 'testing'];
 
     /**
      * @var list<array<string, mixed>>|null
@@ -35,9 +38,16 @@ class GithubReleasesService
     /**
      * @return array{
      *     stable: ?array<string, mixed>,
+     *     beta: ?array<string, mixed>,
+     *     testing: ?array<string, mixed>,
      *     prerelease: ?array<string, mixed>,
      *     githubFallbackUrl: string,
-     *     versions: array{stable: list<array{tag: string, version: string, publishedAt: string}>, prerelease: list<array{tag: string, version: string, publishedAt: string}>}
+     *     versions: array{
+     *         stable: list<array{tag: string, version: string, publishedAt: string}>,
+     *         beta: list<array{tag: string, version: string, publishedAt: string}>,
+     *         testing: list<array{tag: string, version: string, publishedAt: string}>,
+     *         prerelease: list<array{tag: string, version: string, publishedAt: string}>
+     *     }
      * }
      */
     public function payload(): array
@@ -46,36 +56,74 @@ class GithubReleasesService
     }
 
     /**
+     * Map query/UI channel names onto stable|beta|testing.
+     * Legacy: prerelease and nightly map to testing.
+     */
+    public function normalizeChannel(?string $channel): string
+    {
+        $channel = strtolower(trim((string) $channel));
+
+        return match ($channel) {
+            'beta' => 'beta',
+            'testing', 'prerelease', 'nightly', 'pre' => 'testing',
+            default => 'stable',
+        };
+    }
+
+    /**
+     * Product channel for a GitHub release tag.
+     * Matches MeshChatX CI: nightly/testing → testing, beta/preview → beta, else stable
+     * unless the tag is a generic prerelease (RC/alpha/dev), which lands in testing.
+     */
+    public function channelForTag(string $tag, bool $githubPrerelease = false): string
+    {
+        $tag = trim($tag);
+        if (preg_match('/^(nightly|testing)(-|$)/i', $tag) === 1) {
+            return 'testing';
+        }
+        if (preg_match('/^(beta|preview)(-|$)/i', $tag) === 1) {
+            return 'beta';
+        }
+
+        $display = $this->versionDisplay($tag);
+        if (preg_match('/(^|[-.])beta(\d|\.|$)/i', $display) === 1) {
+            return 'beta';
+        }
+
+        if ($githubPrerelease || $this->isPrereleaseTag($tag)) {
+            return 'testing';
+        }
+
+        return 'stable';
+    }
+
+    /**
      * @return list<array{tag: string, version: string, publishedAt: string}>
      */
-    public function versionsForChannel(bool $wantPrerelease): array
+    public function versionsForChannel(string $channel): array
     {
+        $channel = $this->normalizeChannel($channel);
         $all = Cache::remember(self::CACHE_CHANNEL_VERSIONS, $this->cacheTtl(), function () {
-            $stable = [];
-            $prerelease = [];
+            $buckets = [
+                'stable' => [],
+                'beta' => [],
+                'testing' => [],
+            ];
 
             foreach ($this->cachedReleases() as $release) {
                 $tag = (string) $release['tag_name'];
-                $row = [
+                $bucket = $this->channelForTag($tag, (bool) ($release['prerelease'] ?? false));
+                $buckets[$bucket][] = [
                     'tag' => $tag,
                     'version' => $this->versionDisplay($tag),
                     'publishedAt' => (string) $release['published_at'],
                 ];
-                $isPre = ((bool) ($release['prerelease'] ?? false)) || $this->isPrereleaseTag($tag);
-                if ($isPre) {
-                    $prerelease[] = $row;
-                } else {
-                    $stable[] = $row;
-                }
             }
 
-            return [
-                'stable' => $stable,
-                'prerelease' => $prerelease,
-            ];
+            return $buckets;
         });
 
-        return $wantPrerelease ? $all['prerelease'] : $all['stable'];
+        return $all[$channel] ?? [];
     }
 
     /**
@@ -256,35 +304,51 @@ class GithubReleasesService
     /**
      * @return array{
      *     stable: ?array<string, mixed>,
+     *     beta: ?array<string, mixed>,
+     *     testing: ?array<string, mixed>,
      *     prerelease: ?array<string, mixed>,
      *     githubFallbackUrl: string,
-     *     versions: array{stable: list<array{tag: string, version: string, publishedAt: string}>, prerelease: list<array{tag: string, version: string, publishedAt: string}>}
+     *     versions: array{
+     *         stable: list<array{tag: string, version: string, publishedAt: string}>,
+     *         beta: list<array{tag: string, version: string, publishedAt: string}>,
+     *         testing: list<array{tag: string, version: string, publishedAt: string}>,
+     *         prerelease: list<array{tag: string, version: string, publishedAt: string}>
+     *     }
      * }
      */
     private function buildPayload(): array
     {
         $fallback = (string) config('meshchatx.github_releases');
         $releases = $this->cachedReleases();
+        $testingVersions = $this->versionsForChannel('testing');
         $versions = [
-            'stable' => $this->versionsForChannel(false),
-            'prerelease' => $this->versionsForChannel(true),
+            'stable' => $this->versionsForChannel('stable'),
+            'beta' => $this->versionsForChannel('beta'),
+            'testing' => $testingVersions,
+            'prerelease' => $testingVersions,
         ];
 
         if ($releases === []) {
             return [
                 'stable' => null,
+                'beta' => null,
+                'testing' => null,
                 'prerelease' => null,
                 'githubFallbackUrl' => $fallback,
                 'versions' => $versions,
             ];
         }
 
-        $stable = $this->pickLatest($releases, false);
-        $pre = $this->pickLatest($releases, true);
+        $stable = $this->pickLatestForChannel($releases, 'stable');
+        $beta = $this->pickLatestForChannel($releases, 'beta');
+        $testing = $this->pickLatestForChannel($releases, 'testing');
+        $testingRow = $testing ? $this->rowFromRelease($testing) : null;
 
         return [
             'stable' => $stable ? $this->rowFromRelease($stable) : null,
-            'prerelease' => $pre ? $this->rowFromRelease($pre) : null,
+            'beta' => $beta ? $this->rowFromRelease($beta) : null,
+            'testing' => $testingRow,
+            'prerelease' => $testingRow,
             'githubFallbackUrl' => $fallback,
             'versions' => $versions,
         ];
@@ -430,19 +494,21 @@ class GithubReleasesService
      * @param  list<array<string, mixed>>  $releases
      * @return ?array<string, mixed>
      */
-    private function pickLatest(array $releases, bool $wantPrerelease): ?array
+    private function pickLatestForChannel(array $releases, string $channel): ?array
     {
+        $channel = $this->normalizeChannel($channel);
         $filtered = array_values(array_filter(
             $releases,
-            fn (array $r): bool => ((bool) $r['prerelease']) === $wantPrerelease
+            fn (array $r): bool => $this->channelForTag(
+                (string) $r['tag_name'],
+                (bool) ($r['prerelease'] ?? false),
+            ) === $channel
         ));
 
         if ($filtered === []) {
             return null;
         }
 
-        // Nightly/dev tags are not semver. Prefer published_at so the newest
-        // GitHub pre-release (nightly, RC, alpha, beta, canary) wins.
         usort($filtered, function (array $a, array $b): int {
             $byDate = strcmp((string) $b['published_at'], (string) $a['published_at']);
             if ($byDate !== 0) {
@@ -530,11 +596,13 @@ class GithubReleasesService
         $bunnyFiles = $this->bunnyFilesForTag($githubFiles, $tag);
 
         $version = $this->versionDisplay($tag);
-        $isPre = (bool) $release['prerelease'];
-        $githubUrls = $this->matchFileUrls($githubFiles, $version, $isPre);
+        $githubPre = (bool) $release['prerelease'];
+        $channel = $this->channelForTag($tag, $githubPre);
+        $isPre = $channel !== 'stable';
+        $githubUrls = $this->matchFileUrls($githubFiles, $version, $githubPre);
         $bunnyUrls = $bunnyFiles === []
             ? []
-            : $this->matchFileUrls($bunnyFiles, $version, $isPre);
+            : $this->matchFileUrls($bunnyFiles, $version, $githubPre);
 
         $servers = [];
         if ($this->hasDownloadableUrl($bunnyUrls)) {
@@ -552,6 +620,7 @@ class GithubReleasesService
             'tag' => $tag,
             'releaseUrl' => (string) $release['html_url'],
             'publishedAt' => (string) $release['published_at'],
+            'channel' => $channel,
             'isPrerelease' => $isPre,
             'downloadServer' => $preferred,
             'downloadServers' => $servers,

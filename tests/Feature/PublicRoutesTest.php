@@ -47,7 +47,7 @@ class PublicRoutesTest extends TestCase
     {
         $this->getJson('/api/mcx-releases')
             ->assertOk()
-            ->assertJsonStructure(['stable', 'prerelease', 'githubFallbackUrl']);
+            ->assertJsonStructure(['stable', 'beta', 'testing', 'prerelease', 'githubFallbackUrl']);
     }
 
     public function test_interfaces_api_responds_json(): void

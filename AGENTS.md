@@ -32,7 +32,7 @@ Stack: Laravel 13, Blade, Tailwind CSS 4, Vite, pnpm 11. Requires PHP 8.5.
 | Interfaces API | `/api/mcx-interfaces` |
 | SBOM API | `/api/mcx-sbom`, `/api/mcx-sbom/{version}` |
 
-Download assets prefer Bunny CDN when `BUNNY_STORAGE_ACCESS_KEY` is set; GitHub Releases is the fallback.
+Download assets prefer Bunny CDN when `BUNNY_STORAGE_ACCESS_KEY` is set; GitHub Releases is the fallback. Channels: stable, beta, testing (`?channel=`). Legacy `prerelease` / `nightly` query values map to testing.
 
 Locales: English has no prefix. Prefixed: `de`, `es`, `fi`, `fr`, `it`, `nl`, `ru`, `zh`.
 

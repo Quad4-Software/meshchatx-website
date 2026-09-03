@@ -614,8 +614,8 @@ class SbomService
             return false;
         }
 
-        $allowedExact = ['github.com'];
-        $allowedSuffix = ['.github.com', '.githubusercontent.com', '.b-cdn.net'];
+        $allowedExact = ['github.com', 'cdn.meshchatx.com'];
+        $allowedSuffix = ['.github.com', '.githubusercontent.com', '.b-cdn.net', '.meshchatx.com'];
 
         if (in_array($host, $allowedExact, true)) {
             return true;

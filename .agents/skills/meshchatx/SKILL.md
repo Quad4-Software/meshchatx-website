@@ -18,7 +18,9 @@ Canonical source of truth for site URLs and nav lives in `config/meshchatx.php`.
 - Docs: markdown under `content/docs/{locale}/` with nav in `config/meshchatx/documentation.php`, served at `/docs` and `/docs/{slug}`
 - Agent index: `/llms.txt` (curated), `/llms-full.txt` (index + full docs), `/docs/llms.txt`, plus per-page `/docs/{slug}.md`
 - Release assets are pulled from GitHub Releases and cached (`RELEASES_CACHE_SECONDS`, default 3600)
-- When `BUNNY_STORAGE_ACCESS_KEY` is set, matching assets prefer Bunny CDN URLs (`https://meshchatx.b-cdn.net/...`) with GitHub download URLs as fallback. Storage listings are cached per version.
+- When `BUNNY_STORAGE_ACCESS_KEY` is set, matching assets prefer Bunny CDN URLs (`https://cdn.meshchatx.com/...`) with GitHub download URLs as fallback. Storage listings are cached per version.
+- Release channels on `/download` and `/api/mcx-releases`: `stable`, `beta`, `testing` (Bunny tracks `release|beta|testing`; legacy `nightly` tags and storage paths map to testing). API still exposes `prerelease` as an alias of `testing`.
+- Flatpak: single-file `.flatpak` download from the selected release, plus CDN remote install commands for `https://cdn.meshchatx.com/flatpak/` (`.flatpakref` / `.flatpakrepo`). App ID `com.quad4.meshchatx`.
 - CycloneDX SBOMs from release assets are normalized and cached on `/dependency` (`SBOM_CACHE_SECONDS`, default 2592000 / 30 days). Prefetch via `php artisan sbom:warm` (scheduled hourly), not anonymous HTTP.
 - Reticulum interface directory is copied from directory.rns.recipes and cached (`RNS_DIRECTORY_CACHE_SECONDS`, default 259200 / 72 hours)
 - Privacy stance on the site: no tracking, no ads, functional cookies only (`mcx_locale`)
