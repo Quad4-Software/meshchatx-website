@@ -605,32 +605,15 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 <h2 class="section__title">{{ t('dl.flatpak.h2') }}</h2>
                 <p class="download-panel__intro">{{ t('dl.flatpak.friendly') }}</p>
 
-                <h3 class="download-panel__subhead">{{ t('dl.flatpak.remote_h3') }}</h3>
-                <p class="download-panel__intro">{{ t('dl.flatpak.remote_intro') }}</p>
-                <div class="command-block">
-                    <div class="command-block__header">
-                        <span>{{ t('dl.flatpak.remote_install') }}</span>
-                        <button type="button" class="copy-btn" data-copy="#cmd-flatpak-remote" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
-                    </div>
-                    <pre class="command-block__body" id="cmd-flatpak-remote"><code>{{ $flatpakInstallFrom }}</code></pre>
-                </div>
-                <div class="command-block">
-                    <div class="command-block__header">
-                        <span>{{ t('dl.flatpak.remote_add') }}</span>
-                        <button type="button" class="copy-btn" data-copy="#cmd-flatpak-repo" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
-                    </div>
-                    <pre class="command-block__body" id="cmd-flatpak-repo"><code>{{ $flatpakRemoteAdd }}</code></pre>
-                </div>
-                <p class="download-panel__intro">{{ t('dl.flatpak.remote_note') }}</p>
-
-                <h3 class="download-panel__subhead">{{ t('dl.flatpak.bundle_h3') }}</h3>
-                <p class="download-panel__intro">{{ t('dl.flatpak.bundle_intro') }}</p>
                 <div class="download-panel__actions">
+                    <a class="btn btn--solid" href="{{ $flatpakRefUrl }}">
+                        <x-icon name="download" size="xs" />
+                        {{ t('dl.flatpak.btn_install') }}
+                    </a>
                     @if ($flat)
                         <div class="download-artifact">
                             <x-download-checksum :sha256="$flatSha" />
-                            <a class="btn btn--solid" href="{{ $flat }}" download>
-                                <x-icon name="download" size="xs" />
+                            <a class="btn btn--ghost" href="{{ $flat }}" download>
                                 {{ t('dl.flatpak.btn') }}
                             </a>
                         </div>
@@ -639,15 +622,46 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                     @endif
                 </div>
 
-                @if ($flat)
-                    <div class="command-block">
-                        <div class="command-block__header">
-                            <span>{{ t('dl.flatpak.install') }}</span>
-                            <button type="button" class="copy-btn" data-copy="#cmd-flatpak" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
+                <details class="download-advanced">
+                    <x-download-more-options :icons="[
+                        ['file' => 'flatpak', 'label' => 'Flatpak'],
+                    ]" />
+                    <div class="download-stack">
+                        <div>
+                            <h3 class="download-panel__subhead">{{ t('dl.flatpak.remote_h3') }}</h3>
+                            <p class="download-panel__intro">{{ t('dl.flatpak.remote_intro') }}</p>
+                            <div class="command-block">
+                                <div class="command-block__header">
+                                    <span>{{ t('dl.flatpak.remote_install') }}</span>
+                                    <button type="button" class="copy-btn" data-copy="#cmd-flatpak-remote" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
+                                </div>
+                                <pre class="command-block__body" id="cmd-flatpak-remote"><code>{{ $flatpakInstallFrom }}</code></pre>
+                            </div>
+                            <div class="command-block">
+                                <div class="command-block__header">
+                                    <span>{{ t('dl.flatpak.remote_add') }}</span>
+                                    <button type="button" class="copy-btn" data-copy="#cmd-flatpak-repo" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
+                                </div>
+                                <pre class="command-block__body" id="cmd-flatpak-repo"><code>{{ $flatpakRemoteAdd }}</code></pre>
+                            </div>
+                            <p class="download-panel__intro">{{ t('dl.flatpak.remote_note') }}</p>
                         </div>
-                        <pre class="command-block__body" id="cmd-flatpak"><code>{{ $flatpakBundleInstall }}</code></pre>
+
+                        @if ($flat)
+                            <div>
+                                <h3 class="download-panel__subhead">{{ t('dl.flatpak.bundle_h3') }}</h3>
+                                <p class="download-panel__intro">{{ t('dl.flatpak.bundle_intro') }}</p>
+                                <div class="command-block">
+                                    <div class="command-block__header">
+                                        <span>{{ t('dl.flatpak.install') }}</span>
+                                        <button type="button" class="copy-btn" data-copy="#cmd-flatpak" data-copied-label="{{ t('dl.python.copy') }}">{{ t('dl.python.copy') }}</button>
+                                    </div>
+                                    <pre class="command-block__body" id="cmd-flatpak"><code>{{ $flatpakBundleInstall }}</code></pre>
+                                </div>
+                            </div>
+                        @endif
                     </div>
-                @endif
+                </details>
             </div>
 
             <div class="download-panel" id="docker" data-download-panel="docker" hidden>

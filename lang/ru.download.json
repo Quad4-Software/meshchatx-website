@@ -158,9 +158,9 @@
       "linux_hint": "AppImage",
       "android_hint": "APK / Termux",
       "docker_hint": "Контейнеры",
-      "python_hint": "PyPI / .whl",
+      "python_hint": "pip install",
       "umbrel_hint": "Магазин приложений",
-      "flatpak_hint": "Remote / bundle"
+      "flatpak_hint": "Установка в один клик"
     },
     "cta": {
       "download_for": "Скачать для %s",
@@ -174,17 +174,18 @@
     "download_server_github": "GitHub",
     "flatpak": {
       "h2": "Flatpak",
-      "friendly": "Install from the MeshChatX Flatpak remote, or download a single-file .flatpak bundle for this release.",
-      "remote_h3": "CDN remote",
-      "remote_intro": "Branches match the download channels: stable, beta, and testing. The remote is not live on the CDN yet. Commands below are ready when it is.",
-      "remote_install": "Install from .flatpakref",
-      "remote_add": "Add remote only",
-      "remote_note": "If you still have the old GitHub Pages Flatpak remote, remove it first with flatpak remote-delete meshchatx.",
-      "bundle_h3": "Single-file bundle",
-      "bundle_intro": ".flatpak files still ship on each release and on Bunny under testing|beta|release/<tag>/.",
-      "btn": "Скачать .flatpak",
-      "no_bundle": "В этом выпуске нет Flatpak-пакета.",
-      "install": "Установка / Запуск"
+      "friendly": "Если в Linux есть Flatpak, установите MeshChatX одним нажатием. Дальше Flatpak будет обновлять приложение сам.",
+      "remote_h3": "Команды терминала",
+      "remote_intro": "Удобнее через терминал? Эти команды совпадают с кнопкой «Установить» выше.",
+      "remote_install": "Установить и обновить",
+      "remote_add": "Добавить источник MeshChatX",
+      "remote_note": "Уже ставили из старого Flatpak-источника MeshChatX? Сначала удалите его: flatpak remote-delete meshchatx",
+      "bundle_h3": "Скачанный файл",
+      "bundle_intro": "Уже скачали .flatpak? Установите так:",
+      "btn": "Скачать файл .flatpak",
+      "no_bundle": "В этом выпуске пока нет файла Flatpak.",
+      "install": "Установить и открыть",
+      "btn_install": "Установить MeshChatX"
     }
   }
 }

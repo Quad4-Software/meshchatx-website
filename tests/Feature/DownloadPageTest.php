@@ -47,6 +47,11 @@ class DownloadPageTest extends TestCase
                             'digest' => 'sha256:4444444444444444444444444444444444444444444444444444444444444444',
                         ],
                         [
+                            'name' => 'ReticulumMeshChatX-v4.8.3.flatpak',
+                            'browser_download_url' => 'https://example.test/meshchatx.flatpak',
+                            'digest' => 'sha256:5555555555555555555555555555555555555555555555555555555555555555',
+                        ],
+                        [
                             'name' => 'sbom.cyclonedx.json',
                             'browser_download_url' => 'https://github.com/Quad4-Software/MeshChatX/releases/download/v4.8.3/sbom.cyclonedx.json',
                         ],
@@ -89,9 +94,15 @@ class DownloadPageTest extends TestCase
             ->assertDontSee('data-download-panel="umbrel"', false)
             ->assertSee('Get on Umbrel', false)
             ->assertSee('More install options', false)
+            ->assertSee('Install MeshChatX', false)
+            ->assertSee('Download .flatpak file', false)
+            ->assertSee('https://example.test/meshchatx.flatpak', false)
+            ->assertSee('If your Linux uses Flatpak', false)
             ->assertSee('https://cdn.meshchatx.com/flatpak/meshchatx-stable.flatpakref', false)
             ->assertSee('com.quad4.meshchatx', false)
-            ->assertSee('cdn.meshchatx.com/flatpak/meshchatx.flatpakrepo', false);
+            ->assertSee('cdn.meshchatx.com/flatpak/meshchatx.flatpakrepo', false)
+            ->assertDontSee('CDN remote', false)
+            ->assertDontSee('not live on the CDN', false);
     }
 
     public function test_download_page_shows_bunny_download_server(): void

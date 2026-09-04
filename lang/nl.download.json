@@ -158,9 +158,9 @@
       "linux_hint": "AppImage",
       "android_hint": "APK / Termux",
       "docker_hint": "Containers",
-      "python_hint": "PyPI / .whl",
+      "python_hint": "pip install",
       "umbrel_hint": "App store",
-      "flatpak_hint": "Remote / bundle"
+      "flatpak_hint": "Installatie met één klik"
     },
     "cta": {
       "download_for": "Downloaden voor %s",
@@ -174,17 +174,18 @@
     "download_server_github": "GitHub",
     "flatpak": {
       "h2": "Flatpak",
-      "friendly": "Install from the MeshChatX Flatpak remote, or download a single-file .flatpak bundle for this release.",
-      "remote_h3": "CDN remote",
-      "remote_intro": "Branches match the download channels: stable, beta, and testing. The remote is not live on the CDN yet. Commands below are ready when it is.",
-      "remote_install": "Install from .flatpakref",
-      "remote_add": "Add remote only",
-      "remote_note": "If you still have the old GitHub Pages Flatpak remote, remove it first with flatpak remote-delete meshchatx.",
-      "bundle_h3": "Single-file bundle",
-      "bundle_intro": ".flatpak files still ship on each release and on Bunny under testing|beta|release/<tag>/.",
-      "btn": "Download .flatpak",
-      "no_bundle": "Geen Flatpak-bundle in deze release.",
-      "install": "Installeren / Starten"
+      "friendly": "Als je Linux Flatpak gebruikt, installeer MeshChatX met één klik. Flatpak houdt het daarna bijgewerkt.",
+      "remote_h3": "Terminalopdrachten",
+      "remote_intro": "Liever de terminal? Deze komen overeen met de knop Installeren hierboven.",
+      "remote_install": "Installeren en bijwerken",
+      "remote_add": "MeshChatX-bron toevoegen",
+      "remote_note": "Al geïnstalleerd via een oudere MeshChatX Flatpak-bron? Verwijder die eerst met: flatpak remote-delete meshchatx",
+      "bundle_h3": "Gedownload bestand",
+      "bundle_intro": "Het .flatpak-bestand al gedownload? Installeer het zo:",
+      "btn": ".flatpak-bestand downloaden",
+      "no_bundle": "Nog geen Flatpak-bestand in deze release.",
+      "install": "Installeren en openen",
+      "btn_install": "MeshChatX installeren"
     }
   }
 }
