@@ -367,11 +367,12 @@
     },
     "offline": {
         "h1": "Sei offline",
-        "lead": "Questa pagina non è nella cache offline. Riconnettiti, oppure apri home, docs, interfacce o changelog se le hai già visitate.",
+        "lead": "Questa pagina non è nella cache offline. Riconnettiti, oppure apri home, download, docs o un'altra pagina già visitata. La pagina Dipendenze non viene mai memorizzata in cache.",
         "retry": "Riprova",
         "home": "Home",
         "available": "Pagine disponibili offline",
         "link_home": "Home",
+        "link_download": "Download",
         "link_docs": "Documentazione",
         "link_interfaces": "Interfacce",
         "link_changelog": "Changelog"

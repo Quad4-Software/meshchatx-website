@@ -1,10 +1,10 @@
 const VERSION = @json($version);
 const PRECACHE = @json($precache);
 const OFFLINE_URL = @json($offlineUrl);
+const LOCALE_PREFIX = @json($localePrefix);
+const PAGE_CACHE_LIMIT = 80;
 const SHELL_CACHE = 'mcx-shell-' + VERSION;
 const PAGE_CACHE = 'mcx-pages-' + VERSION;
-const PAGE_PATH =
-    /^\/(?:(?:de|ru|it|zh)\/)?(?:$|docs(?:\/[a-z0-9\-]+)?\/?$|interfaces\/?$|changelog\/?$|offline\/?$)/;
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -63,19 +63,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    if (
-        url.pathname === '/sw.js' ||
-        url.pathname.startsWith('/api/') ||
-        url.pathname === '/sitemap.xml' ||
-        url.pathname === '/changelog.xml' ||
-        url.pathname === '/robots.txt' ||
-        url.pathname === '/llms.txt' ||
-        url.pathname === '/llms-full.txt' ||
-        url.pathname === '/docs/llms.txt' ||
-        url.pathname.startsWith('/docs/export-all/') ||
-        /\/docs\/[^/]+\.md$/.test(url.pathname) ||
-        /\/docs\/[^/]+\/export\//.test(url.pathname)
-    ) {
+    if (shouldBypass(url.pathname)) {
         return;
     }
 
@@ -88,6 +76,24 @@ self.addEventListener('fetch', (event) => {
         event.respondWith(cacheFirst(request));
     }
 });
+
+function shouldBypass(pathname) {
+    const path = stripLocale(pathname);
+    return (
+        pathname === '/sw.js' ||
+        pathname.startsWith('/api/') ||
+        pathname === '/sitemap.xml' ||
+        pathname === '/changelog.xml' ||
+        pathname === '/robots.txt' ||
+        pathname === '/llms.txt' ||
+        pathname === '/llms-full.txt' ||
+        pathname === '/docs/llms.txt' ||
+        path.startsWith('/docs/export-all/') ||
+        /\/docs\/[^/]+\.md$/.test(path) ||
+        /\/docs\/[^/]+\/export\//.test(path) ||
+        path === '/changelog/entries'
+    );
+}
 
 function isNavigationRequest(request) {
     if (request.mode === 'navigate') {
@@ -107,17 +113,32 @@ function isStaticAsset(pathname) {
         pathname === '/logo.webp' ||
         pathname === '/logo-navbar.webp' ||
         pathname.startsWith('/showcase/') ||
-        pathname.startsWith('/media/')
+        pathname.startsWith('/media/') ||
+        pathname.startsWith('/brands/')
     );
 }
 
-async function handleNavigation(request, url) {
-    const offlineResponse = async () => {
-        const cachedOffline = await caches.match(OFFLINE_URL);
-        return cachedOffline || Response.error();
-    };
+function stripLocale(pathname) {
+    const match = pathname.match(new RegExp('^' + LOCALE_PREFIX + '(.*)$'));
+    if (!match) {
+        return pathname;
+    }
+    const rest = match[1];
+    return rest === '' ? '/' : rest.startsWith('/') ? rest : '/' + rest;
+}
 
-    if (!PAGE_PATH.test(url.pathname)) {
+function isExcludedPage(pathname) {
+    const path = stripLocale(pathname).replace(/\/+$/, '') || '/';
+    return path === '/dependency';
+}
+
+async function offlineResponse() {
+    const cachedOffline = await caches.match(OFFLINE_URL);
+    return cachedOffline || Response.error();
+}
+
+async function handleNavigation(request, url) {
+    if (isExcludedPage(url.pathname)) {
         try {
             return await fetch(request);
         } catch {
@@ -129,7 +150,8 @@ async function handleNavigation(request, url) {
         const fresh = await fetch(request);
         if (fresh && fresh.ok) {
             const cache = await caches.open(PAGE_CACHE);
-            cache.put(request, fresh.clone());
+            await cache.put(request, fresh.clone());
+            await trimPageCache(cache);
         }
         return fresh;
     } catch {
@@ -142,6 +164,17 @@ async function handleNavigation(request, url) {
             return shellHit;
         }
         return offlineResponse();
+    }
+}
+
+async function trimPageCache(cache) {
+    const keys = await cache.keys();
+    if (keys.length <= PAGE_CACHE_LIMIT) {
+        return;
+    }
+    const excess = keys.length - PAGE_CACHE_LIMIT;
+    for (let i = 0; i < excess; i += 1) {
+        await cache.delete(keys[i]);
     }
 }
 

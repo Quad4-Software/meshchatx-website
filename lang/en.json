@@ -290,11 +290,12 @@
     },
     "offline": {
         "h1": "You are offline",
-        "lead": "This page is not in the offline cache. Reconnect, or open home, docs, interfaces, or changelog if you visited them before.",
+        "lead": "This page is not in the offline cache. Reconnect, or open home, download, docs, or another page you already visited. The dependencies page is never cached.",
         "retry": "Try again",
         "home": "Home",
         "available": "Offline-ready pages",
         "link_home": "Home",
+        "link_download": "Download",
         "link_docs": "Docs",
         "link_interfaces": "Interfaces",
         "link_changelog": "Changelog"

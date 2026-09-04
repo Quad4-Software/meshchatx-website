@@ -165,6 +165,9 @@
 <meta name="twitter:image" content="{{ $logoUrl }}">
 <meta name="twitter:image:alt" content="{{ $ogAlt }}">
 <meta id="mcx-theme-color" name="theme-color" content="#fafafa">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="{{ $brand }}">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/webp" href="/favicon.webp">
 <link rel="apple-touch-icon" href="/logo.webp">

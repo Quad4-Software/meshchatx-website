@@ -3205,29 +3205,46 @@ function initPwa() {
     }
 
     const copy = pwaI18n();
-    let pendingReload = false;
+    const hadController = Boolean(navigator.serviceWorker.controller);
     let refreshing = false;
 
+    const activateWaiting = (registration) => {
+        const waiting = registration?.waiting;
+        if (!waiting || !navigator.serviceWorker.controller) {
+            return;
+        }
+        showPwaToast(copy.updating, { sticky: true });
+        waiting.postMessage({ type: 'MCX_SKIP_WAITING' });
+    };
+
     const checkForUpdates = (registration) => {
-        registration?.update().catch(() => {});
+        if (!registration) {
+            return;
+        }
+        registration
+            .update()
+            .then(() => activateWaiting(registration))
+            .catch(() => {});
     };
 
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!pendingReload || refreshing) {
+        if (!hadController || refreshing) {
             return;
         }
         refreshing = true;
         window.location.reload();
     });
 
+    navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data?.type === 'MCX_SW_ACTIVATED' && hadController) {
+            showPwaToast(copy.updating, { sticky: true });
+        }
+    });
+
     navigator.serviceWorker
         .register('/sw.js', { scope: '/' })
         .then((registration) => {
-            if (registration.waiting && navigator.serviceWorker.controller) {
-                pendingReload = true;
-                showPwaToast(copy.updating, { sticky: true });
-                registration.waiting.postMessage({ type: 'MCX_SKIP_WAITING' });
-            }
+            activateWaiting(registration);
 
             registration.addEventListener('updatefound', () => {
                 const worker = registration.installing;
@@ -3235,11 +3252,9 @@ function initPwa() {
                     return;
                 }
                 worker.addEventListener('statechange', () => {
-                    if (worker.state !== 'installed' || !navigator.serviceWorker.controller) {
-                        return;
+                    if (worker.state === 'installed') {
+                        activateWaiting(registration);
                     }
-                    pendingReload = true;
-                    showPwaToast(copy.updating, { sticky: true });
                 });
             });
 
@@ -3258,6 +3273,7 @@ function initPwa() {
                 }
             });
 
+            checkForUpdates(registration);
             window.setInterval(() => checkForUpdates(registration), 5 * 60 * 1000);
         })
         .catch(() => {});

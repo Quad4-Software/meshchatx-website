@@ -290,11 +290,12 @@
     },
     "offline": {
         "h1": "Estás sin conexión",
-        "lead": "Esta página no está en la caché sin conexión. Vuelve a conectarte, o abre inicio, docs, interfaces o el registro de cambios si ya los visitaste.",
+        "lead": "Esta página no está en la caché sin conexión. Vuelve a conectarte, o abre inicio, descarga, docs u otra página que ya hayas visitado. La página de dependencias nunca se guarda en caché.",
         "retry": "Reintentar",
         "home": "Inicio",
         "available": "Páginas listas sin conexión",
         "link_home": "Inicio",
+        "link_download": "Descarga",
         "link_docs": "Docs",
         "link_interfaces": "Interfaces",
         "link_changelog": "Registro de cambios"

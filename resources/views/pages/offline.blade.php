@@ -16,6 +16,7 @@
             </div>
             <ul class="offline-list" aria-label="{{ t('offline.available') }}">
                 <li><a href="{{ locale_route('home') }}">{{ t('offline.link_home') }}</a></li>
+                <li><a href="{{ locale_route('download') }}">{{ t('offline.link_download') }}</a></li>
                 <li><a href="{{ locale_route('docs') }}">{{ t('offline.link_docs') }}</a></li>
                 <li><a href="{{ locale_route('interfaces') }}">{{ t('offline.link_interfaces') }}</a></li>
                 <li><a href="{{ locale_route('changelog') }}">{{ t('offline.link_changelog') }}</a></li>

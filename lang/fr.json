@@ -290,11 +290,12 @@
     },
     "offline": {
         "h1": "Vous êtes hors ligne",
-        "lead": "Cette page n'est pas dans le cache hors ligne. Reconnectez-vous, ou ouvrez l'accueil, docs, interfaces ou le journal si vous les avez déjà visités.",
+        "lead": "Cette page n'est pas dans le cache hors ligne. Reconnectez-vous, ou ouvrez l'accueil, le téléchargement, docs ou une autre page déjà visitée. La page Dépendances n'est jamais mise en cache.",
         "retry": "Réessayer",
         "home": "Accueil",
         "available": "Pages prêtes hors ligne",
         "link_home": "Accueil",
+        "link_download": "Télécharger",
         "link_docs": "Docs",
         "link_interfaces": "Interfaces",
         "link_changelog": "Journal des changements"

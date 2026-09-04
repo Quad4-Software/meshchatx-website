@@ -290,11 +290,12 @@
     },
     "offline": {
         "h1": "Olet offline",
-        "lead": "Tämä sivu ei ole offline-välimuistissa. Yhdistä uudelleen, tai avaa etusivu, docs, rajapinnat tai muutosloki, jos olet käynyt niillä aiemmin.",
+        "lead": "Tämä sivu ei ole offline-välimuistissa. Yhdistä uudelleen, tai avaa etusivu, lataus, docs tai jokin muu aiemmin avattu sivu. Riippuvuudet-sivua ei koskaan tallenneta välimuistiin.",
         "retry": "Yritä uudelleen",
         "home": "Etusivu",
         "available": "Offline-valmiit sivut",
         "link_home": "Etusivu",
+        "link_download": "Lataa",
         "link_docs": "Docs",
         "link_interfaces": "Rajapinnat",
         "link_changelog": "Muutosloki"

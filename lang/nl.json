@@ -290,11 +290,12 @@
     },
     "offline": {
         "h1": "Je bent offline",
-        "lead": "Deze pagina staat niet in de offline-cache. Maak opnieuw verbinding, of open home, docs, interfaces of wijzigingslog als je die eerder bezocht.",
+        "lead": "Deze pagina staat niet in de offline-cache. Maak opnieuw verbinding, of open home, download, docs of een andere pagina die je al bezocht. De afhankelijkhedenpagina wordt nooit gecached.",
         "retry": "Opnieuw proberen",
         "home": "Home",
         "available": "Offline-klare pagina's",
         "link_home": "Home",
+        "link_download": "Download",
         "link_docs": "Docs",
         "link_interfaces": "Interfaces",
         "link_changelog": "Wijzigingslog"

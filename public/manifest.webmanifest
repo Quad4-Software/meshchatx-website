@@ -1,7 +1,7 @@
 {
   "name": "MeshChatX",
   "short_name": "MeshChatX",
-  "description": "MeshChatX site: docs, interfaces directory, changelog, and product overview. Works offline for those pages.",
+  "description": "MeshChatX site: docs, download, roadmap, interfaces, and product pages. Works offline for visited pages except Dependencies.",
   "theme_color": "#fafafa",
   "background_color": "#09090b",
   "display": "standalone",
@@ -33,6 +33,12 @@
   ],
   "shortcuts": [
     {
+      "name": "Download",
+      "short_name": "Download",
+      "url": "/download",
+      "icons": [{ "src": "/logo.webp", "sizes": "800x800", "type": "image/webp" }]
+    },
+    {
       "name": "Docs",
       "short_name": "Docs",
       "url": "/docs/overview",
@@ -42,12 +48,6 @@
       "name": "Interfaces",
       "short_name": "Interfaces",
       "url": "/interfaces",
-      "icons": [{ "src": "/logo.webp", "sizes": "800x800", "type": "image/webp" }]
-    },
-    {
-      "name": "Changelog",
-      "short_name": "Changelog",
-      "url": "/changelog",
       "icons": [{ "src": "/logo.webp", "sizes": "800x800", "type": "image/webp" }]
     }
   ]

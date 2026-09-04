@@ -11,12 +11,15 @@ class ServiceWorkerController extends Controller
     {
         $version = PwaAssets::cacheVersion();
         $precache = PwaAssets::precacheUrls();
+        $locales = config('meshchatx.prefixed_locales', ['de', 'es', 'fi', 'fr', 'it', 'nl', 'ru', 'zh']);
+        $localePrefix = '/(?:'.implode('|', array_map('preg_quote', $locales)).')(?=/|$)';
 
         return response()
             ->view('pwa.sw', [
                 'version' => $version,
                 'precache' => $precache,
                 'offlineUrl' => '/offline',
+                'localePrefix' => $localePrefix,
             ])
             ->header('Content-Type', 'application/javascript; charset=UTF-8')
             ->header('Service-Worker-Allowed', '/')

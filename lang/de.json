@@ -367,11 +367,12 @@
     },
     "offline": {
         "h1": "Sie sind offline",
-        "lead": "Diese Seite liegt nicht im Offline-Cache. Stellen Sie die Verbindung wieder her oder öffnen Sie Start, Docs, Interfaces oder Änderungsprotokoll, falls Sie sie zuvor besucht haben.",
+        "lead": "Diese Seite liegt nicht im Offline-Cache. Stellen Sie die Verbindung wieder her oder öffnen Sie Start, Download, Docs oder eine andere bereits besuchte Seite. Die Abhängigkeiten-Seite wird nie zwischengespeichert.",
         "retry": "Erneut versuchen",
         "home": "Start",
         "available": "Offline verfügbare Seiten",
         "link_home": "Start",
+        "link_download": "Download",
         "link_docs": "Docs",
         "link_interfaces": "Interfaces",
         "link_changelog": "Änderungsprotokoll"
