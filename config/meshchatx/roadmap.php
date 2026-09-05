@@ -50,14 +50,13 @@ return [
     [
         'version' => '5.0.0',
         'date' => 'December 2026',
-        'title' => 'Codebase Cleanup, Performance, and Memory',
-        'desc' => 'Cleanup of the MeshChatX codebase so later feature work is cheaper to ship, plus performance and memory-use work. Feature work continues after this release.',
+        'title' => 'Svelte 5 UI, Offline Translation, and RNode Setup',
+        'desc' => 'Svelte 5 UI rewrite is already underway and will replace the Vue 3 UI by 5.0.0. Same release adds offline WASM translation and RNode detection with auto-setup.',
         'features' => [
-            ['text' => 'Codebase cleanup'],
-            ['text' => 'Maintainability work'],
-            ['text' => 'Performance'],
-            ['text' => 'Lower memory use'],
+            ['text' => 'Svelte 5 UI rewrite (in progress, replacing Vue 3)'],
+            ['text' => 'Offline local translation tool (WASM)'],
+            ['text' => 'RNode detection and auto-setup'],
         ],
-        'status' => 'planned',
+        'status' => 'progress',
     ],
 ];

@@ -17,7 +17,7 @@ class RoadmapServiceTest extends TestCase
         $this->assertSame('4.8.0', $items[1]['version']);
         $this->assertSame('upcoming', $items[2]['status']);
         $this->assertSame('4.9.0', $items[2]['version']);
-        $this->assertSame('planned', $items[3]['status']);
+        $this->assertSame('progress', $items[3]['status']);
         $this->assertSame('5.0.0', $items[3]['version']);
     }
 
