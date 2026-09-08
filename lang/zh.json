@@ -437,10 +437,7 @@
     },
     "dep": {
         "h1": "依赖",
-        "lead": "MeshChatX GitHub 发布附带的 CycloneDX SBOM。选择版本可查看软件包、许可证与依赖边。本站会缓存发布资产，避免反复请求 GitHub。",
-        "api": "JSON API",
         "source": "GitHub Releases",
-        "tool": "由 %s 生成",
         "version": "版本",
         "search_label": "搜索软件包",
         "search_placeholder": "名称、版本、生态、许可证或 purl",
@@ -449,15 +446,11 @@
         "download": "下载 SBOM",
         "release": "发布说明",
         "views": "视图",
-        "view_graph": "图",
         "view_tree": "树",
         "view_table": "表",
-        "package_list": "软件包",
         "stat_packages": "个软件包",
         "stat_edges": "条边",
         "showing": "显示 %shown / %total",
-        "focus_hint": "拖动画布平移，滚轮缩放，拖动节点调整位置。",
-        "reset_focus": "重置视图",
         "manifests": "锁文件与清单",
         "loading": "正在加载 SBOM…",
         "error": "无法加载此版本的 SBOM。",
@@ -469,7 +462,6 @@
         "used_by": "被用于",
         "none": "无",
         "prerelease": "预发布",
-        "stable": "稳定",
         "copied": "已复制",
         "unknown_license": "未知",
         "close_detail": "关闭",
@@ -479,12 +471,9 @@
         "col_ecosystem": "生态",
         "col_license": "许可证",
         "col_type": "类型",
-        "lead_short": "来自 GitHub 发布的 CycloneDX SBOM。本站会缓存。",
-        "toggle_list": "软件包",
-        "toggle_inspector": "详情",
         "matches": "匹配的软件包",
         "more_deps": "还有 %n 个",
         "deps_count": "%n 个依赖",
-        "load_more": "加载更多"
+        "copies": "×%n"
     }
 }

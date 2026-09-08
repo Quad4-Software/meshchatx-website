@@ -21,21 +21,15 @@
         'packages' => t('dep.stat_packages'),
         'edges' => t('dep.stat_edges'),
         'showing' => t('dep.showing'),
-        'focus_hint' => t('dep.focus_hint'),
         'ecosystem_all' => t('dep.filter_all'),
         'manifests' => t('dep.manifests'),
-        'reset_focus' => t('dep.reset_focus'),
         'copied' => t('dep.copied'),
         'prerelease' => t('dep.prerelease'),
-        'stable' => t('dep.stable'),
         'unknown_license' => t('dep.unknown_license'),
-        'app_name' => t('brand.name'),
-        'toggle_list' => t('dep.toggle_list'),
-        'toggle_inspector' => t('dep.toggle_inspector'),
         'matches' => t('dep.matches'),
         'more_deps' => t('dep.more_deps'),
         'deps_count' => t('dep.deps_count'),
-        'load_more' => t('dep.load_more'),
+        'copies' => t('dep.copies'),
     ];
 @endphp
 
@@ -103,16 +97,20 @@
                 </div>
                 <div class="dep-views channel-toggle" role="tablist" aria-label="{{ t('dep.views') }}">
                     <button type="button" class="channel-toggle__btn is-active" role="tab" aria-selected="true" data-dep-view="table">{{ t('dep.view_table') }}</button>
-                    <button type="button" class="channel-toggle__btn" role="tab" aria-selected="false" data-dep-view="graph">{{ t('dep.view_graph') }}</button>
                     <button type="button" class="channel-toggle__btn" role="tab" aria-selected="false" data-dep-view="tree">{{ t('dep.view_tree') }}</button>
                 </div>
-                <button type="button" class="btn btn--ghost btn--sm" data-dep-toggle-list aria-pressed="true">{{ t('dep.toggle_list') }}</button>
                 <a
                     class="btn btn--ghost btn--sm"
                     data-dep-download
                     href="{{ is_array($sbom) ? ($sbom['sourceUrl'] ?? '#') : '#' }}"
                     @if (! is_array($sbom) || empty($sbom['sourceUrl'])) hidden @else download target="_blank" rel="noopener noreferrer" @endif
                 >{{ t('dep.download') }}</a>
+                <a
+                    class="btn btn--ghost btn--sm"
+                    data-dep-release
+                    href="{{ is_array($sbom) ? ($sbom['releaseUrl'] ?? '#') : '#' }}"
+                    @if (! is_array($sbom) || empty($sbom['releaseUrl'])) hidden @else target="_blank" rel="noopener noreferrer" @endif
+                >{{ t('dep.release') }}</a>
             </div>
         </header>
 
@@ -125,20 +123,6 @@
 
         <div class="dep-frame" data-dep-layout @if (! is_array($sbom)) hidden @endif>
             <div class="dep-stage">
-                <div class="dep-panel" data-dep-panel="graph" role="tabpanel" hidden>
-                    <div class="dep-graph-float">
-                        <p class="dep-graph-float__hint" data-dep-graph-hint>{{ t('dep.focus_hint') }}</p>
-                        <button type="button" class="btn btn--ghost btn--sm" data-dep-reset hidden>{{ t('dep.reset_focus') }}</button>
-                    </div>
-                    <div class="dep-graph-wrap" data-dep-graph-wrap>
-                        <svg class="dep-graph" data-dep-graph role="img" aria-label="{{ t('dep.view_graph') }}"></svg>
-                    </div>
-                </div>
-
-                <div class="dep-panel" data-dep-panel="tree" role="tabpanel" hidden>
-                    <div class="dep-tree" data-dep-tree></div>
-                </div>
-
                 <div class="dep-panel is-active" data-dep-panel="table" role="tabpanel">
                     <div class="dep-table-shell">
                         <p class="dep-table-meta" data-dep-table-meta></p>
@@ -159,15 +143,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <aside class="dep-rail" data-dep-rail>
-                <div class="dep-rail__head">
-                    <p class="dep-rail__meta" data-dep-list-meta></p>
-                    <button type="button" class="btn btn--ghost btn--sm" data-dep-toggle-list aria-label="{{ t('dep.toggle_list') }}">{{ t('dep.close_detail') }}</button>
+                <div class="dep-panel" data-dep-panel="tree" role="tabpanel" hidden>
+                    <div class="dep-tree" data-dep-tree></div>
                 </div>
-                <ul class="dep-list" data-dep-list role="listbox" aria-label="{{ t('dep.package_list') }}"></ul>
-            </aside>
+            </div>
 
             <aside class="dep-inspector" data-dep-detail hidden>
                 <div class="dep-inspector__head">
@@ -212,8 +192,6 @@
                     </section>
                 </div>
             </aside>
-
-            <a class="dep-release-link" data-dep-release href="{{ is_array($sbom) ? ($sbom['releaseUrl'] ?? '#') : '#' }}" @if (! is_array($sbom) || empty($sbom['releaseUrl'])) hidden @else target="_blank" rel="noopener noreferrer" @endif>{{ t('dep.release') }}</a>
         </div>
     </div>
 @endsection

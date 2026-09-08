@@ -1641,13 +1641,7 @@ function initDependencyViewer() {
     const ecoGroup = root.querySelector('[data-dep-ecosystems]');
     const statusEl = root.querySelector('[data-dep-status]');
     const layout = root.querySelector('[data-dep-layout]');
-    const listEl = root.querySelector('[data-dep-list]');
-    const listMeta = root.querySelector('[data-dep-list-meta]');
     const statsEl = root.querySelector('[data-dep-stats]');
-    const graphSvg = root.querySelector('[data-dep-graph]');
-    const graphWrap = root.querySelector('[data-dep-graph-wrap]');
-    const graphHint = root.querySelector('[data-dep-graph-hint]');
-    const resetBtn = root.querySelector('[data-dep-reset]');
     const treeEl = root.querySelector('[data-dep-tree]');
     const tableBody = root.querySelector('[data-dep-table]');
     const tableWrap = root.querySelector('[data-dep-table-wrap]');
@@ -1657,10 +1651,8 @@ function initDependencyViewer() {
     const detailLogo = root.querySelector('[data-dep-detail-logo]');
     const downloadLink = root.querySelector('[data-dep-download]');
     const releaseLink = root.querySelector('[data-dep-release]');
-    const toggleListBtns = root.querySelectorAll('[data-dep-toggle-list]');
-    const rail = root.querySelector('[data-dep-rail]');
 
-    let catalog = parseJsonScript(root, '[data-dep-catalog]', {
+    const catalog = parseJsonScript(root, '[data-dep-catalog]', {
         versions: [],
         defaultVersion: null,
     });
@@ -1671,9 +1663,7 @@ function initDependencyViewer() {
     let outgoing = new Map();
     let incoming = new Map();
     let nodeById = new Map();
-    let simTimer = 0;
     let loading = false;
-    let listOpen = false;
     let filteredCache = null;
     let filteredKey = '';
     let tableRows = [];
@@ -1685,11 +1675,20 @@ function initDependencyViewer() {
     const TREE_BATCH = 48;
 
     const nodeLabel = (node) => node?.label || node?.name || '';
+    const nodeLabelFull = (node) =>
+        node?.version ? `${nodeLabel(node)}@${node.version}` : nodeLabel(node);
 
     const isAppNode = (node) => Boolean(node?.logo || node?.kind === 'app');
 
     const isManifestNode = (node) =>
         Boolean(node?.kind === 'manifest' || (sbom?.manifestIds || []).includes(node?.id));
+
+    const nodeEcosystems = (node) => {
+        if (Array.isArray(node?.ecosystems) && node.ecosystems.length) {
+            return node.ecosystems;
+        }
+        return node?.ecosystem ? [node.ecosystem] : [];
+    };
 
     const setStatus = (message, visible) => {
         if (!(statusEl instanceof HTMLElement)) {
@@ -1705,6 +1704,8 @@ function initDependencyViewer() {
         const template = i18n.showing || '%shown of %total';
         return template.replace('%shown', String(shown)).replace('%total', String(total));
     };
+
+    const formatCount = (template, count) => (template || '%n').replace('%n', String(count));
 
     const topEntries = (obj, limit = 3) => {
         if (!obj || typeof obj !== 'object') {
@@ -1733,21 +1734,13 @@ function initDependencyViewer() {
         window.history.replaceState(null, '', url.toString());
     };
 
-    const syncPanels = () => {
-        if (rail instanceof HTMLElement) {
-            rail.hidden = !listOpen;
-        }
+    const syncInspector = () => {
         if (layout instanceof HTMLElement) {
-            layout.classList.toggle('is-list-open', listOpen);
             layout.classList.toggle(
                 'is-inspector-open',
                 detail instanceof HTMLElement && !detail.hidden,
             );
         }
-        toggleListBtns.forEach((btn) => {
-            btn.setAttribute('aria-pressed', listOpen ? 'true' : 'false');
-            btn.classList.toggle('is-active', listOpen);
-        });
     };
 
     const indexGraph = (payload) => {
@@ -1775,13 +1768,13 @@ function initDependencyViewer() {
         const needle = (searchInput instanceof HTMLInputElement ? searchInput.value : '')
             .trim()
             .toLowerCase();
-        const key = `${eco}\0${needle}`;
+        const key = `${eco}${needle}`;
         if (filteredCache && filteredKey === key) {
             return filteredCache;
         }
         filteredKey = key;
         filteredCache = (sbom.nodes || []).filter((node) => {
-            if (eco && node.ecosystem !== eco) {
+            if (eco && !nodeEcosystems(node).includes(eco)) {
                 return false;
             }
             if (!needle) {
@@ -1796,6 +1789,7 @@ function initDependencyViewer() {
                 node.purl,
                 node.type,
                 node.kind,
+                ...nodeEcosystems(node),
             ]
                 .filter(Boolean)
                 .join(' ')
@@ -1810,19 +1804,11 @@ function initDependencyViewer() {
         filteredKey = '';
     };
 
-    const formatCount = (template, count) => (template || '%n').replace('%n', String(count));
-
     const refreshActiveView = () => {
         if (view === 'table') {
             renderTable(true);
-            return;
-        }
-        if (view === 'tree') {
+        } else if (view === 'tree') {
             renderTree();
-            return;
-        }
-        if (view === 'graph' && (focusId === null || focusId === sbom?.rootId)) {
-            renderGraph();
         }
     };
 
@@ -1860,7 +1846,6 @@ function initDependencyViewer() {
         const packages = root.querySelector('[data-dep-stat-packages]');
         const edges = root.querySelector('[data-dep-stat-edges]');
         const ecoStat = root.querySelector('[data-dep-stat-ecosystems]');
-        const licStat = root.querySelector('[data-dep-stat-licenses]');
         if (packages) {
             packages.textContent = String(sbom.stats?.components ?? 0);
         }
@@ -1869,11 +1854,6 @@ function initDependencyViewer() {
         }
         if (ecoStat) {
             ecoStat.textContent = topEntries(sbom.stats?.ecosystems || {}, 4)
-                .map(([k, v]) => `${k} ${v}`)
-                .join(' · ');
-        }
-        if (licStat) {
-            licStat.textContent = topEntries(sbom.stats?.licenses || {}, 4)
                 .map(([k, v]) => `${k} ${v}`)
                 .join(' · ');
         }
@@ -1904,21 +1884,14 @@ function initDependencyViewer() {
 
     const selectFocus = (id) => {
         focusId = id;
-        const atRoot = id === null || id === sbom?.rootId;
-        if (resetBtn instanceof HTMLElement) {
-            resetBtn.hidden = atRoot && panX === 0 && panY === 0 && zoom === 1;
-        }
-        renderList();
         renderDetail();
-        if (view === 'graph') {
-            renderGraph();
-        } else if (view === 'table') {
+        if (view === 'table') {
             scrollTableToFocus();
             paintTableWindow();
         } else if (view === 'tree') {
             highlightTree();
         }
-        syncPanels();
+        syncInspector();
     };
 
     const renderDetail = () => {
@@ -1928,7 +1901,7 @@ function initDependencyViewer() {
         const node = focusId !== null ? nodeById.get(focusId) : null;
         if (!node || focusId === sbom?.rootId) {
             detail.hidden = true;
-            syncPanels();
+            syncInspector();
             return;
         }
         detail.hidden = false;
@@ -1940,7 +1913,7 @@ function initDependencyViewer() {
         };
         setText('[data-dep-detail-name]', nodeLabel(node));
         setText('[data-dep-detail-version]', node.version);
-        setText('[data-dep-detail-eco]', node.ecosystem);
+        setText('[data-dep-detail-eco]', nodeEcosystems(node).join(', '));
         setText('[data-dep-detail-license]', node.license || i18n.unknown_license || 'Unknown');
         setText('[data-dep-detail-type]', node.type);
         if (detailLogo instanceof HTMLImageElement) {
@@ -1978,9 +1951,7 @@ function initDependencyViewer() {
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'dep-link';
-                btn.textContent = target.version
-                    ? `${nodeLabel(target)}@${target.version}`
-                    : nodeLabel(target);
+                btn.textContent = nodeLabelFull(target);
                 btn.addEventListener('click', () => selectFocus(id));
                 li.append(btn);
                 ul.append(li);
@@ -1989,64 +1960,7 @@ function initDependencyViewer() {
 
         fillList('[data-dep-detail-deps]', outgoing.get(node.id) || []);
         fillList('[data-dep-detail-used]', incoming.get(node.id) || []);
-        syncPanels();
-    };
-
-    const renderList = () => {
-        if (!(listEl instanceof HTMLElement)) {
-            return;
-        }
-        const nodes = filteredNodes();
-        const limit = 160;
-        const slice = nodes.slice(0, limit);
-        if (listMeta instanceof HTMLElement) {
-            listMeta.textContent = formatShowing(slice.length, nodes.length);
-        }
-        listEl.replaceChildren();
-        slice.forEach((node) => {
-            const li = document.createElement('li');
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'dep-list__item' + (focusId === node.id ? ' is-active' : '');
-            btn.setAttribute('role', 'option');
-            btn.setAttribute('aria-selected', focusId === node.id ? 'true' : 'false');
-
-            if (isAppNode(node)) {
-                const img = document.createElement('img');
-                img.className = 'dep-list__mark';
-                img.src = logoUrl;
-                img.alt = '';
-                img.width = 18;
-                img.height = 18;
-                img.decoding = 'async';
-                btn.append(img);
-            } else {
-                const spacer = document.createElement('span');
-                spacer.className = 'dep-list__mark--spacer';
-                spacer.setAttribute('aria-hidden', 'true');
-                btn.append(spacer);
-            }
-
-            const name = document.createElement('span');
-            name.className = 'dep-list__name';
-            name.textContent = nodeLabel(node);
-            btn.append(name);
-            if (node.version) {
-                const ver = document.createElement('span');
-                ver.className = 'dep-list__ver';
-                ver.textContent = node.version;
-                btn.append(ver);
-            }
-            if (node.ecosystem || isManifestNode(node)) {
-                const badge = document.createElement('span');
-                badge.className = 'dep-list__eco';
-                badge.textContent = node.ecosystem || node.kind || '';
-                btn.append(badge);
-            }
-            btn.addEventListener('click', () => selectFocus(node.id));
-            li.append(btn);
-            listEl.append(li);
-        });
+        syncInspector();
     };
 
     const ensureTableScroll = () => {
@@ -2057,10 +1971,7 @@ function initDependencyViewer() {
         tableWrap.addEventListener(
             'scroll',
             () => {
-                if (view !== 'table') {
-                    return;
-                }
-                if (tablePaintRaf) {
+                if (view !== 'table' || tablePaintRaf) {
                     return;
                 }
                 tablePaintRaf = window.requestAnimationFrame(() => {
@@ -2127,26 +2038,30 @@ function initDependencyViewer() {
                 tr.classList.add('is-active');
             }
             const cells = [
-                nodeLabel(node),
                 node.version || '-',
-                node.ecosystem || '-',
+                nodeEcosystems(node).join(', ') || '-',
                 node.license || i18n.unknown_license || '-',
                 node.type || '-',
             ];
-            cells.forEach((text, index) => {
+            const nameTd = document.createElement('td');
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'dep-link';
+            btn.textContent = nodeLabel(node);
+            btn.title = nodeLabelFull(node);
+            btn.addEventListener('click', () => selectFocus(node.id));
+            nameTd.append(btn);
+            if ((node.copies || 0) > 1) {
+                const copies = document.createElement('span');
+                copies.className = 'dep-copies';
+                copies.textContent = formatCount(i18n.copies || '×%n', node.copies);
+                nameTd.append(copies);
+            }
+            tr.append(nameTd);
+            cells.forEach((text) => {
                 const td = document.createElement('td');
-                if (index === 0) {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.className = 'dep-link';
-                    btn.textContent = text;
-                    btn.title = text;
-                    btn.addEventListener('click', () => selectFocus(node.id));
-                    td.append(btn);
-                } else {
-                    td.textContent = text;
-                    td.title = text;
-                }
+                td.textContent = text;
+                td.title = text;
                 tr.append(td);
             });
             frag.append(tr);
@@ -2211,9 +2126,7 @@ function initDependencyViewer() {
                 details.dataset.nodeId = String(childId);
                 const summary = document.createElement('summary');
                 const label = document.createElement('span');
-                label.textContent = child.version
-                    ? `${nodeLabel(child)}@${child.version}`
-                    : nodeLabel(child);
+                label.textContent = nodeLabelFull(child);
                 const count = document.createElement('span');
                 count.className = 'dep-tree__count';
                 count.textContent = formatCount(i18n.deps_count || '%n deps', childCount);
@@ -2243,9 +2156,7 @@ function initDependencyViewer() {
             leaf.type = 'button';
             leaf.className = 'dep-tree__leaf' + (focusId === childId ? ' is-active' : '');
             leaf.dataset.nodeId = String(childId);
-            leaf.textContent = child.version
-                ? `${nodeLabel(child)}@${child.version}`
-                : nodeLabel(child);
+            leaf.textContent = nodeLabelFull(child);
             leaf.addEventListener('click', () => selectFocus(childId));
             wrap.append(leaf);
         });
@@ -2308,9 +2219,7 @@ function initDependencyViewer() {
                     leaf.type = 'button';
                     leaf.className = 'dep-tree__leaf' + (focusId === id ? ' is-active' : '');
                     leaf.dataset.nodeId = String(id);
-                    leaf.textContent = node.version
-                        ? `${nodeLabel(node)}@${node.version}`
-                        : nodeLabel(node);
+                    leaf.textContent = nodeLabelFull(node);
                     leaf.addEventListener('click', () => selectFocus(id));
                     wrap.append(leaf);
                 });
@@ -2358,9 +2267,7 @@ function initDependencyViewer() {
             details.dataset.nodeId = String(id);
             const summary = document.createElement('summary');
             const label = document.createElement('span');
-            label.textContent = node.version
-                ? `${nodeLabel(node)}@${node.version}`
-                : nodeLabel(node);
+            label.textContent = nodeLabelFull(node);
             const count = document.createElement('span');
             count.className = 'dep-tree__count';
             count.textContent = formatCount(i18n.deps_count || '%n deps', childIds.length);
@@ -2399,548 +2306,6 @@ function initDependencyViewer() {
         });
     };
 
-    let panX = 0;
-    let panY = 0;
-    let zoom = 1;
-    let graphPositions = new Map();
-    let graphSceneKey = '';
-    let graphWidth = 0;
-    let graphHeight = 0;
-    let graphLinks = [];
-    let graphNodes = [];
-    let worldG = null;
-    let linksG = null;
-    let nodesG = null;
-    let pointerMode = null;
-    let dragNodeId = null;
-    let pointerMoved = false;
-    let lastPointer = { x: 0, y: 0 };
-    let panStart = { x: 0, y: 0, panX: 0, panY: 0 };
-    let interactionsBound = false;
-    let simFrame = 0;
-
-    const graphSize = () => {
-        const rect = graphWrap?.getBoundingClientRect();
-        const width = Math.max(480, Math.floor(rect?.width || 960));
-        const height = Math.max(360, Math.floor(rect?.height || 560));
-        return { width, height };
-    };
-
-    const applyWorldTransform = () => {
-        if (worldG) {
-            worldG.setAttribute('transform', `translate(${panX} ${panY}) scale(${zoom})`);
-        }
-    };
-
-    const screenToWorld = (clientX, clientY) => {
-        const rect = graphSvg.getBoundingClientRect();
-        return {
-            x: (clientX - rect.left - panX) / zoom,
-            y: (clientY - rect.top - panY) / zoom,
-        };
-    };
-
-    const graphNodesForFocus = () => {
-        if (!sbom) {
-            return { nodes: [], links: [] };
-        }
-        const ids = new Set();
-        const links = [];
-        const maxNodes = 52;
-        if (focusId === null || focusId === sbom.rootId) {
-            const rootId = sbom.rootId;
-            if (rootId !== null && rootId !== undefined) {
-                ids.add(rootId);
-            }
-            (sbom.manifestIds || []).forEach((id) => ids.add(id));
-            const manifests = sbom.manifestIds || [];
-            for (let i = 0; i < manifests.length && ids.size < maxNodes; i++) {
-                const kids = outgoing.get(manifests[i]) || [];
-                for (let k = 0; k < kids.length && ids.size < maxNodes; k++) {
-                    ids.add(kids[k]);
-                }
-            }
-        } else {
-            ids.add(focusId);
-            (outgoing.get(focusId) || []).forEach((id) => ids.add(id));
-            (incoming.get(focusId) || []).forEach((id) => ids.add(id));
-            (outgoing.get(focusId) || []).slice(0, 12).forEach((id) => {
-                (outgoing.get(id) || []).slice(0, 4).forEach((child) => {
-                    if (ids.size < maxNodes) {
-                        ids.add(child);
-                    }
-                });
-            });
-        }
-
-        (sbom.edges || []).forEach(([from, to]) => {
-            if (ids.has(from) && ids.has(to)) {
-                links.push({ source: from, target: to });
-            }
-        });
-
-        return {
-            nodes: [...ids].map((id) => nodeById.get(id)).filter(Boolean),
-            links,
-        };
-    };
-
-    const ensureGraphShell = (width, height) => {
-        const ns = 'http://www.w3.org/2000/svg';
-        if (!graphSvg.querySelector('[data-dep-graph-shell]')) {
-            while (graphSvg.firstChild) {
-                graphSvg.removeChild(graphSvg.firstChild);
-            }
-            const defs = document.createElementNS(ns, 'defs');
-            const pattern = document.createElementNS(ns, 'pattern');
-            pattern.setAttribute('id', 'dep-dot-grid');
-            pattern.setAttribute('width', '22');
-            pattern.setAttribute('height', '22');
-            pattern.setAttribute('patternUnits', 'userSpaceOnUse');
-            const dot = document.createElementNS(ns, 'circle');
-            dot.setAttribute('cx', '1.2');
-            dot.setAttribute('cy', '1.2');
-            dot.setAttribute('r', '1');
-            dot.setAttribute('class', 'dep-graph__grid-dot');
-            pattern.append(dot);
-            defs.append(pattern);
-
-            const clip = document.createElementNS(ns, 'clipPath');
-            clip.setAttribute('id', 'dep-app-clip');
-            const clipCircle = document.createElementNS(ns, 'circle');
-            clipCircle.setAttribute('r', '22');
-            clip.append(clipCircle);
-            defs.append(clip);
-            graphSvg.append(defs);
-
-            const grid = document.createElementNS(ns, 'rect');
-            grid.setAttribute('data-dep-graph-grid', '');
-            grid.setAttribute('class', 'dep-graph__grid');
-            grid.setAttribute('fill', 'url(#dep-dot-grid)');
-            graphSvg.append(grid);
-
-            const world = document.createElementNS(ns, 'g');
-            world.setAttribute('data-dep-graph-world', '');
-            world.setAttribute('class', 'dep-graph__world');
-            const gLinks = document.createElementNS(ns, 'g');
-            gLinks.setAttribute('class', 'dep-graph__links');
-            const gNodes = document.createElementNS(ns, 'g');
-            gNodes.setAttribute('class', 'dep-graph__nodes');
-            world.append(gLinks, gNodes);
-            graphSvg.append(world);
-
-            const hit = document.createElementNS(ns, 'rect');
-            hit.setAttribute('data-dep-graph-shell', '');
-            hit.setAttribute('class', 'dep-graph__hit');
-            hit.setAttribute('fill', 'transparent');
-            graphSvg.insertBefore(hit, world);
-        }
-
-        graphSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-        graphSvg.setAttribute('width', String(width));
-        graphSvg.setAttribute('height', String(height));
-        const grid = graphSvg.querySelector('[data-dep-graph-grid]');
-        const hit = graphSvg.querySelector('[data-dep-graph-shell]');
-        if (grid) {
-            grid.setAttribute('width', String(width));
-            grid.setAttribute('height', String(height));
-        }
-        if (hit) {
-            hit.setAttribute('width', String(width));
-            hit.setAttribute('height', String(height));
-        }
-        worldG = graphSvg.querySelector('[data-dep-graph-world]');
-        linksG = graphSvg.querySelector('.dep-graph__links');
-        nodesG = graphSvg.querySelector('.dep-graph__nodes');
-        applyWorldTransform();
-    };
-
-    const nodeRadius = (node) => {
-        if (isAppNode(node)) {
-            return 22;
-        }
-        if (isManifestNode(node)) {
-            return 13;
-        }
-        return 8;
-    };
-
-    const updateGraphGeometry = () => {
-        if (!linksG || !nodesG) {
-            return;
-        }
-        const lines = linksG.children;
-        for (let i = 0; i < graphLinks.length; i++) {
-            const link = graphLinks[i];
-            const line = lines[i];
-            const a = graphPositions.get(link.source);
-            const b = graphPositions.get(link.target);
-            if (!line || !a || !b) {
-                continue;
-            }
-            line.setAttribute('x1', a.x.toFixed(1));
-            line.setAttribute('y1', a.y.toFixed(1));
-            line.setAttribute('x2', b.x.toFixed(1));
-            line.setAttribute('y2', b.y.toFixed(1));
-        }
-        const groups = nodesG.children;
-        for (let i = 0; i < graphNodes.length; i++) {
-            const node = graphNodes[i];
-            const group = groups[i];
-            const pos = graphPositions.get(node.id);
-            if (!group || !pos) {
-                continue;
-            }
-            group.setAttribute('transform', `translate(${pos.x.toFixed(1)} ${pos.y.toFixed(1)})`);
-            group.classList.toggle('is-focus', node.id === focusId);
-        }
-    };
-
-    const buildGraphDom = () => {
-        const ns = 'http://www.w3.org/2000/svg';
-        if (!linksG || !nodesG) {
-            return;
-        }
-        linksG.replaceChildren();
-        nodesG.replaceChildren();
-
-        graphLinks.forEach((link) => {
-            const line = document.createElementNS(ns, 'line');
-            line.setAttribute('class', 'dep-graph__edge');
-            linksG.append(line);
-        });
-
-        graphNodes.forEach((node) => {
-            const group = document.createElementNS(ns, 'g');
-            group.setAttribute('class', 'dep-graph__node');
-            group.dataset.nodeId = String(node.id);
-            group.style.cursor = 'grab';
-
-            const app = isAppNode(node);
-            const manifest = isManifestNode(node);
-            const radius = nodeRadius(node);
-
-            if (app) {
-                const ring = document.createElementNS(ns, 'circle');
-                ring.setAttribute('r', String(radius + 4));
-                ring.setAttribute('class', 'dep-graph__logo-ring');
-                group.append(ring);
-
-                const image = document.createElementNS(ns, 'image');
-                image.setAttribute('href', logoUrl);
-                image.setAttributeNS('http://www.w3.org/1999/xlink', 'href', logoUrl);
-                image.setAttribute('x', String(-radius));
-                image.setAttribute('y', String(-radius));
-                image.setAttribute('width', String(radius * 2));
-                image.setAttribute('height', String(radius * 2));
-                image.setAttribute('clip-path', 'url(#dep-app-clip)');
-                image.setAttribute('class', 'dep-graph__logo');
-                group.append(image);
-            } else {
-                const circle = document.createElementNS(ns, 'circle');
-                circle.setAttribute('r', String(radius));
-                circle.setAttribute(
-                    'class',
-                    'dep-graph__dot' +
-                        (manifest ? ' is-manifest' : '') +
-                        (node.ecosystem === 'npm' ? ' is-npm' : '') +
-                        (node.ecosystem === 'pypi' ? ' is-pypi' : ''),
-                );
-                group.append(circle);
-            }
-
-            const label = document.createElementNS(ns, 'text');
-            label.setAttribute('class', 'dep-graph__label');
-            label.setAttribute('y', String(radius + 15));
-            label.setAttribute('text-anchor', 'middle');
-            const raw = nodeLabel(node);
-            label.textContent = raw.length > 24 ? raw.slice(0, 22) + '…' : raw;
-            group.append(label);
-
-            if (node.version && !app) {
-                const sub = document.createElementNS(ns, 'text');
-                sub.setAttribute('class', 'dep-graph__label dep-graph__label--sub');
-                sub.setAttribute('y', String(radius + 27));
-                sub.setAttribute('text-anchor', 'middle');
-                sub.textContent = node.version;
-                group.append(sub);
-            }
-
-            nodesG.append(group);
-        });
-        updateGraphGeometry();
-    };
-
-    const seedPositions = (width, height, nodes) => {
-        const cx = width / 2;
-        const cy = height / 2;
-        const baseRadius = Math.min(width, height) * 0.3;
-        nodes.forEach((node, index) => {
-            const existing = graphPositions.get(node.id);
-            if (existing && Number.isFinite(existing.x) && Number.isFinite(existing.y)) {
-                existing.vx = 0;
-                existing.vy = 0;
-                return;
-            }
-            const angle = (index / Math.max(nodes.length, 1)) * Math.PI * 2 - Math.PI / 2;
-            const ring =
-                node.id === focusId || node.id === sbom.rootId
-                    ? 0
-                    : baseRadius + (index % 7) * Math.max(16, baseRadius * 0.07);
-            graphPositions.set(node.id, {
-                x: cx + Math.cos(angle) * ring,
-                y: cy + Math.sin(angle) * ring,
-                vx: 0,
-                vy: 0,
-                fixed: false,
-            });
-        });
-    };
-
-    const runLayout = (width, height) => {
-        const n = graphNodes.length;
-        if (n === 0) {
-            return;
-        }
-        const cx = width / 2;
-        const cy = height / 2;
-        const repel = Math.max(1800, width * height * 0.0028);
-        const linkLen = Math.max(90, Math.min(width, height) * 0.14);
-        const steps = n > 40 ? 18 : 28;
-        for (let step = 0; step < steps; step++) {
-            for (let i = 0; i < n; i++) {
-                const aNode = graphNodes[i];
-                const a = graphPositions.get(aNode.id);
-                if (!a || a.fixed) {
-                    continue;
-                }
-                for (let j = i + 1; j < n; j++) {
-                    const bNode = graphNodes[j];
-                    const b = graphPositions.get(bNode.id);
-                    if (!b) {
-                        continue;
-                    }
-                    let dx = a.x - b.x;
-                    let dy = a.y - b.y;
-                    let dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                    const force = repel / (dist * dist);
-                    dx = (dx / dist) * force;
-                    dy = (dy / dist) * force;
-                    a.vx += dx;
-                    a.vy += dy;
-                    if (!b.fixed) {
-                        b.vx -= dx;
-                        b.vy -= dy;
-                    }
-                }
-            }
-            for (let i = 0; i < graphLinks.length; i++) {
-                const link = graphLinks[i];
-                const a = graphPositions.get(link.source);
-                const b = graphPositions.get(link.target);
-                if (!a || !b) {
-                    continue;
-                }
-                let dx = b.x - a.x;
-                let dy = b.y - a.y;
-                const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-                const force = (dist - linkLen) * 0.028;
-                dx = (dx / dist) * force;
-                dy = (dy / dist) * force;
-                if (!a.fixed) {
-                    a.vx += dx;
-                    a.vy += dy;
-                }
-                if (!b.fixed) {
-                    b.vx -= dx;
-                    b.vy -= dy;
-                }
-            }
-            for (let i = 0; i < n; i++) {
-                const node = graphNodes[i];
-                const p = graphPositions.get(node.id);
-                if (!p || p.fixed) {
-                    continue;
-                }
-                p.vx += (cx - p.x) * 0.004;
-                p.vy += (cy - p.y) * 0.004;
-                p.vx *= 0.78;
-                p.vy *= 0.78;
-                p.x += p.vx;
-                p.y += p.vy;
-            }
-        }
-    };
-
-    const renderGraph = () => {
-        if (!(graphSvg instanceof SVGElement) || !sbom) {
-            return;
-        }
-        window.cancelAnimationFrame(simFrame);
-        const { width, height } = graphSize();
-        graphWidth = width;
-        graphHeight = height;
-        ensureGraphShell(width, height);
-
-        const scene = graphNodesForFocus();
-        graphNodes = scene.nodes;
-        graphLinks = scene.links;
-        const key = `${focusId ?? 'root'}|${graphNodes.map((n) => n.id).join(',')}`;
-        const sceneChanged = key !== graphSceneKey;
-        if (sceneChanged) {
-            graphSceneKey = key;
-            const keep = new Set(graphNodes.map((n) => n.id));
-            [...graphPositions.keys()].forEach((id) => {
-                if (!keep.has(id)) {
-                    graphPositions.delete(id);
-                }
-            });
-            seedPositions(width, height, graphNodes);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                runLayout(width, height);
-            }
-            buildGraphDom();
-        } else {
-            seedPositions(width, height, graphNodes);
-            updateGraphGeometry();
-        }
-
-        if (graphHint instanceof HTMLElement) {
-            const focusNode = focusId !== null ? nodeById.get(focusId) : null;
-            graphHint.textContent = focusNode
-                ? `${nodeLabel(focusNode)}${focusNode.version ? '@' + focusNode.version : ''}`
-                : i18n.focus_hint || '';
-        }
-
-        bindGraphInteractions();
-    };
-
-    const bindGraphInteractions = () => {
-        if (
-            interactionsBound ||
-            !(graphWrap instanceof HTMLElement) ||
-            !(graphSvg instanceof SVGElement)
-        ) {
-            return;
-        }
-        interactionsBound = true;
-
-        const endPointer = (event) => {
-            if (pointerMode === 'drag' && dragNodeId !== null) {
-                const pos = graphPositions.get(dragNodeId);
-                if (pos) {
-                    pos.fixed = false;
-                }
-                if (!pointerMoved && dragNodeId !== null) {
-                    selectFocus(dragNodeId);
-                }
-            }
-            pointerMode = null;
-            dragNodeId = null;
-            graphWrap.classList.remove('is-panning', 'is-dragging');
-            try {
-                graphWrap.releasePointerCapture(event.pointerId);
-            } catch {
-                // ignore
-            }
-        };
-
-        graphWrap.addEventListener(
-            'wheel',
-            (event) => {
-                if (view !== 'graph') {
-                    return;
-                }
-                event.preventDefault();
-                const rect = graphSvg.getBoundingClientRect();
-                const mx = event.clientX - rect.left;
-                const my = event.clientY - rect.top;
-                const before = screenToWorld(event.clientX, event.clientY);
-                const factor = event.deltaY < 0 ? 1.08 : 1 / 1.08;
-                zoom = Math.min(3.2, Math.max(0.35, zoom * factor));
-                panX = mx - before.x * zoom;
-                panY = my - before.y * zoom;
-                applyWorldTransform();
-                if (resetBtn instanceof HTMLElement) {
-                    resetBtn.hidden = false;
-                }
-            },
-            { passive: false },
-        );
-
-        graphWrap.addEventListener('pointerdown', (event) => {
-            if (view !== 'graph' || event.button !== 0) {
-                return;
-            }
-            const target = event.target;
-            const nodeEl = target instanceof Element ? target.closest('[data-node-id]') : null;
-            pointerMoved = false;
-            lastPointer = { x: event.clientX, y: event.clientY };
-            graphWrap.setPointerCapture(event.pointerId);
-
-            if (nodeEl) {
-                dragNodeId = Number(nodeEl.getAttribute('data-node-id'));
-                pointerMode = 'drag';
-                const pos = graphPositions.get(dragNodeId);
-                if (pos) {
-                    pos.fixed = true;
-                    pos.vx = 0;
-                    pos.vy = 0;
-                }
-                graphWrap.classList.add('is-dragging');
-                return;
-            }
-
-            pointerMode = 'pan';
-            panStart = { x: event.clientX, y: event.clientY, panX, panY };
-            graphWrap.classList.add('is-panning');
-        });
-
-        graphWrap.addEventListener('pointermove', (event) => {
-            if (!pointerMode) {
-                return;
-            }
-            const dx = event.clientX - lastPointer.x;
-            const dy = event.clientY - lastPointer.y;
-            if (Math.abs(dx) + Math.abs(dy) > 3) {
-                pointerMoved = true;
-            }
-            lastPointer = { x: event.clientX, y: event.clientY };
-
-            if (pointerMode === 'pan') {
-                panX = panStart.panX + (event.clientX - panStart.x);
-                panY = panStart.panY + (event.clientY - panStart.y);
-                applyWorldTransform();
-                if (resetBtn instanceof HTMLElement && pointerMoved) {
-                    resetBtn.hidden = false;
-                }
-                return;
-            }
-
-            if (pointerMode === 'drag' && dragNodeId !== null) {
-                const world = screenToWorld(event.clientX, event.clientY);
-                const pos = graphPositions.get(dragNodeId);
-                if (!pos) {
-                    return;
-                }
-                pos.x = world.x;
-                pos.y = world.y;
-                pos.vx = 0;
-                pos.vy = 0;
-                updateGraphGeometry();
-            }
-        });
-
-        graphWrap.addEventListener('pointerup', endPointer);
-        graphWrap.addEventListener('pointercancel', endPointer);
-        graphWrap.addEventListener('dblclick', () => {
-            panX = 0;
-            panY = 0;
-            zoom = 1;
-            applyWorldTransform();
-        });
-    };
-
     const setView = (next) => {
         view = next;
         root.querySelectorAll('[data-dep-view]').forEach((btn) => {
@@ -2958,10 +2323,8 @@ function initDependencyViewer() {
         }
         if (next === 'tree') {
             renderTree();
-        } else if (next === 'table') {
+        } else {
             renderTable(true);
-        } else if (next === 'graph') {
-            window.requestAnimationFrame(() => renderGraph());
         }
     };
 
@@ -2969,11 +2332,6 @@ function initDependencyViewer() {
         sbom = payload;
         eco = '';
         focusId = payload?.rootId ?? null;
-        panX = 0;
-        panY = 0;
-        zoom = 1;
-        graphPositions = new Map();
-        graphSceneKey = '';
         invalidateFilter();
         tableFilterKey = '';
         tableRows = [];
@@ -2991,11 +2349,10 @@ function initDependencyViewer() {
         syncLinks();
         renderStats();
         renderEcosystems();
-        renderList();
         renderDetail();
         refreshActiveView();
         setStatus(i18n.empty || '', !payload && !(catalog.versions || []).length);
-        syncPanels();
+        syncInspector();
     };
 
     const fillVersionSelect = () => {
@@ -3073,7 +2430,6 @@ function initDependencyViewer() {
         window.clearTimeout(searchTimer);
         searchTimer = window.setTimeout(() => {
             invalidateFilter();
-            renderList();
             refreshActiveView();
             syncQuery();
         }, 120);
@@ -3089,7 +2445,6 @@ function initDependencyViewer() {
             node.classList.toggle('is-active', (node.getAttribute('data-dep-eco') || '') === eco);
         });
         invalidateFilter();
-        renderList();
         refreshActiveView();
     });
 
@@ -3097,37 +2452,6 @@ function initDependencyViewer() {
         btn.addEventListener('click', () => {
             setView(btn.getAttribute('data-dep-view') || 'table');
         });
-    });
-
-    toggleListBtns.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            listOpen = !listOpen;
-            syncPanels();
-        });
-    });
-
-    root.querySelectorAll('[data-dep-toggle-inspector]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-            if (!(detail instanceof HTMLElement)) {
-                return;
-            }
-            if (detail.hidden) {
-                selectFocus(focusId || sbom?.rootId || null);
-            } else {
-                detail.hidden = true;
-                syncPanels();
-            }
-        });
-    });
-
-    resetBtn?.addEventListener('click', () => {
-        panX = 0;
-        panY = 0;
-        zoom = 1;
-        graphPositions = new Map();
-        graphSceneKey = '';
-        applyWorldTransform();
-        selectFocus(sbom?.rootId ?? null);
     });
 
     detail?.querySelector('[data-dep-detail-close]')?.addEventListener('click', () => {
@@ -3159,31 +2483,11 @@ function initDependencyViewer() {
         }, 1400);
     });
 
-    if (graphWrap && 'ResizeObserver' in window) {
-        let resizeTimer = 0;
-        const observer = new ResizeObserver(() => {
-            window.clearTimeout(resizeTimer);
-            resizeTimer = window.setTimeout(() => {
-                if (view === 'graph' && sbom) {
-                    renderGraph();
-                }
-            }, 80);
-        });
-        observer.observe(graphWrap);
-    }
-
-    window.addEventListener('resize', () => {
-        if (view === 'graph' && sbom) {
-            window.requestAnimationFrame(() => renderGraph());
-        }
-    });
-
     fillVersionSelect();
     const initialQuery = new URL(window.location.href).searchParams.get('q') || '';
     if (searchInput instanceof HTMLInputElement && initialQuery) {
         searchInput.value = initialQuery;
     }
-    syncPanels();
     if (sbom) {
         applySbom(sbom);
         setView('table');

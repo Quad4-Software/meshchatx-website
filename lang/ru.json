@@ -437,10 +437,7 @@
     },
     "dep": {
         "h1": "Зависимости",
-        "lead": "CycloneDX SBOM из GitHub-релизов MeshChatX. Выберите версию, чтобы просмотреть пакеты, лицензии и рёбра зависимостей. Артефакты релизов кэшируются на этом сайте, чтобы не дергать GitHub на каждый просмотр.",
-        "api": "JSON API",
         "source": "GitHub Releases",
-        "tool": "Собрано с помощью %s",
         "version": "Релиз",
         "search_label": "Поиск пакетов",
         "search_placeholder": "Имя, версия, экосистема, лицензия или purl",
@@ -449,15 +446,11 @@
         "download": "Скачать SBOM",
         "release": "Заметки релиза",
         "views": "Виды",
-        "view_graph": "Граф",
         "view_tree": "Дерево",
         "view_table": "Таблица",
-        "package_list": "Пакеты",
         "stat_packages": "пакетов",
         "stat_edges": "рёбер",
         "showing": "%shown из %total",
-        "focus_hint": "Тяните холст для панорамирования. Колесо для масштаба. Тяните узлы, чтобы двигать.",
-        "reset_focus": "Сбросить вид",
         "manifests": "Lockfile и манифесты",
         "loading": "Загрузка SBOM…",
         "error": "Не удалось загрузить SBOM для этой версии.",
@@ -469,7 +462,6 @@
         "used_by": "Используется в",
         "none": "Нет",
         "prerelease": "пререлизная",
-        "stable": "стабильная",
         "copied": "Скопировано",
         "unknown_license": "Неизвестно",
         "close_detail": "Закрыть",
@@ -479,12 +471,9 @@
         "col_ecosystem": "Экосистема",
         "col_license": "Лицензия",
         "col_type": "Тип",
-        "lead_short": "CycloneDX SBOM из GitHub-релизов. Кэшируется на этом сайте.",
-        "toggle_list": "Пакеты",
-        "toggle_inspector": "Сведения",
         "matches": "Подходящие пакеты",
         "more_deps": "ещё %n",
         "deps_count": "%n зависимостей",
-        "load_more": "Показать ещё"
+        "copies": "×%n"
     }
 }

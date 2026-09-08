@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class SbomService
 {
-    private const CACHE_PAYLOAD_PREFIX = 'meshchatx.sbom.payload.v3.';
+    private const CACHE_PAYLOAD_PREFIX = 'meshchatx.sbom.payload.v4.';
 
     private const CACHE_RAW_PREFIX = 'meshchatx.sbom.raw.';
 
@@ -290,10 +290,24 @@ class SbomService
 
         $refToId = [];
         $nodes = [];
+        $dedupeIndex = [];
         $id = 0;
         foreach ($byRef as $ref => $component) {
+            $node = $this->nodeFromComponent($id, $component, $ref);
+            $key = $node['kind'] === 'package'
+                ? 'pkg:'.$this->dedupeKey($node['name'], $node['version'])
+                : 'ref:'.$ref;
+            if (isset($dedupeIndex[$key])) {
+                $refToId[$ref] = $dedupeIndex[$key];
+                $this->mergeNode($nodes[$dedupeIndex[$key]], $node);
+
+                continue;
+            }
+            $dedupeIndex[$key] = $id;
             $refToId[$ref] = $id;
-            $nodes[] = $this->nodeFromComponent($id, $component, $ref);
+            $node['ecosystems'] = $node['ecosystem'] !== null ? [$node['ecosystem']] : [];
+            $node['copies'] = 1;
+            $nodes[] = $node;
             $id++;
         }
 
@@ -317,6 +331,9 @@ class SbomService
                     continue;
                 }
                 $toId = $refToId[$toRef];
+                if ($fromId === $toId) {
+                    continue;
+                }
                 $edgeKey = $fromId.'>'.$toId;
                 if (isset($seenEdge[$edgeKey])) {
                     continue;
@@ -347,8 +364,7 @@ class SbomService
         $licenses = [];
         $types = [];
         foreach ($nodes as $node) {
-            $eco = $node['ecosystem'];
-            if (is_string($eco) && $eco !== '') {
+            foreach ($node['ecosystems'] as $eco) {
                 $ecosystems[$eco] = ($ecosystems[$eco] ?? 0) + 1;
             }
             $lic = $node['license'];
@@ -388,6 +404,45 @@ class SbomService
             'nodes' => $nodes,
             'edges' => $edges,
         ];
+    }
+
+    /**
+     * Dedupe key for package nodes: the same name+version shipped by several
+     * manifests or ecosystems collapses into a single node.
+     */
+    private function dedupeKey(string $name, ?string $version): string
+    {
+        return mb_strtolower($name)."\0".($version ?? '');
+    }
+
+    /**
+     * Merge a duplicate component into an existing package node.
+     *
+     * @param  array<string, mixed>  $target
+     * @param  array<string, mixed>  $extra
+     */
+    private function mergeNode(array &$target, array $extra): void
+    {
+        $target['copies'] = ($target['copies'] ?? 1) + 1;
+
+        $eco = $extra['ecosystem'] ?? null;
+        if (is_string($eco) && $eco !== '' && ! in_array($eco, $target['ecosystems'], true)) {
+            $target['ecosystems'][] = $eco;
+        }
+
+        if ($target['license'] === null) {
+            $license = $extra['license'] ?? null;
+            if (is_string($license) && $license !== '') {
+                $target['license'] = $license;
+            }
+        }
+
+        if ($target['purl'] === null) {
+            $purl = $extra['purl'] ?? null;
+            if (is_string($purl) && $purl !== '') {
+                $target['purl'] = $purl;
+            }
+        }
     }
 
     /**

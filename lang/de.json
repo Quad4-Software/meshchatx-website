@@ -437,10 +437,7 @@
     },
     "dep": {
         "h1": "Abhängigkeiten",
-        "lead": "CycloneDX-SBOMs aus den MeshChatX-GitHub-Releases. Wähle eine Version, um Pakete, Lizenzen und Abhängigkeitskanten zu prüfen. Release-Assets werden auf dieser Website zwischengespeichert, damit GitHub nicht dauernd angefragt wird.",
-        "api": "JSON-API",
         "source": "GitHub Releases",
-        "tool": "Erzeugt mit %s",
         "version": "Release",
         "search_label": "Pakete suchen",
         "search_placeholder": "Name, Version, Ökosystem, Lizenz oder purl",
@@ -449,15 +446,11 @@
         "download": "SBOM herunterladen",
         "release": "Release-Notizen",
         "views": "Ansichten",
-        "view_graph": "Graph",
         "view_tree": "Baum",
         "view_table": "Tabelle",
-        "package_list": "Pakete",
         "stat_packages": "Pakete",
         "stat_edges": "Kanten",
         "showing": "%shown von %total",
-        "focus_hint": "Leinwand ziehen zum Schwenken. Scrollen zum Zoomen. Knoten ziehen zum Anordnen.",
-        "reset_focus": "Ansicht zurücksetzen",
         "manifests": "Lockfiles und Manifeste",
         "loading": "SBOM wird geladen…",
         "error": "SBOM für diese Version konnte nicht geladen werden.",
@@ -469,7 +462,6 @@
         "used_by": "Verwendet von",
         "none": "Keine",
         "prerelease": "Vorabversion",
-        "stable": "stabil",
         "copied": "Kopiert",
         "unknown_license": "Unbekannt",
         "close_detail": "Schließen",
@@ -479,12 +471,9 @@
         "col_ecosystem": "Ökosystem",
         "col_license": "Lizenz",
         "col_type": "Typ",
-        "lead_short": "CycloneDX-SBOM aus GitHub-Releases. Zwischengespeichert auf dieser Website.",
-        "toggle_list": "Pakete",
-        "toggle_inspector": "Details",
         "matches": "Passende Pakete",
         "more_deps": "%n weitere",
         "deps_count": "%n Abhängigkeiten",
-        "load_more": "Mehr laden"
+        "copies": "×%n"
     }
 }

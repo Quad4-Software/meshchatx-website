@@ -84,9 +84,10 @@ class DependencyPageTest extends TestCase
             ->assertSee('reticulum-meshchatx', false)
             ->assertSee('MeshChatX', false)
             ->assertSee('/logo.webp', false)
-            ->assertSee('dep-graph-wrap', false)
             ->assertSee('data-dep-view="table"', false)
+            ->assertSee('data-dep-view="tree"', false)
             ->assertSee('data-dep-panel="table"', false)
+            ->assertSee('data-dep-panel="tree"', false)
             ->assertSee('page-dep', false)
             ->assertSee('/api/mcx-sbom', false)
             ->assertSee('v4.8.5', false);
@@ -117,6 +118,67 @@ class DependencyPageTest extends TestCase
 
         $this->getJson('/api/mcx-sbom/9.9.9')
             ->assertNotFound();
+    }
+
+    public function test_sbom_dedupes_packages_across_manifests(): void
+    {
+        Http::fake([
+            'api.github.com/repos/*/releases*' => Http::response($this->releaseFixture(), 200),
+            'github.com/Quad4-Software/MeshChatX/releases/download/v4.8.5/sbom.cyclonedx.json' => Http::response([
+                'bomFormat' => 'CycloneDX',
+                'specVersion' => '1.6',
+                'metadata' => [
+                    'component' => ['bom-ref' => 'root-1', 'type' => 'application', 'name' => '.'],
+                ],
+                'components' => [
+                    ['bom-ref' => 'm1', 'type' => 'file', 'name' => 'pnpm-lock.yaml'],
+                    ['bom-ref' => 'm2', 'type' => 'file', 'name' => 'requirements.txt'],
+                    [
+                        'bom-ref' => 'a-npm',
+                        'type' => 'library',
+                        'name' => 'shared-lib',
+                        'version' => '1.0.0',
+                        'purl' => 'pkg:npm/shared-lib@1.0.0',
+                    ],
+                    [
+                        'bom-ref' => 'a-pypi',
+                        'type' => 'library',
+                        'name' => 'shared-lib',
+                        'version' => '1.0.0',
+                        'purl' => 'pkg:pypi/shared-lib@1.0.0',
+                    ],
+                    [
+                        'bom-ref' => 'b',
+                        'type' => 'library',
+                        'name' => 'other-lib',
+                        'version' => '2.0.0',
+                        'purl' => 'pkg:npm/other-lib@2.0.0',
+                    ],
+                ],
+                'dependencies' => [
+                    ['ref' => 'root-1', 'dependsOn' => ['m1', 'm2']],
+                    ['ref' => 'm1', 'dependsOn' => ['a-npm', 'b']],
+                    ['ref' => 'm2', 'dependsOn' => ['a-pypi']],
+                    ['ref' => 'a-npm', 'dependsOn' => ['b']],
+                    ['ref' => 'a-pypi', 'dependsOn' => ['b']],
+                ],
+            ], 200),
+        ]);
+
+        $payload = $this->getJson('/api/mcx-sbom/4.8.5')
+            ->assertOk()
+            ->json();
+
+        $this->assertCount(5, $payload['nodes']);
+        $this->assertSame(5, $payload['stats']['components']);
+
+        $shared = collect($payload['nodes'])->firstWhere('name', 'shared-lib');
+        $this->assertNotNull($shared);
+        $this->assertSame(2, $shared['copies']);
+        $this->assertEqualsCanonicalizing(['npm', 'pypi'], $shared['ecosystems']);
+
+        $edgePairs = collect($payload['edges'])->map(fn ($e) => implode('>', $e))->all();
+        $this->assertSame(count($edgePairs), count(array_unique($edgePairs)));
     }
 
     public function test_warm_query_does_not_trigger_upstream_sbom_fetch(): void
