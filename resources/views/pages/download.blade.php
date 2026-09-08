@@ -106,7 +106,7 @@
         default => t('js.download.stable'),
     };
 
-    $flatpakCdnBase = rtrim((string) ($site['flatpak_cdn_base'] ?? 'https://cdn.meshchatx.com/flatpak'), '/');
+    $flatpakCdnBase = rtrim((string) ($site['flatpak_cdn_base'] ?? 'https://cdn.quad4.io/flatpak'), '/');
     $flatpakAppId = (string) ($site['flatpak_app_id'] ?? 'com.quad4.meshchatx');
     $flatpakRefName = match ($channel) {
         'beta' => 'meshchatx-beta.flatpakref',

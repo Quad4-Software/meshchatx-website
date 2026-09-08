@@ -17,7 +17,7 @@ class BunnyStorageServiceTest extends TestCase
             'services.bunny.storage_zone' => 'meshchatx',
             'services.bunny.access_key' => 'test-key',
             'services.bunny.storage_endpoint' => 'https://la.storage.bunnycdn.com',
-            'services.bunny.cdn_base' => 'https://cdn.meshchatx.com',
+            'services.bunny.cdn_base' => 'https://cdn.quad4.io',
         ]);
     }
 
@@ -63,7 +63,7 @@ class BunnyStorageServiceTest extends TestCase
         $second = $service->assetsByName('nightly-2026.09.03-0cc046e');
 
         $this->assertSame(
-            'https://cdn.meshchatx.com/nightly/nightly-2026.09.03-0cc046e/android/ReticulumMeshChatX-v4.8.6-android-universal.apk',
+            'https://cdn.quad4.io/nightly/nightly-2026.09.03-0cc046e/android/ReticulumMeshChatX-v4.8.6-android-universal.apk',
             $first['reticulummeshchatx-v4.8.6-android-universal.apk']['url'] ?? null,
         );
         $this->assertSame(
@@ -71,7 +71,7 @@ class BunnyStorageServiceTest extends TestCase
             $first['reticulummeshchatx-v4.8.6-android-universal.apk']['sha256'] ?? null,
         );
         $this->assertSame(
-            'https://cdn.meshchatx.com/nightly/nightly-2026.09.03-0cc046e/ReticulumMeshChatX-v4.8.6-linux-x86_64.AppImage',
+            'https://cdn.quad4.io/nightly/nightly-2026.09.03-0cc046e/ReticulumMeshChatX-v4.8.6-linux-x86_64.AppImage',
             $first['reticulummeshchatx-v4.8.6-linux-x86_64.appimage']['url'] ?? null,
         );
         $this->assertSame($first, $second);

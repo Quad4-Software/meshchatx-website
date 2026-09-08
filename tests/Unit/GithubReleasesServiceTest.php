@@ -99,7 +99,7 @@ class GithubReleasesServiceTest extends TestCase
             'services.bunny.storage_zone' => 'meshchatx',
             'services.bunny.access_key' => 'test-key',
             'services.bunny.storage_endpoint' => 'https://la.storage.bunnycdn.com',
-            'services.bunny.cdn_base' => 'https://cdn.meshchatx.com',
+            'services.bunny.cdn_base' => 'https://cdn.quad4.io',
         ]);
 
         Http::fake([
@@ -154,7 +154,7 @@ class GithubReleasesServiceTest extends TestCase
         $pre = $payload['testing'] ?? null;
 
         $this->assertSame(
-            'https://cdn.meshchatx.com/nightly/nightly-2026.09.03-0cc046e/android/ReticulumMeshChatX-v4.8.6-android-universal.apk',
+            'https://cdn.quad4.io/nightly/nightly-2026.09.03-0cc046e/android/ReticulumMeshChatX-v4.8.6-android-universal.apk',
             $pre['apkUrl'] ?? null,
         );
         $this->assertSame(
@@ -162,7 +162,7 @@ class GithubReleasesServiceTest extends TestCase
             $pre['apkSha256'] ?? null,
         );
         $this->assertSame(
-            'https://cdn.meshchatx.com/nightly/nightly-2026.09.03-0cc046e/ReticulumMeshChatX-v4.8.6-linux-x86_64.AppImage',
+            'https://cdn.quad4.io/nightly/nightly-2026.09.03-0cc046e/ReticulumMeshChatX-v4.8.6-linux-x86_64.AppImage',
             $pre['appImageAmd64Url'] ?? null,
         );
         $this->assertSame('bunny', $pre['downloadServer'] ?? null);
@@ -179,7 +179,7 @@ class GithubReleasesServiceTest extends TestCase
             'services.bunny.storage_zone' => 'meshchatx',
             'services.bunny.access_key' => 'test-key',
             'services.bunny.storage_endpoint' => 'https://la.storage.bunnycdn.com',
-            'services.bunny.cdn_base' => 'https://cdn.meshchatx.com',
+            'services.bunny.cdn_base' => 'https://cdn.quad4.io',
         ]);
 
         Http::fake([

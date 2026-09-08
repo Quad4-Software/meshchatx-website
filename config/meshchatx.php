@@ -20,7 +20,7 @@ return [
     'docker_hub' => 'quad4io/meshchatx:latest',
     'ghcr' => 'ghcr.io/quad4-software/meshchatx:latest',
     'umbrel_url' => 'https://apps.umbrel.com/app/meshchatx',
-    'flatpak_cdn_base' => 'https://cdn.meshchatx.com/flatpak',
+    'flatpak_cdn_base' => 'https://cdn.quad4.io/flatpak',
     'flatpak_app_id' => 'com.quad4.meshchatx',
     'rns_directory_url' => 'https://directory.rns.recipes/',
     'rns_directory_api' => 'https://directory.rns.recipes/api/directory/submitted?search=&type=&status=online',
