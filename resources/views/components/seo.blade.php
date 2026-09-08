@@ -150,6 +150,9 @@
 <meta property="og:description" content="{{ $desc }}">
 <meta property="og:url" content="{{ $canonical }}">
 <meta property="og:image" content="{{ $logoUrl }}">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="800">
+<meta property="og:image:type" content="image/webp">
 <meta property="og:image:alt" content="{{ $ogAlt }}">
 <meta property="og:locale" content="{{ $ogLocale }}">
 @unless ($isError)

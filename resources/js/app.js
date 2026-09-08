@@ -1,4 +1,3 @@
-import '@fontsource-variable/outfit/wght.css';
 import Fuse from './vendor/fuse.mjs';
 
 const THEME_KEY = 'theme';
@@ -785,7 +784,9 @@ function syncDownloadHero(platformId) {
             if (ariaPrefix !== '') {
                 checksumValue.setAttribute('aria-label', `${ariaPrefix}: ${sha256}`);
             }
-            checksum.hidden = false;
+            checksum.classList.remove('is-empty');
+            checksum.removeAttribute('aria-hidden');
+            checksumValue.removeAttribute('tabindex');
         } else {
             checksumValue.textContent = '';
             checksumValue.setAttribute('data-copy-text', '');
@@ -793,7 +794,9 @@ function syncDownloadHero(platformId) {
             if (ariaPrefix) {
                 checksumValue.setAttribute('aria-label', ariaPrefix);
             }
-            checksum.hidden = true;
+            checksum.classList.add('is-empty');
+            checksum.setAttribute('aria-hidden', 'true');
+            checksumValue.setAttribute('tabindex', '-1');
         }
     }
 }
@@ -866,7 +869,9 @@ function initDownloadChannels() {
             tabs.forEach((tab) => {
                 const active = tab.getAttribute('data-download-tab') === id;
                 tab.classList.toggle('is-active', active);
-                tab.setAttribute('aria-selected', active ? 'true' : 'false');
+                if (tab.getAttribute('role') === 'tab') {
+                    tab.setAttribute('aria-selected', active ? 'true' : 'false');
+                }
             });
             panels.forEach((panel) => {
                 const active = panel.getAttribute('data-download-panel') === id;
@@ -898,10 +903,7 @@ function initDownloadChannels() {
                 ?.getAttribute('data-download-tab') ||
             tabs[0]?.getAttribute('data-download-tab');
         if (initial) {
-            showPanel(initial, Boolean(fromHash));
-            if (!fromHash && detectedTab && window.history?.replaceState) {
-                window.history.replaceState(null, '', `#${initial}`);
-            }
+            showPanel(initial, false);
         }
 
         window.addEventListener('hashchange', () => {

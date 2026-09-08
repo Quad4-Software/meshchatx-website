@@ -16,6 +16,7 @@
     $downloadServers = $downloadServers ?? (is_array($active) && is_array($active['downloadServers'] ?? null)
         ? $active['downloadServers']
         : []);
+    $detectedPlatform = $detectedPlatform ?? 'windows';
     $channelLatest = is_array($releases[$channel] ?? null) ? $releases[$channel] : null;
     $isChannelLatest = is_array($active) && is_array($channelLatest)
         && (
@@ -307,13 +308,14 @@ YAML;
                         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
                     @endforeach
                     <div class="download-hero-cta__stack">
-                        <div class="download-checksum" data-download-hero-checksum hidden>
+                        <div class="download-checksum is-empty" data-download-hero-checksum aria-hidden="true">
                             <span class="download-checksum__label">{{ t('dl.sha256') }}</span>
                             <button
                                 type="button"
                                 class="download-checksum__value"
                                 data-download-hero-checksum-value
                                 data-copy-text=""
+                                tabindex="-1"
                                 aria-label="{{ t('dl.copy_sha256') }}"
                                 title="{{ t('dl.copy_sha256') }}"
                                 data-copy-aria-prefix="{{ t('dl.copy_sha256') }}"
@@ -323,11 +325,10 @@ YAML;
                             <a
                                 class="btn btn--solid"
                                 data-download-hero-btn
-                                href="#linux"
-                                hidden
+                                href="#{{ $detectedPlatform }}"
                             >
                                 <x-icon name="download" size="xs" />
-                                <span data-download-hero-label>{{ t('dl.cta.download_for', ['s' => t('dl.tabs.linux')]) }}</span>
+                                <span data-download-hero-label>{{ t('dl.cta.download_for', ['s' => t('dl.tabs.'.$detectedPlatform)]) }}</span>
                             </a>
                             <a class="btn btn--ghost" href="{{ $docsGettingStarted }}">{{ t('dl.cta.next_steps') }}</a>
                         </div>
@@ -360,13 +361,13 @@ YAML;
             </div>
 
             <div class="download-pick" role="tablist" aria-label="{{ t('dl.pick_h2') }}">
-                @foreach ($tabs as $index => $tab)
+                @foreach ($tabs as $tab)
                     <a
-                        class="download-pick__btn{{ $index === 0 ? ' is-active' : '' }}"
+                        class="download-pick__btn{{ $tab['id'] === $detectedPlatform ? ' is-active' : '' }}"
                         href="#{{ $tab['id'] }}"
                         data-download-tab="{{ $tab['id'] }}"
                         role="tab"
-                        aria-selected="{{ $index === 0 ? 'true' : 'false' }}"
+                        aria-selected="{{ $tab['id'] === $detectedPlatform ? 'true' : 'false' }}"
                     >
                         <span class="download-pick__icon"><x-icon :name="$tab['icon']" size="sm" /></span>
                         <span class="download-pick__label">{{ $tab['label'] }}</span>
@@ -375,7 +376,7 @@ YAML;
                 @endforeach
             </div>
 
-            <div class="download-panel is-active" id="windows" data-download-panel="windows">
+            <div class="download-panel{{ $detectedPlatform === 'windows' ? ' is-active' : '' }}" id="windows" data-download-panel="windows"{{ $detectedPlatform === 'windows' ? '' : ' hidden' }}>
                 <h2 class="section__title">{{ t('dl.windows.h2') }}</h2>
                 <p class="download-panel__intro">{{ t('dl.windows.friendly') }}</p>
                 <p class="version-badge">{{ t('dl.windows.badge_64') }}</p>
@@ -401,7 +402,7 @@ YAML;
                 @endif
             </div>
 
-            <div class="download-panel" id="macos" data-download-panel="macos" hidden>
+            <div class="download-panel{{ $detectedPlatform === 'macos' ? ' is-active' : '' }}" id="macos" data-download-panel="macos"{{ $detectedPlatform === 'macos' ? '' : ' hidden' }}>
                 <h2 class="section__title">{{ t('dl.macos.h2') }}</h2>
                 @if (! $macDmg)
                     <p class="download-panel__intro">{{ t('dl.macos.note') }}</p>
@@ -423,7 +424,7 @@ YAML;
                 @endif
             </div>
 
-            <div class="download-panel" id="linux" data-download-panel="linux" hidden>
+            <div class="download-panel{{ $detectedPlatform === 'linux' ? ' is-active' : '' }}" id="linux" data-download-panel="linux"{{ $detectedPlatform === 'linux' ? '' : ' hidden' }}>
                 <h2 class="section__title">{{ t('dl.linux.h2') }}</h2>
                 <p class="download-panel__intro">{{ t('dl.linux.friendly') }}</p>
 
@@ -601,7 +602,7 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 </details>
             </div>
 
-            <div class="download-panel" id="flatpak" data-download-panel="flatpak" hidden>
+            <div class="download-panel{{ $detectedPlatform === 'flatpak' ? ' is-active' : '' }}" id="flatpak" data-download-panel="flatpak"{{ $detectedPlatform === 'flatpak' ? '' : ' hidden' }}>
                 <h2 class="section__title">{{ t('dl.flatpak.h2') }}</h2>
                 <p class="download-panel__intro">{{ t('dl.flatpak.friendly') }}</p>
 
@@ -664,7 +665,7 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 </details>
             </div>
 
-            <div class="download-panel" id="docker" data-download-panel="docker" hidden>
+            <div class="download-panel{{ $detectedPlatform === 'docker' ? ' is-active' : '' }}" id="docker" data-download-panel="docker"{{ $detectedPlatform === 'docker' ? '' : ' hidden' }}>
                 <h2 class="section__title">{{ t('dl.containers.h2') }}</h2>
                 <p class="download-panel__intro">{{ t('dl.containers.friendly') }}</p>
 
@@ -762,7 +763,7 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 </p>
             </div>
 
-            <div class="download-panel" id="python" data-download-panel="python" hidden>
+            <div class="download-panel{{ $detectedPlatform === 'python' ? ' is-active' : '' }}" id="python" data-download-panel="python"{{ $detectedPlatform === 'python' ? '' : ' hidden' }}>
                 <h2 class="section__title">{{ t('dl.python.h2') }}</h2>
                 <p class="download-panel__intro">{{ t('dl.python.friendly') }}</p>
                 <p class="download-panel__intro">
@@ -828,7 +829,7 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 </details>
             </div>
 
-            <div class="download-panel" id="android" data-download-panel="android" hidden>
+            <div class="download-panel{{ $detectedPlatform === 'android' ? ' is-active' : '' }}" id="android" data-download-panel="android"{{ $detectedPlatform === 'android' ? '' : ' hidden' }}>
                 <h2 class="section__title">{{ t('dl.android.h2') }}</h2>
                 <p class="download-panel__intro">{{ t('dl.android.friendly') }}</p>
                 <h3 class="download-panel__subhead">{{ t('dl.android.apk_h3') }}</h3>

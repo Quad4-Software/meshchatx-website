@@ -49,12 +49,29 @@ class DownloadController extends Controller
             'channel' => $channel,
             'versions' => $versions,
             'active' => $active,
+            'detectedPlatform' => $this->detectPlatform((string) $request->userAgent()),
             'selectedTag' => is_array($active) ? (string) ($active['tag'] ?? $active['version'] ?? '') : '',
             'selectedSource' => is_array($active) ? (string) ($active['downloadServer'] ?? 'github') : 'github',
             'downloadServers' => is_array($active) && is_array($active['downloadServers'] ?? null)
                 ? $active['downloadServers']
                 : [],
         ]);
+    }
+
+    /**
+     * Mirror of detectDownloadPlatform in resources/js/app.js so the first paint
+     * already shows the visitor's platform panel instead of swapping it later.
+     */
+    private function detectPlatform(string $ua): string
+    {
+        return match (true) {
+            preg_match('/android/i', $ua) === 1 => 'android',
+            preg_match('/iphone|ipad|ipod/i', $ua) === 1 => 'macos',
+            preg_match('/win/i', $ua) === 1 => 'windows',
+            preg_match('/mac/i', $ua) === 1 => 'macos',
+            preg_match('/linux|cros|x11/i', $ua) === 1 => 'linux',
+            default => 'linux',
+        };
     }
 
     /**

@@ -9,8 +9,11 @@ class RobotsController extends Controller
 {
     public function __invoke(): Response
     {
-        $domain = SiteUri::normalize((string) config('meshchatx.domain'))
-            ?? rtrim((string) config('meshchatx.domain'), '/');
+        $domain = rtrim(
+            SiteUri::normalize((string) config('meshchatx.domain'))
+                ?? (string) config('meshchatx.domain'),
+            '/',
+        );
 
         $body = "User-agent: *\nAllow: /\n\nSitemap: {$domain}/sitemap.xml\n# LLM index: {$domain}/llms.txt\n";
 

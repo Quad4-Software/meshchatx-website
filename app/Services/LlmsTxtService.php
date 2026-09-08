@@ -136,7 +136,7 @@ class LlmsTxtService
         $raw = (string) config('meshchatx.domain');
         $normalized = SiteUri::normalize($raw);
 
-        return $normalized ?? rtrim($raw, '/');
+        return rtrim($normalized ?? $raw, '/');
     }
 
     private function absolute(mixed $url): string

@@ -4,6 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <script src="{{ asset('theme-boot.js') }}"></script>
+    @php
+        $fontPreload = glob(public_path('build/assets/outfit-latin-wght-normal-*.woff2'))[0] ?? null;
+    @endphp
+    @if ($fontPreload)
+        <link rel="preload" href="/build/assets/{{ basename($fontPreload) }}" as="font" type="font/woff2" crossorigin>
+    @endif
     <x-seo
         :page="$page ?? 'home'"
         :title="$seoTitle ?? null"

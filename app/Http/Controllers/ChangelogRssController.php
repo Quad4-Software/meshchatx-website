@@ -11,8 +11,11 @@ class ChangelogRssController extends Controller
 {
     public function __invoke(ChangelogService $changelog): Response
     {
-        $domain = SiteUri::normalize((string) config('meshchatx.domain'))
-            ?? rtrim((string) config('meshchatx.domain'), '/');
+        $domain = rtrim(
+            SiteUri::normalize((string) config('meshchatx.domain'))
+                ?? (string) config('meshchatx.domain'),
+            '/',
+        );
         $pageUrl = LocaleUrl::route('changelog');
         $feedUrl = $domain.'/changelog.xml';
 
