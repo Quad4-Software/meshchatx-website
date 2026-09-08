@@ -6,7 +6,7 @@
             'primary' => true,
             'title' => t('git.rngit_h3'),
             'lead' => t('git.rngit_lead'),
-            'logo' => '/vendor/reticulum-logo.png',
+            'logo' => '/vendor/reticulum-logo.webp',
             'commands' => [
                 ['label' => t('git.clone_rns'), 'cmd' => 'git clone '.$site['rngit_rns']],
                 ['label' => t('git.nomadnet'), 'cmd' => $site['rngit_nomadnet']],
@@ -49,7 +49,7 @@
                 <article class="git-card{{ ! empty($host['primary']) ? ' git-card--primary' : '' }}">
                     <div class="git-card__head">
                         @if (! empty($host['logo']))
-                            <img class="git-card__logo" src="{{ $host['logo'] }}" alt="" width="48" height="48" decoding="async">
+                            <img class="git-card__logo" src="{{ $host['logo'] }}" alt="" width="48" height="48" loading="lazy" decoding="async">
                         @elseif (! empty($host['icon']))
                             <span class="git-card__icon"><x-icon :name="$host['icon']" size="sm" /></span>
                         @endif

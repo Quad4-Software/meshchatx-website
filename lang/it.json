@@ -217,22 +217,24 @@
         },
         "section": {
             "infra_h2": "Nessun server aziendale",
-            "infra_lead": "MeshChatX non ospita la tua chat. I messaggi viaggiano su collegamenti che configuri tu."
+            "infra_lead": "MeshChatX non gestisce server di chat. I messaggi viaggiano sui collegamenti Reticulum che configuri."
         },
         "feature": {
-            "crypto_h3": "Messaggi cifrati",
-            "crypto_p": "Le chat usano la crittografia Reticulum. È la rete su cui gira MeshChatX.",
+            "crypto_h3": "Cifrato end-to-end",
+            "crypto_p": "Reticulum cifra ogni messaggio per la chiave d'identità del destinatario. I relay intermedi inoltrano solo testo cifrato.",
             "crypto_link": "Reticulum Crypto",
-            "no_cloud_h3": "Nessun data center",
-            "no_cloud_p": "Nessun data center aziendale sta in mezzo. Il traffico resta tra chi parla.",
+            "no_cloud_h3": "Nessun server centrale",
+            "no_cloud_p": "MeshChatX non gestisce server di messaggi. La consegna avviene sui collegamenti e nodi Reticulum che scegli tu.",
             "no_account_h3": "Nessuna registrazione",
-            "no_account_p": "Niente telefono, email o username. Installalo e inizia.",
-            "tunnels_h3": "Internet, radio o mesh",
-            "tunnels_p": "Reticulum funziona su Wi-Fi o internet aperto, radio e LoRa, o percorsi come I2P e Yggdrasil.",
+            "no_account_p": "Niente numero di telefono, email o account. Il tuo indirizzo è l'hash di una chiave d'identità che generi tu.",
+            "tunnels_h3": "Radio, mesh o internet",
+            "tunnels_p": "Reticulum funziona su LoRa, packet radio, Wi-Fi o overlay come I2P e Yggdrasil. Usa il percorso che hai.",
             "languages_h3": "Tante lingue",
             "languages_p": "MeshChatX è disponibile in nove lingue. Scegline una per questa pagina.",
-            "local_h3": "Salvato sul tuo dispositivo",
-            "local_p": "Identità e cronologia restano sul dispositivo che installi. Non teniamo una copia."
+            "local_h3": "Resta sul tuo dispositivo",
+            "local_p": "Chiavi d'identità e cronologia restano nella memoria locale della tua macchina. Nulla viene sincronizzato su un server aziendale.",
+            "source_h3": "Open source",
+            "source_p": "Tutto il codice è su GitHub e replicato su Reticulum. Leggilo o compilalo tu stesso."
         },
         "security": {
             "h2": "Sicurezza e integrità",
@@ -350,7 +352,8 @@
             "yggdrasil": "Yggdrasil",
             "i2p": "I2P",
             "other": "Altro"
-        }
+        },
+        "showing": "%shown di %total"
     },
     "changelog": {
         "h1": "Changelog",

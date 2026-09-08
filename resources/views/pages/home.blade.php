@@ -10,6 +10,7 @@
         ['icon' => 'card-account-details-outline', 'title' => 'home.feature.no_account_h3', 'body' => 'home.feature.no_account_p'],
         ['icon' => 'web', 'title' => 'home.feature.tunnels_h3', 'body' => 'home.feature.tunnels_p'],
         ['icon' => 'monitor', 'title' => 'home.feature.local_h3', 'body' => 'home.feature.local_p'],
+        ['icon' => 'github', 'title' => 'home.feature.source_h3', 'body' => 'home.feature.source_p'],
     ];
     $langShort = static function (string $code): string {
         return $code === 'zh' ? '中文' : strtoupper($code);
@@ -34,7 +35,7 @@
         <div class="home-hero__bg" aria-hidden="true">
             <img
                 class="home-hero__bg-img"
-                src="/vendor/reticulum-logo.png"
+                src="/vendor/reticulum-logo.webp"
                 alt=""
                 width="512"
                 height="512"
@@ -106,14 +107,24 @@
                 </div>
                 <div class="showcase__plane">
                     <img
-                        class="home-hero__shot showcase__image"
-                        data-showcase-image
+                        class="home-hero__shot showcase__image showcase__image--light"
+                        data-showcase-image="light"
                         src="/showcase/light/{{ $firstTab }}"
                         alt="{{ t('js.showcase.desktop_fmt', ['s' => t('js.showcase.tab0')]) }}"
                         width="1800"
                         height="959"
                         decoding="async"
                         fetchpriority="high"
+                    >
+                    <img
+                        class="home-hero__shot showcase__image showcase__image--dark"
+                        data-showcase-image="dark"
+                        src="/showcase/dark/{{ $firstTab }}"
+                        alt="{{ t('js.showcase.desktop_fmt', ['s' => t('js.showcase.tab0')]) }}"
+                        width="1800"
+                        height="959"
+                        decoding="async"
+                        loading="lazy"
                     >
                 </div>
             </div>

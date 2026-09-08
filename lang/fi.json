@@ -217,22 +217,24 @@
         },
         "section": {
             "infra_h2": "Ei yrityksen palvelimia",
-            "infra_lead": "MeshChatX ei isännöi chattiasi. Viestit kulkevat linkeillä, jotka asetat itse."
+            "infra_lead": "MeshChatX ei ylläpidä chat-palvelimia. Viestit kulkevat määrittämiesi Reticulum-linkkien kautta."
         },
         "feature": {
-            "crypto_h3": "Salatut viestit",
-            "crypto_p": "Keskustelut käyttävät Reticulumin salausta. Se on verkko, jolla MeshChatX toimii.",
+            "crypto_h3": "Salattu päästä päähän",
+            "crypto_p": "Reticulum salaa jokaisen viestin vastaanottajan identiteettiavaimelle. Välissä olevat solmut välittävät vain salattua tekstiä.",
             "crypto_link": "Reticulum Crypto",
-            "no_cloud_h3": "Ei datakeskuksia",
-            "no_cloud_p": "Välissä ei istu yrityksen datakeskuksia. Liikenne pysyy keskustelevien välillä.",
+            "no_cloud_h3": "Ei keskuspalvelimia",
+            "no_cloud_p": "MeshChatX ei ylläpidä viestipalvelimia. Toimitus tapahtuu valitsemiesi Reticulum-linkkien ja -solmujen kautta.",
             "no_account_h3": "Ei rekisteröitymistä",
-            "no_account_p": "Ei puhelinnumeroa, sähköpostia tai käyttäjänimeä. Asenna ja aloita.",
-            "tunnels_h3": "Internet, radio tai mesh",
-            "tunnels_p": "Reticulum toimii Wi-Fin tai avoimen internetin, radion ja LoRan tai reittien kuten I2P ja Yggdrasil kautta.",
+            "no_account_p": "Ei puhelinnumeroa, sähköpostia tai tiliä. Osi osoitteesi on itse luomasi identiteettiavaimen tiiviste.",
+            "tunnels_h3": "Radio, mesh tai internet",
+            "tunnels_p": "Reticulum toimii LoRan, pakettradion, Wi-Fin tai I2P:n ja Yggdrasilin kaltaisten overlay-verkkojen kautta. Käytä mitä sinulla on.",
             "languages_h3": "Monia kieliä",
             "languages_p": "MeshChatX on saatavilla yhdeksällä kielellä. Valitse yksi tälle sivulle.",
-            "local_h3": "Tallennettu laitteellesi",
-            "local_p": "Identiteetti ja historia pysyvät asentamallasi laitteella. Emme pidä kopiota."
+            "local_h3": "Säilyy laitteellasi",
+            "local_p": "Identiteettiavaimet ja viestihistoria pysyvät laitteesi paikallisessa tallennuksessa. Mitään ei synkronoida yrityspalvelimelle.",
+            "source_h3": "Avoin lähdekoodi",
+            "source_p": "Koko lähdekoodi on GitHubissa ja peilattuna Reticulum-verkossa. Lue se tai rakenna se itse."
         },
         "security": {
             "h2": "Turvallisuus & eheys",
@@ -394,7 +396,8 @@
             "yggdrasil": "Yggdrasil",
             "i2p": "I2P",
             "other": "Muu"
-        }
+        },
+        "showing": "Näytetään %shown / %total"
     },
     "dep": {
         "h1": "Riippuvuudet",

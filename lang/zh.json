@@ -217,22 +217,24 @@
         },
         "section": {
             "infra_h2": "没有公司服务器",
-            "infra_lead": "MeshChatX 不托管你的聊天。消息走你配置的链路。"
+            "infra_lead": "MeshChatX 不运行聊天服务器。消息经由你配置的 Reticulum 链路传输。"
         },
         "feature": {
-            "crypto_h3": "加密消息",
-            "crypto_p": "聊天使用 Reticulum 加密。那是 MeshChatX 所运行的网络。",
+            "crypto_h3": "端到端加密",
+            "crypto_p": "Reticulum 使用接收方的身份密钥加密每条消息,中间的中继节点只能转发密文。",
             "crypto_link": "Reticulum Crypto",
-            "no_cloud_h3": "没有数据中心",
-            "no_cloud_p": "中间没有公司数据中心。流量留在交谈双方之间。",
+            "no_cloud_h3": "没有中心服务器",
+            "no_cloud_p": "MeshChatX 不运行消息服务器。投递经由你自己选择的 Reticulum 链路和节点。",
             "no_account_h3": "无需注册",
-            "no_account_p": "无需手机号、邮箱或用户名。装上就能用。",
-            "tunnels_h3": "互联网、无线电或 mesh",
-            "tunnels_p": "Reticulum 可运行于 Wi-Fi 或公网、无线电与 LoRa，或 I2P、Yggdrasil 这类路径。",
+            "no_account_p": "不需要手机号、邮箱或账号。你的地址是你自己生成的身份密钥的哈希。",
+            "tunnels_h3": "无线电、mesh 或互联网",
+            "tunnels_p": "Reticulum 可以跑在 LoRa、分组无线电、Wi-Fi 或 I2P 和 Yggdrasil 这类覆盖网络上。用你手头有的路径。",
             "languages_h3": "多种语言",
             "languages_p": "MeshChatX 提供九种语言。为本页选一种。",
             "local_h3": "保存在你的设备上",
-            "local_p": "身份和历史留在你安装的设备上。我们不保留副本。"
+            "local_p": "身份密钥和消息历史留在你本机的本地存储里,不会同步到任何公司服务器。",
+            "source_h3": "开源",
+            "source_p": "完整源码在 GitHub 上,并通过 Reticulum 镜像。可以自己审查,也可以自己编译。"
         },
         "security": {
             "h2": "安全与完整性",
@@ -350,7 +352,8 @@
             "yggdrasil": "Yggdrasil",
             "i2p": "I2P",
             "other": "其他"
-        }
+        },
+        "showing": "显示 %shown / %total"
     },
     "changelog": {
         "h1": "更新日志",

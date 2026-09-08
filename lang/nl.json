@@ -217,22 +217,24 @@
         },
         "section": {
             "infra_h2": "Geen bedrijfsservers",
-            "infra_lead": "MeshChatX host je chat niet. Berichten gaan over links die jij instelt."
+            "infra_lead": "MeshChatX draait geen chatservers. Berichten bewegen over de Reticulum-links die jij instelt."
         },
         "feature": {
-            "crypto_h3": "Versleutelde berichten",
-            "crypto_p": "Chats gebruiken Reticulum-versleuteling. Dat is het netwerk waarop MeshChatX draait.",
+            "crypto_h3": "End-to-end versleuteld",
+            "crypto_p": "Reticulum versleutelt elk bericht voor de identiteitssleutel van de ontvanger. Relais ertussen sturen alleen cijfertekst door.",
             "crypto_link": "Reticulum Crypto",
-            "no_cloud_h3": "Geen datacenters",
-            "no_cloud_p": "Er zitten geen bedrijfsdatacenters tussenin. Verkeer blijft tussen de mensen die praten.",
-            "no_account_h3": "Geen aanmelding",
-            "no_account_p": "Geen telefoonnummer, e-mail of gebruikersnaam. Installeer en begin.",
-            "tunnels_h3": "Internet, radio of mesh",
-            "tunnels_p": "Reticulum werkt over wifi of het open internet, radio en LoRa, of paden zoals I2P en Yggdrasil.",
+            "no_cloud_h3": "Geen centrale servers",
+            "no_cloud_p": "MeshChatX draait geen berichtenservers. Bezorging verloopt via de Reticulum-links en -nodes die jij kiest.",
+            "no_account_h3": "Geen registratie",
+            "no_account_p": "Geen telefoonnummer, e-mail of account. Je adres is een hash van een identiteitssleutel die je zelf genereert.",
+            "tunnels_h3": "Radio, mesh of internet",
+            "tunnels_p": "Reticulum werkt over LoRa, packet radio, wifi of overlays zoals I2P en Yggdrasil. Gebruik het pad dat je hebt.",
             "languages_h3": "Veel talen",
             "languages_p": "MeshChatX is beschikbaar in negen talen. Kies er een voor deze pagina.",
-            "local_h3": "Opgeslagen op je apparaat",
-            "local_p": "Je identiteit en geschiedenis blijven op het apparaat dat je installeert. Wij bewaren geen kopie."
+            "local_h3": "Blijft op je apparaat",
+            "local_p": "Identiteitssleutels en berichtgeschiedenis blijven in de lokale opslag van je machine. Er wordt niets naar een bedrijfsserver gesynchroniseerd.",
+            "source_h3": "Open source",
+            "source_p": "De volledige broncode staat op GitHub en is gespiegeld over Reticulum. Lees hem of bouw hem zelf."
         },
         "security": {
             "h2": "Beveiliging & integriteit",
@@ -394,7 +396,8 @@
             "yggdrasil": "Yggdrasil",
             "i2p": "I2P",
             "other": "Overig"
-        }
+        },
+        "showing": "%shown van %total weergegeven"
     },
     "dep": {
         "h1": "Afhankelijkheden",

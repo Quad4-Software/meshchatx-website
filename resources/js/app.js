@@ -482,11 +482,13 @@ function scheduleIdle(task) {
 function initShowcase() {
     document.querySelectorAll('[data-showcase]').forEach((root) => {
         const tabs = Array.from(root.querySelectorAll('[data-showcase-tab]'));
-        const image = root.querySelector('[data-showcase-image]');
+        const lightImg = root.querySelector('[data-showcase-image="light"]');
+        const darkImg = root.querySelector('[data-showcase-image="dark"]');
         const caption = root.querySelector('[data-showcase-caption]');
-        if (!tabs.length || !image) {
+        if (!tabs.length || !lightImg || !darkImg) {
             return;
         }
+        const images = [lightImg, darkImg];
 
         let manual = false;
         let timer = null;
@@ -495,15 +497,14 @@ function initShowcase() {
         const fadeMs = 520;
         const prefetched = new Set();
 
-        const resolveSrc = (tab) => {
-            const src = tab.getAttribute('data-src');
-            const srcDark = tab.getAttribute('data-src-dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            if (srcDark && isDark) {
-                return srcDark;
-            }
-            return src;
+        const srcsFor = (tab) => {
+            const light = tab.getAttribute('data-src') || '';
+            const dark = tab.getAttribute('data-src-dark') || light;
+            return { light, dark };
         };
+
+        const visibleImg = () =>
+            document.documentElement.classList.contains('dark') ? darkImg : lightImg;
 
         const queuePrefetch = (src) => {
             if (!src || prefetched.has(src)) {
@@ -542,27 +543,30 @@ function initShowcase() {
                 item.setAttribute('aria-selected', active ? 'true' : 'false');
             });
 
-            const nextSrc = resolveSrc(tab);
+            const { light, dark } = srcsFor(tab);
             prefetchAdjacent(tab);
             const label = tab.getAttribute('data-label') || tab.textContent.trim();
             const applyMeta = () => {
                 if (label) {
-                    image.setAttribute('alt', label);
+                    images.forEach((img) => img.setAttribute('alt', label));
                     if (caption) {
                         caption.textContent = label;
                     }
                 }
             };
 
-            if (!nextSrc || image.getAttribute('src') === nextSrc) {
+            const current =
+                lightImg.getAttribute('src') === light && darkImg.getAttribute('src') === dark;
+            if (!light || current) {
                 applyMeta();
                 return;
             }
 
             const swap = () => {
-                image.setAttribute('src', nextSrc);
+                lightImg.setAttribute('src', light);
+                darkImg.setAttribute('src', dark);
                 applyMeta();
-                image.classList.remove('is-fading');
+                images.forEach((img) => img.classList.remove('is-fading'));
                 busy = false;
             };
 
@@ -572,22 +576,24 @@ function initShowcase() {
             }
 
             busy = true;
-            image.classList.add('is-fading');
+            images.forEach((img) => img.classList.add('is-fading'));
             window.setTimeout(() => {
+                const shown = visibleImg();
                 const onLoad = () => {
-                    image.removeEventListener('load', onLoad);
+                    shown.removeEventListener('load', onLoad);
                     window.requestAnimationFrame(() => {
-                        image.classList.remove('is-fading');
+                        images.forEach((img) => img.classList.remove('is-fading'));
                         busy = false;
                     });
                 };
-                image.addEventListener('load', onLoad);
-                image.setAttribute('src', nextSrc);
+                shown.addEventListener('load', onLoad);
+                lightImg.setAttribute('src', light);
+                darkImg.setAttribute('src', dark);
                 applyMeta();
                 window.setTimeout(() => {
                     if (busy) {
-                        image.removeEventListener('load', onLoad);
-                        image.classList.remove('is-fading');
+                        shown.removeEventListener('load', onLoad);
+                        images.forEach((img) => img.classList.remove('is-fading'));
                         busy = false;
                     }
                 }, fadeMs + 400);
@@ -671,15 +677,6 @@ function initShowcase() {
         if (canPrefetchAssets()) {
             scheduleIdle(prefetchAllTabs);
         }
-
-        const observer = new MutationObserver(() => {
-            const current = tabs.find((tab) => tab.classList.contains('is-active')) || tabs[0];
-            activate(current, { animate: false });
-        });
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['class'],
-        });
     });
 }
 
@@ -967,6 +964,8 @@ function initInterfaceDirectory() {
 
     const search = root.querySelector('[data-ifx-search]');
     const status = root.querySelector('[data-ifx-status]');
+    const countEl = root.querySelector('[data-ifx-count]');
+    const showingTemplate = root.getAttribute('data-showing-template') || '%shown / %total';
     const cards = Array.from(root.querySelectorAll('[data-ifx-card]'));
     const typeButtons = Array.from(root.querySelectorAll('[data-ifx-type]'));
     const networkButtons = Array.from(root.querySelectorAll('[data-ifx-network]'));
@@ -1003,11 +1002,19 @@ function initInterfaceDirectory() {
         });
 
         root.querySelectorAll('[data-ifx-group]').forEach((group) => {
-            const any = Array.from(group.querySelectorAll('[data-ifx-card]')).some(
-                (card) => !card.hidden,
-            );
-            group.hidden = !any;
+            const groupVisible = group.querySelectorAll('[data-ifx-card]:not([hidden])').length;
+            group.hidden = groupVisible === 0;
+            const counter = group.querySelector('[data-ifx-group-count]');
+            if (counter) {
+                counter.textContent = String(groupVisible);
+            }
         });
+
+        if (countEl) {
+            countEl.textContent = showingTemplate
+                .replace('%shown', String(visible))
+                .replace('%total', String(cards.length));
+        }
 
         if (status) {
             status.hidden = visible > 0;

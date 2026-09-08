@@ -848,7 +848,7 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                 @endif
                 <p>
                     <a href="{{ $site['obtainium_url'] }}" target="_blank" rel="noopener noreferrer">
-                        <img src="/vendor/obtainium-badge.png" height="60" width="200" alt="{{ t('dl.android.obtainium_alt') }}">
+                        <img src="/vendor/obtainium-badge.webp" height="60" width="201" alt="{{ t('dl.android.obtainium_alt') }}" loading="lazy" decoding="async">
                     </a>
                 </p>
 

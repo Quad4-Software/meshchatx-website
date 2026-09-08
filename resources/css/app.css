@@ -1375,7 +1375,7 @@
     .feature-grid--home {
         gap: 1.15rem 1.5rem;
         border-top: 0;
-        align-items: start;
+        align-items: stretch;
     }
 
     .feature-grid--cards {
@@ -1624,6 +1624,18 @@
         vertical-align: middle;
         opacity: 1;
         transition: opacity 520ms ease;
+    }
+
+    .showcase__image--dark {
+        display: none;
+    }
+
+    html.dark .showcase__image--light {
+        display: none;
+    }
+
+    html.dark .showcase__image--dark {
+        display: block;
     }
 
     .showcase__image.is-fading {
@@ -2676,12 +2688,14 @@
     }
 
     .ifx-toolbar {
-        display: grid;
-        gap: 0.9rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem 0.9rem;
+        align-items: center;
         min-width: 0;
         max-width: 100%;
         margin-bottom: 1.5rem;
-        padding: 0.9rem;
+        padding: 0.65rem 0.8rem;
         border: 1px solid var(--color-line);
         border-radius: var(--radius-md);
         background: var(--color-surface);
@@ -2689,22 +2703,22 @@
 
     .ifx-search {
         display: block;
-        min-width: 0;
-        width: 100%;
+        flex: 1 1 14rem;
+        min-width: 11rem;
     }
 
     .ifx-search__input {
         box-sizing: border-box;
         width: 100%;
         min-width: 0;
-        min-height: 2.75rem;
-        padding: 0.55rem 0.85rem;
+        min-height: 2.35rem;
+        padding: 0.4rem 0.75rem;
         border: 1px solid var(--color-line);
         border-radius: var(--radius-sm);
         background: var(--color-paper);
         color: var(--color-ink);
         font: inherit;
-        font-size: 1rem;
+        font-size: 0.92rem;
     }
 
     .ifx-search__input:focus {
@@ -2712,22 +2726,22 @@
         outline-offset: 1px;
     }
 
-    .ifx-filters {
-        min-width: 0;
-        max-width: 100%;
+    .ifx-chip__count {
+        margin-inline-start: 0.35rem;
+        color: var(--color-muted);
+        font-size: 0.72rem;
+        font-variant-numeric: tabular-nums;
     }
 
-    .ifx-filters__label {
-        margin: 0 0 0.4rem;
+    .ifx-toolbar__count {
+        margin: 0 0 0 auto;
         color: var(--color-muted);
-        font-size: 0.78rem;
-        font-weight: 550;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
+        font-size: 0.8rem;
+        white-space: nowrap;
     }
 
     .ifx-toolbar .channel-toggle__btn {
-        min-height: 2.5rem;
+        min-height: 2.1rem;
     }
 
     .ifx-hero-meta {
@@ -2768,11 +2782,21 @@
     }
 
     .ifx-group__title {
+        display: flex;
+        gap: 0.5rem;
+        align-items: baseline;
         margin-bottom: 0.75rem;
         font-size: 1.05rem;
         font-weight: 650;
         color: var(--color-ink);
         overflow-wrap: anywhere;
+    }
+
+    .ifx-group__count {
+        color: var(--color-muted);
+        font-size: 0.78rem;
+        font-weight: 550;
+        font-variant-numeric: tabular-nums;
     }
 
     .ifx-grid {
@@ -2785,11 +2809,11 @@
 
     .ifx-card {
         display: grid;
-        gap: 0.65rem;
+        gap: 0.55rem;
         align-content: start;
         min-width: 0;
         max-width: 100%;
-        padding: 0.9rem;
+        padding: 0.85rem 0.9rem;
         overflow-x: clip;
         border: 1px solid var(--color-line);
         border-radius: var(--radius-md);
@@ -2797,19 +2821,41 @@
     }
 
     .ifx-card__top {
+        display: flex;
+        gap: 0.5rem;
+        align-items: baseline;
         min-width: 0;
         max-width: 100%;
     }
 
+    .ifx-dot {
+        flex: 0 0 auto;
+        align-self: center;
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: var(--color-line);
+    }
+
+    .ifx-dot.is-on {
+        background: #16a34a;
+    }
+
+    html.dark .ifx-dot.is-on {
+        background: #4ade80;
+    }
+
     .ifx-card__title {
-        font-size: 1rem;
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: 0.98rem;
         font-weight: 650;
         color: var(--color-ink);
         overflow-wrap: anywhere;
     }
 
     .ifx-card__host {
-        margin-top: 0.25rem;
+        margin: 0;
         color: var(--color-muted);
         font-size: 0.85rem;
         font-family: var(--font-mono);
@@ -2817,16 +2863,9 @@
         word-break: break-word;
     }
 
-    .ifx-card__meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.35rem;
-        margin: 0;
-        min-width: 0;
-    }
-
     .ifx-badge {
         display: inline-flex;
+        flex: 0 0 auto;
         align-items: center;
         max-width: 100%;
         padding: 0.15rem 0.45rem;
@@ -2839,38 +2878,29 @@
         letter-spacing: 0.02em;
     }
 
-    .ifx-badge--ok {
-        color: var(--color-accent-soft);
-        border-color: color-mix(in oklab, var(--color-accent) 35%, var(--color-line));
-    }
-
-    .ifx-card__config-wrap {
+    .ifx-card__foot {
         display: grid;
+        grid-template-columns: 1fr auto;
         gap: 0.5rem;
-        min-width: 0;
-        max-width: 100%;
-    }
-
-    .ifx-card__actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
+        align-items: center;
+        margin-top: auto;
+        padding-top: 0.55rem;
+        border-top: 1px solid var(--color-line-soft);
         min-width: 0;
     }
 
     .ifx-card__details {
-        min-width: 0;
-        max-width: 100%;
-        padding-top: 0.65rem;
-        border-top: 1px solid var(--color-line-soft);
+        display: contents;
     }
 
     .ifx-card__details > summary {
+        grid-column: 2;
         cursor: pointer;
         color: var(--color-accent-muted);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         font-weight: 550;
         list-style: none;
+        justify-self: end;
     }
 
     .ifx-card__details > summary::-webkit-details-marker {
@@ -2878,13 +2908,13 @@
     }
 
     .ifx-card__details[open] > summary {
-        margin-bottom: 0.55rem;
         color: var(--color-ink);
     }
 
     .ifx-card__config {
+        grid-column: 1 / -1;
         box-sizing: border-box;
-        margin: 0;
+        margin: 0.25rem 0 0;
         min-width: 0;
         max-width: 100%;
         padding: 0.7rem 0.8rem;
@@ -3289,15 +3319,6 @@
         }
 
         .git-card--primary {
-            grid-column: 1 / -1;
-        }
-
-        .ifx-toolbar {
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            padding: 1rem 1.1rem;
-        }
-
-        .ifx-search {
             grid-column: 1 / -1;
         }
 

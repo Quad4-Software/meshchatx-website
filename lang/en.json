@@ -217,22 +217,24 @@
         },
         "section": {
             "infra_h2": "No company servers",
-            "infra_lead": "MeshChatX does not host your chat. Messages move over links you set up."
+            "infra_lead": "MeshChatX doesn't run chat servers. Messages move over the Reticulum links you set up."
         },
         "feature": {
-            "crypto_h3": "Encrypted messages",
-            "crypto_p": "Chats use Reticulum encryption. That is the network MeshChatX runs on.",
+            "crypto_h3": "Encrypted end to end",
+            "crypto_p": "Reticulum encrypts every message for the recipient's identity key. Relays in between forward ciphertext they can't read.",
             "crypto_link": "Reticulum Crypto",
-            "no_cloud_h3": "No data centers",
-            "no_cloud_p": "No company data centers sit in the middle. Traffic stays between the people talking.",
+            "no_cloud_h3": "No central servers",
+            "no_cloud_p": "MeshChatX doesn't run message servers. Delivery happens over the Reticulum links & nodes you choose.",
             "no_account_h3": "No signup",
-            "no_account_p": "No phone number, email, or username. Install it and start.",
-            "tunnels_h3": "Internet, radio, or mesh",
-            "tunnels_p": "Reticulum works over Wi-Fi or the open internet, radio and LoRa, or paths like I2P and Yggdrasil.",
+            "no_account_p": "No phone number, email, or account. Your address is a hash of an identity key you generate.",
+            "tunnels_h3": "Radio, mesh, or internet",
+            "tunnels_p": "Reticulum runs over LoRa, packet radio, Wi-Fi, or overlays like I2P & Yggdrasil. Use whatever path you have.",
             "languages_h3": "Many languages",
             "languages_p": "MeshChatX is available in nine languages. Pick one for this page.",
-            "local_h3": "Saved on your device",
-            "local_p": "Your identity and history stay on the device you install. We do not keep a copy."
+            "local_h3": "Kept on your device",
+            "local_p": "Identity keys & message history stay in local storage on your machine. Nothing syncs to a company server.",
+            "source_h3": "Open source",
+            "source_p": "The full source is on GitHub & mirrored over Reticulum. Read it or build it yourself."
         },
         "security": {
             "h2": "Security & integrity",
@@ -394,7 +396,8 @@
             "yggdrasil": "Yggdrasil",
             "i2p": "I2P",
             "other": "Other"
-        }
+        },
+        "showing": "Showing %shown of %total"
     },
     "dep": {
         "h1": "Dependencies",

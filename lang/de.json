@@ -217,22 +217,24 @@
         },
         "section": {
             "infra_h2": "Keine Firmenserver",
-            "infra_lead": "MeshChatX hostet deinen Chat nicht. Nachrichten laufen über Verbindungen, die du einrichtest."
+            "infra_lead": "MeshChatX betreibt keine Chat-Server. Nachrichten laufen über die Reticulum-Links, die du einrichtest."
         },
         "feature": {
-            "crypto_h3": "Verschlüsselte Nachrichten",
-            "crypto_p": "Chats nutzen Reticulum-Verschlüsselung. Das ist das Netzwerk, auf dem MeshChatX läuft.",
+            "crypto_h3": "Ende-zu-Ende verschlüsselt",
+            "crypto_p": "Reticulum verschlüsselt jede Nachricht für den Identitätsschlüssel des Empfängers. Relays dazwischen leiten nur Chiffretext weiter.",
             "crypto_link": "Reticulum Crypto",
-            "no_cloud_h3": "Keine Rechenzentren",
-            "no_cloud_p": "Keine Firmen-Rechenzentren sitzen dazwischen. Der Verkehr bleibt zwischen den Leuten, die reden.",
+            "no_cloud_h3": "Keine zentralen Server",
+            "no_cloud_p": "MeshChatX betreibt keine Nachrichtenserver. Die Zustellung läuft über die Reticulum-Links und -Knoten, die du wählst.",
             "no_account_h3": "Keine Anmeldung",
-            "no_account_p": "Keine Telefonnummer, E-Mail oder Benutzername. Installieren und loslegen.",
-            "tunnels_h3": "Internet, Funk oder Mesh",
-            "tunnels_p": "Reticulum läuft über WLAN oder das offene Internet, Funk und LoRa, oder Wege wie I2P und Yggdrasil.",
+            "no_account_p": "Keine Telefonnummer, E-Mail oder Konto. Deine Adresse ist der Hash eines Identitätsschlüssels, den du selbst erzeugst.",
+            "tunnels_h3": "Funk, Mesh oder Internet",
+            "tunnels_p": "Reticulum läuft über LoRa, Paketradio, WLAN oder Overlays wie I2P und Yggdrasil. Nutz den Weg, den du hast.",
             "languages_h3": "Viele Sprachen",
             "languages_p": "MeshChatX gibt es in neun Sprachen. Wähl eine für diese Seite.",
-            "local_h3": "Gespeichert auf deinem Gerät",
-            "local_p": "Identität und Verlauf bleiben auf dem Gerät, das du installierst. Wir behalten keine Kopie."
+            "local_h3": "Bleibt auf deinem Gerät",
+            "local_p": "Identitätsschlüssel und Nachrichtenverlauf bleiben im lokalen Speicher deines Geräts. Nichts wird auf einen Firmenserver synchronisiert.",
+            "source_h3": "Open Source",
+            "source_p": "Der komplette Quelltext liegt auf GitHub und gespiegelt über Reticulum. Lies ihn oder bau ihn selbst."
         },
         "security": {
             "h2": "Sicherheit & Integrität",
@@ -350,7 +352,8 @@
             "yggdrasil": "Yggdrasil",
             "i2p": "I2P",
             "other": "Andere"
-        }
+        },
+        "showing": "%shown von %total"
     },
     "changelog": {
         "h1": "Änderungsprotokoll",

@@ -217,22 +217,24 @@
         },
         "section": {
             "infra_h2": "Pas de serveurs d’entreprise",
-            "infra_lead": "MeshChatX n’héberge pas votre chat. Les messages passent sur des liens que vous configurez."
+            "infra_lead": "MeshChatX n'exploite aucun serveur de chat. Les messages circulent sur les liens Reticulum que vous configurez."
         },
         "feature": {
-            "crypto_h3": "Messages chiffrés",
-            "crypto_p": "Les chats utilisent le chiffrement Reticulum. C’est le réseau sur lequel tourne MeshChatX.",
+            "crypto_h3": "Chiffré de bout en bout",
+            "crypto_p": "Reticulum chiffre chaque message pour la clé d'identité du destinataire. Les relais intermédiaires ne transmettent que du texte chiffré.",
             "crypto_link": "Reticulum Crypto",
-            "no_cloud_h3": "Pas de centres de données",
-            "no_cloud_p": "Aucun centre de données d’entreprise ne s’interpose. Le trafic reste entre les personnes qui parlent.",
-            "no_account_h3": "Pas d’inscription",
-            "no_account_p": "Pas de numéro, d’e-mail ni de nom d’utilisateur. Installez et commencez.",
-            "tunnels_h3": "Internet, radio ou mesh",
-            "tunnels_p": "Reticulum fonctionne sur le Wi-Fi ou l’internet ouvert, la radio et le LoRa, ou des chemins comme I2P et Yggdrasil.",
+            "no_cloud_h3": "Pas de serveurs centraux",
+            "no_cloud_p": "MeshChatX n'exploite aucun serveur de messages. La livraison passe par les liens et nœuds Reticulum que vous choisissez.",
+            "no_account_h3": "Aucune inscription",
+            "no_account_p": "Pas de numéro de téléphone, d'e-mail ni de compte. Votre adresse est le hachage d'une clé d'identité que vous générez.",
+            "tunnels_h3": "Radio, mesh ou internet",
+            "tunnels_p": "Reticulum fonctionne sur LoRa, radio par paquets, Wi-Fi ou des surcouches comme I2P et Yggdrasil. Empruntez le chemin dont vous disposez.",
             "languages_h3": "Plusieurs langues",
             "languages_p": "MeshChatX est disponible en neuf langues. Choisissez-en une pour cette page.",
-            "local_h3": "Enregistré sur votre appareil",
-            "local_p": "Votre identité et votre historique restent sur l’appareil que vous installez. Nous ne gardons pas de copie."
+            "local_h3": "Conservé sur votre appareil",
+            "local_p": "Les clés d'identité et l'historique restent dans le stockage local de votre machine. Rien n'est synchronisé vers un serveur d'entreprise.",
+            "source_h3": "Open source",
+            "source_p": "L'intégralité du code est sur GitHub et en miroir sur Reticulum. Lisez-le ou compilez-le vous-même."
         },
         "security": {
             "h2": "Sécurité & intégrité",
@@ -394,7 +396,8 @@
             "yggdrasil": "Yggdrasil",
             "i2p": "I2P",
             "other": "Autre"
-        }
+        },
+        "showing": "Affichage de %shown sur %total"
     },
     "dep": {
         "h1": "Dépendances",
