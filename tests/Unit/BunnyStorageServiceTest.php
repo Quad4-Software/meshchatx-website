@@ -56,6 +56,7 @@ class BunnyStorageServiceTest extends TestCase
                     'Checksum' => 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
                 ],
             ], 200),
+            'cdn.quad4.io/*' => Http::response('', 200),
         ]);
 
         $service = app(BunnyStorageService::class);
@@ -76,7 +77,34 @@ class BunnyStorageServiceTest extends TestCase
         );
         $this->assertSame($first, $second);
 
-        Http::assertSentCount(4);
+        Http::assertSentCount(5);
+    }
+
+    public function test_assets_by_name_returns_empty_when_cdn_is_unreachable(): void
+    {
+        Http::fake([
+            'la.storage.bunnycdn.com/meshchatx/' => Http::response([
+                ['ObjectName' => 'nightly', 'IsDirectory' => true],
+            ], 200),
+            'la.storage.bunnycdn.com/meshchatx/nightly/' => Http::response([
+                [
+                    'ObjectName' => 'nightly-2026.09.03-0cc046e',
+                    'IsDirectory' => true,
+                    'DateCreated' => '2026-09-03T13:02:40',
+                ],
+            ], 200),
+            'la.storage.bunnycdn.com/meshchatx/nightly/nightly-2026.09.03-0cc046e/' => Http::response([
+                [
+                    'ObjectName' => 'ReticulumMeshChatX-v4.8.6-linux-x86_64.AppImage',
+                    'IsDirectory' => false,
+                ],
+            ], 200),
+            'cdn.quad4.io/*' => Http::response('', 404),
+        ]);
+
+        $service = app(BunnyStorageService::class);
+
+        $this->assertSame([], $service->assetsByName('nightly-2026.09.03-0cc046e'));
     }
 
     public function test_disabled_without_access_key(): void

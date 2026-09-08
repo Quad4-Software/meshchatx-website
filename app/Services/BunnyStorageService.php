@@ -58,7 +58,12 @@ class BunnyStorageService
             return [];
         }
 
-        return $this->cachedAssets($path);
+        $assets = $this->cachedAssets($path);
+        if ($assets === [] || ! $this->cdnReachable($assets)) {
+            return [];
+        }
+
+        return $assets;
     }
 
     /**
@@ -372,6 +377,42 @@ class BunnyStorageService
         }
 
         return null;
+    }
+
+    /**
+     * Make sure the configured CDN can actually serve at least one of the listed files.
+     * New storage zones or pull zones can list files the CDN edge is not yet serving.
+     *
+     * @param  array<string, array{name: string, path: string, url: string, sha256: ?string}>  $assets
+     */
+    private function cdnReachable(array $assets): bool
+    {
+        $first = array_find(
+            $assets,
+            fn (array $asset): bool => is_string($asset['url'] ?? null) && $asset['url'] !== '',
+        );
+
+        if (! is_array($first) || ! is_string($first['url'] ?? null) || $first['url'] === '') {
+            return false;
+        }
+
+        $url = $first['url'];
+        $cacheKey = 'meshchatx.bunny.reachable.'.hash('xxh128', $url);
+        $cached = Cache::get($cacheKey);
+        if (is_bool($cached)) {
+            return $cached;
+        }
+
+        try {
+            $response = Http::timeout(5)->head($url);
+            $reachable = $response->successful() || $response->redirect();
+        } catch (\Throwable) {
+            $reachable = false;
+        }
+
+        Cache::put($cacheKey, $reachable, $reachable ? $this->cacheTtl() : 60);
+
+        return $reachable;
     }
 
     private function cacheTtl(): int

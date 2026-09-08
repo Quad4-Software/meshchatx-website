@@ -150,6 +150,7 @@ class DownloadPageTest extends TestCase
                     'Checksum' => 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
                 ],
             ], 200),
+            'cdn.quad4.io/*' => Http::response('', 200),
         ]);
 
         $this->get('/download?channel=testing')
@@ -210,6 +211,7 @@ class DownloadPageTest extends TestCase
                     'Checksum' => 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
                 ],
             ], 200),
+            'cdn.quad4.io/*' => Http::response('', 200),
         ]);
 
         $this->get('/download?channel=testing&source=github')

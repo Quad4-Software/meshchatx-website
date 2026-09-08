@@ -148,6 +148,7 @@ class GithubReleasesServiceTest extends TestCase
                     'Checksum' => 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
                 ],
             ], 200),
+            'cdn.quad4.io/*' => Http::response('', 200),
         ]);
 
         $payload = app(GithubReleasesService::class)->payload();
