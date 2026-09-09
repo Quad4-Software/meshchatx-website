@@ -18,6 +18,7 @@ if [ -z "${APP_KEY:-}" ]; then
 fi
 
 php artisan package:discover --ansi --quiet
+php artisan cache:clear --quiet
 php artisan config:cache --quiet
 php artisan route:cache --quiet
 php artisan view:cache --quiet

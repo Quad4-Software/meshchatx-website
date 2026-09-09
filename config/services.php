@@ -40,9 +40,9 @@ return [
     ],
 
     'bunny' => [
-        'storage_zone' => env('BUNNY_STORAGE_ZONE', 'meshchatx'),
+        'storage_zone' => env('BUNNY_STORAGE_ZONE', 'quad4'),
         'access_key' => env('BUNNY_STORAGE_ACCESS_KEY'),
-        'storage_endpoint' => env('BUNNY_STORAGE_ENDPOINT', 'https://la.storage.bunnycdn.com'),
+        'storage_endpoint' => env('BUNNY_STORAGE_ENDPOINT', 'https://ny.storage.bunnycdn.com'),
         'cdn_base' => env('BUNNY_CDN_BASE', 'https://cdn.quad4.io'),
     ],
 
