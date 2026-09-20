@@ -9,6 +9,9 @@ use App\Services\GithubReleasesService;
 use App\Services\RnsDirectoryService;
 use App\Services\SbomService;
 use App\Support\SiteUri;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,6 +35,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        RateLimiter::for('mcx-api', function (Request $request) {
+            return Limit::perMinute(90)->by($request->ip());
+        });
+
+        RateLimiter::for('mcx-sbom', function (Request $request) {
+            return Limit::perMinute(30)->by($request->ip());
+        });
+
+        RateLimiter::for('mcx-docs-export', function (Request $request) {
+            return Limit::perMinute(6)->by($request->ip());
+        });
+
         View::share('site', [
             'name' => config('meshchatx.name'),
             'domain' => SiteUri::normalize((string) config('meshchatx.domain')) ?? config('meshchatx.domain'),

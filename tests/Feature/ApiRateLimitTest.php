@@ -18,6 +18,15 @@ class ApiRateLimitTest extends TestCase
         RateLimiter::clear('mcx-docs-export');
     }
 
+    public function test_named_api_rate_limiters_are_registered(): void
+    {
+        $limiter = app(\Illuminate\Cache\RateLimiter::class);
+
+        $this->assertNotNull($limiter->limiter('mcx-api'));
+        $this->assertNotNull($limiter->limiter('mcx-sbom'));
+        $this->assertNotNull($limiter->limiter('mcx-docs-export'));
+    }
+
     public function test_sbom_version_api_is_rate_limited(): void
     {
         Http::fake([
