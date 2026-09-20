@@ -63,7 +63,19 @@ docker compose --env-file .env.docker up --build -d
 
 Coolify: use `docker-compose.coolify.yml`. Do not publish host ports. Assign the domain only to the `web` service as `https://your.domain:8080` (not `app`). Set `APP_KEY` in Coolify env vars.
 
+The app entrypoint clears and rebuilds config, route, and view caches. Named rate limiters for `/api/mcx-*` and docs export are registered in `AppServiceProvider::boot` so they still load under `route:cache`.
+
 GHCR images (CI): `ghcr.io/quad4-software/meshchatx-website/app` and `.../web`.
+
+## Public JSON APIs
+
+| Path | Payload |
+| --- | --- |
+| `/api/mcx-releases` | Download assets by channel |
+| `/api/mcx-interfaces` | Cached Reticulum interface directory |
+| `/api/mcx-sbom`, `/api/mcx-sbom/{version}` | CycloneDX catalog and version SBOM |
+
+Throttles: `mcx-api` 90/min, `mcx-sbom` 30/min (version route), `mcx-docs-export` 6/min for `/docs/export-all/*`.
 
 ## Env
 
@@ -72,6 +84,8 @@ GHCR images (CI): `ghcr.io/quad4-software/meshchatx-website/app` and `.../web`.
 | `APP_KEY` | Required at runtime |
 | `MESHCHATX_DOMAIN` | Canonical origin (default `https://meshchatx.com`) |
 | `RELEASES_CACHE_SECONDS` | GitHub release cache TTL (default `3600`) |
+| `RNS_DIRECTORY_CACHE_SECONDS` | Interface directory cache TTL (default `259200`) |
+| `SBOM_CACHE_SECONDS` | SBOM cache TTL (default `2592000`) |
 | `GITHUB_TOKEN` | Optional GitHub API rate limit |
 
 ## Agents

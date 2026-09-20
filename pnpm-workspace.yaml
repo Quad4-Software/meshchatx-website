@@ -8,6 +8,7 @@
 # - lifecycle scripts disabled (ignoreScripts)
 # - verifyDepsBeforeRun install
 # - strict peer deps and engines
+# Package manager version is pinned via package.json packageManager + Corepack.
 
 minimumReleaseAge: 4320
 minimumReleaseAgeStrict: false
@@ -19,7 +20,6 @@ ignoreScripts: true
 verifyDepsBeforeRun: install
 strictPeerDependencies: true
 engineStrict: true
-managePackageManagerVersions: true
 resolvePeersFromWorkspaceRoot: true
 shamefullyHoist: false
 hoist: true

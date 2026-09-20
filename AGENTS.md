@@ -36,10 +36,13 @@ Download assets prefer Bunny CDN when `BUNNY_STORAGE_ACCESS_KEY` is set; GitHub 
 
 Locales: English has no prefix. Prefixed: `de`, `es`, `fi`, `fr`, `it`, `nl`, `ru`, `zh`.
 
+Named rate limiters for public JSON and docs export live in `AppServiceProvider::boot` (`mcx-api` 90/min, `mcx-sbom` 30/min, `mcx-docs-export` 6/min). Do not register them in `withRouting` `then`. Docker runs `php artisan route:cache` on boot, and that path skips the routing `then` callback, which previously 500'd every throttled API.
+
 ### Layout
 
 - Controllers: `app/Http/Controllers` (thin, invokable)
 - Constants and URLs: `config/meshchatx.php`
+- Rate limiters: `app/Providers/AppServiceProvider.php`
 - Translations: `lang/*.json` (merged with `*.download.json`)
 - Docs markdown: `content/docs/{locale}/` (falls back to `en`, synced from MeshChatX app `docs/`)
 - Docs nav: `config/meshchatx/documentation.php`
@@ -47,6 +50,7 @@ Locales: English has no prefix. Prefixed: `de`, `es`, `fi`, `fr`, `it`, `nl`, `r
 - Views: `resources/views/pages`, `resources/views/components`
 - CSS: `resources/css/app.css`
 - Routes: `routes/web.php`
+- Docker entrypoint: `docker/entrypoint.sh` (config/route/view cache)
 
 ## Skills
 

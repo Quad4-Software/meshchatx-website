@@ -22,7 +22,8 @@ Canonical source of truth for site URLs and nav lives in `config/meshchatx.php`.
 - Release channels on `/download` and `/api/mcx-releases`: `stable`, `beta`, `testing` (Bunny tracks `release|beta|testing`; legacy `nightly` tags and storage paths map to testing). API still exposes `prerelease` as an alias of `testing`.
 - Flatpak: single-file `.flatpak` download from the selected release, plus CDN remote install commands for `https://cdn.quad4.io/flatpak/` (`.flatpakref` / `.flatpakrepo`). App ID `com.quad4.meshchatx`.
 - CycloneDX SBOMs from release assets are normalized and cached on `/dependency` (`SBOM_CACHE_SECONDS`, default 2592000 / 30 days). Prefetch via `php artisan sbom:warm` (scheduled hourly), not anonymous HTTP.
-- Reticulum interface directory is copied from directory.rns.recipes and cached (`RNS_DIRECTORY_CACHE_SECONDS`, default 259200 / 72 hours)
+- Reticulum interface directory is copied from directory.rns.recipes and cached (`RNS_DIRECTORY_CACHE_SECONDS`, default 259200 / 72 hours). JSON mirror: `/api/mcx-interfaces`.
+- Public JSON APIs (`/api/mcx-releases`, `/api/mcx-interfaces`, `/api/mcx-sbom`) share the `mcx-api` throttle (90/min). SBOM-by-version uses `mcx-sbom` (30/min). Docs bulk export uses `mcx-docs-export` (6/min). Register these in `AppServiceProvider::boot`, not in `withRouting` `then`, because Docker `route:cache` skips that callback.
 - Privacy stance on the site: no tracking, no ads, functional cookies only (`mcx_locale`)
 
 ## Product URLs (from config)
