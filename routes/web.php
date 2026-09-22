@@ -24,6 +24,7 @@ use App\Http\Controllers\SbomApiController;
 use App\Http\Controllers\SbomCatalogApiController;
 use App\Http\Controllers\ServiceWorkerController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\VitalsController;
 use Illuminate\Support\Facades\Route;
 
 $registerPages = function (): void {
@@ -86,3 +87,7 @@ Route::middleware('throttle:mcx-sbom')->group(function (): void {
         ->where('version', '[A-Za-z0-9._+-]{1,64}')
         ->name('api.mcx-sbom.version');
 });
+
+Route::post('/api/vitals', VitalsController::class)
+    ->middleware('throttle:mcx-vitals')
+    ->name('api.vitals');

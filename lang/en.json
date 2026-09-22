@@ -477,6 +477,7 @@
             "authoring": "Authoring",
             "platforms": "Platform guides",
             "ops": "Operations"
-        }
+        },
+        "copy_md": "Copy MD"
     }
 }

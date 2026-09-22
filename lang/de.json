@@ -436,7 +436,8 @@
             "authoring": "Schreiben",
             "platforms": "Plattformleitfäden",
             "ops": "Betrieb"
-        }
+        },
+        "copy_md": "MD kopieren"
     },
     "dep": {
         "h1": "Abhängigkeiten",

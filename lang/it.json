@@ -436,7 +436,8 @@
             "authoring": "Autore",
             "platforms": "Guide piattaforme",
             "ops": "Operazioni"
-        }
+        },
+        "copy_md": "Copia MD"
     },
     "dep": {
         "h1": "Dipendenze",

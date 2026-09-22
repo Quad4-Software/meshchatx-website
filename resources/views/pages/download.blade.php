@@ -252,6 +252,22 @@ YAML;
                 @endif
 
                 @php
+                    $verifyCmd = function (string $platformId, ?string $url, ?string $sha): ?string {
+                        if (! is_string($url) || $url === '' || ! is_string($sha) || $sha === '') {
+                            return null;
+                        }
+                        $file = basename((string) parse_url($url, PHP_URL_PATH));
+                        if ($file === '' || $file === '/') {
+                            return null;
+                        }
+
+                        return match ($platformId) {
+                            'windows' => '(Get-FileHash "'.$file.'" -Algorithm SHA256).Hash -eq "'.$sha.'"',
+                            'macos' => 'shasum -a 256 "'.$file.'"',
+                            default => 'echo "'.$sha.'  '.$file.'" | sha256sum -c -',
+                        };
+                    };
+
                     $heroPlatforms = [
                         'windows' => [
                             'label' => t('dl.tabs.windows'),
@@ -289,11 +305,19 @@ YAML;
                             'sha256' => $wheelSha,
                         ],
                     ];
+                    foreach ($heroPlatforms as $platformId => $meta) {
+                        $heroPlatforms[$platformId]['verify'] = $verifyCmd(
+                            $platformId,
+                            $meta['url'] ?? null,
+                            $meta['sha256'] ?? null,
+                        );
+                    }
                     $docsGettingStarted = locale_route('docs.show', ['slug' => 'getting-started']);
                     $ctaTemplate = t('dl.cta.download_for');
-                    $heroMeta = $heroPlatforms[$detectedPlatform] ?? ['label' => t('dl.tabs.'.$detectedPlatform), 'url' => null, 'sha256' => null];
+                    $heroMeta = $heroPlatforms[$detectedPlatform] ?? ['label' => t('dl.tabs.'.$detectedPlatform), 'url' => null, 'sha256' => null, 'verify' => null];
                     $heroUrl = is_string($heroMeta['url'] ?? null) && $heroMeta['url'] !== '' ? $heroMeta['url'] : '#'.$detectedPlatform;
                     $heroSha = is_string($heroMeta['sha256'] ?? null) ? $heroMeta['sha256'] : '';
+                    $heroVerify = is_string($heroMeta['verify'] ?? null) ? $heroMeta['verify'] : null;
                 @endphp
 
                 <div
@@ -308,6 +332,7 @@ YAML;
                             'label' => $meta['label'],
                             'url' => $meta['url'],
                             'sha256' => $meta['sha256'],
+                            'verify' => $meta['verify'] ?? null,
                         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
                     @endforeach
                     <div class="download-hero-cta__stack">
@@ -327,6 +352,28 @@ YAML;
                                 title="{{ t('dl.copy_sha256') }}"
                                 data-copy-aria-prefix="{{ t('dl.copy_sha256') }}"
                             >{{ $heroSha }}</button>
+                            <div
+                                class="download-verify{{ $heroVerify === null ? ' is-empty' : '' }}"
+                                data-download-hero-verify
+                                @if ($heroVerify === null) aria-hidden="true" @endif
+                            >
+                                <span class="download-checksum__label">{{ t('dl.verify') }}</span>
+                                <span class="download-verify__row">
+                                    <code
+                                        class="download-verify__cmd"
+                                        data-download-hero-verify-cmd
+                                    >{{ $heroVerify }}</code>
+                                    <button
+                                        type="button"
+                                        class="download-verify__copy"
+                                        data-download-hero-verify-copy
+                                        data-copy-text="{{ $heroVerify ?? '' }}"
+                                        @if ($heroVerify === null) tabindex="-1" @endif
+                                        aria-label="{{ t('dl.verify_copy') }}"
+                                        title="{{ t('dl.verify_copy') }}"
+                                    ><x-icon name="copy" size="xs" /></button>
+                                </span>
+                            </div>
                         </div>
                         <div class="download-hero-cta__actions">
                             <a

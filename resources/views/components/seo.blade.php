@@ -21,6 +21,11 @@
         ? $canonical
         : ($isError ? url()->current() : locale_route($routeName, $routeParams));
     $logoUrl = $domain.'/logo.webp';
+    $ogImagePath = 'og/card-'.$page.'.webp';
+    if (! file_exists(public_path($ogImagePath))) {
+        $ogImagePath = 'og/card.webp';
+    }
+    $ogUrl = $domain.'/'.$ogImagePath;
     $ogLocales = $site['og_locales'] ?? [];
     $ogLocale = $ogLocales[$locale] ?? 'en_US';
     $locales = $site['locales'] ?? ['en'];
@@ -149,9 +154,9 @@
 <meta property="og:title" content="{{ $title }}">
 <meta property="og:description" content="{{ $desc }}">
 <meta property="og:url" content="{{ $canonical }}">
-<meta property="og:image" content="{{ $logoUrl }}">
-<meta property="og:image:width" content="800">
-<meta property="og:image:height" content="800">
+<meta property="og:image" content="{{ $ogUrl }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/webp">
 <meta property="og:image:alt" content="{{ $ogAlt }}">
 <meta property="og:locale" content="{{ $ogLocale }}">
@@ -165,7 +170,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ $title }}">
 <meta name="twitter:description" content="{{ $desc }}">
-<meta name="twitter:image" content="{{ $logoUrl }}">
+<meta name="twitter:image" content="{{ $ogUrl }}">
 <meta name="twitter:image:alt" content="{{ $ogAlt }}">
 <meta id="mcx-theme-color" name="theme-color" content="#fafafa">
 <meta name="mobile-web-app-capable" content="yes">

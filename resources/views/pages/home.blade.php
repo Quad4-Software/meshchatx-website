@@ -90,6 +90,9 @@
                         @php
                             $label = t('js.showcase.tab'.$index);
                             $alt = t('js.showcase.desktop_fmt', ['s' => $label]);
+                            $base = (string) preg_replace('/\.webp$/', '', $file);
+                            $lightSet = "/showcase/light/{$base}-800w.webp 800w, /showcase/light/{$base}-1280w.webp 1280w, /showcase/light/{$file} 1800w";
+                            $darkSet = "/showcase/dark/{$base}-800w.webp 800w, /showcase/dark/{$base}-1280w.webp 1280w, /showcase/dark/{$file} 1800w";
                         @endphp
                         <button
                             type="button"
@@ -98,16 +101,26 @@
                             data-showcase-tab
                             data-src="/showcase/light/{{ $file }}"
                             data-src-dark="/showcase/dark/{{ $file }}"
+                            data-srcset="{{ $lightSet }}"
+                            data-srcset-dark="{{ $darkSet }}"
                             data-label="{{ $alt }}"
                             aria-selected="{{ $index === 0 ? 'true' : 'false' }}"
                         >{{ $label }}</button>
                     @endforeach
                 </div>
                 <div class="showcase__plane">
+                    @php
+                        $firstBase = (string) preg_replace('/\.webp$/', '', $firstTab);
+                        $shotSizes = '(min-width: 72rem) 1088px, calc(100vw - 2rem)';
+                        $firstLightSet = "/showcase/light/{$firstBase}-800w.webp 800w, /showcase/light/{$firstBase}-1280w.webp 1280w, /showcase/light/{$firstTab} 1800w";
+                        $firstDarkSet = "/showcase/dark/{$firstBase}-800w.webp 800w, /showcase/dark/{$firstBase}-1280w.webp 1280w, /showcase/dark/{$firstTab} 1800w";
+                    @endphp
                     <img
                         class="home-hero__shot showcase__image showcase__image--light"
                         data-showcase-image="light"
                         src="/showcase/light/{{ $firstTab }}"
+                        srcset="{{ $firstLightSet }}"
+                        sizes="{{ $shotSizes }}"
                         alt="{{ t('js.showcase.desktop_fmt', ['s' => t('js.showcase.tab0')]) }}"
                         width="1800"
                         height="959"
@@ -118,6 +131,8 @@
                         class="home-hero__shot showcase__image showcase__image--dark"
                         data-showcase-image="dark"
                         src="/showcase/dark/{{ $firstTab }}"
+                        srcset="{{ $firstDarkSet }}"
+                        sizes="{{ $shotSizes }}"
                         alt="{{ t('js.showcase.desktop_fmt', ['s' => t('js.showcase.tab0')]) }}"
                         width="1800"
                         height="959"

@@ -47,6 +47,10 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(6)->by($request->ip());
         });
 
+        RateLimiter::for('mcx-vitals', function (Request $request) {
+            return Limit::perMinute(120)->by($request->ip());
+        });
+
         View::share('site', [
             'name' => config('meshchatx.name'),
             'domain' => SiteUri::normalize((string) config('meshchatx.domain')) ?? config('meshchatx.domain'),

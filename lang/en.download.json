@@ -186,6 +186,8 @@
       "bundle_h3": "Downloaded file",
       "bundle_intro": "Already downloaded the .flatpak file? Install it with:",
       "install": "Install and open"
-    }
+    },
+    "verify": "Verify",
+    "verify_copy": "Copy verification command"
   }
 }

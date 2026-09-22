@@ -186,6 +186,8 @@
       "no_bundle": "Tässä julkaisussa ei ole vielä Flatpak-tiedostoa.",
       "install": "Asenna ja avaa",
       "btn_install": "Asenna MeshChatX"
-    }
+    },
+    "verify": "Varmista",
+    "verify_copy": "Kopioi varmistuskomento"
   }
 }

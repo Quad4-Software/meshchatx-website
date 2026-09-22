@@ -39,6 +39,18 @@ class SecurityHeaders
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         }
 
+        // Short private TTL lets the hover prefetch warm the HTTP cache.
+        // private keeps HTML out of shared caches, no-store is preserved for
+        // responses that opt out themselves.
+        if (
+            $request->isMethod('GET')
+            && $response->isSuccessful()
+            && str_contains((string) $response->headers->get('Content-Type'), 'text/html')
+            && ! $response->headers->hasCacheControlDirective('no-store')
+        ) {
+            $response->headers->set('Cache-Control', 'private, max-age=60, stale-while-revalidate=300');
+        }
+
         $response->headers->remove('X-Powered-By');
         $response->headers->remove('Server');
 

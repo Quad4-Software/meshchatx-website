@@ -2,11 +2,13 @@ module.exports = {
     ci: {
         collect: {
             numberOfRuns: 3,
-            startServerCommand:
-                'rm -f public/hot && APP_ENV=production php artisan config:clear && php artisan serve --host=127.0.0.1 --port=4173',
+            startServerCommand: 'bash scripts/serve-ci.sh 4173',
             url: [
                 'http://127.0.0.1:4173/',
                 'http://127.0.0.1:4173/download',
+                'http://127.0.0.1:4173/dependency',
+                'http://127.0.0.1:4173/interfaces',
+                'http://127.0.0.1:4173/docs',
                 'http://127.0.0.1:4173/git',
             ],
             settings: {

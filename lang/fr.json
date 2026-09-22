@@ -477,6 +477,7 @@
             "authoring": "Rédaction",
             "platforms": "Guides de plateforme",
             "ops": "Exploitation"
-        }
+        },
+        "copy_md": "Copier MD"
     }
 }

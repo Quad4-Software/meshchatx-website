@@ -477,6 +477,7 @@
             "authoring": "Kirjoittaminen",
             "platforms": "Alustaoppaat",
             "ops": "Käyttö"
-        }
+        },
+        "copy_md": "Kopioi MD"
     }
 }

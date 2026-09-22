@@ -186,6 +186,8 @@
       "no_bundle": "Nog geen Flatpak-bestand in deze release.",
       "install": "Installeren en openen",
       "btn_install": "MeshChatX installeren"
-    }
+    },
+    "verify": "Verifiëren",
+    "verify_copy": "Verificatiecommando kopiëren"
   }
 }

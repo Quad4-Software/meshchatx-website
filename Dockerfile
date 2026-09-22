@@ -75,6 +75,15 @@ ENV NODE_ENV=production
 RUN pnpm run build \
     && rm -rf node_modules
 
+# Precompress text assets for nginx brotli_static-style serving.
+# The nginx image ships no brotli module, so default.conf serves .br
+# sidecars via map/try_files instead.
+RUN apk add --no-cache brotli \
+    && find public -type f -size +1k \
+        \( -name '*.css' -o -name '*.js' -o -name '*.mjs' -o -name '*.map' \
+        -o -name '*.svg' -o -name '*.json' -o -name '*.webmanifest' -o -name '*.txt' \) \
+        -exec brotli -kfq 11 {} +
+
 # -----------------------------------------------------------------------------
 # Application runtime (php-fpm, rootless)
 # -----------------------------------------------------------------------------
@@ -183,7 +192,7 @@ LABEL org.opencontainers.image.title="MeshChatX Website (nginx)" \
 USER root
 
 COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=app /var/www/html/public /var/www/html/public
+COPY --from=frontend /app/public /var/www/html/public
 
 RUN chown -R nginx:nginx /var/www/html/public \
     && chmod -R a=rX /var/www/html/public

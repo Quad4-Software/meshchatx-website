@@ -436,7 +436,8 @@
             "authoring": "创作",
             "platforms": "平台指南",
             "ops": "运维"
-        }
+        },
+        "copy_md": "复制 MD"
     },
     "dep": {
         "h1": "依赖",

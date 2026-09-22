@@ -124,6 +124,11 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Install nginx and php-fpm
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq nginx php8.5-fpm
+
       - name: Setup pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
         with:

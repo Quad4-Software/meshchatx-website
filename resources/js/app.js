@@ -304,30 +304,30 @@ function showToast(message, { sticky = false } = {}) {
     }
 }
 
-function initCopyButtons() {
-    const labels = siteToastCopy();
-
-    const copyText = async (text) => {
+async function copyText(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch {
         try {
-            await navigator.clipboard.writeText(text);
+            const area = document.createElement('textarea');
+            area.value = text;
+            area.setAttribute('readonly', '');
+            area.style.position = 'absolute';
+            area.style.left = '-9999px';
+            document.body.appendChild(area);
+            area.select();
+            document.execCommand('copy');
+            document.body.removeChild(area);
             return true;
         } catch {
-            try {
-                const area = document.createElement('textarea');
-                area.value = text;
-                area.setAttribute('readonly', '');
-                area.style.position = 'absolute';
-                area.style.left = '-9999px';
-                document.body.appendChild(area);
-                area.select();
-                document.execCommand('copy');
-                document.body.removeChild(area);
-                return true;
-            } catch {
-                return false;
-            }
+            return false;
         }
-    };
+    }
+}
+
+function initCopyButtons() {
+    const labels = siteToastCopy();
 
     const markCopied = (el, copiedLabel) => {
         const label = el.textContent;
@@ -441,7 +441,20 @@ function initVideoEmbeds() {
     });
 }
 
-function prefetchAsset(src) {
+const SHOWCASE_SIZES = '(min-width: 72rem) 1088px, calc(100vw - 2rem)';
+
+function applySources(img, src, srcset) {
+    if (srcset) {
+        img.setAttribute('srcset', srcset);
+        img.setAttribute('sizes', SHOWCASE_SIZES);
+    } else {
+        img.removeAttribute('srcset');
+        img.removeAttribute('sizes');
+    }
+    img.setAttribute('src', src);
+}
+
+function prefetchAsset(src, srcset) {
     if (!src) {
         return Promise.resolve();
     }
@@ -457,8 +470,185 @@ function prefetchAsset(src) {
             done();
         };
         img.onerror = done;
+        if (srcset) {
+            img.sizes = SHOWCASE_SIZES;
+            img.srcset = srcset;
+        }
         img.src = src;
     });
+}
+
+function initDocsCopyMarkdown() {
+    const labels = siteToastCopy();
+    document.querySelectorAll('[data-docs-copy-md]').forEach((button) => {
+        if (!(button instanceof HTMLElement)) {
+            return;
+        }
+        button.addEventListener('click', async () => {
+            const url = button.getAttribute('data-docs-copy-md') || '';
+            if (url === '') {
+                return;
+            }
+            const copied = button.getAttribute('data-copied-label') || labels.copied || 'Copied';
+            try {
+                const res = await fetch(url, { credentials: 'same-origin' });
+                if (!res.ok) {
+                    throw new Error(String(res.status));
+                }
+                const text = await res.text();
+                if (await copyText(text)) {
+                    const original = button.textContent;
+                    button.classList.add('is-copied');
+                    button.textContent = copied;
+                    window.setTimeout(() => {
+                        button.classList.remove('is-copied');
+                        button.textContent = original;
+                    }, 1600);
+                    showToast(copied);
+                } else {
+                    showToast(labels.copy_failed || 'Copy failed');
+                }
+            } catch {
+                showToast(labels.copy_failed || 'Copy failed');
+            }
+        });
+    });
+}
+
+function initVitals() {
+    if (!('PerformanceObserver' in window) || typeof navigator.sendBeacon !== 'function') {
+        return;
+    }
+
+    const nav = performance.getEntriesByType('navigation')[0] || {};
+    const metrics = {
+        path: window.location.pathname,
+        nav: typeof nav.type === 'string' ? nav.type : '',
+        conn: navigator.connection?.effectiveType || '',
+        ttfb: nav.responseStart ?? null,
+        fcp: null,
+        lcp: null,
+        cls: 0,
+        inp: null,
+    };
+    let sent = false;
+
+    const observe = (type, callback, options = {}) => {
+        try {
+            new PerformanceObserver((list) => callback(list.getEntries())).observe({
+                type,
+                buffered: true,
+                ...options,
+            });
+        } catch {
+            // metric type unsupported in this browser
+        }
+    };
+
+    observe('paint', (entries) => {
+        entries.forEach((entry) => {
+            if (entry.name === 'first-contentful-paint') {
+                metrics.fcp = entry.startTime;
+            }
+        });
+    });
+    observe('largest-contentful-paint', (entries) => {
+        if (entries.length) {
+            metrics.lcp = entries[entries.length - 1].startTime;
+        }
+    });
+    observe('layout-shift', (entries) => {
+        entries.forEach((entry) => {
+            if (!entry.hadRecentInput) {
+                metrics.cls += entry.value;
+            }
+        });
+    });
+    observe(
+        'event',
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.interactionId > 0 && entry.duration > (metrics.inp || 0)) {
+                    metrics.inp = entry.duration;
+                }
+            });
+        },
+        { durationThreshold: 16 },
+    );
+
+    const send = () => {
+        if (sent || metrics.fcp === null) {
+            return;
+        }
+        sent = true;
+        const body = {
+            v: 1,
+            path: metrics.path,
+            nav: metrics.nav,
+            conn: metrics.conn,
+            ttfb: metrics.ttfb === null ? null : Math.round(metrics.ttfb),
+            fcp: metrics.fcp === null ? null : Math.round(metrics.fcp),
+            lcp: metrics.lcp === null ? null : Math.round(metrics.lcp),
+            cls: Math.round(metrics.cls * 1000) / 1000,
+            inp: metrics.inp === null ? null : Math.round(metrics.inp),
+        };
+        navigator.sendBeacon(
+            '/api/vitals',
+            new Blob([JSON.stringify(body)], { type: 'application/json' }),
+        );
+    };
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+            send();
+        }
+    });
+    window.addEventListener('pagehide', send);
+}
+
+function initNavPrefetch() {
+    const connection = navigator.connection;
+    if (connection?.saveData || (connection?.effectiveType && connection.effectiveType !== '4g')) {
+        return;
+    }
+
+    const seen = new Set();
+    const prefetch = (link) => {
+        if (!(link instanceof HTMLAnchorElement)) {
+            return;
+        }
+        const href = link.getAttribute('href') || '';
+        if (
+            !href.startsWith('/') ||
+            href.startsWith('//') ||
+            link.hasAttribute('download') ||
+            link.target === '_blank'
+        ) {
+            return;
+        }
+        const path = href.split('#')[0].split('?')[0];
+        if (
+            path === '' ||
+            path === window.location.pathname ||
+            path.startsWith('/api/') ||
+            path === '/sw.js' ||
+            seen.has(href)
+        ) {
+            return;
+        }
+        seen.add(href);
+        fetch(href, { credentials: 'same-origin', priority: 'low' }).catch(() => {});
+    };
+
+    const onIntent = (event) => {
+        const link = event.target?.closest?.('a[href]');
+        if (link) {
+            prefetch(link);
+        }
+    };
+
+    document.addEventListener('pointerover', onIntent, { passive: true });
+    document.addEventListener('focusin', onIntent);
 }
 
 function initShowcase() {
@@ -482,23 +672,26 @@ function initShowcase() {
         const srcsFor = (tab) => {
             const light = tab.getAttribute('data-src') || '';
             const dark = tab.getAttribute('data-src-dark') || light;
-            return { light, dark };
+            const lightSet = tab.getAttribute('data-srcset') || '';
+            const darkSet = tab.getAttribute('data-srcset-dark') || lightSet;
+            return { light, dark, lightSet, darkSet };
         };
 
         const visibleImg = () =>
             document.documentElement.classList.contains('dark') ? darkImg : lightImg;
 
-        const queuePrefetch = (src) => {
+        const queuePrefetch = (src, srcset) => {
             if (!src || prefetched.has(src)) {
                 return;
             }
             prefetched.add(src);
-            prefetchAsset(src);
+            prefetchAsset(src, srcset);
         };
 
         const prefetchTab = (tab) => {
-            queuePrefetch(tab.getAttribute('data-src'));
-            queuePrefetch(tab.getAttribute('data-src-dark'));
+            const { light, dark, lightSet, darkSet } = srcsFor(tab);
+            queuePrefetch(light, lightSet);
+            queuePrefetch(dark, darkSet);
         };
 
         const prefetchAdjacent = (tab) => {
@@ -521,7 +714,7 @@ function initShowcase() {
                 item.setAttribute('aria-selected', active ? 'true' : 'false');
             });
 
-            const { light, dark } = srcsFor(tab);
+            const { light, dark, lightSet, darkSet } = srcsFor(tab);
             prefetchAdjacent(tab);
             const label = tab.getAttribute('data-label') || tab.textContent.trim();
             const applyMeta = () => {
@@ -541,8 +734,8 @@ function initShowcase() {
             }
 
             const swap = () => {
-                lightImg.setAttribute('src', light);
-                darkImg.setAttribute('src', dark);
+                applySources(lightImg, light, lightSet);
+                applySources(darkImg, dark, darkSet);
                 applyMeta();
                 images.forEach((img) => img.classList.remove('is-fading'));
                 busy = false;
@@ -565,8 +758,8 @@ function initShowcase() {
                     });
                 };
                 shown.addEventListener('load', onLoad);
-                lightImg.setAttribute('src', light);
-                darkImg.setAttribute('src', dark);
+                applySources(lightImg, light, lightSet);
+                applySources(darkImg, dark, darkSet);
                 applyMeta();
                 window.setTimeout(() => {
                     if (busy) {
@@ -774,6 +967,30 @@ function syncDownloadHero(platformId) {
             checksum.classList.add('is-empty');
             checksum.setAttribute('aria-hidden', 'true');
             checksumValue.setAttribute('tabindex', '-1');
+        }
+    }
+
+    const verify = hero.querySelector('[data-download-hero-verify]');
+    const verifyCmd = hero.querySelector('[data-download-hero-verify-cmd]');
+    const verifyCopy = hero.querySelector('[data-download-hero-verify-copy]');
+    if (verify instanceof HTMLElement && verifyCmd instanceof HTMLElement) {
+        const cmd = typeof meta?.verify === 'string' ? meta.verify : '';
+        if (cmd !== '') {
+            verifyCmd.textContent = cmd;
+            verify.classList.remove('is-empty');
+            verify.removeAttribute('aria-hidden');
+            if (verifyCopy instanceof HTMLElement) {
+                verifyCopy.setAttribute('data-copy-text', cmd);
+                verifyCopy.removeAttribute('tabindex');
+            }
+        } else {
+            verifyCmd.textContent = '';
+            verify.classList.add('is-empty');
+            verify.setAttribute('aria-hidden', 'true');
+            if (verifyCopy instanceof HTMLElement) {
+                verifyCopy.setAttribute('data-copy-text', '');
+                verifyCopy.setAttribute('tabindex', '-1');
+            }
         }
     }
 }
@@ -2573,6 +2790,9 @@ function boot() {
     initTheme();
     initMobileMenu();
     initCopyButtons();
+    initDocsCopyMarkdown();
+    initNavPrefetch();
+    initVitals();
     initShowcase();
     initHomeDownloadHint();
     initDownloadChannels();

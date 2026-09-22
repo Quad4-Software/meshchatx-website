@@ -98,6 +98,12 @@
                     <span class="docs-export__label">{{ t('docs.export') }}</span>
                     <a class="docs-export__btn" href="{{ $exportMd }}">MD</a>
                     <a class="docs-export__btn" href="{{ $exportTxt }}">TXT</a>
+                    <button
+                        type="button"
+                        class="docs-export__btn docs-export__btn--action"
+                        data-docs-copy-md="{{ locale_route('docs.markdown', ['slug' => $slug]) }}"
+                        data-copied-label="{{ t('js.copied') }}"
+                    >{{ t('docs.copy_md') }}</button>
                 </div>
             </div>
 

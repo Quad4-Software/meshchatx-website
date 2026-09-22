@@ -978,6 +978,55 @@
         outline: none;
     }
 
+    .download-verify {
+        display: grid;
+        gap: 0.15rem;
+        margin-top: 0.45rem;
+        min-width: 0;
+        max-width: min(100%, 36rem);
+    }
+
+    .download-verify.is-empty {
+        visibility: hidden;
+    }
+
+    .download-verify__row {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        min-width: 0;
+    }
+
+    .download-verify__cmd {
+        color: var(--color-muted);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+        word-break: break-all;
+    }
+
+    .download-verify__copy {
+        flex: none;
+        margin: 0;
+        padding: 0.1rem;
+        border: 0;
+        background: none;
+        color: var(--color-muted);
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    .download-verify__copy:hover,
+    .download-verify__copy:focus-visible {
+        color: var(--color-accent-muted);
+        outline: none;
+    }
+
+    .download-verify__copy.is-copied {
+        color: var(--color-accent);
+    }
+
     .btn .mcx-icon {
         margin-inline-end: 0.15rem;
     }
@@ -3880,6 +3929,15 @@
         font-family: var(--font-mono);
         font-size: 0.75rem;
         font-weight: 550;
+    }
+
+    button.docs-export__btn {
+        cursor: pointer;
+    }
+
+    button.docs-export__btn.is-copied {
+        border-color: color-mix(in oklab, var(--color-accent) 40%, var(--color-line));
+        color: var(--color-accent);
     }
 
     .docs-export__btn:hover {

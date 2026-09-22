@@ -186,6 +186,8 @@
       "no_bundle": "此版本尚无 Flatpak 文件。",
       "install": "安装并打开",
       "btn_install": "安装 MeshChatX"
-    }
+    },
+    "verify": "校验",
+    "verify_copy": "复制校验命令"
   }
 }
