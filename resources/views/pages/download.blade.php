@@ -291,6 +291,9 @@ YAML;
                     ];
                     $docsGettingStarted = locale_route('docs.show', ['slug' => 'getting-started']);
                     $ctaTemplate = t('dl.cta.download_for');
+                    $heroMeta = $heroPlatforms[$detectedPlatform] ?? ['label' => t('dl.tabs.'.$detectedPlatform), 'url' => null, 'sha256' => null];
+                    $heroUrl = is_string($heroMeta['url'] ?? null) && $heroMeta['url'] !== '' ? $heroMeta['url'] : '#'.$detectedPlatform;
+                    $heroSha = is_string($heroMeta['sha256'] ?? null) ? $heroMeta['sha256'] : '';
                 @endphp
 
                 <div
@@ -308,24 +311,29 @@ YAML;
                         ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) !!}</script>
                     @endforeach
                     <div class="download-hero-cta__stack">
-                        <div class="download-checksum is-empty" data-download-hero-checksum aria-hidden="true">
+                        <div
+                            class="download-checksum{{ $heroSha === '' ? ' is-empty' : '' }}"
+                            data-download-hero-checksum
+                            @if ($heroSha === '') aria-hidden="true" @endif
+                        >
                             <span class="download-checksum__label">{{ t('dl.sha256') }}</span>
                             <button
                                 type="button"
                                 class="download-checksum__value"
                                 data-download-hero-checksum-value
-                                data-copy-text=""
-                                tabindex="-1"
-                                aria-label="{{ t('dl.copy_sha256') }}"
+                                data-copy-text="{{ $heroSha }}"
+                                @if ($heroSha === '') tabindex="-1" @endif
+                                aria-label="{{ $heroSha === '' ? t('dl.copy_sha256') : t('dl.copy_sha256').': '.$heroSha }}"
                                 title="{{ t('dl.copy_sha256') }}"
                                 data-copy-aria-prefix="{{ t('dl.copy_sha256') }}"
-                            ></button>
+                            >{{ $heroSha }}</button>
                         </div>
                         <div class="download-hero-cta__actions">
                             <a
                                 class="btn btn--solid"
                                 data-download-hero-btn
-                                href="#{{ $detectedPlatform }}"
+                                href="{{ $heroUrl }}"
+                                @if (str_starts_with($heroUrl, 'http')) download @endif
                             >
                                 <x-icon name="download" size="xs" />
                                 <span data-download-hero-label>{{ t('dl.cta.download_for', ['s' => t('dl.tabs.'.$detectedPlatform)]) }}</span>

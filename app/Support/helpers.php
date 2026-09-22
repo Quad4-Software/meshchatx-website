@@ -43,3 +43,20 @@ if (! function_exists('clean_site_html')) {
         return preg_replace('/\s*style="[^"]*"/', '', $html) ?? $html;
     }
 }
+
+if (! function_exists('theme_boot_script')) {
+    /**
+     * Theme bootstrap JS, inlined in the head so first paint does not wait on a
+     * render-blocking request. SecurityHeaders whitelists it via CSP hash.
+     */
+    function theme_boot_script(): string
+    {
+        static $script = null;
+
+        if ($script === null) {
+            $script = trim((string) file_get_contents(public_path('theme-boot.js')));
+        }
+
+        return $script;
+    }
+}

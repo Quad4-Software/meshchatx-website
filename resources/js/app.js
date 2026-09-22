@@ -441,15 +441,6 @@ function initVideoEmbeds() {
     });
 }
 
-function canPrefetchAssets() {
-    const connection = navigator.connection;
-    if (connection?.saveData) {
-        return false;
-    }
-    const slow = ['slow-2g', '2g'];
-    return !slow.includes(connection?.effectiveType);
-}
-
 function prefetchAsset(src) {
     if (!src) {
         return Promise.resolve();
@@ -468,14 +459,6 @@ function prefetchAsset(src) {
         img.onerror = done;
         img.src = src;
     });
-}
-
-function scheduleIdle(task) {
-    if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(task, { timeout: 3000 });
-        return;
-    }
-    window.setTimeout(task, 1200);
 }
 
 function initShowcase() {
@@ -516,10 +499,6 @@ function initShowcase() {
         const prefetchTab = (tab) => {
             queuePrefetch(tab.getAttribute('data-src'));
             queuePrefetch(tab.getAttribute('data-src-dark'));
-        };
-
-        const prefetchAllTabs = () => {
-            tabs.forEach((tab) => prefetchTab(tab));
         };
 
         const prefetchAdjacent = (tab) => {
@@ -667,15 +646,13 @@ function initShowcase() {
                 stopAutoplay();
                 activate(tab);
             });
+            tab.addEventListener('pointerenter', () => prefetchTab(tab), { passive: true });
+            tab.addEventListener('focus', () => prefetchTab(tab));
         });
 
         const active = tabs.find((tab) => tab.classList.contains('is-active')) || tabs[0];
         activate(active, { animate: false });
         startAutoplay();
-
-        if (canPrefetchAssets()) {
-            scheduleIdle(prefetchAllTabs);
-        }
     });
 }
 

@@ -37,7 +37,6 @@ class PwaAssets
             '/git',
             '/offline',
             '/manifest.webmanifest',
-            '/theme-boot.js',
             '/logo.webp',
             '/logo-navbar.webp',
             '/favicon.webp',

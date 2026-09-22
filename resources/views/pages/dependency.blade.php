@@ -9,6 +9,16 @@
     $apiSbomBase = $apiSbomBase ?? url('/api/mcx-sbom');
     $versions = $catalog['versions'] ?? [];
     $stats = is_array($sbom['stats'] ?? null) ? $sbom['stats'] : null;
+    $ecoEntries = [];
+    $ecoStatText = '';
+    if (is_array($stats['ecosystems'] ?? null)) {
+        $ecoCounts = $stats['ecosystems'];
+        arsort($ecoCounts);
+        $ecoEntries = array_slice(array_keys($ecoCounts), 0, 8);
+        $ecoStatText = collect(array_slice($ecoCounts, 0, 4, true))
+            ->map(fn ($count, $name) => $name.' '.$count)
+            ->implode(' · ');
+    }
     $i18n = [
         'loading' => t('dep.loading'),
         'error' => t('dep.error'),
@@ -86,6 +96,9 @@
                 </label>
                 <div class="channel-toggle dep-eco" role="group" aria-label="{{ t('dep.filter_ecosystem') }}" data-dep-ecosystems>
                     <button type="button" class="channel-toggle__btn is-active" data-dep-eco="">{{ t('dep.filter_all') }}</button>
+                    @foreach ($ecoEntries as $ecoName)
+                        <button type="button" class="channel-toggle__btn" data-dep-eco="{{ $ecoName }}">{{ $ecoName }}</button>
+                    @endforeach
                 </div>
             </div>
 
@@ -93,7 +106,7 @@
                 <div class="dep-stats" data-dep-stats @if (! $stats) hidden @endif>
                     <span class="dep-stats__item"><strong data-dep-stat-packages>{{ (int) ($stats['components'] ?? 0) }}</strong> {{ t('dep.stat_packages') }}</span>
                     <span class="dep-stats__item"><strong data-dep-stat-edges>{{ (int) ($stats['edges'] ?? 0) }}</strong> {{ t('dep.stat_edges') }}</span>
-                    <span class="dep-stats__item dep-stats__item--wide" data-dep-stat-ecosystems></span>
+                    <span class="dep-stats__item dep-stats__item--wide" data-dep-stat-ecosystems>{{ $ecoStatText }}</span>
                 </div>
                 <div class="dep-views channel-toggle" role="tablist" aria-label="{{ t('dep.views') }}">
                     <button type="button" class="channel-toggle__btn is-active" role="tab" aria-selected="true" data-dep-view="table">{{ t('dep.view_table') }}</button>

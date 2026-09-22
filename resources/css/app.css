@@ -102,6 +102,7 @@
         scroll-behavior: smooth;
         scrollbar-width: thin;
         scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        scrollbar-gutter: stable;
         overflow-x: clip;
         overflow-y: auto;
         width: 100%;
@@ -3371,7 +3372,7 @@
         }
 
         .download-pick {
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.75rem), 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 8.75rem), 1fr));
         }
 
         .video-grid {
@@ -4810,6 +4811,8 @@
         flex: 0 0 auto;
         margin: 0;
         padding: 0.65rem 1rem 0.35rem;
+        min-height: 2.25rem;
+        box-sizing: border-box;
         color: var(--color-muted);
         font-size: 0.78rem;
     }

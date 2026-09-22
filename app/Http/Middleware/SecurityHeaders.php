@@ -48,6 +48,10 @@ class SecurityHeaders
     private function contentSecurityPolicy(): string
     {
         $scriptSrc = ["'self'"];
+        $bootScript = theme_boot_script();
+        if ($bootScript !== '') {
+            $scriptSrc[] = "'sha256-".base64_encode(hash('sha256', $bootScript, true))."'";
+        }
         $styleSrc = ["'self'", "'unsafe-inline'"];
         $fontSrc = ["'self'"];
         $connectSrc = ["'self'"];

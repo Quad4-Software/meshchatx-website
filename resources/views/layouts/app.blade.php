@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <script src="{{ asset('theme-boot.js') }}"></script>
+    <script>{!! theme_boot_script() !!}</script>
     @php
         $fontPreload = glob(public_path('build/assets/outfit-latin-wght-normal-*.woff2'))[0] ?? null;
     @endphp
