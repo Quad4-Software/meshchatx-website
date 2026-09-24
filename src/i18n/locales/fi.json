@@ -263,6 +263,10 @@
       "youtube_title": "MeshChatX YouTubessa",
       "youtube_title_2": "MeshChatX YouTubessa",
       "play": "Toista video: :title"
+    },
+    "preview": {
+      "demo_label": "Live-demo",
+      "demo_open": "Avaa MeshChatX:n live-demo"
     }
   },
   "roadmap": {

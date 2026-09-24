@@ -263,6 +263,10 @@
       "youtube_title": "MeshChatX op YouTube",
       "youtube_title_2": "MeshChatX op YouTube",
       "play": "Video afspelen: :title"
+    },
+    "preview": {
+      "demo_label": "Live-demo",
+      "demo_open": "Live-demo van MeshChatX openen"
     }
   },
   "roadmap": {

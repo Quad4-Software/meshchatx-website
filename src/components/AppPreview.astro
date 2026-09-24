@@ -1,13 +1,17 @@
 ---
-// Static replica of the real MeshChatX Messages view. Markup mirrors
-// MessagesPage.vue, MessagesSidebar.vue, ConversationMessageEntry.vue and the
-// composer with the app's dark semantic palette (zinc canvas, blue accent).
+// Poster replica of the Messages view + click-to-load live demo iframe.
+// The replica mirrors the real app's markup (zinc canvas, blue accent) so the
+// poster is honest about what loads.
 import Icon from './Icon.astro';
+import { SITE } from '../config/site';
+import { t } from '../i18n';
+import type { Locale } from '../config/site';
 
 interface Props {
   class?: string;
+  locale?: Locale;
 }
-const { class: cls = '' } = Astro.props;
+const { class: cls = '', locale = 'en' } = Astro.props;
 
 const convos: { name: string; preview: string; time: string; active?: boolean; unread?: number; hops?: number }[] = [
   { name: 'ivan2', preview: 'path resolved, sending now', time: 'just now', active: true, hops: 4 },
@@ -18,8 +22,27 @@ const convos: { name: string; preview: string; time: string; active?: boolean; u
 ];
 ---
 
+<div class={`mcx-preview group relative overflow-hidden rounded-xl border border-line ${cls}`}>
+  <!-- live demo iframe, injected on demand -->
+  <div class="mcx-live absolute inset-0 z-20 hidden bg-[#09090b]"></div>
+
+  <!-- click-to-load overlay -->
+  <button
+    type="button"
+    class="mcx-demo-btn absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center gap-3 bg-[#09090b]/60 backdrop-blur-[2px] transition-opacity hover:bg-[#09090b]/40"
+    data-demo-url={SITE.demoUrl}
+    aria-label={t(locale, 'home.preview.demo_open')}
+  >
+    <span class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-transform group-hover:scale-105">
+      <Icon name="mdiPlay" size={24} />
+    </span>
+    <span class="rounded-md bg-zinc-900/80 px-3 py-1.5 font-mono text-xs text-zinc-200 ring-1 ring-zinc-700">
+      {t(locale, 'home.preview.demo_label')}
+    </span>
+  </button>
+
 <div
-  class={`overflow-hidden rounded-xl border border-line bg-[#09090b] text-left font-sans ${cls}`}
+  class="mcx-poster bg-[#09090b] text-left font-sans"
   aria-hidden="true"
 >
   <!-- window chrome -->
@@ -110,4 +133,35 @@ const convos: { name: string; preview: string; time: string; active?: boolean; u
       </div>
     </div>
   </div>
+</div>
+
+<style>
+  .mcx-preview.mcx-live-open .mcx-live {
+    position: static;
+    height: 560px;
+  }
+  .mcx-preview.mcx-live-open .mcx-poster {
+    display: none;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.mcx-demo-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const url = btn.getAttribute('data-demo-url') || '';
+      const wrap = btn.closest('.mcx-preview');
+      const holder = wrap?.querySelector('.mcx-live');
+      if (!holder || !url) return;
+      const frame = document.createElement('iframe');
+      frame.src = url;
+      frame.title = 'MeshChatX live demo';
+      frame.setAttribute('class', 'h-full w-full border-0');
+      frame.setAttribute('allow', 'clipboard-read; clipboard-write');
+      holder.appendChild(frame);
+      holder.classList.remove('hidden');
+      btn.classList.add('hidden');
+      wrap?.classList.add('mcx-live-open');
+    });
+  });
+</script>
 </div>

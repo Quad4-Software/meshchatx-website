@@ -263,6 +263,10 @@
       "youtube_title": "YouTube 上的 MeshChatX",
       "youtube_title_2": "YouTube 上的 MeshChatX",
       "play": "播放视频：:title"
+    },
+    "preview": {
+      "demo_label": "在线演示",
+      "demo_open": "打开 MeshChatX 在线演示"
     }
   },
   "roadmap": {
