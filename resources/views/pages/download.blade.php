@@ -108,7 +108,7 @@
     };
 
     $flatpakCdnBase = rtrim((string) ($site['flatpak_cdn_base'] ?? 'https://cdn.quad4.io/flatpak'), '/');
-    $flatpakAppId = (string) ($site['flatpak_app_id'] ?? 'com.quad4.meshchatx');
+    $flatpakAppId = (string) ($site['flatpak_app_id'] ?? 'com.meshchatx.app');
     $flatpakRefName = match ($channel) {
         'beta' => 'meshchatx-beta.flatpakref',
         'testing' => 'meshchatx-testing.flatpakref',
@@ -701,6 +701,9 @@ poetry run meshchat --headless --host 127.0.0.1</code></pre>
                                 <pre class="command-block__body" id="cmd-flatpak-repo"><code>{{ $flatpakRemoteAdd }}</code></pre>
                             </div>
                             <p class="download-panel__intro">{{ t('dl.flatpak.remote_note') }}</p>
+                            @if ($channel !== 'stable')
+                                <p class="download-panel__intro">{{ t('dl.flatpak.remote_channels') }}</p>
+                            @endif
                         </div>
 
                         @if ($flat)

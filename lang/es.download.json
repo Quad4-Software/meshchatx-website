@@ -180,6 +180,7 @@
       "remote_install": "Instalar y actualizar",
       "remote_add": "Añadir la fuente de MeshChatX",
       "remote_note": "¿Lo instalaste desde una fuente Flatpak antigua de MeshChatX? Quítala primero con: flatpak remote-delete meshchatx",
+      "remote_channels": "Los canales beta y testing aparecen cuando se publica la primera compilación beta o testing. Hasta entonces, esta fuente solo tiene stable.",
       "bundle_h3": "Archivo descargado",
       "bundle_intro": "¿Ya descargaste el archivo .flatpak? Instálalo así:",
       "btn": "Descargar archivo .flatpak",

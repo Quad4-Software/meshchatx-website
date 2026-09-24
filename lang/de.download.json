@@ -180,6 +180,7 @@
       "remote_install": "Installieren und aktualisieren",
       "remote_add": "MeshChatX-Quelle hinzufügen",
       "remote_note": "Schon von einer älteren MeshChatX-Flatpak-Quelle installiert? Entferne sie zuerst mit: flatpak remote-delete meshchatx",
+      "remote_channels": "Beta- und Testing-Kanäle erscheinen, sobald der erste Beta- oder Testing-Build veröffentlicht wurde. Bis dahin gibt es in dieser Quelle nur stable.",
       "bundle_h3": "Heruntergeladene Datei",
       "bundle_intro": "Die .flatpak-Datei schon heruntergeladen? So installierst du sie:",
       "btn": ".flatpak-Datei herunterladen",

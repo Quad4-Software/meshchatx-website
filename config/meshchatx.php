@@ -21,7 +21,7 @@ return [
     'ghcr' => 'ghcr.io/quad4-software/meshchatx:latest',
     'umbrel_url' => 'https://apps.umbrel.com/app/meshchatx',
     'flatpak_cdn_base' => 'https://cdn.quad4.io/flatpak',
-    'flatpak_app_id' => 'com.quad4.meshchatx',
+    'flatpak_app_id' => 'com.meshchatx.app',
     'rns_directory_url' => 'https://directory.rns.recipes/',
     'rns_directory_api' => 'https://directory.rns.recipes/api/directory/submitted?search=&type=&status=online',
     'obtainium_url' => 'https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/Quad4-Software/MeshChatX',

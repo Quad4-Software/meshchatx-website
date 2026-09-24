@@ -180,6 +180,7 @@
       "remote_install": "Installeren en bijwerken",
       "remote_add": "MeshChatX-bron toevoegen",
       "remote_note": "Al geïnstalleerd via een oudere MeshChatX Flatpak-bron? Verwijder die eerst met: flatpak remote-delete meshchatx",
+      "remote_channels": "Beta- en testing-kanalen verschijnen zodra de eerste beta- of testing-build is gepubliceerd. Tot dan bevat deze bron alleen stable.",
       "bundle_h3": "Gedownload bestand",
       "bundle_intro": "Het .flatpak-bestand al gedownload? Installeer het zo:",
       "btn": ".flatpak-bestand downloaden",

@@ -180,6 +180,7 @@
       "remote_install": "Asenna ja päivitä",
       "remote_add": "Lisää MeshChatX-lähde",
       "remote_note": "Asensitko vanhemmasta MeshChatX Flatpak -lähteestä? Poista se ensin komennolla: flatpak remote-delete meshchatx",
+      "remote_channels": "Beta- ja testing-kanavat tulevat näkyviin, kun ensimmäinen beta- tai testing-versio julkaistaan. Siihen asti tässä lähteessä on vain stable.",
       "bundle_h3": "Ladattu tiedosto",
       "bundle_intro": "Latasitko jo .flatpak-tiedoston? Asenna se näin:",
       "btn": "Lataa .flatpak-tiedosto",

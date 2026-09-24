@@ -180,6 +180,7 @@
       "remote_install": "安装并更新",
       "remote_add": "添加 MeshChatX 源",
       "remote_note": "若曾从旧的 MeshChatX Flatpak 源安装，请先移除：flatpak remote-delete meshchatx",
+      "remote_channels": "Beta 和 testing 频道会在首个 beta 或 testing 构建发布后才会出现。在此之前，此源中仅有 stable。",
       "bundle_h3": "已下载的文件",
       "bundle_intro": "已经下载了 .flatpak 文件？这样安装：",
       "btn": "下载 .flatpak 文件",

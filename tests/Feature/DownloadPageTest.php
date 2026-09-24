@@ -99,7 +99,7 @@ class DownloadPageTest extends TestCase
             ->assertSee('https://example.test/meshchatx.flatpak', false)
             ->assertSee('If your Linux uses Flatpak', false)
             ->assertSee('https://cdn.quad4.io/flatpak/meshchatx-stable.flatpakref', false)
-            ->assertSee('com.quad4.meshchatx', false)
+            ->assertSee('com.meshchatx.app', false)
             ->assertSee('cdn.quad4.io/flatpak/meshchatx.flatpakrepo', false)
             ->assertDontSee('CDN remote', false)
             ->assertDontSee('not live on the CDN', false);

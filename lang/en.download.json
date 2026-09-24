@@ -183,6 +183,7 @@
       "remote_install": "Install and update",
       "remote_add": "Add the MeshChatX source",
       "remote_note": "Installed from an older MeshChatX Flatpak source? Remove it first with: flatpak remote-delete meshchatx",
+      "remote_channels": "Beta and testing channels appear once the first beta or testing build publishes. Until then only stable exists on this source.",
       "bundle_h3": "Downloaded file",
       "bundle_intro": "Already downloaded the .flatpak file? Install it with:",
       "install": "Install and open"
