@@ -14,6 +14,7 @@ export const SITE = {
   lavaforgeClone: 'https://lavaforge.org/Reticulum-Things/MeshChatX.git',
   pypiUrl: 'https://pypi.org/project/reticulum-meshchatx/',
   pypiPackage: 'reticulum-meshchatx',
+  pipRnsUrl: 'https://pip-rns.quad4.io/',
   dockerHub: 'quad4io/meshchatx:latest',
   ghcr: 'ghcr.io/quad4-software/meshchatx:latest',
   umbrelUrl: 'https://apps.umbrel.com/app/meshchatx',
@@ -124,15 +125,15 @@ export const SHOWCASE_TABS = [
 ] as const;
 
 export const PLATFORMS = [
-  { key: 'windows', icon: 'mdiMicrosoftWindows' },
-  { key: 'macos', icon: 'mdiApple' },
-  { key: 'linux', icon: 'mdiLinux' },
-  { key: 'android', icon: 'mdiAndroid' },
-  { key: 'docker', icon: 'mdiDocker' },
-  { key: 'python', icon: 'mdiLanguagePython' },
-  { key: 'flatpak', icon: 'siFlatpak' },
-  { key: 'appimage', icon: 'siAppimage' },
-  { key: 'podman', icon: 'siPodman' },
+  { key: 'windows', icon: 'mdiMicrosoftWindows', anchor: 'dl-win' },
+  { key: 'macos', icon: 'mdiApple', anchor: 'dl-mac' },
+  { key: 'linux', icon: 'mdiLinux', anchor: 'dl-linux' },
+  { key: 'android', icon: 'mdiAndroid', anchor: 'dl-android' },
+  { key: 'docker', icon: 'mdiDocker', anchor: 'dl-containers' },
+  { key: 'python', icon: 'mdiLanguagePython', anchor: 'dl-python' },
+  { key: 'flatpak', icon: 'siFlatpak', anchor: 'dl-flatpak' },
+  { key: 'appimage', icon: 'siAppimage', anchor: 'dl-linux' },
+  { key: 'podman', icon: 'img:/vendor/podman-logo.webp', anchor: 'dl-containers' },
 ] as const;
 
 export const HOME_FEATURES = [

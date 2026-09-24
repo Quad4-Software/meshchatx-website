@@ -50,6 +50,11 @@ const flatpakRemote = (c: Channel) =>
   `flatpak remote-add --if-not-exists meshchatx ${SITE.flatpakCdnBase}/meshchatx.flatpakrepo\nflatpak install meshchatx ${SITE.flatpakAppId}//${c}`;
 
 const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale, `dl.${key}`, vars);
+
+const card = 'dl-card rounded-xl border border-line bg-surface p-6';
+const btn = 'dl-link inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-on-accent transition-opacity hover:opacity-85';
+const btnGhost = 'dl-link inline-flex items-center justify-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-medium text-fg transition-colors hover:bg-raised';
+const btnMini = 'dl-link inline-flex items-center justify-center rounded-md border border-line px-2 py-1.5 text-xs text-muted transition-colors hover:bg-raised hover:text-fg';
 ---
 
 <Base
@@ -108,103 +113,164 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
     <section id={`dl-panel-${c}`} role="tabpanel" data-channel-panel={c} class:list={['mx-auto max-w-6xl px-5 py-10', c !== 'stable' && 'hidden']}>
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <!-- Windows -->
-        <div class="dl-card rounded-xl border border-line bg-surface p-6" data-platform="win">
+        <div id={c === 'stable' ? `dl-win` : undefined} class={card} data-platform="win">
           <div class="flex items-center gap-2">
             <Icon name="mdiMicrosoftWindows" size={20} class="text-muted" />
             <h2 class="font-semibold text-fg">{t(locale, 'dl.windows.h2')}</h2>
             <span class="dl-rec hidden rounded-full border border-fg bg-canvas px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
           </div>
-          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.windows.intro')}</p>
+          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.windows.friendly')}</p>
           <div class="mt-4 flex flex-col gap-2">
-            <a data-asset="winInstaller" href={d?.winInstaller?.url ?? '#'} class:list={['dl-link rounded-lg bg-accent px-4 py-2 text-center text-sm font-semibold text-on-accent hover:opacity-85', !d?.winInstaller && 'hidden']}>
+            <a data-asset="winInstaller" href={d?.winInstaller?.url ?? '#'} class:list={[btn, !d?.winInstaller && 'hidden']}>
+              <Icon name="mdiDownload" size={15} />
               {t(locale, 'dl.windows.btn_installer')}
             </a>
-            <a data-asset="winPortable" href={d?.winPortable?.url ?? '#'} class:list={['dl-link rounded-lg border border-line px-4 py-2 text-center text-sm text-fg hover:bg-raised', !d?.winPortable && 'hidden']}>
+            <a data-asset="winPortable" href={d?.winPortable?.url ?? '#'} class:list={[btnGhost, !d?.winPortable && 'hidden']}>
               {t(locale, 'dl.windows.btn_portable')}
             </a>
             <span data-asset-none="windows" class:list={['text-sm text-faint', d?.winInstaller && 'hidden']}>{t(locale, 'dl.windows.no_win')}</span>
           </div>
         </div>
 
-        <!-- Linux -->
-        <div class="dl-card rounded-xl border border-line bg-surface p-6" data-platform="linux">
-          <div class="flex items-center gap-2">
-            <Icon name="mdiLinux" size={20} class="text-muted" />
-            <h2 class="font-semibold text-fg">{t(locale, 'dl.linux.h2')}</h2>
-            <span class="dl-rec hidden rounded-full border border-fg bg-canvas px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
-          </div>
-          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.linux.appimage_intro')}</p>
-          <div class="mt-4 flex flex-col gap-2">
-            <a data-asset="appImageAmd64" href={d?.appImageAmd64?.url ?? '#'} class:list={['dl-link rounded-lg bg-accent px-4 py-2 text-center text-sm font-semibold text-on-accent hover:opacity-85', !d?.appImageAmd64 && 'hidden']}>
-              {t(locale, 'dl.linux.btn_appimage_amd64')}
-            </a>
-            <a data-asset="appImageArm64" href={d?.appImageArm64?.url ?? '#'} class:list={['dl-link rounded-lg border border-line px-4 py-2 text-center text-sm text-fg hover:bg-raised', !d?.appImageArm64 && 'hidden']}>
-              {t(locale, 'dl.linux.btn_appimage_arm64')}
-            </a>
-            <div class="grid grid-cols-2 gap-2">
-              <a data-asset="debAmd64" href={d?.debAmd64?.url ?? '#'} class:list={['dl-link rounded-md border border-line px-2 py-1.5 text-center text-xs text-muted hover:text-fg', !d?.debAmd64 && 'hidden']}>.deb amd64</a>
-              <a data-asset="debArm64" href={d?.debArm64?.url ?? '#'} class:list={['dl-link rounded-md border border-line px-2 py-1.5 text-center text-xs text-muted hover:text-fg', !d?.debArm64 && 'hidden']}>.deb arm64</a>
-              <a data-asset="rpmAmd64" href={d?.rpmAmd64?.url ?? '#'} class:list={['dl-link rounded-md border border-line px-2 py-1.5 text-center text-xs text-muted hover:text-fg', !d?.rpmAmd64 && 'hidden']}>.rpm amd64</a>
-              <a data-asset="alpineApk" href={d?.alpineApk?.url ?? '#'} class:list={['dl-link rounded-md border border-line px-2 py-1.5 text-center text-xs text-muted hover:text-fg', !d?.alpineApk && 'hidden']}>.apk alpine</a>
-            </div>
-          </div>
-        </div>
-
         <!-- macOS -->
-        <div class="dl-card rounded-xl border border-line bg-surface p-6" data-platform="mac">
+        <div id={c === 'stable' ? `dl-mac` : undefined} class={card} data-platform="mac">
           <div class="flex items-center gap-2">
             <Icon name="mdiApple" size={20} class="text-muted" />
             <h2 class="font-semibold text-fg">{t(locale, 'dl.macos.h2')}</h2>
             <span class="dl-rec hidden rounded-full border border-fg bg-canvas px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
           </div>
           <p class="mt-1 text-sm text-muted">{t(locale, 'dl.macos.friendly')}</p>
-          <a data-asset="macDmg" href={d?.macDmg?.url ?? '#'} class:list={['dl-link mt-4 ', !d?.macDmg && 'hidden']}>
-            {t(locale, 'dl.macos.btn_dmg')}
-          </a>
+          <div class="mt-4 flex flex-col gap-2">
+            <a data-asset="macDmg" href={d?.macDmg?.url ?? '#'} class:list={[btn, !d?.macDmg && 'hidden']}>
+              <Icon name="mdiDownload" size={15} />
+              {t(locale, 'dl.macos.btn_dmg_arm')}
+            </a>
+            <a data-asset="macDmgX64" href={d?.macDmgX64?.url ?? '#'} class:list={[btnGhost, !d?.macDmgX64 && 'hidden']}>
+              {t(locale, 'dl.macos.btn_dmg_x64')}
+            </a>
+          </div>
+        </div>
+
+        <!-- Linux -->
+        <div id={c === 'stable' ? `dl-linux` : undefined} class={card} data-platform="linux">
+          <div class="flex items-center gap-2">
+            <Icon name="mdiLinux" size={20} class="text-muted" />
+            <h2 class="font-semibold text-fg">{t(locale, 'dl.linux.h2')}</h2>
+            <span class="dl-rec hidden rounded-full border border-fg bg-canvas px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
+          </div>
+          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.linux.friendly')}</p>
+          <div class="mt-4 flex flex-col gap-2">
+            <a data-asset="appImageAmd64" href={d?.appImageAmd64?.url ?? '#'} class:list={[btn, !d?.appImageAmd64 && 'hidden']}>
+              <Icon name="mdiDownload" size={15} />
+              {t(locale, 'dl.linux.btn_appimage_amd64')}
+            </a>
+            <a data-asset="appImageArm64" href={d?.appImageArm64?.url ?? '#'} class:list={[btnGhost, !d?.appImageArm64 && 'hidden']}>
+              {t(locale, 'dl.linux.btn_appimage_arm64')}
+            </a>
+            <div class="grid grid-cols-2 gap-2">
+              <a data-asset="debAmd64" href={d?.debAmd64?.url ?? '#'} class:list={[btnMini, !d?.debAmd64 && 'hidden']}>.deb amd64</a>
+              <a data-asset="debArm64" href={d?.debArm64?.url ?? '#'} class:list={[btnMini, !d?.debArm64 && 'hidden']}>.deb arm64</a>
+              <a data-asset="rpmAmd64" href={d?.rpmAmd64?.url ?? '#'} class:list={[btnMini, !d?.rpmAmd64 && 'hidden']}>.rpm amd64</a>
+              <a data-asset="alpineApk" href={d?.alpineApk?.url ?? '#'} class:list={[btnMini, !d?.alpineApk && 'hidden']}>.apk alpine</a>
+            </div>
+          </div>
         </div>
 
         <!-- Android -->
-        <div class="dl-card rounded-xl border border-line bg-surface p-6" data-platform="android">
+        <div id={c === 'stable' ? `dl-android` : undefined} class={card} data-platform="android">
           <div class="flex items-center gap-2">
             <Icon name="mdiAndroid" size={20} class="text-muted" />
-            <h2 class="font-semibold text-fg">
-              {t(locale, 'dl.android.h2')}
-              <span class="ml-1 rounded-full border border-line px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-faint">{t(locale, 'dl.android.badge')}</span>
-            </h2>
+            <h2 class="font-semibold text-fg">{t(locale, 'dl.android.h2')}</h2>
             <span class="dl-rec hidden rounded-full border border-fg bg-canvas px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
           </div>
           <p class="mt-1 text-sm text-muted">{t(locale, 'dl.android.friendly')}</p>
-          <a data-asset="apk" href={d?.apk?.url ?? '#'} class:list={['dl-link mt-4 ', !d?.apk && 'hidden']}>
-            {t(locale, 'dl.android.btn_apk')}
-          </a>
-          <a href={SITE.obtainiumUrl} class="mt-4 inline-block rounded-lg border border-line px-4 py-2 text-sm text-fg hover:bg-raised">
-            {t(locale, 'dl.android.obtainium_alt')}
+          <div class="mt-4 flex flex-col gap-2">
+            <a data-asset="apk" href={d?.apk?.url ?? '#'} class:list={[btn, !d?.apk && 'hidden']}>
+              <Icon name="mdiDownload" size={15} />
+              {t(locale, 'dl.android.btn_apk')}
+            </a>
+            <a href={SITE.obtainiumUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-fg">
+              <img src="/vendor/obtainium-badge.webp" alt="" class="h-4 w-auto rounded-sm" />
+              {t(locale, 'dl.android.obtainium_alt')}
+            </a>
+          </div>
+        </div>
+
+        <!-- Umbrel -->
+        <div id={c === 'stable' ? `dl-umbrel` : undefined} class={card} data-platform="umbrel">
+          <div class="flex items-center gap-2">
+            <Icon name="mdiHomeAssistant" size={20} class="text-muted" />
+            <h2 class="font-semibold text-fg">{t(locale, 'dl.umbrel.h2')}</h2>
+          </div>
+          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.umbrel.intro')}</p>
+          <a href={SITE.umbrelUrl} target="_blank" rel="noopener noreferrer" class:list={[btn, 'mt-4']}>
+            {t(locale, 'dl.umbrel.btn')}
           </a>
         </div>
 
         <!-- Python -->
-        <div class="dl-card rounded-xl border border-line bg-surface p-6" data-platform="python">
+        <div id={c === 'stable' ? `dl-python` : undefined} class={card} data-platform="python">
           <div class="flex items-center gap-2">
             <Icon name="mdiLanguagePython" size={20} class="text-muted" />
             <h2 class="font-semibold text-fg">{t(locale, 'dl.python.h2')}</h2>
           </div>
-          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.python.intro')}</p>
-          <div class="mt-4 space-y-3">
+          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.python.friendly')}</p>
+
+          <div class="mt-4 inline-flex rounded-lg border border-line bg-canvas p-0.5" role="tablist" aria-label={t(locale, 'dl.python.h2')}>
+            {['pip', 'pipx', 'uv', 'pyz', 'pip-rns'].map((m, i) => (
+              <button
+                type="button"
+                role="tab"
+                aria-selected={i === 0}
+                data-pip-tab={m}
+                class:list={[
+                  'pip-tab rounded-md px-2.5 py-1 text-xs font-medium transition-colors',
+                  i === 0 ? 'bg-raised text-fg' : 'text-muted hover:text-fg',
+                ]}
+              >
+                {m === 'pyz' ? '.pyz' : m}
+              </button>
+            ))}
+          </div>
+
+          <div data-pip-panel="pip" class="pip-panel mt-3">
             <CommandBlock label="pip" code={`pip install ${SITE.pypiPackage}`} copyLabel={t(locale, 'dl.python.copy')} />
-            <a data-asset="wheel" href={d?.wheel?.url ?? '#'} class:list={['dl-link rounded-lg border border-line px-4 py-2 text-sm text-fg hover:bg-raised', !d?.wheel && 'hidden']}>
-              {t(locale, 'dl.python.btn_whl')}
+          </div>
+          <div data-pip-panel="pipx" class="pip-panel mt-3 hidden">
+            <CommandBlock label="pipx" code={`pipx install ${SITE.pypiPackage}`} copyLabel={t(locale, 'dl.python.copy')} />
+          </div>
+          <div data-pip-panel="uv" class="pip-panel mt-3 hidden">
+            <CommandBlock label="uv" code={`uv tool install ${SITE.pypiPackage}\nuvx ${SITE.pypiPackage.replace('reticulum-', '')}`} copyLabel={t(locale, 'dl.python.copy')} />
+          </div>
+          <div data-pip-panel="pyz" class="pip-panel mt-3 hidden">
+            <div class="grid grid-cols-2 gap-2">
+              <a data-asset="pyzPy314X64" href={d?.pyzPy314X64?.url ?? '#'} class:list={[btnMini, !d?.pyzPy314X64 && 'hidden']}>.pyz py3.14 x64</a>
+              <a data-asset="pyzPy314Arm64" href={d?.pyzPy314Arm64?.url ?? '#'} class:list={[btnMini, !d?.pyzPy314Arm64 && 'hidden']}>.pyz py3.14 arm64</a>
+              <a data-asset="pyzPy311X64" href={d?.pyzPy311X64?.url ?? '#'} class:list={[btnMini, !d?.pyzPy311X64 && 'hidden']}>.pyz py3.11 x64</a>
+              <a data-asset="pyzPy311Arm64" href={d?.pyzPy311Arm64?.url ?? '#'} class:list={[btnMini, !d?.pyzPy311Arm64 && 'hidden']}>.pyz py3.11 arm64</a>
+            </div>
+            <CommandBlock label="run" code={`python meshchatx-py314-linux-x64.pyz`} copyLabel={t(locale, 'dl.python.copy')} />
+          </div>
+          <div data-pip-panel="pip-rns" class="pip-panel mt-3 hidden">
+            <p class="mb-3 text-xs text-muted">{t(locale, 'dl.python.pip_rns_intro')}</p>
+            <a href={SITE.pipRnsUrl} target="_blank" rel="noopener noreferrer" class={btnGhost}>
+              pip-rns.quad4.io
             </a>
           </div>
+
+          <a data-asset="wheel" href={d?.wheel?.url ?? '#'} class:list={[btnMini, 'mt-3', !d?.wheel && 'hidden']}>
+            {t(locale, 'dl.python.btn_whl')}
+          </a>
         </div>
       </div>
 
       <!-- Containers -->
-      <div class="dl-card mt-4 rounded-xl border border-line bg-surface p-6" data-platform="containers">
+      <div id={c === 'stable' ? `dl-containers` : undefined} class={`${card} mt-4`} data-platform="containers">
         <div class="flex items-center gap-2">
           <Icon name="mdiDocker" size={20} class="text-muted" />
           <h2 class="font-semibold text-fg">{t(locale, 'dl.containers.h2')}</h2>
         </div>
-        <p class="mt-1 text-sm text-muted">{t(locale, 'dl.containers.registries_note')}</p>
+        <p class="mt-1 text-sm text-muted">{t(locale, 'dl.containers.friendly')}</p>
         <div class="mt-5 grid gap-4 lg:grid-cols-2">
           <CommandBlock label="Docker Hub" code={`docker pull ${SITE.dockerHub}`} copyLabel={t(locale, 'dl.python.copy')} />
           <CommandBlock label="GHCR" code={`docker pull ${SITE.ghcr}`} copyLabel={t(locale, 'dl.python.copy')} />
@@ -212,9 +278,9 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
       </div>
 
       <!-- Flatpak -->
-      <div class="dl-card mt-4 rounded-xl border border-line bg-surface p-6" data-platform="flatpak">
+      <div id={c === 'stable' ? `dl-flatpak` : undefined} class={`${card} mt-4`} data-platform="flatpak">
         <div class="flex items-center gap-2">
-          <Icon name="mdiPackageVariantClosed" size={20} class="text-muted" />
+          <Icon name="siFlatpak" size={20} class="text-muted" />
           <h2 class="font-semibold text-fg">{t(locale, 'dl.flatpak.h2')}</h2>
         </div>
         <p class="mt-1 text-sm text-muted">{t(locale, 'dl.flatpak.friendly')}</p>
@@ -230,7 +296,7 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
             copyLabel={t(locale, 'dl.python.copy')}
           />
         </div>
-        <a data-asset="flatpak" href={d?.flatpak?.url ?? '#'} class:list={['dl-link mt-4 ', !d?.flatpak && 'hidden']}>
+        <a data-asset="flatpak" href={d?.flatpak?.url ?? '#'} class:list={[btnGhost, 'mt-4', !d?.flatpak && 'hidden']}>
           {t(locale, 'dl.flatpak.btn')}
         </a>
         <p class="mt-4 text-xs text-faint">{t(locale, 'dl.flatpak.remote_note')}</p>
@@ -284,7 +350,7 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
         const key = a.getAttribute('data-asset');
         const asset = key ? dl[key] : null;
         a.classList.toggle('hidden', !asset);
-        a.classList.toggle('inline-block', !!asset);
+        a.classList.toggle('inline-flex', !!asset && !a.classList.contains('btn-mini'));
         if (asset) a.href = asset.url;
       });
       panel.querySelectorAll('[data-asset-none]').forEach((el) => {
@@ -320,6 +386,24 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
     });
 
     versionSel?.addEventListener('change', applyRelease);
+
+    // pip/pipx/uv/pyz/pip-rns tabs inside the Python card
+    document.querySelectorAll('.pip-tab').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-pip-tab');
+        const card = btn.closest('[data-platform="python"]');
+        card?.querySelectorAll('.pip-tab').forEach((b) => {
+          const on = b === btn;
+          b.setAttribute('aria-selected', String(on));
+          b.className =
+            'pip-tab rounded-md px-2.5 py-1 text-xs font-medium transition-colors ' +
+            (on ? 'bg-raised text-fg' : 'text-muted hover:text-fg');
+        });
+        card?.querySelectorAll('.pip-panel').forEach((p) => {
+          p.classList.toggle('hidden', p.getAttribute('data-pip-panel') !== target);
+        });
+      });
+    });
 
     // UA-based recommendation
     const ua = navigator.userAgent.toLowerCase();

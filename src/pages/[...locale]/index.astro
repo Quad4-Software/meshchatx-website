@@ -77,10 +77,14 @@ const [heroPre, heroPost] = heroTitle.split('Reticulum');
         <div class="mt-8 flex flex-wrap gap-x-4 gap-y-3">
           {PLATFORMS.map((p) => (
             <a
-              href={localePath(locale, 'download')}
+              href={localePath(locale, `download#${p.anchor}`)}
               class="flex items-center gap-2 text-faint transition-colors hover:text-fg"
             >
-              <Icon name={p.icon} size={17} />
+              {p.icon.startsWith('img:') ? (
+                <img src={p.icon.slice(4)} alt="" width="17" height="17" class="h-[17px] w-[17px] rounded-[3px] object-contain" />
+              ) : (
+                <Icon name={p.icon} size={17} />
+              )}
               <span class="text-xs font-medium tracking-wide">
                 {t(locale, `home.platform.${p.key}`)}
               </span>

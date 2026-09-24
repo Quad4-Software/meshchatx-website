@@ -18,6 +18,11 @@ export interface ReleaseDownloads {
   winInstaller: ReleaseAsset | null;
   winPortable: ReleaseAsset | null;
   macDmg: ReleaseAsset | null;
+  macDmgX64: ReleaseAsset | null;
+  pyzPy311X64: ReleaseAsset | null;
+  pyzPy311Arm64: ReleaseAsset | null;
+  pyzPy314X64: ReleaseAsset | null;
+  pyzPy314Arm64: ReleaseAsset | null;
   apk: ReleaseAsset | null;
   alpineApk: ReleaseAsset | null;
   flatpak: ReleaseAsset | null;
@@ -148,8 +153,23 @@ async function matchDownloads(assets: GhAsset[]): Promise<ReleaseDownloads> {
     winInstaller: byName((n) => /win.*installer\.exe$/i.test(n)),
     winPortable: byName((n) => /win.*portable\.exe$/i.test(n)),
     macDmg: byName(
-      (n) => n.endsWith('.dmg') && !n.endsWith('.dmg.sha256') && !n.includes('.cosign.'),
+      (n) =>
+        n.endsWith('.dmg') &&
+        /(arm64|aarch64)/.test(n) &&
+        !n.endsWith('.dmg.sha256') &&
+        !n.includes('.cosign.'),
     ),
+    macDmgX64: byName(
+      (n) =>
+        n.endsWith('.dmg') &&
+        /(x64|x86_64|amd64)/.test(n) &&
+        !n.endsWith('.dmg.sha256') &&
+        !n.includes('.cosign.'),
+    ),
+    pyzPy311X64: byName((n) => n.endsWith('.pyz') && n.includes('py311') && /(x64|x86_64)/.test(n)),
+    pyzPy311Arm64: byName((n) => n.endsWith('.pyz') && n.includes('py311') && /(arm64|aarch64)/.test(n)),
+    pyzPy314X64: byName((n) => n.endsWith('.pyz') && n.includes('py314') && /(x64|x86_64)/.test(n)),
+    pyzPy314Arm64: byName((n) => n.endsWith('.pyz') && n.includes('py314') && /(arm64|aarch64)/.test(n)),
     apk: byName((n) => n.endsWith('.apk') && !n.includes('alpine') && !n.includes('linux')),
     alpineApk: byName((n) => n.endsWith('.apk') && n.includes('alpine')),
     flatpak: byName((n) => n.endsWith('.flatpak')),
