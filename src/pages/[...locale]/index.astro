@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
-import MeshGlyph from '../../components/MeshGlyph.astro';
 import AppPreview from '../../components/AppPreview.astro';
+import ThemeImage from '../../components/ThemeImage.astro';
 import Icon from '../../components/Icon.astro';
 import { LOCALES, SITE, PLATFORMS, CAPABILITIES, HOME_FEATURES, type Locale } from '../../config/site';
 import { t, localePath } from '../../i18n';
@@ -27,6 +27,8 @@ const [heroPre, heroPost] = heroTitle.split('Reticulum');
   description={t(locale, 'meta.desc.home')}
   ogCard="card"
   path=""
+  preloadImg="/media/preview-conversation-dark-1120.webp"
+  preloadSrcset="/media/preview-conversation-dark-560.webp 560w, /media/preview-conversation-dark-800.webp 800w, /media/preview-conversation-dark-1120.webp 1120w"
 >
   <!-- Hero -->
   <section class="relative mx-auto max-w-6xl px-5 pb-10 pt-14 sm:pt-20">
@@ -92,8 +94,19 @@ const [heroPre, heroPost] = heroTitle.split('Reticulum');
           ))}
         </div>
       </div>
-      <div class="relative mx-auto w-full max-w-[560px] text-fg">
-        <MeshGlyph class="h-auto w-full" />
+      <div class="relative mx-auto w-full max-w-[560px] overflow-hidden rounded-xl border border-line shadow-2xl shadow-black/30">
+        <ThemeImage
+          dark="/media/preview-conversation-dark-1120.webp"
+          light="/media/preview-conversation-1120.webp"
+          srcsetDark="/media/preview-conversation-dark-560.webp 560w, /media/preview-conversation-dark-800.webp 800w, /media/preview-conversation-dark-1120.webp 1120w"
+          srcsetLight="/media/preview-conversation-560.webp 560w, /media/preview-conversation-800.webp 800w, /media/preview-conversation-1120.webp 1120w"
+          alt="MeshChatX conversation view"
+          width={1120}
+          height={700}
+          loading="eager"
+          fetchpriority="high"
+          class="block h-auto w-full"
+        />
       </div>
     </div>
   </section>

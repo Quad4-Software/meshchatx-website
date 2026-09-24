@@ -13,9 +13,11 @@ interface Props {
   description: string;
   ogCard?: string;
   path?: string;
+  preloadImg?: string;
+  preloadSrcset?: string;
 }
 
-const { locale, title, description, ogCard = 'card', path } = Astro.props;
+const { locale, title, description, ogCard = 'card', path, preloadImg, preloadSrcset } = Astro.props;
 const canonical = new URL(localePath(locale, path ?? ''), SITE.domain).href;
 const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
 ---
@@ -32,6 +34,17 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="preload" href={fontGrotesk} as="font" type="font/woff2" crossorigin />
+    {preloadImg && (
+      <link
+        rel="preload"
+        href={preloadImg}
+        as="image"
+        type="image/webp"
+        fetchpriority="high"
+        imagesrcset={preloadSrcset}
+        imagesizes={preloadSrcset ? '(max-width: 560px) 90vw, 560px' : undefined}
+      />
+    )}
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="MeshChatX" />
@@ -105,8 +118,10 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
     <script is:inline>
       if ('serviceWorker' in navigator) {
         let refreshing = false;
+        const hadController = !!navigator.serviceWorker.controller;
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (refreshing) return;
+          // only reload when an existing SW is replaced, not on first install
+          if (!hadController || refreshing) return;
           refreshing = true;
           location.reload();
         });

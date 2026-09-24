@@ -1,0 +1,33 @@
+---
+// Theme-aware image: dark asset in dark mode, light asset in light mode.
+interface Props {
+  dark: string;
+  light: string;
+  alt: string;
+  class?: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  srcsetDark?: string;
+  srcsetLight?: string;
+}
+const { dark, light, alt, class: cls = '', width, height, loading = 'lazy', fetchpriority = 'auto', srcsetDark, srcsetLight } = Astro.props;
+---
+
+<>
+  <img src={dark} srcset={srcsetDark} sizes="(max-width: 560px) 90vw, 560px" alt={alt} width={width} height={height} loading={loading} fetchpriority={fetchpriority} class:list={[cls, 'theme-img-dark']} />
+  <img src={light} srcset={srcsetLight} sizes="(max-width: 560px) 90vw, 560px" alt={alt} width={width} height={height} loading="lazy" class:list={[cls, 'theme-img-light']} />
+</>
+
+<style>
+  .theme-img-light {
+    display: none;
+  }
+  [data-theme='light'] .theme-img-light {
+    display: block;
+  }
+  [data-theme='light'] .theme-img-dark {
+    display: none;
+  }
+</style>

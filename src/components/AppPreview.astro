@@ -1,6 +1,7 @@
 ---
 // Click-to-load live demo over a real app screenshot poster.
 import Icon from './Icon.astro';
+import ThemeImage from './ThemeImage.astro';
 import { SITE } from '../config/site';
 import { t } from '../i18n';
 import type { Locale } from '../config/site';
@@ -31,11 +32,14 @@ const { class: cls = '', locale = 'en' } = Astro.props;
     </span>
   </button>
 
-  <img
-    src="/media/preview-conversation.webp"
+  <ThemeImage
+    dark="/media/preview-conversation-dark-1120.webp"
+    light="/media/preview-conversation-1120.webp"
+    srcsetDark="/media/preview-conversation-dark-560.webp 560w, /media/preview-conversation-dark-800.webp 800w, /media/preview-conversation-dark-1120.webp 1120w"
+    srcsetLight="/media/preview-conversation-560.webp 560w, /media/preview-conversation-800.webp 800w, /media/preview-conversation-1120.webp 1120w"
     alt="MeshChatX conversation view"
-    width="1440"
-    height="900"
+    width={1120}
+    height={700}
     loading="lazy"
     class="mcx-poster block h-auto w-full"
   />
