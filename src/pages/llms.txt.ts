@@ -1,0 +1,39 @@
+import type { APIRoute } from 'astro';
+import { SITE } from '../config/site';
+
+export const GET: APIRoute = async () => {
+  const body = `# MeshChatX
+
+> MeshChatX is an all-in-one Reticulum client: LXMF messaging, LXST voice calls, NomadNet browsing, relay chat, maps, and Reticulum utilities. No central servers. Identity is a destination hash.
+
+## Pages
+
+- [Home](${SITE.domain}/)
+- [Download](${SITE.domain}/download) - installers and packages per channel
+- [Docs](${SITE.domain}/docs) - user documentation mirrored from the app
+- [Roadmap](${SITE.domain}/roadmap)
+- [Changelog](${SITE.domain}/changelog)
+- [Interfaces](${SITE.domain}/interfaces) - public Reticulum interface directory
+- [Dependencies](${SITE.domain}/dependency) - CycloneDX SBOM browser
+- [Branding](${SITE.domain}/branding)
+- [Contact](${SITE.domain}/contact)
+- [Donate](${SITE.domain}/donate)
+- [License](${SITE.domain}/license)
+- [Privacy](${SITE.domain}/privacy)
+- [Git mirrors](${SITE.domain}/git)
+
+## APIs
+
+- ${SITE.domain}/api/mcx-releases - releases per channel with download URLs
+- ${SITE.domain}/api/mcx-interfaces - cached interface directory
+- ${SITE.domain}/api/mcx-sbom - SBOM version index
+- ${SITE.domain}/api/mcx-sbom/{tag} - CycloneDX SBOM for a release tag
+
+## Source
+
+- Canonical: rngit over Reticulum at ${SITE.rngitRns}
+- GitHub mirror: ${SITE.githubUrl}
+- LavaForge mirror: ${SITE.lavaforgeUrl}
+`;
+  return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+};

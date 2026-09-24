@@ -1,0 +1,49 @@
+---
+import { FOOTER_GROUPS, SITE, type Locale } from '../config/site';
+import { t, localePath } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<footer class="border-t border-line bg-canvas">
+  <div class="mx-auto max-w-6xl px-5 py-14">
+    <div class="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <div>
+        <div class="flex items-center gap-2.5">
+          <img src="/logo-navbar.webp" alt="" width="28" height="28" class="h-7 w-7" />
+          <span class="font-semibold tracking-tight">MeshChatX</span>
+        </div>
+        <p class="mt-3 max-w-xs text-sm text-muted">{t(locale, 'footer.tagline')}</p>
+      </div>
+      {FOOTER_GROUPS.map((g) => (
+        <div>
+          <h3 class="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-faint">
+            {t(locale, g.group)}
+          </h3>
+          <ul class="space-y-2">
+            {g.links.map((l) => (
+              <li>
+                <a href={localePath(locale, l.path)} class="text-sm text-muted transition-colors hover:text-fg">
+                  {t(locale, l.key)}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <div class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6 text-xs text-faint">
+      <span>{t(locale, 'footer.meta_copyright')}</span>
+      <span>
+        <a href={SITE.quad4Url} class="underline decoration-line underline-offset-2 hover:text-fg">quad4.io</a>
+        {' \u00b7 '}
+        <a href={SITE.githubUrl} class="underline decoration-line underline-offset-2 hover:text-fg">{t(locale, 'footer.source')}</a>
+        {' \u00b7 '}
+        {t(locale, 'footer.license_badge')}
+      </span>
+    </div>
+  </div>
+</footer>

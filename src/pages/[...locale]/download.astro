@@ -1,0 +1,257 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CommandBlock from '../../components/CommandBlock.astro';
+import { LOCALES, SITE, type Locale } from '../../config/site';
+import { t } from '../../i18n';
+import { latestForChannel, releasesForChannel, type Channel } from '../../lib/releases';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { locale: locale === 'en' ? undefined : locale },
+    props: { locale },
+  }));
+}
+
+const { locale } = Astro.props as { locale: Locale };
+
+const channels: Channel[] = ['stable', 'beta', 'testing'];
+const latest = Object.fromEntries(
+  await Promise.all(channels.map(async (c) => [c, await latestForChannel(c)])),
+) as Record<Channel, Awaited<ReturnType<typeof latestForChannel>>>;
+
+const versionLists = Object.fromEntries(
+  await Promise.all(
+    channels.map(async (c) => [
+      c,
+      (await releasesForChannel(c)).map((r) => ({ tag: r.tag, version: r.version, publishedAt: r.publishedAt })),
+    ]),
+  ),
+) as Record<Channel, { tag: string; version: string; publishedAt: string }[]>;
+
+const flatpakRefName = (c: Channel) =>
+  c === 'beta' ? 'meshchatx-beta.flatpakref' : c === 'testing' ? 'meshchatx-testing.flatpakref' : 'meshchatx-stable.flatpakref';
+
+const flatpakCommands = (c: Channel) =>
+  `flatpak install --from ${SITE.flatpakCdnBase}/${flatpakRefName(c)}\nflatpak run ${SITE.flatpakAppId}\nflatpak update`;
+
+const flatpakRemote = (c: Channel) =>
+  `flatpak remote-add --if-not-exists meshchatx ${SITE.flatpakCdnBase}/meshchatx.flatpakrepo\nflatpak install meshchatx ${SITE.flatpakAppId}//${c}`;
+
+function fmtDate(iso: string): string {
+  if (!iso) return '';
+  try {
+    return new Date(iso).toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' });
+  } catch {
+    return iso;
+  }
+}
+
+const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale, `dl.${key}`, vars);
+---
+
+<Base
+  locale={locale}
+  title={t(locale, 'meta.title.download')}
+  description={t(locale, 'meta.desc.download')}
+  ogCard="card-download"
+  path="download"
+>
+  <PageHero title={dl('h1')} lead={dl('lead')} />
+
+  <!-- Channel picker -->
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="inline-flex rounded-lg border border-line bg-surface p-1" role="tablist">
+      {channels.map((c) => (
+        <button
+          type="button"
+          data-channel={c}
+          class:list={[
+            'channel-tab rounded-md px-4 py-1.5 text-sm font-medium transition-colors',
+            c === 'stable' ? 'bg-raised text-fg' : 'text-muted hover:text-fg',
+          ]}
+        >
+          {t(locale, `js.download.channel_${c}`)}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  {channels.map((c) => {
+    const rel = latest[c];
+    const d = rel?.downloads;
+    return (
+      <section data-channel-panel={c} class:list={['mx-auto max-w-6xl px-5 py-10', c !== 'stable' && 'hidden']}>
+        {rel && (
+          <p class="mb-8 font-mono text-xs text-faint">
+            v{rel.version} &middot; {fmtDate(rel.publishedAt)} &middot;
+            <a href={rel.releaseUrl} class="underline decoration-line underline-offset-2 hover:text-fg"> GitHub</a>
+          </p>
+        )}
+
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <!-- Windows -->
+          <div class="rounded-xl border border-line bg-surface p-6">
+            <h3 class="font-semibold text-fg">{t(locale, 'dl.windows.h2')}</h3>
+            <p class="mt-1 text-sm text-muted">{t(locale, 'dl.windows.intro')}</p>
+            <div class="mt-4 flex flex-col gap-2">
+              {d?.winInstaller ? (
+                <a href={d.winInstaller.url} class="rounded-lg bg-accent px-4 py-2 text-center text-sm font-semibold text-on-accent hover:opacity-85">
+                  {t(locale, 'dl.windows.btn_installer')}
+                </a>
+              ) : (
+                <span class="text-sm text-faint">{t(locale, 'dl.windows.no_win')}</span>
+              )}
+              {d?.winPortable && (
+                <a href={d.winPortable.url} class="rounded-lg border border-line px-4 py-2 text-center text-sm text-fg hover:bg-raised">
+                  {t(locale, 'dl.windows.btn_portable')}
+                </a>
+              )}
+            </div>
+          </div>
+
+          <!-- Linux -->
+          <div class="rounded-xl border border-line bg-surface p-6">
+            <h3 class="font-semibold text-fg">{t(locale, 'dl.linux.h2')}</h3>
+            <p class="mt-1 text-sm text-muted">{t(locale, 'dl.linux.appimage_intro')}</p>
+            <div class="mt-4 flex flex-col gap-2">
+              {d?.appImageAmd64 && (
+                <a href={d.appImageAmd64.url} class="rounded-lg bg-accent px-4 py-2 text-center text-sm font-semibold text-on-accent hover:opacity-85">
+                  {t(locale, 'dl.linux.btn_appimage_amd64')}
+                </a>
+              )}
+              {d?.appImageArm64 && (
+                <a href={d.appImageArm64.url} class="rounded-lg border border-line px-4 py-2 text-center text-sm text-fg hover:bg-raised">
+                  {t(locale, 'dl.linux.btn_appimage_arm64')}
+                </a>
+              )}
+              <div class="grid grid-cols-2 gap-2">
+                {d?.debAmd64 && <a href={d.debAmd64.url} class="rounded-md border border-line px-2 py-1.5 text-center text-xs text-muted hover:text-fg">.deb amd64</a>}
+                {d?.debArm64 && <a href={d.debArm64.url} class="rounded-md border border-line px-2 py-1.5 text-center text-xs text-muted hover:text-fg">.deb arm64</a>}
+                {d?.rpmAmd64 && <a href={d.rpmAmd64.url} class="rounded-md border border-line px-2 py-1.5 text-center text-xs text-muted hover:text-fg">.rpm amd64</a>}
+                {d?.alpineApk && <a href={d.alpineApk.url} class="rounded-md border border-line px-2 py-1.5 text-center text-xs text-muted hover:text-fg">.apk alpine</a>}
+              </div>
+            </div>
+          </div>
+
+          <!-- macOS -->
+          <div class="rounded-xl border border-line bg-surface p-6">
+            <h3 class="font-semibold text-fg">
+              {t(locale, 'dl.macos.h2')}
+              <span class="ml-2 rounded-full border border-line px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-faint">{t(locale, 'dl.macos.badge')}</span>
+            </h3>
+            <p class="mt-1 text-sm text-muted">{t(locale, 'dl.macos.note')}</p>
+            {d?.macDmg && (
+              <a href={d.macDmg.url} class="mt-4 inline-block rounded-lg border border-line px-4 py-2 text-sm text-fg hover:bg-raised">
+                {t(locale, 'dl.macos.btn_dmg')}
+              </a>
+            )}
+          </div>
+
+          <!-- Android -->
+          <div class="rounded-xl border border-line bg-surface p-6">
+            <h3 class="font-semibold text-fg">
+              {t(locale, 'dl.android.h2')}
+              <span class="ml-2 rounded-full border border-line px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-faint">{t(locale, 'dl.android.badge')}</span>
+            </h3>
+            <p class="mt-1 text-sm text-muted">{t(locale, 'dl.android.friendly')}</p>
+            {d?.apk ? (
+              <a href={d.apk.url} class="mt-4 inline-block rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-on-accent hover:opacity-85">
+                {t(locale, 'dl.android.btn_apk')}
+              </a>
+            ) : (
+              <a href={SITE.obtainiumUrl} class="mt-4 inline-block rounded-lg border border-line px-4 py-2 text-sm text-fg hover:bg-raised">
+                {t(locale, 'dl.android.obtainium_alt')}
+              </a>
+            )}
+          </div>
+
+          <!-- Containers -->
+          <div class="rounded-xl border border-line bg-surface p-6">
+            <h3 class="font-semibold text-fg">{t(locale, 'dl.containers.h2')}</h3>
+            <p class="mt-1 text-sm text-muted">{t(locale, 'dl.containers.registries_note')}</p>
+            <div class="mt-4 space-y-3">
+              <CommandBlock label="docker" code={`docker pull ${SITE.dockerHub}`} copyLabel={t(locale, 'dl.python.copy')} />
+              <CommandBlock label="ghcr" code={`docker pull ${SITE.ghcr}`} copyLabel={t(locale, 'dl.python.copy')} />
+            </div>
+          </div>
+
+          <!-- Python -->
+          <div class="rounded-xl border border-line bg-surface p-6">
+            <h3 class="font-semibold text-fg">{t(locale, 'dl.python.h2')}</h3>
+            <p class="mt-1 text-sm text-muted">{t(locale, 'dl.python.intro')}</p>
+            <div class="mt-4 space-y-3">
+              <CommandBlock label="pip" code={`pip install ${SITE.pypiPackage}`} copyLabel={t(locale, 'dl.python.copy')} />
+              {d?.wheel && (
+                <a href={d.wheel.url} class="inline-block rounded-lg border border-line px-4 py-2 text-sm text-fg hover:bg-raised">
+                  {t(locale, 'dl.python.btn_whl')}
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <!-- Flatpak -->
+        <div class="mt-4 rounded-xl border border-line bg-surface p-6">
+          <h3 class="font-semibold text-fg">{t(locale, 'dl.flatpak.h2')}</h3>
+          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.flatpak.friendly')}</p>
+          <div class="mt-5 grid gap-4 lg:grid-cols-2">
+            <CommandBlock
+              label={t(locale, 'dl.flatpak.remote_install')}
+              code={flatpakCommands(c)}
+              copyLabel={t(locale, 'dl.python.copy')}
+            />
+            <CommandBlock
+              label={t(locale, 'dl.flatpak.remote_add')}
+              code={flatpakRemote(c)}
+              copyLabel={t(locale, 'dl.python.copy')}
+            />
+          </div>
+          {d?.flatpak && (
+            <a href={d.flatpak.url} class="mt-4 inline-block rounded-lg border border-line px-4 py-2 text-sm text-fg hover:bg-raised">
+              {t(locale, 'dl.flatpak.btn')}
+            </a>
+          )}
+          <p class="mt-4 text-xs text-faint">{t(locale, 'dl.flatpak.remote_note')}</p>
+          {c !== 'stable' && (
+            <p class="mt-2 text-xs text-faint">{t(locale, 'dl.flatpak.remote_channels')}</p>
+          )}
+        </div>
+
+        <!-- Version list -->
+        {versionLists[c].length > 1 && (
+          <details class="mt-4 rounded-xl border border-line bg-surface">
+            <summary class="cursor-pointer px-6 py-4 text-sm font-medium text-muted hover:text-fg">
+              {t(locale, 'js.download.select_version')} ({versionLists[c].length})
+            </summary>
+            <ul class="border-t border-line px-6 py-3">
+              {versionLists[c].slice(0, 12).map((v) => (
+                <li class="flex items-center justify-between border-b border-line py-2 font-mono text-xs last:border-0">
+                  <a href={`${SITE.githubReleases}/tag/${v.tag}`} class="text-muted hover:text-fg">{v.version}</a>
+                  <span class="text-faint">{fmtDate(v.publishedAt)}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+      </section>
+    );
+  })}
+
+  <script>
+    document.querySelectorAll('.channel-tab').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const c = btn.getAttribute('data-channel');
+        document.querySelectorAll('.channel-tab').forEach((b) => {
+          const on = b.getAttribute('data-channel') === c;
+          b.className =
+            'channel-tab rounded-md px-4 py-1.5 text-sm font-medium transition-colors ' +
+            (on ? 'bg-raised text-fg' : 'text-muted hover:text-fg');
+        });
+        document.querySelectorAll('[data-channel-panel]').forEach((p) => {
+          p.classList.toggle('hidden', p.getAttribute('data-channel-panel') !== c);
+        });
+      });
+    });
+  </script>
+</Base>

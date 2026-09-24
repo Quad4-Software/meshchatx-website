@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { LOCALES, type Locale } from '../../config/site';
+import { t } from '../../i18n';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { locale: locale === 'en' ? undefined : locale },
+    props: { locale },
+  }));
+}
+
+const { locale } = Astro.props as { locale: Locale };
+---
+
+<Base
+  locale={locale}
+  title={t(locale, 'meta.title.license')}
+  description={t(locale, 'meta.desc.license')}
+  ogCard="card-license"
+  path="license"
+>
+  <PageHero title={t(locale, 'license.h1')} lead={t(locale, 'license.intro')} />
+
+  <div class="mx-auto max-w-3xl space-y-10 px-5 pb-24">
+    <section>
+      <h2 class="mb-3 text-xl font-semibold text-fg">{t(locale, 'license.h2_website')}</h2>
+      <pre class="whitespace-pre-wrap rounded-xl border border-line bg-surface p-6 font-mono text-xs leading-relaxed text-muted">{t(locale, 'license.body')}</pre>
+    </section>
+    <section>
+      <h2 class="mb-1 text-xl font-semibold text-fg">{t(locale, 'license.h2_app')}</h2>
+      <p class="mb-3 text-sm text-muted">{t(locale, 'license.app_intro')}</p>
+      <pre class="whitespace-pre-wrap rounded-xl border border-line bg-surface p-6 font-mono text-xs leading-relaxed text-muted">{t(locale, 'license.app_body')}</pre>
+    </section>
+  </div>
+</Base>

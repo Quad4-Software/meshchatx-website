@@ -1,0 +1,117 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { LOCALES, SITE, type Locale } from '../../config/site';
+import { t } from '../../i18n';
+import { getInterfaces } from '../../lib/interfaces';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { locale: locale === 'en' ? undefined : locale },
+    props: { locale },
+  }));
+}
+
+const { locale } = Astro.props as { locale: Locale };
+const { items, fetchedAt } = await getInterfaces();
+
+const types = [...new Set(items.map((i) => i.type))].sort();
+const networks = [...new Set(items.map((i) => i.network))].sort();
+---
+
+<Base
+  locale={locale}
+  title={t(locale, 'meta.title.interfaces')}
+  description={t(locale, 'meta.desc.interfaces')}
+  ogCard="card-interfaces"
+  path="interfaces"
+>
+  <PageHero title={t(locale, 'ifx.h1')} lead={t(locale, 'ifx.lead')}>
+    <div class="mt-4 flex flex-wrap gap-4 font-mono text-xs text-faint">
+      <span>{t(locale, 'ifx.count', { n: items.length })}</span>
+      <a href={SITE.rnsDirectoryUrl} class="underline decoration-line underline-offset-2 hover:text-fg">{t(locale, 'ifx.source')}</a>
+      <a href="/api/mcx-interfaces" class="underline decoration-line underline-offset-2 hover:text-fg">{t(locale, 'ifx.api')}</a>
+      {fetchedAt && <span>{t(locale, 'ifx.updated', { s: fetchedAt.slice(0, 10) })}</span>}
+    </div>
+  </PageHero>
+
+  <div class="mx-auto max-w-6xl px-5 pb-24">
+    <div class="mb-6 flex flex-wrap gap-3">
+      <input
+        id="ifx-search"
+        type="search"
+        placeholder={t(locale, 'ifx.search_placeholder')}
+        aria-label={t(locale, 'ifx.search_label')}
+        class="w-full max-w-sm rounded-lg border border-line bg-surface px-4 py-2 text-sm text-fg placeholder:text-faint focus:border-mist-500 focus:outline-none"
+      />
+      <select id="ifx-type" aria-label={t(locale, 'ifx.filter_type')} class="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-muted">
+        <option value="">{t(locale, 'ifx.filter_all')}</option>
+        {types.map((ty) => <option value={ty}>{t(locale, `ifx.type.${ty}`)}</option>)}
+      </select>
+      <select id="ifx-net" aria-label={t(locale, 'ifx.filter_network')} class="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-muted">
+        <option value="">{t(locale, 'ifx.filter_all')}</option>
+        {networks.map((n) => <option value={n}>{t(locale, `ifx.network.${n}`)}</option>)}
+      </select>
+      <span id="ifx-count" class="ml-auto self-center font-mono text-xs text-faint"></span>
+    </div>
+
+    {items.length === 0 && (
+      <p class="rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'ifx.empty')}</p>
+    )}
+
+    <div id="ifx-list" class="grid gap-3 md:grid-cols-2">
+      {items.map((i) => (
+        <article
+          class="ifx-card rounded-xl border border-line bg-surface p-5"
+          data-search={`${i.name} ${i.host} ${i.type} ${i.network} ${i.country}`.toLowerCase()}
+          data-type={i.type}
+          data-network={i.network}
+        >
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="font-semibold text-fg">{i.name}</h3>
+              <p class="mt-0.5 font-mono text-xs text-faint">{i.host}:{i.port}</p>
+            </div>
+            <div class="flex gap-1.5">
+              <span class="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] uppercase text-faint">{i.type}</span>
+              <span class="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] uppercase text-faint">{i.network}</span>
+            </div>
+          </div>
+          <details class="mt-3">
+            <summary class="cursor-pointer font-mono text-xs text-muted hover:text-fg">{t(locale, 'ifx.config')}</summary>
+            <pre class="mt-2 overflow-x-auto rounded-lg border border-line bg-canvas p-3 font-mono text-xs text-muted"><code>{i.config}</code></pre>
+          </details>
+        </article>
+      ))}
+    </div>
+    <p id="ifx-none" class="hidden rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'ifx.no_results')}</p>
+  </div>
+
+  <script define:vars={{ showingText: t(locale, 'ifx.showing') }}>
+    const search = document.getElementById('ifx-search');
+    const typeSel = document.getElementById('ifx-type');
+    const netSel = document.getElementById('ifx-net');
+    const cards = document.querySelectorAll('.ifx-card');
+    const none = document.getElementById('ifx-none');
+    const count = document.getElementById('ifx-count');
+
+    function apply() {
+      const q = (search?.value ?? '').toLowerCase();
+      const ty = typeSel?.value ?? '';
+      const net = netSel?.value ?? '';
+      let shown = 0;
+      cards.forEach((c) => {
+        const ok =
+          (!q || c.dataset.search.includes(q)) &&
+          (!ty || c.dataset.type === ty) &&
+          (!net || c.dataset.network === net);
+        c.classList.toggle('hidden', !ok);
+        if (ok) shown++;
+      });
+      none?.classList.toggle('hidden', shown > 0);
+      if (count) count.textContent = showingText.replace('%shown', shown).replace('%total', cards.length);
+    }
+    [search, typeSel, netSel].forEach((el) => el?.addEventListener('input', apply));
+    apply();
+  </script>
+</Base>

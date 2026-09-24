@@ -1,0 +1,146 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { LOCALES, type Locale } from '../../config/site';
+import { t } from '../../i18n';
+import { getReleases } from '../../lib/releases';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { locale: locale === 'en' ? undefined : locale },
+    props: { locale },
+  }));
+}
+
+const { locale } = Astro.props as { locale: Locale };
+const releases = await getReleases();
+const sbomReleases = releases.filter((r) => r.downloads.sbom);
+---
+
+<Base
+  locale={locale}
+  title={t(locale, 'meta.title.dependency')}
+  description={t(locale, 'meta.desc.dependency')}
+  ogCard="card-dependency"
+  path="dependency"
+>
+  <PageHero title={t(locale, 'dep.h1')} lead={t(locale, 'meta.desc.dependency')} />
+
+  <div class="mx-auto max-w-6xl px-5 pb-24">
+    {sbomReleases.length === 0 && (
+      <p class="rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'dep.empty')}</p>
+    )}
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <select id="dep-version" aria-label={t(locale, 'dep.version')} class="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-muted">
+        {sbomReleases.map((r) => <option value={r.tag}>v{r.version}{r.prerelease ? ` (${t(locale, 'dep.prerelease')})` : ''}</option>)}
+      </select>
+      <input
+        id="dep-search"
+        type="search"
+        placeholder={t(locale, 'dep.search_placeholder')}
+        aria-label={t(locale, 'dep.search_label')}
+        class="w-full max-w-sm rounded-lg border border-line bg-surface px-4 py-2 text-sm text-fg placeholder:text-faint focus:border-mist-500 focus:outline-none"
+      />
+      <select id="dep-eco" aria-label={t(locale, 'dep.filter_ecosystem')} class="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-muted">
+        <option value="">{t(locale, 'dep.filter_all')}</option>
+      </select>
+      <span id="dep-count" class="ml-auto font-mono text-xs text-faint"></span>
+    </div>
+
+    <div id="dep-loading" class="hidden rounded-xl border border-line bg-surface p-6 font-mono text-xs text-faint">{t(locale, 'dep.loading')}</div>
+    <div id="dep-error" class="hidden rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'dep.error')}</div>
+
+    <div class="overflow-hidden rounded-xl border border-line bg-surface">
+      <table class="w-full text-left text-sm">
+        <thead class="border-b border-line bg-raised">
+          <tr>
+            <th class="px-4 py-2.5 font-medium text-muted">{t(locale, 'dep.col_name')}</th>
+            <th class="px-4 py-2.5 font-medium text-muted">{t(locale, 'dep.col_version')}</th>
+            <th class="px-4 py-2.5 font-medium text-muted">{t(locale, 'dep.col_ecosystem')}</th>
+            <th class="px-4 py-2.5 font-medium text-muted">{t(locale, 'dep.col_license')}</th>
+          </tr>
+        </thead>
+        <tbody id="dep-body"></tbody>
+      </table>
+    </div>
+    <p id="dep-none" class="hidden mt-4 text-sm text-muted">{t(locale, 'dep.no_results')}</p>
+  </div>
+
+  <script define:vars={{
+    apiBase: '/api/mcx-sbom',
+    showingText: t(locale, 'dep.showing'),
+    unknownLicense: t(locale, 'dep.unknown_license'),
+  }}>
+    const versionSel = document.getElementById('dep-version');
+    const search = document.getElementById('dep-search');
+    const ecoSel = document.getElementById('dep-eco');
+    const body = document.getElementById('dep-body');
+    const loading = document.getElementById('dep-loading');
+    const error = document.getElementById('dep-error');
+    const none = document.getElementById('dep-none');
+    const count = document.getElementById('dep-count');
+
+    let pkgs = [];
+
+    function ecosystem(p) {
+      if (p.purl) {
+        const m = p.purl.match(/^pkg:([^/]+)/);
+        if (m) return m[1];
+      }
+      return p.type || 'library';
+    }
+    function licenseOf(p) {
+      const lic = (p.licenses || [])
+        .map((l) => l.license?.id || l.license?.name || l.expression || '')
+        .filter(Boolean);
+      return lic.join(', ') || unknownLicense;
+    }
+    function render() {
+      const q = (search.value || '').toLowerCase();
+      const eco = ecoSel.value || '';
+      const rows = pkgs.filter((p) => {
+        const hay = `${p.name} ${p.version || ''} ${ecosystem(p)} ${licenseOf(p)} ${p.purl || ''}`.toLowerCase();
+        return (!q || hay.includes(q)) && (!eco || ecosystem(p) === eco);
+      });
+      body.innerHTML = rows
+        .slice(0, 500)
+        .map(
+          (p) => `<tr class="border-b border-line last:border-0">
+            <td class="px-4 py-2 font-mono text-xs text-fg">${esc(p.name)}</td>
+            <td class="px-4 py-2 font-mono text-xs text-muted">${esc(p.version || '')}</td>
+            <td class="px-4 py-2 text-xs text-muted">${esc(ecosystem(p))}</td>
+            <td class="px-4 py-2 text-xs text-muted">${esc(licenseOf(p))}</td>
+          </tr>`,
+        )
+        .join('');
+      none.classList.toggle('hidden', rows.length > 0);
+      count.textContent = showingText.replace('%shown', rows.length).replace('%total', pkgs.length);
+    }
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    async function load(tag) {
+      loading.classList.remove('hidden');
+      error.classList.add('hidden');
+      try {
+        const res = await fetch(`${apiBase}/${encodeURIComponent(tag)}`);
+        if (!res.ok) throw new Error(String(res.status));
+        const sbom = await res.json();
+        pkgs = sbom.components || [];
+        const ecos = [...new Set(pkgs.map(ecosystem))].sort();
+        ecoSel.innerHTML = '<option value="">' + ecoSel.options[0].textContent + '</option>' +
+          ecos.map((e) => `<option value="${esc(e)}">${esc(e)}</option>`).join('');
+      } catch {
+        pkgs = [];
+        error.classList.remove('hidden');
+      }
+      loading.classList.add('hidden');
+      render();
+    }
+    versionSel?.addEventListener('change', () => load(versionSel.value));
+    search?.addEventListener('input', render);
+    ecoSel?.addEventListener('input', render);
+    if (versionSel?.value) load(versionSel.value);
+  </script>
+</Base>

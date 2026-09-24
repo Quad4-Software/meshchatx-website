@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { LOCALES, type Locale } from '../../config/site';
+import { t, localePath } from '../../i18n';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { locale: locale === 'en' ? undefined : locale },
+    props: { locale },
+  }));
+}
+
+const { locale } = Astro.props as { locale: Locale };
+
+const contactText = t(locale, 'privacy.p_contact').replace('href="/contact"', `href="${localePath(locale, 'contact')}"`);
+
+const sections = [
+  { h: 'privacy.h2_no_tracking', p: 'privacy.p_no_tracking' },
+  { h: 'privacy.h2_cookies', p: 'privacy.p_cookies', extra: 'privacy.p_cookies_detail' },
+  { h: 'privacy.h2_analytics', p: 'privacy.p_analytics', extra: 'privacy.p_analytics_detail' },
+  { h: 'privacy.h2_rights', p: 'privacy.p_rights' },
+];
+---
+
+<Base
+  locale={locale}
+  title={t(locale, 'meta.title.privacy')}
+  description={t(locale, 'meta.desc.privacy')}
+  ogCard="card-privacy"
+  path="privacy"
+>
+  <PageHero title={t(locale, 'privacy.h1')}>
+    <p class="mt-3 font-mono text-xs text-faint">{t(locale, 'privacy.updated')}</p>
+  </PageHero>
+
+  <div class="mx-auto max-w-3xl space-y-10 px-5 pb-24">
+    <p class="text-muted">{t(locale, 'privacy.p_scope')}</p>
+    {sections.map((s) => (
+      <section>
+        <h2 class="mb-2 text-xl font-semibold text-fg">{t(locale, s.h)}</h2>
+        <p class="text-sm leading-relaxed text-muted">{t(locale, s.p)}</p>
+        {s.extra && <p class="mt-2 text-sm leading-relaxed text-muted">{t(locale, s.extra)}</p>}
+      </section>
+    ))}
+    <section>
+      <h2 class="mb-2 text-xl font-semibold text-fg">{t(locale, 'privacy.h2_contact')}</h2>
+      <p class="text-sm leading-relaxed text-muted" set:html={contactText} />
+    </section>
+  </div>
+</Base>

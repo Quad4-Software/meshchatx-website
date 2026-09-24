@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { LOCALES, SITE, type Locale } from '../../config/site';
+import { t } from '../../i18n';
+import { getChangelog } from '../../lib/changelog';
+import { marked } from 'marked';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { locale: locale === 'en' ? undefined : locale },
+    props: { locale },
+  }));
+}
+
+const { locale } = Astro.props as { locale: Locale };
+const entries = await getChangelog();
+const shown = entries.slice(0, 30);
+---
+
+<Base
+  locale={locale}
+  title={t(locale, 'meta.title.changelog')}
+  description={t(locale, 'meta.desc.changelog')}
+  ogCard="card-changelog"
+  path="changelog"
+>
+  <PageHero title={t(locale, 'changelog.h1')} lead={t(locale, 'changelog.lead')}>
+    <div class="mt-4 flex gap-4 text-sm">
+      <a href={SITE.githubChangelogRaw.replace('/raw.githubusercontent.com/Quad4-Software/MeshChatX/master/', '/github.com/Quad4-Software/MeshChatX/blob/master/')} class="text-muted underline decoration-line underline-offset-4 hover:text-fg">
+        {t(locale, 'changelog.source')}
+      </a>
+    </div>
+  </PageHero>
+
+  <div class="mx-auto grid max-w-6xl gap-10 px-5 pb-24 lg:grid-cols-[220px_1fr]">
+    <aside class="hidden lg:block">
+      <nav class="sticky top-24" aria-label={t(locale, 'changelog.toc')}>
+        <p class="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-faint">{t(locale, 'changelog.toc')}</p>
+        <ul class="space-y-1.5 border-l border-line">
+          {shown.slice(0, 20).map((e) => (
+            <li>
+              <a href={`#${e.anchor}`} class="-ml-px block border-l-2 border-transparent py-0.5 pl-4 font-mono text-xs text-muted hover:border-fg hover:text-fg">
+                {e.unreleased ? t(locale, 'changelog.unreleased') : `v${e.version}`}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="space-y-10">
+      {shown.length === 0 && (
+        <p class="rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'changelog.empty')}</p>
+      )}
+      {shown.map((e) => (
+        <article id={e.anchor} class="scroll-mt-24">
+          <header class="mb-4 flex flex-wrap items-baseline gap-3 border-b border-line pb-3">
+            <h2 class="font-mono text-2xl font-bold text-fg">
+              {e.unreleased ? t(locale, 'changelog.unreleased') : `v${e.version}`}
+            </h2>
+            {e.date && <span class="font-mono text-xs text-faint">{e.date}</span>}
+          </header>
+          <div class="doc-body text-sm" set:html={marked.parse(e.body)} />
+        </article>
+      ))}
+    </div>
+  </div>
+</Base>

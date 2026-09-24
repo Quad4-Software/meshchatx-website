@@ -1,0 +1,27 @@
+---
+import { LOCALES, DOCS_DEFAULT_SLUG, type Locale } from '../../../config/site';
+import { localePath } from '../../../i18n';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { locale: locale === 'en' ? undefined : locale },
+    props: { locale },
+  }));
+}
+
+const { locale } = Astro.props as { locale: Locale };
+const target = localePath(locale, `docs/${DOCS_DEFAULT_SLUG}`);
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={target} />
+    <title>MeshChatX Docs</title>
+  </head>
+  <body>
+    <a href={target}>Documentation</a>
+  </body>
+</html>

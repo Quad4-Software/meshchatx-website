@@ -1,0 +1,146 @@
+---
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { LOCALES, type Locale } from '../../../config/site';
+import { t, localePath } from '../../../i18n';
+import { getDoc, docsNav, allDocSlugs } from '../../../lib/docs';
+
+export async function getStaticPaths() {
+  const slugs = await allDocSlugs();
+  const paths = [];
+  for (const locale of LOCALES) {
+    for (const slug of slugs) {
+      paths.push({
+        params: { locale: locale === 'en' ? undefined : locale, slug },
+        props: { locale, slug },
+      });
+    }
+  }
+  return paths;
+}
+
+const { locale, slug } = Astro.props as { locale: Locale; slug: string };
+const entry = await getDoc(locale, slug);
+if (!entry) {
+  throw new Error(`missing doc page: ${slug}`);
+}
+const { Content, headings } = await render(entry);
+const nav = await docsNav(locale);
+const flatNav = nav.flatMap((g) => g.items);
+const idx = flatNav.findIndex((i) => i.slug === slug);
+const prev = idx > 0 ? flatNav[idx - 1] : null;
+const next = idx >= 0 && idx < flatNav.length - 1 ? flatNav[idx + 1] : null;
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<Base
+  locale={locale}
+  title={`${entry.data.title} | ${t(locale, 'docs.meta_suffix')}`}
+  description={entry.data.description ?? t(locale, 'meta.desc.docs')}
+  ogCard="card-docs"
+  path={`docs/${slug}`}
+>
+  <div class="mx-auto grid max-w-6xl gap-10 px-5 py-10 lg:grid-cols-[240px_1fr_200px]">
+    <!-- Sidebar -->
+    <aside class="hidden lg:block">
+      <nav class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-4" aria-label={t(locale, 'docs.nav_label')}>
+        {nav.map((g) => (
+          <div class="mb-6">
+            <p class="mb-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-faint">
+              {t(locale, g.labelKey)}
+            </p>
+            <ul class="space-y-0.5 border-l border-line">
+              {g.items.map((i) => (
+                <li>
+                  <a
+                    href={localePath(locale, `docs/${i.slug}`)}
+                    class:list={[
+                      '-ml-px block border-l-2 py-1 pl-4 text-sm',
+                      i.slug === slug
+                        ? 'border-fg font-medium text-fg'
+                        : 'border-transparent text-muted hover:text-fg',
+                    ]}
+                  >
+                    {i.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </aside>
+
+    <!-- Mobile docs menu -->
+    <details class="rounded-lg border border-line bg-surface lg:hidden">
+      <summary class="cursor-pointer px-4 py-3 text-sm font-medium text-muted">
+        {t(locale, 'docs.menu')}
+      </summary>
+      <nav class="border-t border-line px-4 py-3">
+        {nav.map((g) => (
+          <div class="mb-3">
+            <p class="mb-1 font-mono text-[10px] uppercase tracking-wider text-faint">{t(locale, g.labelKey)}</p>
+            {g.items.map((i) => (
+              <a
+                href={localePath(locale, `docs/${i.slug}`)}
+                class:list={['block py-1 text-sm', i.slug === slug ? 'text-fg' : 'text-muted']}
+              >
+                {i.title}
+              </a>
+            ))}
+          </div>
+        ))}
+      </nav>
+    </details>
+
+    <!-- Body -->
+    <article class="min-w-0">
+      <nav class="mb-6 font-mono text-xs text-faint" aria-label={t(locale, 'docs.breadcrumb')}>
+        <a href={localePath(locale, 'docs')} class="hover:text-fg">{t(locale, 'nav.docs')}</a>
+        <span class="mx-2">/</span>
+        <span class="text-muted">{entry.data.title}</span>
+      </nav>
+      <h1 class="mb-6 text-4xl font-semibold tracking-tight text-fg">{entry.data.title}</h1>
+      <div class="doc-body">
+        <Content />
+      </div>
+
+      <nav class="mt-14 flex items-center justify-between border-t border-line pt-6" aria-label={t(locale, 'docs.pager')}>
+        {prev ? (
+          <a href={localePath(locale, `docs/${prev.slug}`)} class="text-sm text-muted hover:text-fg">
+            &larr; {prev.title}
+          </a>
+        ) : <span />}
+        {next ? (
+          <a href={localePath(locale, `docs/${next.slug}`)} class="text-sm text-muted hover:text-fg">
+            {next.title} &rarr;
+          </a>
+        ) : <span />}
+      </nav>
+    </article>
+
+    <!-- TOC -->
+    <aside class="hidden xl:block">
+      <nav class="sticky top-24" aria-label={t(locale, 'docs.toc')}>
+        <p class="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-faint">
+          {t(locale, 'docs.toc')}
+        </p>
+        <ul class="space-y-1.5 border-l border-line">
+          {toc.map((h) => (
+            <li>
+              <a
+                href={`#${h.slug}`}
+                class:list={[
+                  '-ml-px block border-l-2 border-transparent py-0.5 text-xs text-muted hover:border-fg hover:text-fg',
+                  h.depth === 3 ? 'pl-7' : 'pl-4',
+                ]}
+              >
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+  </div>
+</Base>

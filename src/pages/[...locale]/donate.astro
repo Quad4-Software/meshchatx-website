@@ -1,0 +1,50 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CommandBlock from '../../components/CommandBlock.astro';
+import { LOCALES, DONATE, type Locale } from '../../config/site';
+import { t } from '../../i18n';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { locale: locale === 'en' ? undefined : locale },
+    props: { locale },
+  }));
+}
+
+const { locale } = Astro.props as { locale: Locale };
+---
+
+<Base
+  locale={locale}
+  title={t(locale, 'meta.title.donate')}
+  description={t(locale, 'meta.desc.donate')}
+  ogCard="card-donate"
+  path="donate"
+>
+  <PageHero title={t(locale, 'donate.h1')} lead={t(locale, 'donate.lead')} />
+
+  <div class="mx-auto max-w-3xl px-5 pb-24">
+    <div class="space-y-4">
+      <section class="rounded-xl border border-line bg-surface p-6">
+        <h2 class="font-semibold text-fg">{t(locale, 'donate.platforms_title')}</h2>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href={DONATE.kofi} class="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent hover:opacity-85">
+            {t(locale, 'donate.kofi')}
+          </a>
+          <a href={DONATE.bmac} class="rounded-lg border border-line px-5 py-2.5 text-sm font-medium text-fg hover:bg-raised">
+            {t(locale, 'donate.bmac')}
+          </a>
+        </div>
+      </section>
+
+      <section class="rounded-xl border border-line bg-surface p-6">
+        <h2 class="font-semibold text-fg">{t(locale, 'donate.monero')}</h2>
+        <p class="mt-1 text-sm text-muted">{t(locale, 'donate.xmr_only')}</p>
+        <div class="mt-4">
+          <CommandBlock label="XMR" code={DONATE.xmr} copyLabel={t(locale, 'donate.copy_xmr')} />
+        </div>
+      </section>
+    </div>
+  </div>
+</Base>

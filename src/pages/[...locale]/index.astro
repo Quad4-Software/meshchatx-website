@@ -1,0 +1,212 @@
+---
+import Base from '../../layouts/Base.astro';
+import BlackHole from '../../components/BlackHole.astro';
+import CommandBlock from '../../components/CommandBlock.astro';
+import { LOCALES, SITE, PLATFORMS, CAPABILITIES, SHOWCASE_TABS, type Locale } from '../../config/site';
+import { t, localePath } from '../../i18n';
+import { latestForChannel } from '../../lib/releases';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({
+    params: { locale: locale === 'en' ? undefined : locale },
+    props: { locale },
+  }));
+}
+
+const { locale } = Astro.props as { locale: Locale };
+const latest = await latestForChannel('stable');
+
+const features = [
+  { h: 'home.feature.crypto_h3', p: 'home.feature.crypto_p' },
+  { h: 'home.feature.no_cloud_h3', p: 'home.feature.no_cloud_p' },
+  { h: 'home.feature.no_account_h3', p: 'home.feature.no_account_p' },
+  { h: 'home.feature.tunnels_h3', p: 'home.feature.tunnels_p' },
+  { h: 'home.feature.local_h3', p: 'home.feature.local_p' },
+  { h: 'home.feature.source_h3', p: 'home.feature.source_p' },
+];
+---
+
+<Base
+  locale={locale}
+  title={t(locale, 'meta.title.home')}
+  description={t(locale, 'meta.desc.home')}
+  ogCard="card"
+  path=""
+>
+  <!-- Hero -->
+  <section class="relative mx-auto max-w-6xl px-5 pb-10 pt-14 sm:pt-20">
+    <div class="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr]">
+      <div>
+        <p class="mb-4 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 font-mono text-[11px] uppercase tracking-[0.2em] text-faint">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-fg"></span>
+          Reticulum
+        </p>
+        <h1 class="text-5xl font-semibold leading-[1.02] tracking-tight text-fg sm:text-6xl">
+          {t(locale, 'home.hero.h1')}
+        </h1>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted">
+          {t(locale, 'home.hero.lead')}
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a
+            href={localePath(locale, 'download')}
+            class="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-opacity hover:opacity-85"
+          >
+            {latest ? t(locale, 'home.cta.download_for', { s: `v${latest.version}` }) : t(locale, 'home.cta.download')}
+          </a>
+          <a
+            href={SITE.githubUrl}
+            class="rounded-lg border border-line bg-surface px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-raised"
+          >
+            {t(locale, 'home.cta.source')}
+          </a>
+          <a
+            href={localePath(locale, 'docs')}
+            class="rounded-lg px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:text-fg"
+          >
+            {t(locale, 'home.cta.docs')} &rarr;
+          </a>
+        </div>
+        <div class="mt-10 flex flex-wrap gap-x-5 gap-y-2">
+          {PLATFORMS.map((p) => (
+            <a href={localePath(locale, 'download')} class="font-mono text-xs uppercase tracking-wider text-faint transition-colors hover:text-fg">
+              {t(locale, `home.platform.${p.key}`)}
+            </a>
+          ))}
+        </div>
+      </div>
+      <div class="relative mx-auto w-full max-w-[560px] text-fg">
+        <BlackHole class="h-auto w-full" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Capability strip -->
+  <section class="border-y border-line bg-surface-alpha backdrop-blur-sm">
+    <div class="mx-auto flex max-w-6xl flex-wrap gap-x-6 gap-y-2 px-5 py-4">
+      {CAPABILITIES.map((c) => (
+        <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
+          {t(locale, `home.cap.${c}`)}
+        </span>
+      ))}
+      <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
+        {t(locale, 'home.cap.more')}
+      </span>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="mx-auto max-w-6xl px-5 py-20">
+    <h2 class="text-3xl font-semibold tracking-tight text-fg">{t(locale, 'home.section.infra_h2')}</h2>
+    <p class="mt-3 max-w-2xl text-muted">{t(locale, 'home.section.infra_lead')}</p>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {features.map((f) => (
+        <div class="rounded-xl border border-line bg-surface p-6 transition-colors hover:bg-raised">
+          <h3 class="text-base font-semibold text-fg">{t(locale, f.h)}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted" set:html={t(locale, f.p)} />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Showcase -->
+  <section class="mx-auto max-w-6xl px-5 pb-20">
+    <div class="overflow-hidden rounded-2xl border border-line bg-surface">
+      <div class="flex flex-wrap gap-1 border-b border-line px-3 pt-3" id="showcase-tabs" role="tablist">
+      </div>
+      <div class="relative aspect-[16/10] bg-canvas">
+        {SHOWCASE_TABS.map((tab, i) => (
+          <img
+            src={`/showcase/dark/${tab}.webp`}
+            alt={t(locale, `js.showcase.tab${i}`)}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            data-shot={i}
+            class:list={[
+              'absolute inset-0 h-full w-full object-contain transition-opacity duration-200',
+              i === 0 ? 'opacity-100' : 'opacity-0',
+            ]}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Security -->
+  <section class="border-y border-line bg-surface-alpha">
+    <div class="mx-auto max-w-6xl px-5 py-16">
+      <h2 class="text-2xl font-semibold tracking-tight text-fg">{t(locale, 'home.security.h2')}</h2>
+      <p class="mt-3 max-w-2xl text-muted">{t(locale, 'home.security.lead')}</p>
+      <ul class="mt-6 grid gap-x-8 gap-y-2 text-sm text-muted sm:grid-cols-2">
+        {['slsa', 'asar', 'sandbox', 'sigstore', 'sast', 'csp', 'transport'].map((k) => (
+          <li class="flex gap-2">
+            <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-faint"></span>
+            <span set:html={t(locale, `home.security.bullet_${k}`)} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Anonymous split -->
+  <section class="mx-auto max-w-6xl px-5 py-20">
+    <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
+      <h2 class="text-4xl font-semibold leading-tight tracking-tight text-fg sm:text-5xl">
+        {t(locale, 'home.split.h2_line1')}
+        <br />
+        <span class="text-muted">{t(locale, 'home.split.h2_line2')}</span>
+      </h2>
+      <div class="space-y-6">
+        {[1, 2, 3].map((i) => (
+          <div class="border-l-2 border-line pl-5">
+            <h4 class="font-semibold text-fg">{t(locale, `home.split.item${i}_h4`)}</h4>
+            <p class="mt-1 text-sm text-muted">{t(locale, `home.split.item${i}_p`)}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Install strip -->
+  <section class="mx-auto max-w-6xl px-5 pb-24">
+    <div class="rounded-2xl border border-line bg-surface p-8 sm:p-10">
+      <h2 class="text-2xl font-semibold tracking-tight text-fg">{t(locale, 'nav.download')}</h2>
+      <div class="mt-6 grid gap-4 md:grid-cols-2">
+        <CommandBlock
+          label="pip"
+          code={`pip install ${SITE.pypiPackage}`}
+          copyLabel={t(locale, 'js.copy', { s: '' }).trim() || 'Copy'}
+        />
+        <CommandBlock
+          label="git"
+          code={`git clone ${SITE.githubClone}`}
+          copyLabel="Copy"
+        />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script define:vars={{ tabs: SHOWCASE_TABS }}>
+  const wrap = document.getElementById('showcase-tabs');
+  const shots = document.querySelectorAll('[data-shot]');
+  if (wrap && shots.length) {
+    tabs.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = String(i + 1);
+      b.className =
+        'rounded-md px-2.5 py-1 font-mono text-[11px] ' +
+        (i === 0 ? 'bg-raised text-fg' : 'text-faint hover:text-fg');
+      b.addEventListener('click', () => {
+        shots.forEach((s) => s.classList.toggle('opacity-100', s.dataset.shot === String(i)));
+        shots.forEach((s) => s.classList.toggle('opacity-0', s.dataset.shot !== String(i)));
+        wrap.querySelectorAll('button').forEach((x, j) => {
+          x.className =
+            'rounded-md px-2.5 py-1 font-mono text-[11px] ' +
+            (j === i ? 'bg-raised text-fg' : 'text-faint hover:text-fg');
+        });
+      });
+      wrap.appendChild(b);
+    });
+  }
+</script>

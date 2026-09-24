@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { t } from '../i18n';
+
+const locale = 'en' as const;
+---
+
+<Base locale={locale} title={t(locale, 'error.title_404')} description={t(locale, 'error.lead_404')} ogCard="card">
+  <div class="mx-auto flex max-w-3xl flex-col items-center px-5 py-32 text-center">
+    <p class="font-mono text-7xl font-bold text-fg">404</p>
+    <p class="mt-4 text-muted">{t(locale, 'error.lead_404')}</p>
+    <div class="mt-8 flex gap-3">
+      <a href="/" class="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent hover:opacity-85">
+        {t(locale, 'error.cta_home')}
+      </a>
+      <a href="/download" class="rounded-lg border border-line px-5 py-2.5 text-sm text-fg hover:bg-raised">
+        {t(locale, 'error.cta_download')}
+      </a>
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,150 @@
+---
+import { NAV_LINKS, LOCALES, LOCALE_NAMES, type Locale } from '../config/site';
+import { t, localePath } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\/|$)/, '');
+---
+
+<header class="sticky top-0 z-40 border-b border-line bg-canvas-alpha backdrop-blur-md">
+  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5" aria-label={t(locale, 'nav.primary')}>
+    <a href={localePath(locale)} class="flex items-center gap-2.5 text-fg">
+      <img src="/logo-navbar.webp" alt="" width="30" height="30" class="h-[30px] w-[30px]" />
+      <span class="text-lg font-semibold tracking-tight">MeshChatX</span>
+    </a>
+
+    <div class="hidden items-center gap-1 md:flex">
+      {NAV_LINKS.map((l) => (
+        <a
+          href={localePath(locale, l.path)}
+          class:list={[
+            'rounded-md px-3 py-1.5 text-sm transition-colors',
+            currentPath.startsWith(`/${l.path}`) ? 'text-fg' : 'text-muted hover:text-fg',
+          ]}
+        >
+          {t(locale, l.key)}
+        </a>
+      ))}
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button
+        id="mcx-theme-toggle"
+        type="button"
+        class="rounded-md border border-line bg-surface px-2.5 py-1.5 text-muted transition-colors hover:text-fg"
+        aria-label={t(locale, 'nav.toggle_theme')}
+        title={t(locale, 'nav.toggle_theme')}
+      >
+        <svg class="theme-icon-dark h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="theme-icon-light hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+
+      <div class="relative">
+        <button
+          id="mcx-lang-btn"
+          type="button"
+          class="rounded-md border border-line bg-surface px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:text-fg"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-label={t(locale, 'lang.pick')}
+        >
+          {locale.toUpperCase()}
+        </button>
+        <div
+          id="mcx-lang-menu"
+          class="absolute right-0 top-full mt-1 hidden min-w-36 rounded-lg border border-line bg-surface p-1 shadow-xl"
+          role="listbox"
+        >
+          {LOCALES.map((l) => (
+            <a
+              href={localePath(l, currentPath.replace(/^\//, ''))}
+              role="option"
+              aria-selected={l === locale}
+              class:list={[
+                'block rounded-md px-3 py-1.5 text-sm',
+                l === locale ? 'bg-raised text-fg' : 'text-muted hover:text-fg',
+              ]}
+            >
+              {LOCALE_NAMES[l]}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <a
+        href={localePath(locale, 'download')}
+        class="hidden rounded-md bg-accent px-3.5 py-1.5 text-sm font-semibold text-on-accent transition-opacity hover:opacity-85 sm:inline-block"
+      >
+        {t(locale, 'nav.download')}
+      </a>
+
+      <button
+        id="mcx-mobile-btn"
+        type="button"
+        class="rounded-md border border-line bg-surface p-1.5 text-muted md:hidden"
+        aria-label={t(locale, 'nav.mobile_menu')}
+        aria-expanded="false"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mcx-mobile-menu" class="hidden border-t border-line px-5 py-3 md:hidden">
+    <div class="flex flex-col gap-0.5">
+      {NAV_LINKS.map((l) => (
+        <a href={localePath(locale, l.path)} class="rounded-md px-3 py-2 text-sm text-muted hover:text-fg">
+          {t(locale, l.key)}
+        </a>
+      ))}
+      <a href={localePath(locale, 'roadmap')} class="rounded-md px-3 py-2 text-sm text-muted hover:text-fg">{t(locale, 'nav.roadmap')}</a>
+      <a href={localePath(locale, 'interfaces')} class="rounded-md px-3 py-2 text-sm text-muted hover:text-fg">{t(locale, 'nav.interfaces')}</a>
+      <a href={localePath(locale, 'donate')} class="rounded-md px-3 py-2 text-sm text-muted hover:text-fg">{t(locale, 'nav.donate')}</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const themeBtn = document.getElementById('mcx-theme-toggle');
+  const langBtn = document.getElementById('mcx-lang-btn');
+  const langMenu = document.getElementById('mcx-lang-menu');
+  const mobileBtn = document.getElementById('mcx-mobile-btn');
+  const mobileMenu = document.getElementById('mcx-mobile-menu');
+
+  const applyThemeIcons = () => {
+    const dark = document.documentElement.dataset.theme !== 'light';
+    document.querySelectorAll('.theme-icon-dark').forEach((el) => el.classList.toggle('hidden', !dark));
+    document.querySelectorAll('.theme-icon-light').forEach((el) => el.classList.toggle('hidden', dark));
+  };
+  applyThemeIcons();
+
+  themeBtn?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem('mcx-theme', next);
+    } catch {}
+    applyThemeIcons();
+  });
+
+  langBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const open = langMenu?.classList.toggle('hidden') === false;
+    langBtn.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', (e) => {
+    if (langMenu && !langMenu.contains(e.target as Node) && e.target !== langBtn) {
+      langMenu.classList.add('hidden');
+      langBtn?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  mobileBtn?.addEventListener('click', () => {
+    const open = mobileMenu?.classList.toggle('hidden') === false;
+    mobileBtn.setAttribute('aria-expanded', String(open));
+  });
+</script>

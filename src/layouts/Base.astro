@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+import Starfield from '../components/Starfield.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { SITE, OG_LOCALES, PREFIXED_LOCALES, type Locale } from '../config/site';
+import { localePath } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  ogCard?: string;
+  path?: string;
+}
+
+const { locale, title, description, ogCard = 'card', path } = Astro.props;
+const canonical = new URL(localePath(locale, path ?? ''), SITE.domain).href;
+const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/webp" href="/favicon.webp" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MeshChatX" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="MeshChatX logo" />
+    <meta property="og:locale" content={OG_LOCALES[locale]} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {PREFIXED_LOCALES.map((l) => (
+      <link rel="alternate" hreflang={l} href={new URL(localePath(l, path ?? ''), SITE.domain).href} />
+    ))}
+    <link rel="alternate" hreflang="en" href={new URL(localePath('en', path ?? ''), SITE.domain).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(localePath('en', path ?? ''), SITE.domain).href} />
+
+    <script is:inline>
+      (function () {
+        var theme = 'dark';
+        try {
+          theme = localStorage.getItem('mcx-theme') || 'dark';
+        } catch (e) {}
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen">
+    <Starfield />
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:text-fg"
+      >{title}</a
+    >
+    <Nav locale={locale} />
+    <main id="main" class="relative">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>
