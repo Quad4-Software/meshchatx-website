@@ -4,11 +4,11 @@
       "staticDistDir": "dist",
       "url": [
         "http://localhost/",
-        "http://localhost/download",
-        "http://localhost/docs/overview",
-        "http://localhost/roadmap",
-        "http://localhost/interfaces",
-        "http://localhost/branding",
+        "http://localhost/download/",
+        "http://localhost/docs/overview/",
+        "http://localhost/roadmap/",
+        "http://localhost/interfaces/",
+        "http://localhost/branding/",
         "http://localhost/de/"
       ],
       "numberOfRuns": 3,

@@ -11,6 +11,10 @@ export default defineConfig({
     sitemap(),
     solidJs(),
   ],
+
+  build: {
+    inlineStylesheets: 'always',
+  },
   vite: {
     plugins: [tailwindcss()],
   },

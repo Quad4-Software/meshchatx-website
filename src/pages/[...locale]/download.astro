@@ -69,6 +69,7 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
           type="button"
           role="tab"
           aria-selected={c === 'stable'}
+          aria-controls={`dl-panel-${c}`}
           data-channel={c}
           class:list={[
             'channel-tab rounded-md px-4 py-1.5 text-sm font-medium transition-colors',
@@ -104,14 +105,14 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
   {channels.map((c) => {
     const d = perChannel[c][0]?.downloads;
     return (
-    <section data-channel-panel={c} class:list={['mx-auto max-w-6xl px-5 py-10', c !== 'stable' && 'hidden']}>
+    <section id={`dl-panel-${c}`} role="tabpanel" data-channel-panel={c} class:list={['mx-auto max-w-6xl px-5 py-10', c !== 'stable' && 'hidden']}>
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <!-- Windows -->
         <div class="dl-card rounded-xl border border-line bg-surface p-6" data-platform="win">
           <div class="flex items-center gap-2">
             <Icon name="mdiMicrosoftWindows" size={20} class="text-muted" />
             <h2 class="font-semibold text-fg">{t(locale, 'dl.windows.h2')}</h2>
-            <span class="dl-rec hidden rounded-full border border-fg px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
+            <span class="dl-rec hidden rounded-full border border-fg bg-canvas px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
           </div>
           <p class="mt-1 text-sm text-muted">{t(locale, 'dl.windows.intro')}</p>
           <div class="mt-4 flex flex-col gap-2">
@@ -130,7 +131,7 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
           <div class="flex items-center gap-2">
             <Icon name="mdiLinux" size={20} class="text-muted" />
             <h2 class="font-semibold text-fg">{t(locale, 'dl.linux.h2')}</h2>
-            <span class="dl-rec hidden rounded-full border border-fg px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
+            <span class="dl-rec hidden rounded-full border border-fg bg-canvas px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
           </div>
           <p class="mt-1 text-sm text-muted">{t(locale, 'dl.linux.appimage_intro')}</p>
           <div class="mt-4 flex flex-col gap-2">
@@ -157,7 +158,7 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
               {t(locale, 'dl.macos.h2')}
               <span class="ml-1 rounded-full border border-line px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-faint">{t(locale, 'dl.macos.badge')}</span>
             </h2>
-            <span class="dl-rec hidden rounded-full border border-fg px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
+            <span class="dl-rec hidden rounded-full border border-fg bg-canvas px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
           </div>
           <p class="mt-1 text-sm text-muted">{t(locale, 'dl.macos.note')}</p>
           <a data-asset="macDmg" href={d?.macDmg?.url ?? '#'} class:list={['dl-link mt-4 ', !d?.macDmg && 'hidden']}>
@@ -173,7 +174,7 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
               {t(locale, 'dl.android.h2')}
               <span class="ml-1 rounded-full border border-line px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-faint">{t(locale, 'dl.android.badge')}</span>
             </h2>
-            <span class="dl-rec hidden rounded-full border border-fg px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
+            <span class="dl-rec hidden rounded-full border border-fg bg-canvas px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
           </div>
           <p class="mt-1 text-sm text-muted">{t(locale, 'dl.android.friendly')}</p>
           <a data-asset="apk" href={d?.apk?.url ?? '#'} class:list={['dl-link mt-4 ', !d?.apk && 'hidden']}>
