@@ -63,7 +63,7 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
       {items.map((i) => (
         <article
           class="ifx-card rounded-xl border border-line bg-surface p-5"
-          data-search={`${i.name} ${i.host} ${i.type} ${i.network} ${i.country}`.toLowerCase()}
+          data-search={`${i.name} ${i.host} ${i.type} ${i.typeName} ${i.network} ${i.port ?? ''}`.toLowerCase()}
           data-type={i.type}
           data-network={i.network}
         >
@@ -108,7 +108,7 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
         c.classList.toggle('hidden', !ok);
         if (ok) shown++;
       });
-      none?.classList.toggle('hidden', shown > 0);
+      none?.classList.toggle('hidden', shown > 0 || cards.length === 0);
       if (count) count.textContent = showingText.replace('%shown', shown).replace('%total', cards.length);
     }
     [search, typeSel, netSel].forEach((el) => el?.addEventListener('input', apply));

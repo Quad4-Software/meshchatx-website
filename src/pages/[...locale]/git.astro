@@ -1,8 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
-import CommandBlock from '../../components/CommandBlock.astro';
-import { LOCALES, REPO_LINKS, type Locale } from '../../config/site';
+import Icon from '../../components/Icon.astro';
+import { LOCALES, SITE, type Locale } from '../../config/site';
 import { t } from '../../i18n';
 
 export function getStaticPaths() {
@@ -13,7 +13,32 @@ export function getStaticPaths() {
 }
 
 const { locale } = Astro.props as { locale: Locale };
-const repos = REPO_LINKS;
+
+const hosts = [
+  {
+    key: 'rngit',
+    primary: true,
+    logo: '/vendor/reticulum-logo.webp',
+    commands: [
+      { label: t(locale, 'git.clone_rns'), cmd: `git clone ${SITE.rngitRns}` },
+      { label: t(locale, 'git.nomadnet'), cmd: SITE.rngitNomadnet },
+    ],
+  },
+  {
+    key: 'github',
+    primary: false,
+    icon: 'mdiGithub',
+    url: SITE.githubUrl,
+    commands: [{ label: 'git', cmd: `git clone ${SITE.githubClone}` }],
+  },
+  {
+    key: 'lavaforge',
+    primary: false,
+    icon: 'mdiPackageVariantClosed',
+    url: SITE.lavaforgeUrl,
+    commands: [{ label: 'git', cmd: `git clone ${SITE.lavaforgeClone}` }],
+  },
+];
 ---
 
 <Base
@@ -25,33 +50,84 @@ const repos = REPO_LINKS;
 >
   <PageHero title={t(locale, 'git.h1')} lead={t(locale, 'git.lead')} />
 
-  <div class="mx-auto max-w-4xl space-y-4 px-5 pb-24">
-    {repos.map((r) => (
-      <section class="rounded-xl border border-line bg-surface p-6">
-        <div class="flex flex-wrap items-center gap-3">
-          <h2 class="text-lg font-semibold text-fg">{t(locale, r.h)}</h2>
-          <span class:list={[
-            'rounded-full border px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider',
-            r.badge === 'git.primary_badge' ? 'border-fg text-fg' : 'border-line text-faint',
-          ]}>
-            {t(locale, r.badge)}
-          </span>
-        </div>
-        <p class="mt-2 text-sm text-muted">{t(locale, r.lead)}</p>
-        <div class="mt-4">
-          <CommandBlock label={r.label} code={r.cmd} copyLabel={t(locale, 'git.copy_cmd')} />
-        </div>
-        <div class="mt-3 flex gap-4">
-          {r.links.map((l) => (
-            <a href={l.href} class="text-sm text-muted underline decoration-line underline-offset-4 hover:text-fg">
-              {t(locale, l.labelKey)}
+  <div class="mx-auto max-w-6xl px-5 pb-24">
+    <div class="grid gap-4 lg:grid-cols-3">
+      {hosts.map((h) => (
+        <article
+          class:list={[
+            'flex flex-col rounded-xl border bg-surface p-6',
+            h.primary ? 'border-fg lg:col-span-1' : 'border-line',
+          ]}
+        >
+          <div class="flex items-center gap-3">
+            {h.logo ? (
+              <img src={h.logo} alt="" width="44" height="44" class="h-11 w-11 rounded-lg" loading="lazy" decoding="async" />
+            ) : (
+              <span class="flex h-11 w-11 items-center justify-center rounded-lg border border-line bg-raised text-muted">
+                <Icon name={h.icon!} size={22} />
+              </span>
+            )}
+            <div>
+              <h2 class="text-lg font-semibold text-fg">{t(locale, `git.${h.key}_h3`)}</h2>
+              <p class="font-mono text-[10px] uppercase tracking-wider text-faint">
+                {t(locale, h.primary ? 'git.primary_badge' : 'git.mirror_badge')}
+              </p>
+            </div>
+          </div>
+          <p class="mt-3 text-sm leading-relaxed text-muted">{t(locale, `git.${h.key}_lead`)}</p>
+
+          <div class="mt-4 flex-1 space-y-3">
+            {h.commands.map((c) => (
+              <div>
+                <p class="mb-1 font-mono text-[10px] uppercase tracking-wider text-faint">{c.label}</p>
+                <button
+                  type="button"
+                  class="git-copy w-full break-all rounded-lg border border-line bg-canvas px-3 py-2 text-left font-mono text-xs text-muted transition-colors hover:border-mist-500 hover:text-fg"
+                  data-copy={c.cmd}
+                  data-copied={t(locale, 'git.copied')}
+                  aria-label={`${t(locale, 'git.copy_cmd')}: ${c.cmd}`}
+                >
+                  {c.cmd}
+                </button>
+                <p class="mt-1 text-[11px] text-faint">{t(locale, 'git.click_copy')}</p>
+              </div>
+            ))}
+          </div>
+
+          {h.url && (
+            <a
+              href={h.url}
+              class="mt-5 inline-flex items-center gap-2 self-start rounded-lg border border-line px-4 py-2 text-sm font-medium text-fg transition-colors hover:bg-raised"
+            >
+              <Icon name="mdiOpenInNew" size={15} />
+              {t(locale, 'git.open_repo')}
             </a>
-          ))}
-        </div>
-        {r.extra && (
-          <p class="mt-3 font-mono text-[11px] text-faint">{r.extra}</p>
-        )}
-      </section>
-    ))}
+          )}
+        </article>
+      ))}
+    </div>
   </div>
+
+  <script>
+    document.querySelectorAll('.git-copy').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.getAttribute('data-copy') || '';
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+        const orig = btn.textContent;
+        btn.textContent = btn.getAttribute('data-copied') || 'Copied';
+        setTimeout(() => {
+          btn.textContent = orig;
+        }, 1400);
+      });
+    });
+  </script>
 </Base>

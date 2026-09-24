@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import MeshGlyph from '../../components/MeshGlyph.astro';
 import AppPreview from '../../components/AppPreview.astro';
 import Icon from '../../components/Icon.astro';
-import { LOCALES, SITE, PLATFORMS, CAPABILITIES, HOME_FEATURES, SECURITY_KEYS, type Locale } from '../../config/site';
+import { LOCALES, SITE, PLATFORMS, CAPABILITIES, HOME_FEATURES, type Locale } from '../../config/site';
 import { t, localePath } from '../../i18n';
 import { latestForChannel } from '../../lib/releases';
 
@@ -108,22 +108,6 @@ const features = HOME_FEATURES;
   <!-- Live preview -->
   <section class="mx-auto max-w-6xl px-5 pb-20">
     <AppPreview />
-  </section>
-
-  <!-- Security -->
-  <section class="border-y border-line bg-surface-alpha">
-    <div class="mx-auto max-w-6xl px-5 py-16">
-      <h2 class="text-2xl font-semibold tracking-tight text-fg">{t(locale, 'home.security.h2')}</h2>
-      <p class="mt-3 max-w-2xl text-muted">{t(locale, 'home.security.lead')}</p>
-      <ul class="mt-6 grid gap-x-8 gap-y-2 text-sm text-muted sm:grid-cols-2">
-        {SECURITY_KEYS.map((k) => (
-          <li class="flex gap-2">
-            <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-faint"></span>
-            <span set:html={t(locale, `home.security.bullet_${k}`)} />
-          </li>
-        ))}
-      </ul>
-    </div>
   </section>
 
   <!-- Anonymous split -->

@@ -16,6 +16,9 @@ export function getStaticPaths() {
 const { locale } = Astro.props as { locale: Locale };
 const published = await publishedVersions();
 
+const verCmp = (a: string, b: string) =>
+  a.split('.').map(Number).reduce((acc, p, i) => acc || p - (Number(b.split('.')[i]) || 0), 0);
+
 let markedUpcoming = false;
 const items = ROADMAP.map((item) => {
   let status = item.status;
@@ -27,6 +30,51 @@ const items = ROADMAP.map((item) => {
   }
   return { ...item, status };
 });
+
+// Build the rail: milestone nodes interleaved with published patch dots.
+interface RailNode {
+  type: 'milestone' | 'patch';
+  version: string;
+  label: string;
+  title: string;
+  date: string;
+  status: string;
+  done: boolean;
+}
+const rail: RailNode[] = [];
+const sorted = [...items].sort((a, b) => verCmp(a.version, b.version));
+for (let i = 0; i < sorted.length; i++) {
+  const m = sorted[i]!;
+  rail.push({
+    type: 'milestone',
+    version: m.version,
+    label: `v${m.version}`,
+    title: m.title,
+    date: m.date,
+    status: m.status,
+    done: m.status === 'done',
+  });
+  const next = sorted[i + 1]?.version;
+  const patches = published.filter(
+    (v) =>
+      verCmp(v, m.version) > 0 &&
+      v.split('.').slice(0, 2).join('.') === m.version.split('.').slice(0, 2).join('.') &&
+      (!next || verCmp(v, next) < 0),
+  );
+  for (const p of patches.sort(verCmp)) {
+    rail.push({
+      type: 'patch',
+      version: p,
+      label: `v${p}`,
+      title: `v${p}`,
+      date: '',
+      status: 'done',
+      done: true,
+    });
+  }
+}
+const doneCount = rail.filter((r) => r.done).length;
+const progress = rail.length > 1 ? (doneCount - 1) / (rail.length - 1) : 1;
 
 const statusStyle = {
   done: 'border-line text-faint',
@@ -51,12 +99,54 @@ const statusKey = {
 >
   <PageHero title={t(locale, 'roadmap.h1')} lead={t(locale, 'roadmap.lead')} />
 
-  <div class="mx-auto max-w-4xl px-5 pb-24">
+  <div class="mx-auto max-w-6xl px-5 pb-24">
     <p class="mb-10 font-mono text-xs text-faint">{t(locale, 'roadmap.notice')}</p>
 
-    <div class="relative space-y-8 border-l border-line pl-8">
+    <!-- Version rail -->
+    <div class="mb-14 overflow-x-auto pb-4" role="img" aria-label={t(locale, 'roadmap.rail_label')}>
+      <div class="relative min-w-[720px] pt-8">
+        <div class="absolute left-0 right-0 top-[9px] h-px bg-line"></div>
+        <div
+          class="absolute left-0 top-[9px] h-px bg-fg transition-[width]"
+          style={`width:${(progress * 100).toFixed(1)}%`}
+        ></div>
+        <ol class="relative flex justify-between">
+          {rail.map((node) => (
+            <li class="relative flex flex-col items-center" style={`flex:1`}>
+              <a
+                href={node.type === 'patch' ? localePath(locale, `changelog#v-${node.version.replace(/\./g, '-')}`) : `#ms-${node.version.replace(/\./g, '-')}`}
+                class="group flex flex-col items-center"
+                title={`${node.label} · ${node.title}`}
+              >
+                <span
+                  class:list={[
+                    'block rounded-full border-2 transition-transform group-hover:scale-125',
+                    node.type === 'patch' ? 'h-2 w-2' : 'h-4 w-4',
+                    node.done ? 'border-fg bg-fg' : node.status === 'progress' ? 'border-fg bg-canvas' : 'border-line bg-canvas',
+                  ]}
+                ></span>
+                <span
+                  class:list={[
+                    'mt-3 font-mono text-[10px]',
+                    node.type === 'patch' ? 'text-faint' : 'font-semibold text-fg',
+                  ]}
+                >
+                  {node.label}
+                </span>
+                {node.date && node.type === 'milestone' && (
+                  <span class="mt-0.5 text-[10px] text-faint">{node.date}</span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+
+    <!-- Milestone cards -->
+    <div class="relative space-y-6 border-l border-line pl-8">
       {items.map((item) => (
-        <article class="relative">
+        <article id={`ms-${item.version.replace(/\./g, '-')}`} class="relative scroll-mt-24">
           <span class="absolute -left-[37px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-canvas bg-fg"></span>
           <div class="rounded-xl border border-line bg-surface p-6">
             <div class="flex flex-wrap items-center gap-3">

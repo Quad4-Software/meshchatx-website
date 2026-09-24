@@ -33,7 +33,18 @@ const shown = entries.slice(0, 30);
     </div>
   </PageHero>
 
-  <div class="mx-auto grid max-w-6xl gap-10 px-5 pb-24 lg:grid-cols-[220px_1fr]">
+  <div class="mx-auto max-w-6xl px-5">
+    <input
+      id="cl-search"
+      type="search"
+      placeholder={t(locale, 'docs.search_placeholder')}
+      aria-label={t(locale, 'docs.search_placeholder')}
+      autocomplete="off"
+      class="w-full max-w-sm rounded-lg border border-line bg-surface px-4 py-2 text-sm text-fg placeholder:text-faint focus:border-mist-500 focus:outline-none"
+    />
+  </div>
+
+  <div class="mx-auto grid max-w-6xl gap-10 px-5 pb-24 pt-8 lg:grid-cols-[220px_1fr]">
     <aside class="hidden lg:block">
       <nav class="sticky top-24" aria-label={t(locale, 'changelog.toc')}>
         <p class="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-faint">{t(locale, 'changelog.toc')}</p>
@@ -49,12 +60,12 @@ const shown = entries.slice(0, 30);
       </nav>
     </aside>
 
-    <div class="space-y-10">
+    <div class="min-w-0 space-y-10">
       {shown.length === 0 && (
         <p class="rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'changelog.empty')}</p>
       )}
       {shown.map((e) => (
-        <article id={e.anchor} class="scroll-mt-24">
+        <article id={e.anchor} class="cl-entry scroll-mt-24" data-search={e.unreleased ? 'unreleased' : `v${e.version} ${e.date}`}>
           <header class="mb-4 flex flex-wrap items-baseline gap-3 border-b border-line pb-3">
             <h2 class="font-mono text-2xl font-bold text-fg">
               {e.unreleased ? t(locale, 'changelog.unreleased') : `v${e.version}`}
@@ -64,6 +75,24 @@ const shown = entries.slice(0, 30);
           <div class="doc-body text-sm" set:html={marked.parse(e.body)} />
         </article>
       ))}
+      <p id="cl-none" class="hidden rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'docs.search_empty')}</p>
     </div>
   </div>
+
+  <script>
+    const clSearch = document.getElementById('cl-search');
+    const clEntries = document.querySelectorAll('.cl-entry');
+    const clNone = document.getElementById('cl-none');
+    clSearch?.addEventListener('input', () => {
+      const q = ((clSearch as HTMLInputElement).value || '').toLowerCase().trim();
+      let shown = 0;
+      clEntries.forEach((el) => {
+        const hay = (el.getAttribute('data-search') || '') + ' ' + el.textContent;
+        const ok = !q || hay.toLowerCase().includes(q);
+        el.classList.toggle('hidden', !ok);
+        if (ok) shown++;
+      });
+      clNone?.classList.toggle('hidden', shown > 0 || clEntries.length === 0);
+    });
+  </script>
 </Base>

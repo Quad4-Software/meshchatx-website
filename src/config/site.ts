@@ -140,8 +140,6 @@ export const HOME_FEATURES = [
   { h: 'home.feature.source_h3', p: 'home.feature.source_p', icon: 'mdiSourceBranch' },
 ] as const;
 
-export const SECURITY_KEYS = ['slsa', 'asar', 'sandbox', 'sigstore', 'sast', 'csp', 'transport'] as const;
-
 export const BRAND_COLORS = [
   { name: 'Void 900', hex: '#0a0a0b' },
   { name: 'Void 850', hex: '#101013' },
@@ -157,36 +155,6 @@ export const BRAND_SECTIONS = [
   { key: 'logo', h: 'branding.logo_h2', lead: 'branding.logo_lead', sizes: ['16', '32', '48', '64', '128', '256', '512', '800'] },
   { key: 'wordmark', h: 'branding.wordmark_h2', lead: 'branding.wordmark_lead', sizes: ['32', '40', '64', '80', '128'] },
   { key: 'icon', h: 'branding.icon_h2', lead: 'branding.icon_lead', sizes: ['16', '32', '48', '64', '128', '256', '512', '800'], extra: 'favicon.ico' },
-] as const;
-
-export const REPO_LINKS = [
-  {
-    h: 'git.rngit_h3',
-    lead: 'git.rngit_lead',
-    badge: 'git.primary_badge',
-    label: 'rngit',
-    cmd: `git clone ${SITE.rngitRns}`,
-    extra: SITE.rngitNomadnet,
-    links: [{ labelKey: 'git.nomadnet', href: `nomadnet:${SITE.rngitNomadnet}` }],
-  },
-  {
-    h: 'git.github_h3',
-    lead: 'git.github_lead',
-    badge: 'git.mirror_badge',
-    label: 'git',
-    cmd: `git clone ${SITE.githubClone}`,
-    extra: '',
-    links: [{ labelKey: 'git.open_repo', href: SITE.githubUrl }],
-  },
-  {
-    h: 'git.lavaforge_h3',
-    lead: 'git.lavaforge_lead',
-    badge: 'git.mirror_badge',
-    label: 'git',
-    cmd: `git clone ${SITE.lavaforgeClone}`,
-    extra: '',
-    links: [{ labelKey: 'git.open_repo', href: SITE.lavaforgeUrl }],
-  },
 ] as const;
 
 export const CAPABILITIES = [

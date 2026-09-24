@@ -128,6 +128,11 @@ body {
 .doc-body a:hover {
   text-decoration-color: var(--color-fg);
 }
+.doc-body p,
+.doc-body li,
+.doc-body td {
+  overflow-wrap: anywhere;
+}
 .doc-body code:not(pre code) {
   font-family: var(--font-mono);
   font-size: 0.86em;
@@ -135,6 +140,10 @@ body {
   border: 1px solid var(--color-line);
   border-radius: 5px;
   padding: 0.12em 0.35em;
+  word-break: break-word;
+}
+.doc-body a {
+  overflow-wrap: anywhere;
 }
 .doc-body pre {
   background: var(--color-surface);
@@ -144,6 +153,11 @@ body {
   overflow-x: auto;
   font-size: 0.85rem;
   margin: 0 0 1rem;
+  max-width: 100%;
+}
+.doc-body table {
+  display: block;
+  overflow-x: auto;
 }
 .doc-body pre code {
   font-family: var(--font-mono);

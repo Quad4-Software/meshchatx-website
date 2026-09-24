@@ -24,7 +24,8 @@ const { locale } = Astro.props as { locale: Locale };
 >
   <PageHero title={t(locale, 'contact.h1')} />
 
-  <div class="mx-auto max-w-3xl px-5 pb-24">
+  <div class="mx-auto max-w-6xl px-5 pb-24">
+    <div class="max-w-3xl">
     <div class="space-y-4">
       <section class="rounded-xl border border-line bg-surface p-6">
         <h2 class="font-semibold text-fg">{t(locale, 'contact.panel_title')}</h2>
@@ -44,6 +45,7 @@ const { locale } = Astro.props as { locale: Locale };
           {CONTACT.email}
         </a>
       </section>
+    </div>
     </div>
   </div>
 </Base>

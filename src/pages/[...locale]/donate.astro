@@ -24,7 +24,8 @@ const { locale } = Astro.props as { locale: Locale };
 >
   <PageHero title={t(locale, 'donate.h1')} lead={t(locale, 'donate.lead')} />
 
-  <div class="mx-auto max-w-3xl px-5 pb-24">
+  <div class="mx-auto max-w-6xl px-5 pb-24">
+    <div class="max-w-3xl">
     <div class="space-y-4">
       <section class="rounded-xl border border-line bg-surface p-6">
         <h2 class="font-semibold text-fg">{t(locale, 'donate.platforms_title')}</h2>
@@ -45,6 +46,7 @@ const { locale } = Astro.props as { locale: Locale };
           <CommandBlock label="XMR" code={DONATE.xmr} copyLabel={t(locale, 'donate.copy_xmr')} />
         </div>
       </section>
+    </div>
     </div>
   </div>
 </Base>

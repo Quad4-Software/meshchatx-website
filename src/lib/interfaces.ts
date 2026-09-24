@@ -1,64 +1,85 @@
 import { SITE } from '../config/site';
+import bootstrap from '../data/rns-interfaces.json';
 
 export interface RnsInterface {
+  id: number | null;
   name: string;
   host: string;
-  port: number;
+  port: number | null;
   type: string;
+  typeName: string;
   network: string;
-  country: string;
+  status: string;
   config: string;
 }
 
-let memo: { items: RnsInterface[]; fetchedAt: string } | null = null;
-
-function classifyType(raw: string): string {
-  const s = raw.toLowerCase();
-  if (s.includes('tcp')) return 'tcp';
-  if (s.includes('backbone')) return 'backbone';
-  if (s.includes('i2p')) return 'i2p';
-  if (s.includes('udp')) return 'udp';
-  return 'other';
+export interface IfxPayload {
+  items: RnsInterface[];
+  fetchedAt: string;
+  stale: boolean;
+  count: number;
 }
 
-function classifyNetwork(raw: string): string {
-  const s = raw.toLowerCase();
-  if (s.includes('yggdrasil')) return 'yggdrasil';
-  if (s.includes('i2p')) return 'i2p';
-  if (s.includes('clearnet') || s.includes('internet')) return 'clearnet';
-  return 'other';
+interface RawRow {
+  id?: unknown;
+  name?: unknown;
+  host?: unknown;
+  port?: unknown;
+  type?: unknown;
+  typeName?: unknown;
+  network?: unknown;
+  status?: unknown;
+  config?: unknown;
 }
 
-export async function getInterfaces(): Promise<{ items: RnsInterface[]; fetchedAt: string }> {
+let memo: IfxPayload | null = null;
+
+function normalize(row: RawRow): RnsInterface | null {
+  const name = typeof row.name === 'string' ? row.name.trim() : '';
+  const host = typeof row.host === 'string' ? row.host.trim() : '';
+  if (!name || !host) return null;
+  let port: number | null = null;
+  if (typeof row.port === 'number' && row.port >= 1 && row.port <= 65535) port = row.port;
+  return {
+    id: typeof row.id === 'number' ? row.id : null,
+    name,
+    host,
+    port,
+    type: typeof row.type === 'string' ? row.type : '',
+    typeName: typeof row.typeName === 'string' ? row.typeName : '',
+    network: typeof row.network === 'string' ? row.network : '',
+    status: typeof row.status === 'string' ? row.status : '',
+    config: typeof row.config === 'string' ? row.config : '',
+  };
+}
+
+function payloadFromRows(raw: unknown, fetchedAt: string, stale: boolean): IfxPayload {
+  const rows = Array.isArray(raw) ? raw : ((raw as { data?: unknown[]; interfaces?: unknown[] }).data ?? (raw as { interfaces?: unknown[] }).interfaces ?? []);
+  const items = rows
+    .map((r) => (r && typeof r === 'object' ? normalize(r as RawRow) : null))
+    .filter((x): x is RnsInterface => x !== null)
+    .sort((a, b) => a.name.localeCompare(b.name));
+  return { items, fetchedAt, stale, count: items.length };
+}
+
+export async function getInterfaces(): Promise<IfxPayload> {
   if (memo) return memo;
-  let items: RnsInterface[] = [];
   try {
     const res = await fetch(SITE.rnsDirectoryApi, {
-      headers: { 'User-Agent': 'meshchatx-site-build' },
+      headers: { Accept: 'application/json', 'User-Agent': 'meshchatx-website' },
+      signal: AbortSignal.timeout(15000),
     });
     if (res.ok) {
-      const data = (await res.json()) as { entries?: Record<string, unknown>[] } | Record<string, unknown>[];
-      const list = Array.isArray(data) ? data : (data.entries ?? []);
-      items = list.map((e) => {
-        const name = String(e.name ?? e.iface_name ?? 'interface');
-        const host = String(e.host ?? e.address ?? '');
-        const port = Number(e.port ?? 0);
-        const typeRaw = String(e.type ?? e.interface_type ?? 'tcp');
-        const netRaw = String(e.network ?? e.transport ?? 'clearnet');
-        return {
-          name,
-          host,
-          port,
-          type: classifyType(typeRaw),
-          network: classifyNetwork(netRaw),
-          country: String(e.country ?? ''),
-          config: `[[${name}]]\n  type = TCPClientInterface\n  enabled = yes\n  target_host = ${host}\n  target_port = ${port}`,
-        };
-      });
+      const data = await res.json();
+      const payload = payloadFromRows(data, new Date().toISOString(), false);
+      if (payload.count > 0) {
+        memo = payload;
+        return memo;
+      }
     }
   } catch {
-    // offline build
+    // offline or directory down: fall back to the bundled snapshot
   }
-  memo = { items, fetchedAt: new Date().toISOString() };
+  memo = payloadFromRows(bootstrap, String((bootstrap as { fetchedAt?: string }).fetchedAt ?? ''), true);
   return memo;
 }
