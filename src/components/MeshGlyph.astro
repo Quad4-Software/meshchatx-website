@@ -31,17 +31,18 @@ const n = (i: number) => nodes[i]!;
     ))}
   </g>
 
-  <!-- packets riding the links -->
+  <!-- LXMF packets riding the links: envelope glyph, mdiEmailOutline path scaled -->
   <g class="mg-motion" fill="currentColor">
     {links.map(([a, b], i) => (
-      <circle r="5">
+      <g>
+        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 4-8 5-8-5V6l8 5 8-5z" transform="translate(-7.2,-7.2) scale(0.6)" />
         <animateMotion
           path={`M ${n(a).x} ${n(a).y} L ${n(b).x} ${n(b).y} L ${n(a).x} ${n(a).y}`}
           dur={`${3 + i * 0.55}s`}
           begin={`${i * 0.7}s`}
           repeatCount="indefinite"
         />
-      </circle>
+      </g>
     ))}
   </g>
 

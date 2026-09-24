@@ -63,6 +63,7 @@
 
 html {
   color-scheme: dark;
+  background: var(--color-canvas);
 }
 [data-theme='light'] {
   color-scheme: light;

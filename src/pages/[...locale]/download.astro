@@ -154,13 +154,10 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
         <div class="dl-card rounded-xl border border-line bg-surface p-6" data-platform="mac">
           <div class="flex items-center gap-2">
             <Icon name="mdiApple" size={20} class="text-muted" />
-            <h2 class="font-semibold text-fg">
-              {t(locale, 'dl.macos.h2')}
-              <span class="ml-1 rounded-full border border-line px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-faint">{t(locale, 'dl.macos.badge')}</span>
-            </h2>
+            <h2 class="font-semibold text-fg">{t(locale, 'dl.macos.h2')}</h2>
             <span class="dl-rec hidden rounded-full border border-fg bg-canvas px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-fg">{t(locale, 'dl.recommended')}</span>
           </div>
-          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.macos.note')}</p>
+          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.macos.friendly')}</p>
           <a data-asset="macDmg" href={d?.macDmg?.url ?? '#'} class:list={['dl-link mt-4 ', !d?.macDmg && 'hidden']}>
             {t(locale, 'dl.macos.btn_dmg')}
           </a>
@@ -185,19 +182,6 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
           </a>
         </div>
 
-        <!-- Containers -->
-        <div class="dl-card rounded-xl border border-line bg-surface p-6" data-platform="containers">
-          <div class="flex items-center gap-2">
-            <Icon name="mdiDocker" size={20} class="text-muted" />
-            <h2 class="font-semibold text-fg">{t(locale, 'dl.containers.h2')}</h2>
-          </div>
-          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.containers.registries_note')}</p>
-          <div class="mt-4 space-y-3">
-            <CommandBlock label="docker" code={`docker pull ${SITE.dockerHub}`} copyLabel={t(locale, 'dl.python.copy')} />
-            <CommandBlock label="ghcr" code={`docker pull ${SITE.ghcr}`} copyLabel={t(locale, 'dl.python.copy')} />
-          </div>
-        </div>
-
         <!-- Python -->
         <div class="dl-card rounded-xl border border-line bg-surface p-6" data-platform="python">
           <div class="flex items-center gap-2">
@@ -211,6 +195,19 @@ const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale
               {t(locale, 'dl.python.btn_whl')}
             </a>
           </div>
+        </div>
+      </div>
+
+      <!-- Containers -->
+      <div class="dl-card mt-4 rounded-xl border border-line bg-surface p-6" data-platform="containers">
+        <div class="flex items-center gap-2">
+          <Icon name="mdiDocker" size={20} class="text-muted" />
+          <h2 class="font-semibold text-fg">{t(locale, 'dl.containers.h2')}</h2>
+        </div>
+        <p class="mt-1 text-sm text-muted">{t(locale, 'dl.containers.registries_note')}</p>
+        <div class="mt-5 grid gap-4 lg:grid-cols-2">
+          <CommandBlock label="Docker Hub" code={`docker pull ${SITE.dockerHub}`} copyLabel={t(locale, 'dl.python.copy')} />
+          <CommandBlock label="GHCR" code={`docker pull ${SITE.ghcr}`} copyLabel={t(locale, 'dl.python.copy')} />
         </div>
       </div>
 
