@@ -24,10 +24,10 @@ const { dark, light, alt, class: cls = '', width, height, loading = 'lazy', fetc
   .theme-img-light {
     display: none;
   }
-  [data-theme='light'] .theme-img-light {
+  :global([data-theme='light']) .theme-img-light {
     display: block;
   }
-  [data-theme='light'] .theme-img-dark {
+  :global([data-theme='light']) .theme-img-dark {
     display: none;
   }
 </style>
