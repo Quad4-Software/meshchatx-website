@@ -197,6 +197,67 @@ body {
   margin: 2rem 0;
 }
 
+/* selects: custom chevron, no native arrow */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  padding-right: 1.9rem;
+}
+[data-theme='light'] select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2352525b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+select:focus-visible {
+  outline: 2px solid var(--color-faint);
+  outline-offset: 1px;
+}
+
+/* scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border: 3px solid var(--color-canvas);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-mist-500);
+}
+
+/* details/summary */
+summary {
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+summary::after {
+  content: '';
+  display: inline-block;
+  float: right;
+  width: 0.6em;
+  height: 0.6em;
+  margin-top: 0.15em;
+  border-right: 2px solid var(--color-faint);
+  border-bottom: 2px solid var(--color-faint);
+  transform: rotate(45deg);
+  transition: transform 0.15s;
+}
+details[open] > summary::after {
+  transform: rotate(225deg);
+}
+
 /* starfield canvas */
 .starfield-canvas {
   color: var(--color-star);

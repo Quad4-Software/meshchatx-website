@@ -111,10 +111,18 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
     <!-- Body -->
     <article class="min-w-0">
-      <nav class="mb-6 font-mono text-xs text-faint" aria-label={t(locale, 'docs.breadcrumb')}>
+      <nav class="mb-6 flex items-center font-mono text-xs text-faint" aria-label={t(locale, 'docs.breadcrumb')}>
         <a href={localePath(locale, 'docs')} class="hover:text-fg">{t(locale, 'nav.docs')}</a>
         <span class="mx-2">/</span>
         <span class="text-muted">{entry.data.title}</span>
+        <span class="ml-auto flex items-center gap-3">
+          <a href={`/docs/${slug}.md`} class="underline decoration-line underline-offset-4 hover:text-fg">
+            {t(locale, 'docs.export')}
+          </a>
+          <a href="/docs/export-all.md" class="underline decoration-line underline-offset-4 hover:text-fg">
+            {t(locale, 'docs.export_all')}
+          </a>
+        </span>
       </nav>
       <h1 class="mb-6 text-4xl font-semibold tracking-tight text-fg">{entry.data.title}</h1>
       <div class="doc-body">

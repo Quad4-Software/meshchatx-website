@@ -105,7 +105,7 @@ const statusKey = {
     <!-- Version rail -->
     <div class="mb-14 overflow-x-auto pb-4" role="img" aria-label={t(locale, 'roadmap.rail_label')}>
       <div class="relative min-w-[720px] pt-8">
-        <div class="absolute left-0 right-0 top-[9px] h-px bg-line"></div>
+        <div class="absolute left-0 right-0 top-[9px] h-px" style="background-image: repeating-linear-gradient(to right, var(--color-line) 0 8px, transparent 8px 16px)"></div>
         <div
           class="absolute left-0 top-[9px] h-px bg-fg transition-[width]"
           style={`width:${(progress * 100).toFixed(1)}%`}

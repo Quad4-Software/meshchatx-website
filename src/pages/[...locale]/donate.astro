@@ -1,7 +1,5 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PageHero from '../../components/PageHero.astro';
-import CommandBlock from '../../components/CommandBlock.astro';
 import { LOCALES, DONATE, type Locale } from '../../config/site';
 import { t } from '../../i18n';
 
@@ -22,31 +20,59 @@ const { locale } = Astro.props as { locale: Locale };
   ogCard="card-donate"
   path="donate"
 >
-  <PageHero title={t(locale, 'donate.h1')} lead={t(locale, 'donate.lead')} />
+  <div class="mx-auto max-w-6xl px-5 pb-24 pt-16">
+    <div class="mx-auto max-w-2xl text-center">
+      <h1 class="text-4xl font-semibold tracking-tight text-fg sm:text-5xl">{t(locale, 'donate.h1')}</h1>
+      <p class="mt-4 text-lg text-muted">{t(locale, 'donate.lead')}</p>
+      <p class="mt-2 font-medium text-fg">{t(locale, 'donate.xmr_only')}</p>
+    </div>
 
-  <div class="mx-auto max-w-6xl px-5 pb-24">
-    <div class="max-w-3xl">
-    <div class="space-y-4">
-      <section class="rounded-xl border border-line bg-surface p-6">
-        <h2 class="font-semibold text-fg">{t(locale, 'donate.platforms_title')}</h2>
+    <div class="mx-auto mt-10 max-w-2xl rounded-xl border border-line bg-surface">
+      <div class="border-b border-line p-6">
+        <p class="font-mono text-[10px] font-bold uppercase tracking-wider text-faint">{t(locale, 'donate.monero')}</p>
+        <button
+          type="button"
+          class="xmr-copy mt-3 w-full break-all rounded-lg border border-line bg-canvas px-4 py-3 text-left font-mono text-xs leading-relaxed text-muted transition-colors hover:border-mist-500 hover:text-fg"
+          data-copy={DONATE.xmr}
+          data-copied={t(locale, 'donate.copied')}
+          aria-label={`${t(locale, 'donate.copy_xmr')}: ${DONATE.xmr}`}
+        >
+          {DONATE.xmr}
+        </button>
+        <p class="mt-2 text-[11px] text-faint">{t(locale, 'donate.click_copy')}</p>
+      </div>
+      <div class="p-6">
+        <p class="font-mono text-[10px] font-bold uppercase tracking-wider text-faint">{t(locale, 'donate.platforms_title')}</p>
         <div class="mt-4 flex flex-wrap gap-3">
-          <a href={DONATE.kofi} class="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent hover:opacity-85">
+          <a href={DONATE.kofi} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-line px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-raised">
             {t(locale, 'donate.kofi')}
           </a>
-          <a href={DONATE.bmac} class="rounded-lg border border-line px-5 py-2.5 text-sm font-medium text-fg hover:bg-raised">
+          <a href={DONATE.bmac} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-line px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-raised">
             {t(locale, 'donate.bmac')}
           </a>
         </div>
-      </section>
-
-      <section class="rounded-xl border border-line bg-surface p-6">
-        <h2 class="font-semibold text-fg">{t(locale, 'donate.monero')}</h2>
-        <p class="mt-1 text-sm text-muted">{t(locale, 'donate.xmr_only')}</p>
-        <div class="mt-4">
-          <CommandBlock label="XMR" code={DONATE.xmr} copyLabel={t(locale, 'donate.copy_xmr')} />
-        </div>
-      </section>
-    </div>
+      </div>
     </div>
   </div>
+
+  <script>
+    document.querySelectorAll('.xmr-copy').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.getAttribute('data-copy') || '';
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+        const orig = btn.textContent;
+        btn.textContent = btn.getAttribute('data-copied') || 'Copied';
+        setTimeout(() => { btn.textContent = orig; }, 1400);
+      });
+    });
+  </script>
 </Base>

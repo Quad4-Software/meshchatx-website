@@ -14,17 +14,37 @@ export function getStaticPaths() {
 
 const { locale } = Astro.props as { locale: Locale };
 
-const sortFiles = (files: string[]) =>
-  files.sort((a, b) => {
+const bySize = (files: string[]) =>
+  [...files].sort((a, b) => {
     const sa = parseInt(a.match(/-(\d+)/)?.[1] ?? '0', 10);
     const sb = parseInt(b.match(/-(\d+)/)?.[1] ?? '0', 10);
-    return sa - sb || a.localeCompare(b);
+    return sa - sb;
   });
 
-const sections = BRAND_SECTIONS.map((s) => ({
-  ...s,
-  files: sortFiles(readdirSync(`public/media/branding/${s.key}`)),
-}));
+// Group files by format: svg, png, webp, jpg-dark, jpg-light, ico
+function groupFiles(files: string[]) {
+  const groups: { label: string; files: string[] }[] = [];
+  const pick = (test: (f: string) => boolean, label: string) => {
+    const hits = bySize(files.filter(test));
+    if (hits.length) groups.push({ label, files: hits });
+  };
+  pick((f) => f.endsWith('.svg'), 'SVG');
+  pick((f) => f.endsWith('.png'), 'PNG');
+  pick((f) => f.endsWith('.webp'), 'WebP');
+  pick((f) => f.endsWith('-dark.jpg'), 'JPG dark');
+  pick((f) => f.endsWith('-light.jpg'), 'JPG light');
+  pick((f) => f.endsWith('.ico'), 'ICO');
+  return groups;
+}
+
+const sections = BRAND_SECTIONS.map((s) => {
+  const files = readdirSync(`public/media/branding/${s.key}`);
+  const preview =
+    files.find((f) => f.endsWith('.svg')) ??
+    bySize(files.filter((f) => f.endsWith('-light.jpg') || f.endsWith('.png'))).pop() ??
+    files[0];
+  return { ...s, preview, groups: groupFiles(files) };
+});
 ---
 
 <Base
@@ -57,18 +77,25 @@ const sections = BRAND_SECTIONS.map((s) => ({
       <section class="mb-14">
         <h2 class="text-2xl font-semibold tracking-tight text-fg">{t(locale, s.h)}</h2>
         <p class="mt-2 text-sm text-muted">{t(locale, s.lead)}</p>
-        <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {s.files.map((f) => (
-            <a
-              href={`/media/branding/${s.key}/${f}`}
-              class="group rounded-lg border border-line bg-surface p-4 transition-colors hover:bg-raised"
-            >
-              <div class="flex h-20 items-center justify-center">
-                <img src={`/media/branding/${s.key}/${f}`} alt="" loading="lazy" class="max-h-16 max-w-full object-contain" />
+        <div class="mt-6 rounded-xl border border-line bg-surface p-6">
+          <div class="flex h-32 items-center justify-center rounded-lg bg-raised">
+            <img src={`/media/branding/${s.key}/${s.preview}`} alt="" class="max-h-24 max-w-full object-contain" loading="lazy" />
+          </div>
+          <div class="mt-5 space-y-3">
+            {s.groups.map((g) => (
+              <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span class="w-16 shrink-0 font-mono text-[10px] font-bold uppercase tracking-wider text-faint">{g.label}</span>
+                {g.files.map((f) => (
+                  <a
+                    href={`/media/branding/${s.key}/${f}`}
+                    class="inline-block rounded px-1.5 py-1.5 font-mono text-xs text-muted underline decoration-line underline-offset-4 transition-colors hover:text-fg"
+                  >
+                    {f.replace(/^[^-]+-?/, '').replace(/\.(svg|png|webp|jpg|ico)$/, '') || f}
+                  </a>
+                ))}
               </div>
-              <p class="mt-3 truncate text-center font-mono text-xs text-faint group-hover:text-muted">{f}</p>
-            </a>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
     ))}
