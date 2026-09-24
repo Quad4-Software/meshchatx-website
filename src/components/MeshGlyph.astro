@@ -30,25 +30,30 @@ const nodes: {
 const links: [number, number][] = [
   [0, 1],
   [0, 2],
+  [1, 2],
   [0, 3],
   [0, 4],
-  [1, 2],
-  [3, 4],
   [1, 3],
   [2, 4],
+  [3, 4],
 ];
 const n = (i: number) => nodes[i]!;
 
+// mail envelopes only between messaging-capable nodes; web/prop links carry plain dots
+const MESSAGING = new Set([0, 1, 2]);
+
 // deterministic pseudo-random packet timing per link, so each run differs
 const packets = links.flatMap(([a, b], i) => {
+  const mail = MESSAGING.has(a) && MESSAGING.has(b);
   const r = (k: number) => {
     const x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453;
     return x - Math.floor(x);
   };
-  const count = 1 + Math.floor(r(0) * 2); // 1-2 packets per link
+  const count = mail ? 1 + Math.floor(r(0) * 2) : 1;
   return Array.from({ length: count }, (_, k) => ({
     a,
     b,
+    mail,
     dur: 2.6 + r(1 + k) * 3.4,
     begin: -(r(2 + k) * 6).toFixed(2),
     scale: 0.5 + r(3 + k) * 0.28,
@@ -65,11 +70,15 @@ const packets = links.flatMap(([a, b], i) => {
     ))}
   </g>
 
-  <!-- LXMF packets riding the links, irregular speed and spacing -->
+  <!-- packets riding the links, irregular speed and spacing -->
   <g class="mg-motion" fill="currentColor">
     {packets.map((p) => (
       <g>
-        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 4-8 5-8-5V6l8 5 8-5z" transform={`translate(${-12 * p.scale},${-12 * p.scale}) scale(${p.scale})`} />
+        {p.mail ? (
+          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 4-8 5-8-5V6l8 5 8-5z" transform={`translate(${-12 * p.scale},${-12 * p.scale}) scale(${p.scale})`} />
+        ) : (
+          <circle r="4" />
+        )}
         <animateMotion
           path={`M ${n(p.a).x} ${n(p.a).y} L ${n(p.b).x} ${n(p.b).y} L ${n(p.a).x} ${n(p.a).y}`}
           dur={`${p.dur.toFixed(2)}s`}
