@@ -43,7 +43,22 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
   <div class="mx-auto grid max-w-6xl gap-10 px-5 py-10 lg:grid-cols-[240px_1fr_200px]">
     <!-- Sidebar -->
     <aside class="hidden lg:block">
-      <nav class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-4" aria-label={t(locale, 'docs.nav_label')}>
+      <div class="sticky top-24">
+        <div class="relative mb-5">
+          <input
+            id="docs-search"
+            type="search"
+            placeholder={t(locale, 'docs.search_placeholder')}
+            aria-label={t(locale, 'docs.search_placeholder')}
+            autocomplete="off"
+            class="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-fg placeholder:text-faint focus:border-mist-500 focus:outline-none"
+          />
+          <ul
+            id="docs-results"
+            class="absolute left-0 right-0 top-full z-30 mt-1 hidden max-h-72 overflow-y-auto rounded-lg border border-line bg-surface p-1 shadow-xl"
+          ></ul>
+        </div>
+        <nav class="max-h-[calc(100vh-12rem)] overflow-y-auto pr-4" aria-label={t(locale, 'docs.nav_label')}>
         {nav.map((g) => (
           <div class="mb-6">
             <p class="mb-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-faint">
@@ -68,7 +83,8 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
             </ul>
           </div>
         ))}
-      </nav>
+        </nav>
+      </div>
     </aside>
 
     <!-- Mobile docs menu -->
@@ -108,12 +124,12 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
       <nav class="mt-14 flex items-center justify-between border-t border-line pt-6" aria-label={t(locale, 'docs.pager')}>
         {prev ? (
           <a href={localePath(locale, `docs/${prev.slug}`)} class="text-sm text-muted hover:text-fg">
-            &larr; {prev.title}
+            {prev.title}
           </a>
         ) : <span />}
         {next ? (
           <a href={localePath(locale, `docs/${next.slug}`)} class="text-sm text-muted hover:text-fg">
-            {next.title} &rarr;
+            {next.title}
           </a>
         ) : <span />}
       </nav>
@@ -143,4 +159,55 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
       </nav>
     </aside>
   </div>
+
+  <script define:vars={{ emptyText: t(locale, 'docs.search_empty'), base: locale === 'en' ? '/docs/' : `/${locale}/docs/` }}>
+    const input = document.getElementById('docs-search');
+    const results = document.getElementById('docs-results');
+    let index = null;
+
+    async function ensureIndex() {
+      if (index) return index;
+      const res = await fetch('/api/docs-index.json');
+      index = res.ok ? await res.json() : [];
+      return index;
+    }
+
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    input?.addEventListener('input', async () => {
+      const q = input?.value.trim().toLowerCase() ?? '';
+      if (!q || !results) {
+        results?.classList.add('hidden');
+        return;
+      }
+      const idx = await ensureIndex();
+      const terms = q.split(/\s+/);
+      const hits = idx
+        .map((d) => {
+          const hay = `${d.title} ${d.text}`.toLowerCase();
+          const score = terms.reduce((acc, term) => acc + (hay.includes(term) ? 1 : 0) + (d.title.toLowerCase().includes(term) ? 2 : 0), 0);
+          return { d, score };
+        })
+        .filter((x) => x.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 8);
+      results.innerHTML = hits.length
+        ? hits
+            .map((x) => `<li><a href="${base}${esc(x.d.slug)}" class="block rounded-md px-3 py-1.5 text-sm text-muted hover:bg-raised hover:text-fg">${esc(x.d.title)}</a></li>`)
+            .join('')
+        : `<li class="px-3 py-1.5 text-sm text-faint">${esc(emptyText)}</li>`;
+      results.classList.remove('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (results && input && !results.contains(e.target) && e.target !== input) {
+        results.classList.add('hidden');
+      }
+    });
+    input?.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') results?.classList.add('hidden');
+    });
+  </script>
 </Base>

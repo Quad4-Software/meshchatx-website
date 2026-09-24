@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import { LOCALES, SITE, type Locale } from '../../config/site';
-import { t } from '../../i18n';
+import { t, tOr } from '../../i18n';
 import { getInterfaces } from '../../lib/interfaces';
 
 export function getStaticPaths() {
@@ -46,11 +46,11 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
       />
       <select id="ifx-type" aria-label={t(locale, 'ifx.filter_type')} class="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-muted">
         <option value="">{t(locale, 'ifx.filter_all')}</option>
-        {types.map((ty) => <option value={ty}>{t(locale, `ifx.type.${ty}`)}</option>)}
+        {types.map((ty) => <option value={ty}>{tOr(locale, `ifx.type.${ty}`, ty)}</option>)}
       </select>
       <select id="ifx-net" aria-label={t(locale, 'ifx.filter_network')} class="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-muted">
         <option value="">{t(locale, 'ifx.filter_all')}</option>
-        {networks.map((n) => <option value={n}>{t(locale, `ifx.network.${n}`)}</option>)}
+        {networks.map((n) => <option value={n}>{tOr(locale, `ifx.network.${n}`, n)}</option>)}
       </select>
       <span id="ifx-count" class="ml-auto self-center font-mono text-xs text-faint"></span>
     </div>
@@ -69,7 +69,7 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
         >
           <div class="flex items-start justify-between gap-3">
             <div>
-              <h3 class="font-semibold text-fg">{i.name}</h3>
+              <h2 class="font-semibold text-fg">{i.name}</h2>
               <p class="mt-0.5 font-mono text-xs text-faint">{i.host}:{i.port}</p>
             </div>
             <div class="flex gap-1.5">

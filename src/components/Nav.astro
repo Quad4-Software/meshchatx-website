@@ -13,7 +13,7 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
 <header class="sticky top-0 z-40 border-b border-line bg-canvas-alpha backdrop-blur-md">
   <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5" aria-label={t(locale, 'nav.primary')}>
     <a href={localePath(locale)} class="flex items-center gap-2.5 text-fg">
-      <img src="/logo-navbar.webp" alt="" width="30" height="30" class="h-[30px] w-[30px]" />
+      <img src="/media/branding/logo/logo-128.webp" alt="" width="30" height="30" class="h-[30px] w-[30px]" />
       <span class="text-lg font-semibold tracking-tight">MeshChatX</span>
     </a>
 
@@ -50,9 +50,9 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
           class="rounded-md border border-line bg-surface px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:text-fg"
           aria-haspopup="listbox"
           aria-expanded="false"
-          aria-label={t(locale, 'lang.pick')}
         >
           {locale.toUpperCase()}
+          <span class="sr-only"> {t(locale, 'lang.pick')}</span>
         </button>
         <div
           id="mcx-lang-menu"

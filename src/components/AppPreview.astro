@@ -1,0 +1,166 @@
+---
+// Live DOM replica of the MeshChatX messages view. No screenshots.
+import Icon from './Icon.astro';
+
+interface Props {
+  class?: string;
+}
+const { class: cls = '' } = Astro.props;
+
+const navItems: { icon: string; label: string; active?: boolean }[] = [
+  { icon: 'mdiMessageText', label: 'Messages', active: true },
+  { icon: 'mdiForum', label: 'Nomad Network' },
+  { icon: 'mdiAccountMultiple', label: 'Contacts' },
+  { icon: 'mdiMap', label: 'Map' },
+  { icon: 'mdiArchive', label: 'Archives' },
+  { icon: 'mdiPhone', label: 'Telephone' },
+  { icon: 'mdiTools', label: 'Tools' },
+  { icon: 'mdiCog', label: 'Settings' },
+] as const;
+
+const convos: { name: string; preview: string; time: string; active?: boolean; unread?: number }[] = [
+  { name: 'ivan2', preview: 'test from meshchatx', time: 'just now', active: true, unread: 1 },
+  { name: 'ivan', preview: 'test', time: '5 mins ago' },
+  { name: 'relay.ops', preview: 'page node updated', time: '18 mins ago' },
+  { name: 'north.link', preview: 'voice message', time: '1 h ago' },
+] as const;
+---
+
+<div
+  class:list={[
+    'overflow-hidden rounded-2xl border border-line bg-void-850 text-left shadow-2xl shadow-black/40',
+    cls,
+  ]}
+  aria-label="MeshChatX interface preview"
+>
+  <!-- title bar -->
+  <div class="flex items-center gap-2 border-b border-line bg-void-900 px-4 py-2">
+    <span class="h-2.5 w-2.5 rounded-full bg-void-700"></span>
+    <span class="h-2.5 w-2.5 rounded-full bg-void-700"></span>
+    <span class="h-2.5 w-2.5 rounded-full bg-void-700"></span>
+    <span class="ml-3 font-mono text-[11px] text-zinc-400">Reticulum MeshChatX</span>
+    <span class="ml-auto flex items-center gap-1.5 rounded-md bg-void-800 px-2 py-1 font-mono text-[10px] text-zinc-400">
+      <Icon name="mdiSync" size={12} /> Sync Messages
+    </span>
+  </div>
+
+  <div class="grid grid-cols-[52px_190px_1fr] sm:grid-cols-[168px_190px_1fr]">
+    <!-- rail -->
+    <div class="flex flex-col gap-1 border-r border-line bg-void-900 py-3 max-sm:items-center">
+      {navItems.map((n) => (
+        <div
+          class:list={[
+            'flex items-center gap-2.5 rounded-md px-3 py-1.5 text-[11px]',
+            n.active ? 'bg-void-800 font-medium text-zinc-100' : 'text-zinc-400',
+          ]}
+        >
+          <Icon name={n.icon} size={15} class="shrink-0" />
+          <span class="max-sm:hidden">{n.label}</span>
+        </div>
+      ))}
+      <div class="mt-auto hidden items-center gap-2 border-t border-line px-3 pt-3 sm:flex">
+        <span class="h-5 w-5 rounded-full bg-void-700"></span>
+        <span class="text-[11px] text-zinc-400">My Identity</span>
+      </div>
+    </div>
+
+    <!-- conversation list -->
+    <div class="flex flex-col border-r border-line bg-void-900/60">
+      <div class="flex gap-3 border-b border-line px-3 py-2">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-200">Conversations</span>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Announces</span>
+      </div>
+      <div class="mx-2 mt-2 flex items-center gap-1.5 rounded-md border border-line bg-void-800 px-2 py-1 text-[10px] text-zinc-400">
+        <Icon name="mdiMagnify" size={11} />
+        <span>Search</span>
+      </div>
+      <div class="mt-2 flex flex-col">
+        {convos.map((c) => (
+          <div
+            class:list={[
+              'flex items-center gap-2 px-3 py-2',
+              c.active && 'bg-void-800',
+            ]}
+          >
+            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-void-700 font-mono text-[9px] text-zinc-300">
+              {c.name.slice(0, 1).toUpperCase()}
+            </span>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-baseline justify-between gap-2">
+                <span class="truncate text-[11px] font-medium text-zinc-200">{c.name}</span>
+                <span class="shrink-0 text-[8px] text-zinc-400">{c.time}</span>
+              </div>
+              <p class="truncate text-[10px] text-zinc-400">{c.preview}</p>
+            </div>
+            {c.unread ? (
+              <span class="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white">{c.unread}</span>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- thread -->
+    <div class="flex min-h-[280px] flex-col bg-void-850">
+      <div class="flex items-center gap-2 border-b border-line px-3 py-2">
+        <span class="flex h-6 w-6 items-center justify-center rounded-full bg-void-700 font-mono text-[9px] text-zinc-300">I</span>
+        <div>
+          <p class="text-[11px] font-semibold text-zinc-100">ivan2</p>
+          <p class="font-mono text-[8px] text-zinc-400">&lt;43d3309a...553b56a6&gt; &middot; 4 hops away</p>
+        </div>
+      </div>
+      <div class="flex flex-1 flex-col justify-end gap-2 p-3">
+        <div class="max-w-[70%] rounded-lg bg-void-800 px-3 py-1.5">
+          <p class="text-[10px] text-zinc-300">voice message</p>
+          <div class="mt-1 flex items-center gap-1.5 rounded bg-void-700 px-2 py-1">
+            <Icon name="mdiPhone" size={10} class="text-blue-400" />
+            <span class="h-1 w-8 rounded bg-void-600"></span>
+            <span class="font-mono text-[8px] text-zinc-400">0:02</span>
+          </div>
+          <p class="mt-1 text-right text-[8px] text-zinc-400">3 mins ago</p>
+        </div>
+        <div class="ml-auto max-w-[70%] rounded-lg bg-blue-800/90 px-3 py-1.5">
+          <p class="text-[10px] text-blue-50">test from meshchatx</p>
+          <p class="mt-0.5 flex items-center justify-end gap-1 text-right text-[8px] text-blue-100">
+            1 min ago <Icon name="mdiCheckAll" size={10} />
+          </p>
+        </div>
+        <div class="ap-arrive max-w-[70%] rounded-lg bg-void-800 px-3 py-1.5">
+          <p class="text-[10px] text-zinc-300">path resolved, sending now</p>
+          <p class="mt-0.5 text-right text-[8px] text-zinc-400">just now</p>
+        </div>
+      </div>
+      <div class="border-t border-line p-2">
+        <div class="flex items-center gap-2 rounded-lg border border-line bg-void-800 px-3 py-2">
+          <span class="flex-1 text-[10px] text-zinc-400">Type a message...</span>
+          <Icon name="mdiAttachment" size={13} class="text-zinc-400" />
+          <span class="flex items-center gap-1 rounded bg-blue-700 px-2 py-1 text-[10px] font-medium text-white">
+            Send <Icon name="mdiSend" size={10} />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ap-arrive {
+    animation: ap-in 9s ease-in-out infinite;
+  }
+  @keyframes ap-in {
+    0%, 82% {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    88%, 100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ap-arrive {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>

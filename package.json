@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check && tsc --noEmit"
+    "check": "astro check && tsc --noEmit",
+    "lhci": "lhci autorun"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",
@@ -16,6 +17,7 @@
     "@astrojs/starlight": "^0.42.3",
     "@fontsource-variable/space-grotesk": "^5.3.0",
     "@fontsource/space-mono": "^5.3.0",
+    "@mdi/js": "^7.4.47",
     "astro": "^7.3.4",
     "marked": "^18.0.14",
     "sharp": "^0.35.4",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@lhci/cli": "^0.15.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^26.6.2",
     "tailwindcss": "^4.3.3",

@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import CommandBlock from '../../components/CommandBlock.astro';
-import { LOCALES, SITE, type Locale } from '../../config/site';
+import { LOCALES, REPO_LINKS, type Locale } from '../../config/site';
 import { t } from '../../i18n';
 
 export function getStaticPaths() {
@@ -13,32 +13,7 @@ export function getStaticPaths() {
 }
 
 const { locale } = Astro.props as { locale: Locale };
-
-const repos = [
-  {
-    h: 'git.rngit_h3',
-    lead: 'git.rngit_lead',
-    badge: 'git.primary_badge',
-    cmd: `git clone ${SITE.rngitRns}`,
-    links: [
-      { label: t(locale, 'git.nomadnet'), href: `nomadnet:${SITE.rngitNomadnet}` },
-    ],
-  },
-  {
-    h: 'git.github_h3',
-    lead: 'git.github_lead',
-    badge: 'git.mirror_badge',
-    cmd: `git clone ${SITE.githubClone}`,
-    links: [{ label: t(locale, 'git.open_repo'), href: SITE.githubUrl }],
-  },
-  {
-    h: 'git.lavaforge_h3',
-    lead: 'git.lavaforge_lead',
-    badge: 'git.mirror_badge',
-    cmd: `git clone ${SITE.lavaforgeClone}`,
-    links: [{ label: t(locale, 'git.open_repo'), href: SITE.lavaforgeUrl }],
-  },
-];
+const repos = REPO_LINKS;
 ---
 
 <Base
@@ -51,30 +26,30 @@ const repos = [
   <PageHero title={t(locale, 'git.h1')} lead={t(locale, 'git.lead')} />
 
   <div class="mx-auto max-w-4xl space-y-4 px-5 pb-24">
-    {repos.map((r, i) => (
+    {repos.map((r) => (
       <section class="rounded-xl border border-line bg-surface p-6">
         <div class="flex flex-wrap items-center gap-3">
           <h2 class="text-lg font-semibold text-fg">{t(locale, r.h)}</h2>
           <span class:list={[
             'rounded-full border px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider',
-            i === 0 ? 'border-fg text-fg' : 'border-line text-faint',
+            r.badge === 'git.primary_badge' ? 'border-fg text-fg' : 'border-line text-faint',
           ]}>
             {t(locale, r.badge)}
           </span>
         </div>
         <p class="mt-2 text-sm text-muted">{t(locale, r.lead)}</p>
         <div class="mt-4">
-          <CommandBlock label={i === 0 ? 'rngit' : 'git'} code={r.cmd} copyLabel={t(locale, 'git.copy_cmd')} />
+          <CommandBlock label={r.label} code={r.cmd} copyLabel={t(locale, 'git.copy_cmd')} />
         </div>
         <div class="mt-3 flex gap-4">
           {r.links.map((l) => (
             <a href={l.href} class="text-sm text-muted underline decoration-line underline-offset-4 hover:text-fg">
-              {l.label} &rarr;
+              {t(locale, l.labelKey)}
             </a>
           ))}
         </div>
-        {i === 0 && (
-          <p class="mt-3 font-mono text-[11px] text-faint">{SITE.rngitNomadnet}</p>
+        {r.extra && (
+          <p class="mt-3 font-mono text-[11px] text-faint">{r.extra}</p>
         )}
       </section>
     ))}

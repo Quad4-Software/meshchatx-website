@@ -189,6 +189,7 @@
       "btn_install": "安装 MeshChatX"
     },
     "verify": "校验",
-    "verify_copy": "复制校验命令"
+    "verify_copy": "复制校验命令",
+    "recommended": "推荐"
   }
 }

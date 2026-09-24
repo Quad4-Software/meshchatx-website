@@ -189,6 +189,7 @@
       "install": "Install and open"
     },
     "verify": "Verify",
-    "verify_copy": "Copy verification command"
+    "verify_copy": "Copy verification command",
+    "recommended": "Recommended"
   }
 }

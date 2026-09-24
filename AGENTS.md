@@ -10,7 +10,11 @@ pnpm dev          # dev server
 pnpm build        # static build to dist/ (fetches GitHub/directory data)
 pnpm preview      # serve dist/
 pnpm check        # astro check + tsc --noEmit
+pnpm lhci         # lighthouse autorun against dist/ (needs CHROME_PATH=/usr/bin/chromium)
 ```
+
+Lighthouse must stay at 100 in every category; thresholds live in
+`lighthouserc.json`.
 
 ## Layout
 
@@ -23,7 +27,7 @@ pnpm check        # astro check + tsc --noEmit
 - `src/pages/[...locale]/` - one route file per page; `locale` param is
   undefined for en, `de|es|fi|fr|it|nl|ru|zh` for the rest
 - `src/pages/api/` - static JSON endpoints baked at build
-- `src/components/` - Nav, Footer, Starfield, BlackHole, PageHero, CommandBlock
+- `src/components/` - Nav, Footer, Starfield, MeshGlyph, PageHero, CommandBlock, Icon
 - `public/` - favicons, og cards, showcase shots, branding media
 
 ## Rules

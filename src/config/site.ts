@@ -123,12 +123,70 @@ export const SHOWCASE_TABS = [
 ] as const;
 
 export const PLATFORMS = [
-  { key: 'windows', icon: 'windows' },
-  { key: 'macos', icon: 'apple' },
-  { key: 'linux', icon: 'linux' },
-  { key: 'android', icon: 'android' },
-  { key: 'docker', icon: 'docker' },
-  { key: 'python', icon: 'python' },
+  { key: 'windows', icon: 'mdiMicrosoftWindows' },
+  { key: 'macos', icon: 'mdiApple' },
+  { key: 'linux', icon: 'mdiLinux' },
+  { key: 'android', icon: 'mdiAndroid' },
+  { key: 'docker', icon: 'mdiDocker' },
+  { key: 'python', icon: 'mdiLanguagePython' },
+] as const;
+
+export const HOME_FEATURES = [
+  { h: 'home.feature.crypto_h3', p: 'home.feature.crypto_p', icon: 'mdiShieldCheck' },
+  { h: 'home.feature.no_cloud_h3', p: 'home.feature.no_cloud_p', icon: 'mdiServerOff' },
+  { h: 'home.feature.no_account_h3', p: 'home.feature.no_account_p', icon: 'mdiIncognito' },
+  { h: 'home.feature.tunnels_h3', p: 'home.feature.tunnels_p', icon: 'mdiTunnel' },
+  { h: 'home.feature.local_h3', p: 'home.feature.local_p', icon: 'mdiFolderHome' },
+  { h: 'home.feature.source_h3', p: 'home.feature.source_p', icon: 'mdiSourceBranch' },
+] as const;
+
+export const SECURITY_KEYS = ['slsa', 'asar', 'sandbox', 'sigstore', 'sast', 'csp', 'transport'] as const;
+
+export const BRAND_COLORS = [
+  { name: 'Void 900', hex: '#0a0a0b' },
+  { name: 'Void 850', hex: '#101013' },
+  { name: 'Void 700', hex: '#1f1f24' },
+  { name: 'Mist 400', hex: '#a1a1aa' },
+  { name: 'Paper 100', hex: '#f4f4f5' },
+  { name: 'Paper 50', hex: '#fafafa' },
+  { name: 'Accent Blue', hex: '#2563eb' },
+] as const;
+
+export const BRAND_SECTIONS = [
+  { key: 'lockup', h: 'branding.lockup_h2', lead: 'branding.lockup_lead', sizes: ['40', '64', '80', '128', '256'], svg: 'lockup.svg' },
+  { key: 'logo', h: 'branding.logo_h2', lead: 'branding.logo_lead', sizes: ['16', '32', '48', '64', '128', '256', '512', '800'] },
+  { key: 'wordmark', h: 'branding.wordmark_h2', lead: 'branding.wordmark_lead', sizes: ['32', '40', '64', '80', '128'] },
+  { key: 'icon', h: 'branding.icon_h2', lead: 'branding.icon_lead', sizes: ['16', '32', '48', '64', '128', '256', '512', '800'], extra: 'favicon.ico' },
+] as const;
+
+export const REPO_LINKS = [
+  {
+    h: 'git.rngit_h3',
+    lead: 'git.rngit_lead',
+    badge: 'git.primary_badge',
+    label: 'rngit',
+    cmd: `git clone ${SITE.rngitRns}`,
+    extra: SITE.rngitNomadnet,
+    links: [{ labelKey: 'git.nomadnet', href: `nomadnet:${SITE.rngitNomadnet}` }],
+  },
+  {
+    h: 'git.github_h3',
+    lead: 'git.github_lead',
+    badge: 'git.mirror_badge',
+    label: 'git',
+    cmd: `git clone ${SITE.githubClone}`,
+    extra: '',
+    links: [{ labelKey: 'git.open_repo', href: SITE.githubUrl }],
+  },
+  {
+    h: 'git.lavaforge_h3',
+    lead: 'git.lavaforge_lead',
+    badge: 'git.mirror_badge',
+    label: 'git',
+    cmd: `git clone ${SITE.lavaforgeClone}`,
+    extra: '',
+    links: [{ labelKey: 'git.open_repo', href: SITE.lavaforgeUrl }],
+  },
 ] as const;
 
 export const CAPABILITIES = [

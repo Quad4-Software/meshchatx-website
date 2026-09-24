@@ -51,6 +51,12 @@ export function t(locale: Locale, key: string, vars: Record<string, string | num
   return value;
 }
 
+/** Translate, falling back to a raw value when the key is missing. */
+export function tOr(locale: Locale, key: string, fallback: string): string {
+  const dict = catalogs.get(locale) ?? en;
+  return lookup(dict, key) ?? lookup(en, key) ?? fallback;
+}
+
 /** Prefix a path with the locale. English stays unprefixed. */
 export function localePath(locale: Locale, path = ''): string {
   const clean = path.replace(/^\/+|\/+$/g, '');

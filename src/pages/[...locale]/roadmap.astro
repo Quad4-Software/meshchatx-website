@@ -66,7 +66,7 @@ const statusKey = {
               </span>
               <span class="ml-auto font-mono text-xs text-faint">{item.date}</span>
             </div>
-            <h3 class="mt-3 text-lg font-semibold text-fg">{item.title}</h3>
+            <h2 class="mt-3 text-lg font-semibold text-fg">{item.title}</h2>
             <p class="mt-2 text-sm leading-relaxed text-muted">{item.desc}</p>
             <ul class="mt-4 grid gap-x-6 gap-y-1.5 text-sm text-muted sm:grid-cols-2">
               {item.features.map((f) => (
@@ -83,7 +83,7 @@ const statusKey = {
 
     <div class="mt-12">
       <a href={localePath(locale, 'changelog')} class="text-sm text-muted underline decoration-line underline-offset-4 hover:text-fg">
-        {t(locale, 'roadmap.changelog_preview')} &rarr;
+        {t(locale, 'roadmap.changelog_preview')}
       </a>
     </div>
   </div>

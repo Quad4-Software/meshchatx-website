@@ -189,6 +189,7 @@
       "btn_install": "Asenna MeshChatX"
     },
     "verify": "Varmista",
-    "verify_copy": "Kopioi varmistuskomento"
+    "verify_copy": "Kopioi varmistuskomento",
+    "recommended": "Suositeltu"
   }
 }

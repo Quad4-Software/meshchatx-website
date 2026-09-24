@@ -189,6 +189,7 @@
       "btn_install": "Installa MeshChatX"
     },
     "verify": "Verifica",
-    "verify_copy": "Copia comando di verifica"
+    "verify_copy": "Copia comando di verifica",
+    "recommended": "Consigliato"
   }
 }

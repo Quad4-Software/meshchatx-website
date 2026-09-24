@@ -4,7 +4,7 @@ import Starfield from '../components/Starfield.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { SITE, OG_LOCALES, PREFIXED_LOCALES, type Locale } from '../config/site';
-import { localePath } from '../i18n';
+import { t, localePath } from '../i18n';
 
 interface Props {
   locale: Locale;
@@ -37,7 +37,11 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="MeshChatX logo" />
+    <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
     <meta property="og:locale" content={OG_LOCALES[locale]} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -52,20 +56,44 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
 
     <script is:inline>
       (function () {
-        var theme = 'dark';
+        var theme = '';
         try {
-          theme = localStorage.getItem('mcx-theme') || 'dark';
+          theme = localStorage.getItem('mcx-theme') || '';
         } catch (e) {}
+        if (!theme) {
+          theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
         document.documentElement.dataset.theme = theme;
       })();
     </script>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'MeshChatX',
+      applicationCategory: 'CommunicationApplication',
+      operatingSystem: 'Windows, macOS, Linux, Android',
+      description: t(locale, 'meta.desc.home'),
+      url: SITE.domain,
+      downloadUrl: `${SITE.domain}/download`,
+      license: `${SITE.domain}/license`,
+      codeRepository: SITE.githubUrl,
+      isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      author: { '@type': 'Organization', name: 'Quad4', url: SITE.quad4Url },
+    })} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'MeshChatX',
+      url: SITE.domain,
+    })} />
   </head>
   <body class="min-h-screen">
     <Starfield />
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:text-fg"
-      >{title}</a
+      >{t(locale, 'a11y.skip')}</a
     >
     <Nav locale={locale} />
     <main id="main" class="relative">

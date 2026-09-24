@@ -13,16 +13,16 @@ const { locale } = Astro.props;
     <div class="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
       <div>
         <div class="flex items-center gap-2.5">
-          <img src="/logo-navbar.webp" alt="" width="28" height="28" class="h-7 w-7" />
+          <img src="/media/branding/logo/logo-128.webp" alt="" width="28" height="28" class="h-7 w-7" />
           <span class="font-semibold tracking-tight">MeshChatX</span>
         </div>
         <p class="mt-3 max-w-xs text-sm text-muted">{t(locale, 'footer.tagline')}</p>
       </div>
       {FOOTER_GROUPS.map((g) => (
         <div>
-          <h3 class="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-faint">
+          <h2 class="mb-3 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-faint">
             {t(locale, g.group)}
-          </h3>
+          </h2>
           <ul class="space-y-2">
             {g.links.map((l) => (
               <li>
