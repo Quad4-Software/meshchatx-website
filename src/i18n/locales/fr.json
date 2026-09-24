@@ -183,7 +183,10 @@
       "windows": "Windows",
       "docker": "Docker",
       "python": "Python",
-      "android": "Android"
+      "android": "Android",
+      "flatpak": "Flatpak",
+      "appimage": "AppImage",
+      "podman": "Podman"
     },
     "showcase": {
       "mobile": "Mobile",

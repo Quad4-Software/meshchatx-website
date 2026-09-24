@@ -17,6 +17,8 @@ export function getStaticPaths() {
 const { locale } = Astro.props as { locale: Locale };
 const latest = await latestForChannel('stable');
 const features = HOME_FEATURES;
+const heroTitle = t(locale, 'home.hero.h1');
+const [heroPre, heroPost] = heroTitle.split('Reticulum');
 ---
 
 <Base
@@ -31,7 +33,23 @@ const features = HOME_FEATURES;
     <div class="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr]">
       <div>
         <h1 class="text-5xl font-semibold leading-[1.02] tracking-tight text-fg sm:text-6xl">
-          {t(locale, 'home.hero.h1')}
+          {heroPre}
+          <a
+            href="https://reticulum.network/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group/rns inline-flex items-baseline gap-1.5 align-baseline"
+          >
+            <img
+              src="/vendor/reticulum-logo-128.webp"
+              alt=""
+              width="40"
+              height="40"
+              class="inline-block h-[0.85em] w-[0.85em] self-center"
+            />
+            <span class="transition-opacity group-hover/rns:opacity-75">Reticulum</span>
+          </a>
+          {heroPost}
         </h1>
         <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted">
           {t(locale, 'home.hero.lead')}

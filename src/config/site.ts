@@ -130,6 +130,9 @@ export const PLATFORMS = [
   { key: 'android', icon: 'mdiAndroid' },
   { key: 'docker', icon: 'mdiDocker' },
   { key: 'python', icon: 'mdiLanguagePython' },
+  { key: 'flatpak', icon: 'siFlatpak' },
+  { key: 'appimage', icon: 'siAppimage' },
+  { key: 'podman', icon: 'siPodman' },
 ] as const;
 
 export const HOME_FEATURES = [

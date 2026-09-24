@@ -1,7 +1,5 @@
 ---
-// Poster replica of the Messages view + click-to-load live demo iframe.
-// The replica mirrors the real app's markup (zinc canvas, blue accent) so the
-// poster is honest about what loads.
+// Click-to-load live demo over a real app screenshot poster.
 import Icon from './Icon.astro';
 import { SITE } from '../config/site';
 import { t } from '../i18n';
@@ -12,14 +10,6 @@ interface Props {
   locale?: Locale;
 }
 const { class: cls = '', locale = 'en' } = Astro.props;
-
-const convos: { name: string; preview: string; time: string; active?: boolean; unread?: number; hops?: number }[] = [
-  { name: 'ivan2', preview: 'path resolved, sending now', time: 'just now', active: true, hops: 4 },
-  { name: 'ivan', preview: 'test', time: '5m', unread: 2 },
-  { name: 'relay.ops', preview: 'page node updated', time: '18m' },
-  { name: 'north.link', preview: 'voice message', time: '1h' },
-  { name: 'atlas.node', preview: 'micron page cached', time: '3h' },
-];
 ---
 
 <div class={`mcx-preview group relative overflow-hidden rounded-xl border border-line ${cls}`}>
@@ -29,139 +19,54 @@ const convos: { name: string; preview: string; time: string; active?: boolean; u
   <!-- click-to-load overlay -->
   <button
     type="button"
-    class="mcx-demo-btn absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center gap-3 bg-[#09090b]/60 backdrop-blur-[2px] transition-opacity hover:bg-[#09090b]/40"
+    class="mcx-demo-btn absolute inset-0 z-10 flex cursor-pointer flex-col items-center justify-center gap-3 bg-[#09090b]/55 transition-colors hover:bg-[#09090b]/35"
     data-demo-url={SITE.demoUrl}
     aria-label={t(locale, 'home.preview.demo_open')}
   >
     <span class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-transform group-hover:scale-105">
       <Icon name="mdiPlay" size={24} />
     </span>
-    <span class="rounded-md bg-zinc-900/80 px-3 py-1.5 font-mono text-xs text-zinc-200 ring-1 ring-zinc-700">
+    <span class="rounded-md bg-zinc-900/85 px-3 py-1.5 font-mono text-xs text-zinc-200 ring-1 ring-zinc-700">
       {t(locale, 'home.preview.demo_label')}
     </span>
   </button>
 
-<div
-  class="mcx-poster bg-[#09090b] text-left font-sans"
-  aria-hidden="true"
->
-  <!-- window chrome -->
-  <div class="flex h-8 items-center gap-1.5 border-b border-zinc-800 bg-zinc-950 px-3">
-    <span class="h-2.5 w-2.5 rounded-full bg-zinc-700"></span>
-    <span class="h-2.5 w-2.5 rounded-full bg-zinc-700"></span>
-    <span class="h-2.5 w-2.5 rounded-full bg-zinc-700"></span>
-    <span class="ml-3 font-mono text-[11px] text-zinc-400">MeshChatX</span>
-    <span class="ml-auto flex items-center gap-1.5 rounded-md bg-zinc-800 px-2 py-1 font-mono text-[10px] text-zinc-400">
-      <Icon name="mdiSync" size={12} /> Sync Messages
-    </span>
-  </div>
+  <img
+    src="/media/preview-conversation.webp"
+    alt="MeshChatX conversation view"
+    width="1440"
+    height="900"
+    loading="lazy"
+    class="mcx-poster block h-auto w-full"
+  />
 
-  <div class="flex h-[300px]">
-    <!-- sidebar -->
-    <div class="flex w-[150px] shrink-0 flex-col border-r border-zinc-800 bg-zinc-950">
-      <div class="flex border-b border-zinc-800">
-        <span class="border-b-2 border-blue-400 px-2 py-1.5 text-[10px] font-semibold text-blue-400">Conversations</span>
-        <span class="border-b-2 border-transparent px-2 py-1.5 text-[10px] text-zinc-400">Announces</span>
-      </div>
-      <div class="mx-2 mt-2 flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900 px-2 py-1 text-[10px] text-zinc-400">
-        <Icon name="mdiMagnify" size={11} /> Search
-      </div>
-      <div class="mt-1 flex-1 overflow-hidden">
-        {convos.map((c) => (
-          <div
-            class:list={[
-              'flex items-center gap-2 border-l-2 px-2.5 py-2',
-              c.active ? 'border-blue-400 bg-zinc-900' : 'border-transparent',
-            ]}
-          >
-            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-zinc-700 font-mono text-[9px] text-zinc-300">
-              {c.name.charAt(0).toUpperCase()}
-            </span>
-            <div class="min-w-0 flex-1">
-              <div class="flex items-baseline justify-between gap-1">
-                <span class="truncate text-[11px] font-medium text-zinc-200">{c.name}</span>
-                <span class="shrink-0 text-[8px] text-zinc-400">{c.time}</span>
-              </div>
-              <p class="truncate text-[10px] text-zinc-400">{c.preview}</p>
-            </div>
-            {c.unread ? (
-              <span class="flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-blue-500 text-[8px] font-bold text-white">{c.unread}</span>
-            ) : null}
-          </div>
-        ))}
-      </div>
-    </div>
+  <style>
+    .mcx-preview.mcx-live-open .mcx-live {
+      position: static;
+      height: min(640px, 80vh);
+    }
+    .mcx-preview.mcx-live-open .mcx-poster,
+    .mcx-preview.mcx-live-open .mcx-demo-btn {
+      display: none;
+    }
+  </style>
 
-    <!-- conversation -->
-    <div class="flex min-w-0 flex-1 flex-col bg-[#09090b]">
-      <div class="flex items-center gap-2 border-b border-zinc-800 px-3 py-2">
-        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-zinc-700 font-mono text-[9px] text-zinc-300">I</span>
-        <div class="min-w-0">
-          <p class="text-[11px] font-semibold text-zinc-100">ivan2</p>
-          <p class="font-mono text-[8px] text-zinc-400">&lt;43d3309a...553b56a6&gt; · 4 hops away</p>
-        </div>
-        <Icon name="mdiPhone" size={13} class="ml-auto text-zinc-400" />
-        <Icon name="mdiDotsVertical" size={13} class="text-zinc-400" />
-      </div>
-
-      <div class="flex-1 space-y-2.5 overflow-hidden px-3 py-3">
-        <!-- inbound -->
-        <div class="max-w-[75%] rounded-2xl border border-zinc-800 bg-zinc-900 px-3 py-2 shadow-sm">
-          <div class="mb-1 flex items-center gap-1.5 rounded-lg bg-zinc-800 px-2 py-1.5">
-            <Icon name="mdiPlay" size={12} class="text-blue-400" />
-            <span class="h-3 flex-1 rounded-full bg-zinc-700"></span>
-            <span class="font-mono text-[8px] text-zinc-400">0:02</span>
-          </div>
-          <p class="text-[10px] text-zinc-300">voice message</p>
-          <p class="mt-1 text-right text-[8px] text-zinc-400">3 mins ago</p>
-        </div>
-        <!-- outbound -->
-        <div class="ml-auto max-w-[75%] rounded-2xl bg-blue-700/90 px-3 py-2 shadow-sm">
-          <p class="text-[10px] text-white">path resolved, sending now</p>
-          <p class="mt-0.5 flex items-center justify-end gap-1 text-right text-[8px] text-blue-200">
-            just now
-            <Icon name="mdiCheckAll" size={10} />
-          </p>
-        </div>
-      </div>
-
-      <!-- composer -->
-      <div class="flex items-center gap-2 border-t border-zinc-800 px-3 py-2">
-        <Icon name="mdiPaperclip" size={13} class="text-zinc-400" />
-        <span class="flex-1 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-[10px] text-zinc-400">Type a message...</span>
-        <Icon name="mdiSend" size={13} class="text-blue-400" />
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-  .mcx-preview.mcx-live-open .mcx-live {
-    position: static;
-    height: 560px;
-  }
-  .mcx-preview.mcx-live-open .mcx-poster {
-    display: none;
-  }
-</style>
-
-<script>
-  document.querySelectorAll('.mcx-demo-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const url = btn.getAttribute('data-demo-url') || '';
-      const wrap = btn.closest('.mcx-preview');
-      const holder = wrap?.querySelector('.mcx-live');
-      if (!holder || !url) return;
-      const frame = document.createElement('iframe');
-      frame.src = url;
-      frame.title = 'MeshChatX live demo';
-      frame.setAttribute('class', 'h-full w-full border-0');
-      frame.setAttribute('allow', 'clipboard-read; clipboard-write');
-      holder.appendChild(frame);
-      holder.classList.remove('hidden');
-      btn.classList.add('hidden');
-      wrap?.classList.add('mcx-live-open');
+  <script>
+    document.querySelectorAll('.mcx-demo-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const url = btn.getAttribute('data-demo-url') || '';
+        const wrap = btn.closest('.mcx-preview');
+        const holder = wrap?.querySelector('.mcx-live');
+        if (!holder || !url) return;
+        const frame = document.createElement('iframe');
+        frame.src = url;
+        frame.title = 'MeshChatX live demo';
+        frame.setAttribute('class', 'h-full w-full border-0');
+        frame.setAttribute('allow', 'clipboard-read; clipboard-write');
+        holder.appendChild(frame);
+        holder.classList.remove('hidden');
+        wrap?.classList.add('mcx-live-open');
+      });
     });
-  });
-</script>
+  </script>
 </div>
