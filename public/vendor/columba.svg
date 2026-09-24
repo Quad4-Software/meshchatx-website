@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0" stop-color="#C471ED"/>
+      <stop offset="1" stop-color="#F64F59"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.8"/>
+      <stop offset="0.5" stop-color="#fff" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="256" cy="256" r="256" fill="url(#bg)"/>
+  <path stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round" opacity="0.6" d="M93.53 128.431C94.162 128.471 271.37 194.336 271.29 193.077"/>
+  <path stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round" opacity="0.6" d="M270.75 193.487C270.902 226.855 231.12 378.151 216.617 402.841"/>
+  <path stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round" opacity="0.6" d="M270.923 193.326C281.938 183.739 347.714 144.654 356.069 139.108"/>
+  <circle cx="406.658" cy="182.257" r="20.163" fill="url(#glow)"/>
+  <circle cx="406.658" cy="182.257" r="9" fill="#fff"/>
+  <circle cx="356.658" cy="138.257" r="28.322" fill="url(#glow)"/>
+  <circle cx="356.658" cy="138.257" r="10.837" fill="#fff"/>
+  <circle cx="270.658" cy="193.257" r="16" fill="url(#glow)"/>
+  <circle cx="270.658" cy="193.257" r="6.5" fill="#fff"/>
+  <circle cx="214.658" cy="403.257" r="16" fill="url(#glow)"/>
+  <circle cx="214.658" cy="403.257" r="6.5" fill="#fff"/>
+  <circle cx="93.506" cy="128.312" r="13" fill="url(#glow)"/>
+  <circle cx="93.506" cy="128.312" r="5" fill="#fff"/>
+  <path stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round" opacity="0.6" d="M405.781 182.043C381.14 160.276 371.817 147.932 356.85 138.219"/>
+  <circle cx="230.634" cy="178.62" r="11.949" fill="url(#glow)"/>
+  <circle cx="230.634" cy="178.62" r="5.334" fill="#fff"/>
+</svg>
