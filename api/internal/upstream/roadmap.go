@@ -60,7 +60,14 @@ func ResolveRoadmap(items []RoadmapItem, published []string) []RoadmapItem {
 		if m.Status != "planned" {
 			continue
 		}
-		if pub[m.Version] {
+		shipped := false
+		for v := range pub {
+			if VerCmp(v, m.Version) >= 0 {
+				shipped = true
+				break
+			}
+		}
+		if shipped {
 			out[i].Status = "done"
 		} else if !markedUpcoming {
 			out[i].Status = "upcoming"

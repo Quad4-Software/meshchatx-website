@@ -22,7 +22,8 @@ const verCmp = (a: string, b: string) =>
 let markedUpcoming = false;
 const items = ROADMAP.map((item) => {
   let status = item.status;
-  if (status === 'planned' && published.includes(item.version)) {
+  const shipped = published.some((v) => verCmp(v, item.version) >= 0);
+  if (status === 'planned' && shipped) {
     status = 'done';
   } else if (status === 'planned' && !markedUpcoming) {
     status = 'upcoming';
