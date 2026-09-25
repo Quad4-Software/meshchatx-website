@@ -105,6 +105,14 @@ const statusKey = {
         <ol class="relative flex justify-between">
           {rail.map((node) => (
             <li class="relative flex flex-col items-center" style={`flex:1`}>
+              {node.patches.map((p, i) => (
+                <a
+                  href={localePath(locale, `changelog#v-${p.replace(/\./g, '-')}`)}
+                  class="absolute top-[4px] block h-2.5 w-px bg-faint/70 transition-colors hover:bg-fg"
+                  style={`left:calc(50% + ${(((i + 1) / (node.patches.length + 1)) * 100).toFixed(2)}%)`}
+                  title={`v${p}`}
+                ></a>
+              ))}
               <a
                 href={`#ms-${node.version.replace(/\./g, '-')}`}
                 class="group flex flex-col items-center"
