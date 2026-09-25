@@ -259,6 +259,16 @@ details[open] > summary::after {
   transform: rotate(225deg);
 }
 
+/* cross-document page transitions */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 140ms;
+  animation-timing-function: ease-out;
+}
+
 /* starfield canvas */
 .starfield-canvas {
   color: var(--color-star);
@@ -274,6 +284,9 @@ details[open] > summary::after {
   animation: dashFlow 24s linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
   .disk-flow {
     animation: none;
   }
