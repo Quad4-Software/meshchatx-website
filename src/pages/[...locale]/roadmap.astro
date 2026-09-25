@@ -31,47 +31,38 @@ const items = ROADMAP.map((item) => {
   return { ...item, status };
 });
 
-// Build the rail: milestone nodes interleaved with published patch dots.
+// Rail: milestones only. Patch releases get a count badge under each milestone.
 interface RailNode {
-  type: 'milestone' | 'patch';
   version: string;
   label: string;
   title: string;
   date: string;
   status: string;
   done: boolean;
+  patches: string[];
 }
 const rail: RailNode[] = [];
 const sorted = [...items].sort((a, b) => verCmp(a.version, b.version));
 for (let i = 0; i < sorted.length; i++) {
   const m = sorted[i]!;
+  const next = sorted[i + 1]?.version;
+  const patches = published
+    .filter(
+      (v) =>
+        verCmp(v, m.version) > 0 &&
+        v.split('.').slice(0, 2).join('.') === m.version.split('.').slice(0, 2).join('.') &&
+        (!next || verCmp(v, next) < 0),
+    )
+    .sort(verCmp);
   rail.push({
-    type: 'milestone',
     version: m.version,
     label: `v${m.version}`,
     title: m.title,
     date: m.date,
     status: m.status,
     done: m.status === 'done',
+    patches,
   });
-  const next = sorted[i + 1]?.version;
-  const patches = published.filter(
-    (v) =>
-      verCmp(v, m.version) > 0 &&
-      v.split('.').slice(0, 2).join('.') === m.version.split('.').slice(0, 2).join('.') &&
-      (!next || verCmp(v, next) < 0),
-  );
-  for (const p of patches.sort(verCmp)) {
-    rail.push({
-      type: 'patch',
-      version: p,
-      label: `v${p}`,
-      title: `v${p}`,
-      date: '',
-      status: 'done',
-      done: true,
-    });
-  }
 }
 const doneCount = rail.filter((r) => r.done).length;
 const progress = rail.length > 1 ? (doneCount - 1) / (rail.length - 1) : 1;
@@ -114,27 +105,26 @@ const statusKey = {
           {rail.map((node) => (
             <li class="relative flex flex-col items-center" style={`flex:1`}>
               <a
-                href={node.type === 'patch' ? localePath(locale, `changelog#v-${node.version.replace(/\./g, '-')}`) : `#ms-${node.version.replace(/\./g, '-')}`}
+                href={`#ms-${node.version.replace(/\./g, '-')}`}
                 class="group flex flex-col items-center"
                 title={`${node.label} · ${node.title}`}
               >
                 <span
                   class:list={[
-                    'block rounded-full border-2 transition-transform group-hover:scale-125',
-                    node.type === 'patch' ? 'h-2 w-2' : 'h-4 w-4',
+                    'block rounded-full border-2 transition-transform group-hover:scale-125 h-4 w-4',
                     node.done ? 'border-fg bg-fg' : node.status === 'progress' ? 'border-fg bg-canvas' : 'border-line bg-canvas',
                   ]}
                 ></span>
-                <span
-                  class:list={[
-                    'mt-3 font-mono text-[10px]',
-                    node.type === 'patch' ? 'text-faint' : 'font-semibold text-fg',
-                  ]}
-                >
+                <span class="mt-3 font-mono text-[11px] font-semibold text-fg">
                   {node.label}
                 </span>
-                {node.date && node.type === 'milestone' && (
+                {node.date && (
                   <span class="mt-0.5 text-[10px] text-faint">{node.date}</span>
+                )}
+                {node.patches.length > 0 && (
+                  <span class="mt-1 rounded-full border border-line px-1.5 py-px font-mono text-[9px] text-faint">
+                    +{node.patches.length}
+                  </span>
                 )}
               </a>
             </li>
