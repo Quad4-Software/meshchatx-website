@@ -65,8 +65,19 @@ for (let i = 0; i < sorted.length; i++) {
     patches,
   });
 }
-const doneCount = rail.filter((r) => r.done).length;
-const progress = rail.length > 1 ? (doneCount - 1) / (rail.length - 1) : 1;
+// Road fills up to the last shipped version: the done milestone's node, or
+// the furthest patch tick beyond it when patch releases landed.
+const lastDone = rail.reduce((acc, r, i) => (r.done ? i : acc), -1);
+let progress = 0;
+if (lastDone >= 0) {
+  if (lastDone === rail.length - 1) {
+    progress = 1;
+  } else {
+    const p = rail[lastDone]!.patches.length;
+    const tickOffset = p > 0 ? 0.12 + (p / (p + 1)) * 0.76 : 0;
+    progress = (lastDone + 0.5 + tickOffset) / rail.length;
+  }
+}
 
 const statusStyle = {
   done: 'border-line text-faint',
@@ -108,13 +119,13 @@ const statusKey = {
               {node.patches.map((p, i) => (
                 <a
                   href={localePath(locale, `changelog#v-${p}`)}
-                  class="group/tick absolute top-[4px] block w-3"
+                  class="group/tick absolute top-[3px] block w-3"
                   style={`left:calc(50% + ${((0.12 + ((i + 1) / (node.patches.length + 1)) * 0.76) * 100).toFixed(2)}%); transform:translateX(-50%)`}
                   title={`v${p}`}
                 >
-                  <span class="mx-auto block h-2.5 w-px bg-faint/70 transition-colors group-hover/tick:bg-fg"></span>
+                  <span class="mx-auto block h-3 w-px bg-faint/70 transition-colors group-hover/tick:bg-fg"></span>
                   <span
-                    class="absolute left-1/2 top-3 -translate-x-1/2 font-mono text-[9px] text-faint transition-colors group-hover/tick:text-fg"
+                    class="absolute left-1/2 top-4 -translate-x-1/2 font-mono text-[9px] text-faint transition-colors group-hover/tick:text-fg"
                     style="writing-mode: vertical-rl;"
                   >v{p}</span>
                 </a>
