@@ -51,7 +51,12 @@ const sbomReleases = releases
       <span id="dep-count" class="ml-auto font-mono text-xs text-faint"></span>
     </div>
 
-    <div id="dep-loading" class="hidden rounded-xl border border-line bg-surface p-6 font-mono text-xs text-faint">{t(locale, 'dep.loading')}</div>
+    <div id="dep-loading" class="hidden rounded-xl border border-line bg-surface p-6" aria-hidden="true">
+      <span class="sr-only">{t(locale, 'dep.loading')}</span>
+      {Array.from({ length: 8 }).map(() => (
+        <div class="skeleton mb-2.5 h-8 w-full last:mb-0"></div>
+      ))}
+    </div>
     <div id="dep-error" class="hidden rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'dep.error')}</div>
 
     <div class="overflow-hidden rounded-xl border border-line bg-surface">

@@ -45,7 +45,7 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
         fetchpriority="high"
         media="(prefers-color-scheme: dark)"
         imagesrcset={preloadSrcset}
-        imagesizes={preloadSrcset ? '(max-width: 720px) 92vw, 720px' : undefined}
+        imagesizes={preloadSrcset ? '(max-width: 720px) 80vw, 660px' : undefined}
       />
     )}
     {preloadImgLight && (
@@ -57,7 +57,7 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
         fetchpriority="high"
         media="(prefers-color-scheme: light)"
         imagesrcset={preloadSrcsetLight}
-        imagesizes={preloadSrcsetLight ? '(max-width: 720px) 92vw, 720px' : undefined}
+        imagesizes={preloadSrcsetLight ? '(max-width: 720px) 80vw, 660px' : undefined}
       />
     )}
 
@@ -141,7 +141,8 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
           location.reload();
         });
         window.addEventListener('load', () => {
-          navigator.serviceWorker
+          const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
+          idle(() => navigator.serviceWorker
             .register('/sw.js')
             .then((reg) => {
               if (reg.waiting) reg.waiting.postMessage('skip');
@@ -159,7 +160,7 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
               window.addEventListener('online', update);
               setInterval(update, 3600000);
             })
-            .catch(() => {});
+            .catch(() => {}));
         });
       }
     </script>

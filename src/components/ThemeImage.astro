@@ -7,8 +7,8 @@ interface Props {
   light: string;
   alt: string;
   class?: string;
-  width?: number;
-  height?: number;
+  width?: number | undefined;
+  height?: number | undefined;
   loading?: 'lazy' | 'eager';
   fetchpriority?: 'high' | 'low' | 'auto';
   srcsetDark?: string;
@@ -19,8 +19,8 @@ const { dark, light, alt, class: cls = '', width, height, loading = 'lazy', fetc
 ---
 
 <>
-  <img src={dark} srcset={srcsetDark} sizes={sizes} alt={alt} width={width} height={height} loading={loading === 'eager' ? 'lazy' : loading} fetchpriority={fetchpriority} class:list={[cls, 'theme-img-dark']} />
-  <img src={light} srcset={srcsetLight} sizes={sizes} alt={alt} width={width} height={height} loading={loading} fetchpriority={fetchpriority} class:list={[cls, 'theme-img-light']} />
+  <img src={dark} srcset={srcsetDark} sizes={sizes} alt={alt} width={width} height={height} loading={loading === 'eager' ? 'lazy' : loading} fetchpriority={fetchpriority} decoding="async" class:list={[cls, 'theme-img-dark']} />
+  <img src={light} srcset={srcsetLight} sizes={sizes} alt={alt} width={width} height={height} loading={loading} fetchpriority={fetchpriority} decoding="async" class:list={[cls, 'theme-img-light']} />
 </>
 
 <style>

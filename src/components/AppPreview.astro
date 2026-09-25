@@ -44,7 +44,7 @@ const { class: cls = '', locale = 'en' } = Astro.props;
 
   <style>
     .mcx-preview.mcx-live-open .mcx-live {
-      position: static;
+      position: relative;
       height: min(640px, 80vh);
     }
     .mcx-preview.mcx-live-open .mcx-poster,
@@ -60,11 +60,15 @@ const { class: cls = '', locale = 'en' } = Astro.props;
         const wrap = btn.closest('.mcx-preview');
         const holder = wrap?.querySelector('.mcx-live');
         if (!holder || !url) return;
+        const skel = document.createElement('div');
+        skel.className = 'skeleton absolute inset-0 rounded-none';
+        holder.appendChild(skel);
         const frame = document.createElement('iframe');
         frame.src = url;
         frame.title = 'MeshChatX live demo';
-        frame.setAttribute('class', 'h-full w-full border-0');
+        frame.setAttribute('class', 'relative h-full w-full border-0');
         frame.setAttribute('allow', 'clipboard-read; clipboard-write');
+        frame.addEventListener('load', () => skel.remove(), { once: true });
         holder.appendChild(frame);
         holder.classList.remove('hidden');
         wrap?.classList.add('mcx-live-open');

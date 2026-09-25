@@ -167,7 +167,9 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
     apply();
 
     // Live refresh: replace the baked list when the API answers with data.
-    if (location.hostname.endsWith('meshchatx.com')) fetch(`${apiBase}/api/interfaces`)
+    if (location.hostname.endsWith('meshchatx.com')) {
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
+      idle(() => fetch(`${apiBase}/api/interfaces`)
       .then((r) => (r.ok ? r.json() : null))
       .then((live) => {
         if (!live?.items?.length) return;
@@ -175,6 +177,7 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
         render(items);
         apply();
       })
-      .catch(() => {});
+      .catch(() => {}));
+    }
   </script>
 </Base>

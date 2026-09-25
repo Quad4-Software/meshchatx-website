@@ -420,7 +420,9 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     applyRelease();
 
     // Live refresh: swap baked release data for the API payload when reachable.
-    if (location.hostname.endsWith('meshchatx.com')) fetch(`${apiBase}/api/releases`)
+    if (location.hostname.endsWith('meshchatx.com')) {
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
+      idle(() => fetch(`${apiBase}/api/releases`)
       .then((r) => (r.ok ? r.json() : null))
       .then((live) => {
         if (!live?.channels) return;
@@ -430,6 +432,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
         fillVersions();
         applyRelease();
       })
-      .catch(() => {});
+      .catch(() => {}));
+    }
   </script>
 </Base>

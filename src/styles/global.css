@@ -259,6 +259,39 @@ details[open] > summary::after {
   transform: rotate(225deg);
 }
 
+/* let the browser skip layout/paint for offscreen list items */
+.ifx-card,
+.cl-entry {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 180px;
+}
+
+/* skeleton shimmer for deferred content */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-raised);
+  border-radius: 6px;
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--color-surface), transparent);
+  animation: skeletonShimmer 1.4s ease-in-out infinite;
+}
+@keyframes skeletonShimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+  }
+}
+
 /* cross-document page transitions */
 @view-transition {
   navigation: auto;
