@@ -248,7 +248,9 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
               <a data-asset="pyzPy311X64" href={d?.pyzPy311X64?.url ?? '#'} class:list={[btnMini, !d?.pyzPy311X64 && 'hidden']}>.pyz py3.11 x64</a>
               <a data-asset="pyzPy311Arm64" href={d?.pyzPy311Arm64?.url ?? '#'} class:list={[btnMini, !d?.pyzPy311Arm64 && 'hidden']}>.pyz py3.11 arm64</a>
             </div>
-            <CommandBlock label="run" code={`python meshchatx-py314-linux-x64.pyz`} copyLabel={t(locale, 'dl.python.copy')} />
+            <div class="mt-3">
+              <CommandBlock label="run" code={`python meshchatx-py314-linux-x64.pyz`} copyLabel={t(locale, 'dl.python.copy')} />
+            </div>
           </div>
           <div data-pip-panel="pip-rns" class="pip-panel mt-3 hidden">
             <p class="mb-3 text-xs text-muted">{t(locale, 'dl.python.pip_rns_intro')}</p>
@@ -257,7 +259,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
             </a>
           </div>
 
-          <a data-asset="wheel" href={d?.wheel?.url ?? '#'} class:list={[btnMini, 'mt-3', !d?.wheel && 'hidden']}>
+          <a data-asset="wheel" href={d?.wheel?.url ?? '#'} class:list={[btnMini, 'mt-4', !d?.wheel && 'hidden']}>
             {t(locale, 'dl.python.btn_whl')}
           </a>
         </div>
