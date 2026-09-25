@@ -119,13 +119,13 @@ const statusKey = {
               {node.patches.map((p, i) => (
                 <a
                   href={localePath(locale, `changelog#v-${p}`)}
-                  class="group/tick absolute top-[3px] block w-3"
+                  class="group/tick absolute -top-[29px] block w-3"
                   style={`left:calc(50% + ${((0.12 + ((i + 1) / (node.patches.length + 1)) * 0.76) * 100).toFixed(2)}%); transform:translateX(-50%)`}
                   title={`v${p}`}
                 >
                   <span class="mx-auto block h-3 w-px bg-faint/70 transition-colors group-hover/tick:bg-fg"></span>
                   <span
-                    class="absolute left-1/2 top-4 -translate-x-1/2 font-mono text-[9px] text-faint transition-colors group-hover/tick:text-fg"
+                    class="absolute left-1/2 top-[14px] -translate-x-1/2 font-mono text-[9px] text-faint transition-colors group-hover/tick:text-fg"
                     style="writing-mode: vertical-rl;"
                   >v{p}</span>
                 </a>
