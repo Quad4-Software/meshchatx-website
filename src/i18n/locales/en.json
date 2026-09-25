@@ -377,7 +377,7 @@
   },
   "ifx": {
     "h1": "Interfaces",
-    "lead": "Online Reticulum interfaces submitted to directory.rns.recipes. Copy a block into ~/.reticulum/config under [interfaces]. This Site keeps a local copy and refreshes it every 72 hours.",
+    "lead": "Online Reticulum interfaces submitted to directory.rns.recipes. Copy a block into ~/.reticulum/config under [interfaces]. The list refreshes live when the site API is reachable.",
     "count": "%n online",
     "source": "directory.rns.recipes",
     "api": "JSON API",
@@ -391,7 +391,7 @@
     "copy": "Copy config",
     "copied": "Copied",
     "config": "Config",
-    "empty": "No interfaces in the local copy.",
+    "empty": "No interfaces in the cached copy.",
     "no_results": "No interfaces match that search.",
     "type": {
       "tcp": "TCP",

@@ -14,7 +14,10 @@ export function getStaticPaths() {
 
 const { locale } = Astro.props as { locale: Locale };
 const releases = await getReleases();
-const sbomReleases = releases.filter((r) => r.downloads.sbom);
+const order = { stable: 0, beta: 1, testing: 2 } as const;
+const sbomReleases = releases
+  .filter((r) => r.downloads.sbom)
+  .sort((a, b) => (order[a.channel as keyof typeof order] ?? 3) - (order[b.channel as keyof typeof order] ?? 3));
 ---
 
 <Base
@@ -124,7 +127,7 @@ const sbomReleases = releases.filter((r) => r.downloads.sbom);
       loading.classList.remove('hidden');
       error.classList.add('hidden');
       try {
-        const res = await fetch(`${apiBase}/${encodeURIComponent(tag)}`);
+        const res = await fetch(`${apiBase}/${encodeURIComponent(tag)}.json`);
         if (!res.ok) throw new Error(String(res.status));
         const sbom = await res.json();
         pkgs = sbom.components || [];

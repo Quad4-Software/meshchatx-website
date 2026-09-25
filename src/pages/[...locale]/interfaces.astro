@@ -30,7 +30,7 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
     <div class="mt-4 flex flex-wrap gap-4 font-mono text-xs text-faint">
       <span>{t(locale, 'ifx.count', { n: items.length })}</span>
       <a href={SITE.rnsDirectoryUrl} class="underline decoration-line underline-offset-2 hover:text-fg">{t(locale, 'ifx.source')}</a>
-      <a href="/api/mcx-interfaces" class="underline decoration-line underline-offset-2 hover:text-fg">{t(locale, 'ifx.api')}</a>
+      <a href="/api/mcx-interfaces.json" class="underline decoration-line underline-offset-2 hover:text-fg">{t(locale, 'ifx.api')}</a>
       {fetchedAt && <span>{t(locale, 'ifx.updated', { s: fetchedAt.slice(0, 10) })}</span>}
     </div>
   </PageHero>
@@ -70,9 +70,9 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
           <div class="flex items-start justify-between gap-3">
             <div>
               <h2 class="font-semibold text-fg">{i.name}</h2>
-              <p class="mt-0.5 font-mono text-xs text-faint">{i.host}:{i.port}</p>
+              <p class="mt-0.5 font-mono text-xs break-all text-faint">{i.host}:{i.port}</p>
             </div>
-            <div class="flex gap-1.5">
+            <div class="flex shrink-0 gap-1.5">
               <span class="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] uppercase text-faint">{i.type}</span>
               <span class="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] uppercase text-faint">{i.network}</span>
             </div>
@@ -110,9 +110,9 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
           <div class="flex items-start justify-between gap-3">
             <div>
               <h2 class="font-semibold text-fg">${esc(i.name)}</h2>
-              <p class="mt-0.5 font-mono text-xs text-faint">${esc(i.host)}:${esc(i.port)}</p>
+              <p class="mt-0.5 font-mono text-xs break-all text-faint">${esc(i.host)}:${esc(i.port)}</p>
             </div>
-            <div class="flex gap-1.5">
+            <div class="flex shrink-0 gap-1.5">
               <span class="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] uppercase text-faint">${esc(i.type)}</span>
               <span class="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] uppercase text-faint">${esc(i.network)}</span>
             </div>

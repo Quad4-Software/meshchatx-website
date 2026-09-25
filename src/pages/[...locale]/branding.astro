@@ -2,6 +2,7 @@
 import { readdirSync } from 'node:fs';
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
+import ThemeImage from '../../components/ThemeImage.astro';
 import { LOCALES, BRAND_SECTIONS, BRAND_COLORS, type Locale } from '../../config/site';
 import { t } from '../../i18n';
 
@@ -39,11 +40,12 @@ function groupFiles(files: string[]) {
 
 const sections = BRAND_SECTIONS.map((s) => {
   const files = readdirSync(`public/media/branding/${s.key}`);
-  const preview =
-    files.find((f) => f.endsWith('.svg')) ??
-    bySize(files.filter((f) => f.endsWith('-light.jpg') || f.endsWith('.png'))).pop() ??
-    files[0];
-  return { ...s, preview, groups: groupFiles(files) };
+  const largest = (suffix: string) => bySize(files.filter((f) => f.endsWith(suffix))).pop();
+  // theme-matched previews first (baked backgrounds), else a transparent
+  // format that sits on the raised preview surface
+  const previewDark = largest('-dark.jpg') ?? files.find((f) => f.endsWith('.svg')) ?? largest('.webp') ?? largest('.png') ?? files[0];
+  const previewLight = largest('-light.jpg') ?? files.find((f) => f.endsWith('.svg')) ?? largest('.webp') ?? largest('.png') ?? files[0];
+  return { ...s, previewDark, previewLight, groups: groupFiles(files) };
 });
 ---
 
@@ -78,8 +80,14 @@ const sections = BRAND_SECTIONS.map((s) => {
         <h2 class="text-2xl font-semibold tracking-tight text-fg">{t(locale, s.h)}</h2>
         <p class="mt-2 text-sm text-muted">{t(locale, s.lead)}</p>
         <div class="mt-6 rounded-xl border border-line bg-surface p-6">
-          <div class="flex h-32 items-center justify-center rounded-lg bg-raised">
-            <img src={`/media/branding/${s.key}/${s.preview}`} alt="" class="max-h-24 max-w-full object-contain" loading="lazy" />
+          <div class="flex h-32 items-center justify-center overflow-hidden rounded-lg bg-raised">
+            <ThemeImage
+              dark={`/media/branding/${s.key}/${s.previewDark}`}
+              light={`/media/branding/${s.key}/${s.previewLight}`}
+              alt={t(locale, s.h)}
+              class="max-h-24 max-w-full object-contain"
+              loading="lazy"
+            />
           </div>
           <div class="mt-5 space-y-3">
             {s.groups.map((g) => (
