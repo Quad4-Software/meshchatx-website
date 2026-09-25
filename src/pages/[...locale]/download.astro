@@ -309,7 +309,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
 
   <script type="application/json" id="dl-data" set:html={JSON.stringify(payload)} />
 
-  <script define:vars={{ selectLabel: t(locale, 'js.download.select_version') }}>
+  <script define:vars={{ selectLabel: t(locale, 'js.download.select_version'), apiBase: SITE.apiBase }}>
     const dataEl = document.getElementById('dl-data');
     const data = dataEl ? JSON.parse(dataEl.textContent || '{}') : {};
     const versionSel = document.getElementById('dl-version');
@@ -416,5 +416,18 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
 
     fillVersions();
     applyRelease();
+
+    // Live refresh: swap baked release data for the API payload when reachable.
+    fetch(`${apiBase}/api/releases`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((live) => {
+        if (!live?.channels) return;
+        for (const ch of ['stable', 'beta', 'testing']) {
+          if (live.channels[ch]?.length) data[ch] = live.channels[ch];
+        }
+        fillVersions();
+        applyRelease();
+      })
+      .catch(() => {});
   </script>
 </Base>

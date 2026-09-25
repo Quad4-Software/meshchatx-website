@@ -28,6 +28,7 @@ export const SITE = {
     'https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/Quad4-Software/MeshChatX',
   reticulumCrypto: 'https://reticulum.network/crypto.html',
   demoUrl: 'https://demo.meshchatx.com',
+  apiBase: 'https://api.meshchatx.com',
   quad4Url: 'https://quad4.io/',
   themeKey: 'mcx-theme',
 } as const;

@@ -87,15 +87,67 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
     <p id="ifx-none" class="hidden rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'ifx.no_results')}</p>
   </div>
 
-  <script define:vars={{ showingText: t(locale, 'ifx.showing') }}>
+  <script type="application/json" id="ifx-data" set:html={JSON.stringify(items)} />
+
+  <script define:vars={{ showingText: t(locale, 'ifx.showing'), configText: t(locale, 'ifx.config'), apiBase: SITE.apiBase }}>
     const search = document.getElementById('ifx-search');
     const typeSel = document.getElementById('ifx-type');
     const netSel = document.getElementById('ifx-net');
-    const cards = document.querySelectorAll('.ifx-card');
+    const listEl = document.getElementById('ifx-list');
     const none = document.getElementById('ifx-none');
     const count = document.getElementById('ifx-count');
+    const baked = JSON.parse(document.getElementById('ifx-data')?.textContent || '[]');
+    let items = baked;
+
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+
+    function render(items) {
+      if (!listEl) return;
+      listEl.innerHTML = items.map((i) => `
+        <article class="ifx-card rounded-xl border border-line bg-surface p-5"
+          data-search="${esc(`${i.name} ${i.host} ${i.type} ${i.typeName} ${i.network} ${i.port ?? ''}`.toLowerCase())}"
+          data-type="${esc(i.type)}" data-network="${esc(i.network)}">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h2 class="font-semibold text-fg">${esc(i.name)}</h2>
+              <p class="mt-0.5 font-mono text-xs text-faint">${esc(i.host)}:${esc(i.port)}</p>
+            </div>
+            <div class="flex gap-1.5">
+              <span class="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] uppercase text-faint">${esc(i.type)}</span>
+              <span class="rounded border border-line px-1.5 py-0.5 font-mono text-[10px] uppercase text-faint">${esc(i.network)}</span>
+            </div>
+          </div>
+          <details class="mt-3">
+            <summary class="cursor-pointer font-mono text-xs text-muted hover:text-fg">${esc(configText)}</summary>
+            <pre class="mt-2 overflow-x-auto rounded-lg border border-line bg-canvas p-3 font-mono text-xs text-muted"><code>${esc(i.config)}</code></pre>
+          </details>
+        </article>`).join('');
+      rebuildFilters();
+    }
+
+    function rebuildFilters() {
+      const types = [...new Set(items.map((i) => i.type))].sort();
+      const nets = [...new Set(items.map((i) => i.network))].sort();
+      const fill = (sel, vals) => {
+        if (!sel) return;
+        const cur = sel.value;
+        const first = sel.querySelector('option');
+        sel.innerHTML = '';
+        if (first) sel.appendChild(first);
+        for (const v of vals) {
+          const o = document.createElement('option');
+          o.value = v;
+          o.textContent = v;
+          sel.appendChild(o);
+        }
+        sel.value = cur;
+      };
+      fill(typeSel, types);
+      fill(netSel, nets);
+    }
 
     function apply() {
+      const cards = listEl?.querySelectorAll('.ifx-card') ?? [];
       const q = (search?.value ?? '').toLowerCase();
       const ty = typeSel?.value ?? '';
       const net = netSel?.value ?? '';
@@ -113,5 +165,16 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
     }
     [search, typeSel, netSel].forEach((el) => el?.addEventListener('input', apply));
     apply();
+
+    // Live refresh: replace the baked list when the API answers with data.
+    fetch(`${apiBase}/api/interfaces`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((live) => {
+        if (!live?.items?.length) return;
+        items = live.items;
+        render(items);
+        apply();
+      })
+      .catch(() => {});
   </script>
 </Base>
