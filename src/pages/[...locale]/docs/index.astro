@@ -20,6 +20,24 @@ const target = localePath(locale, `docs/${DOCS_DEFAULT_SLUG}`);
     <meta http-equiv="refresh" content={`0;url=${target}`} />
     <link rel="canonical" href={target} />
     <title>MeshChatX Docs</title>
+    <style>
+      html { background: #0a0a0b; }
+      [data-theme='light'] html, html[data-theme='light'] { background: #fafafa; }
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; }
+      a { color: #a1a1aa; font: 500 14px/1 system-ui, sans-serif; text-decoration: none; }
+    </style>
+    <script is:inline>
+      (function () {
+        var theme = '';
+        try {
+          theme = localStorage.getItem('mcx-theme') || '';
+        } catch (e) {}
+        if (!theme) {
+          theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
   </head>
   <body>
     <a href={target}>Documentation</a>

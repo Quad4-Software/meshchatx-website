@@ -15,9 +15,11 @@ interface Props {
   path?: string;
   preloadImg?: string;
   preloadSrcset?: string;
+  preloadImgLight?: string;
+  preloadSrcsetLight?: string;
 }
 
-const { locale, title, description, ogCard = 'card', path, preloadImg, preloadSrcset } = Astro.props;
+const { locale, title, description, ogCard = 'card', path, preloadImg, preloadSrcset, preloadImgLight, preloadSrcsetLight } = Astro.props;
 const canonical = new URL(localePath(locale, path ?? ''), SITE.domain).href;
 const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
 ---
@@ -41,8 +43,21 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
         as="image"
         type="image/webp"
         fetchpriority="high"
+        media="(prefers-color-scheme: dark)"
         imagesrcset={preloadSrcset}
-        imagesizes={preloadSrcset ? '(max-width: 560px) 90vw, 560px' : undefined}
+        imagesizes={preloadSrcset ? '(max-width: 560px) 92vw, 560px' : undefined}
+      />
+    )}
+    {preloadImgLight && (
+      <link
+        rel="preload"
+        href={preloadImgLight}
+        as="image"
+        type="image/webp"
+        fetchpriority="high"
+        media="(prefers-color-scheme: light)"
+        imagesrcset={preloadSrcsetLight}
+        imagesizes={preloadSrcsetLight ? '(max-width: 560px) 92vw, 560px' : undefined}
       />
     )}
 
