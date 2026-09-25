@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import ThemeImage from '../../components/ThemeImage.astro';
 import { LOCALES, BRAND_SECTIONS, BRAND_COLORS, type Locale } from '../../config/site';
+import { imageSize } from '../../lib/imageSize';
 import { t } from '../../i18n';
 
 export function getStaticPaths() {
@@ -43,9 +44,10 @@ const sections = BRAND_SECTIONS.map((s) => {
   const largest = (suffix: string) => bySize(files.filter((f) => f.endsWith(suffix))).pop();
   // theme-matched previews first (baked backgrounds), else a transparent
   // format that sits on the raised preview surface
-  const previewDark = largest('-dark.jpg') ?? files.find((f) => f.endsWith('.svg')) ?? largest('.webp') ?? largest('.png') ?? files[0];
-  const previewLight = largest('-light.jpg') ?? files.find((f) => f.endsWith('.svg')) ?? largest('.webp') ?? largest('.png') ?? files[0];
-  return { ...s, previewDark, previewLight, groups: groupFiles(files) };
+  const previewDark = largest('-dark.webp') ?? largest('-dark.jpg') ?? files.find((f) => f.endsWith('.svg')) ?? largest('.webp') ?? largest('.png') ?? files[0];
+  const previewLight = largest('-light.webp') ?? largest('-light.jpg') ?? files.find((f) => f.endsWith('.svg')) ?? largest('.webp') ?? largest('.png') ?? files[0];
+  const dimsOf = (f: string | undefined) => (f ? imageSize(`public/media/branding/${s.key}/${f}`) : { width: 0, height: 0 });
+  return { ...s, previewDark, previewLight, darkDims: dimsOf(previewDark), lightDims: dimsOf(previewLight), groups: groupFiles(files) };
 });
 ---
 
@@ -87,6 +89,8 @@ const sections = BRAND_SECTIONS.map((s) => {
               alt={t(locale, s.h)}
               class="max-h-24 max-w-full object-contain"
               loading="lazy"
+              width={s.darkDims.width || undefined}
+              height={s.darkDims.height || undefined}
             />
           </div>
           <div class="mt-5 space-y-3">

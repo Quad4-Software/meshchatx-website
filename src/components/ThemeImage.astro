@@ -19,7 +19,7 @@ const { dark, light, alt, class: cls = '', width, height, loading = 'lazy', fetc
 ---
 
 <>
-  <img src={dark} srcset={srcsetDark} sizes={sizes} alt={alt} width={width} height={height} loading={loading} fetchpriority={fetchpriority} class:list={[cls, 'theme-img-dark']} />
+  <img src={dark} srcset={srcsetDark} sizes={sizes} alt={alt} width={width} height={height} loading={loading === 'eager' ? 'lazy' : loading} fetchpriority={fetchpriority} class:list={[cls, 'theme-img-dark']} />
   <img src={light} srcset={srcsetLight} sizes={sizes} alt={alt} width={width} height={height} loading={loading} fetchpriority={fetchpriority} class:list={[cls, 'theme-img-light']} />
 </>
 
