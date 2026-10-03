@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
 import { LOCALES, DONATE, type Locale } from '../../config/site';
 import { t } from '../../i18n';
 
@@ -28,8 +29,11 @@ const { locale } = Astro.props as { locale: Locale };
     </div>
 
     <div class="mx-auto mt-10 max-w-2xl rounded-xl border border-line bg-surface">
-      <div class="border-b border-line p-6">
-        <p class="font-mono text-[10px] font-bold uppercase tracking-wider text-faint">{t(locale, 'donate.monero')}</p>
+      <div id="xmr" class="scroll-mt-24 border-b border-line p-6">
+        <p class="flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-wider text-faint">
+          <Icon name="siMonero" size={14} />
+          {t(locale, 'donate.monero')}
+        </p>
         <button
           type="button"
           class="xmr-copy mt-3 w-full break-all rounded-lg border border-line bg-canvas px-4 py-3 text-left font-mono text-xs leading-relaxed text-muted transition-colors hover:border-mist-500 hover:text-fg"
@@ -44,10 +48,12 @@ const { locale } = Astro.props as { locale: Locale };
       <div class="p-6">
         <p class="font-mono text-[10px] font-bold uppercase tracking-wider text-faint">{t(locale, 'donate.platforms_title')}</p>
         <div class="mt-4 flex flex-wrap gap-3">
-          <a href={DONATE.kofi} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-line px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-raised">
+          <a href={DONATE.kofi} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-raised">
+            <Icon name="siKofi" size={16} />
             {t(locale, 'donate.kofi')}
           </a>
-          <a href={DONATE.bmac} target="_blank" rel="noopener noreferrer" class="rounded-lg border border-line px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-raised">
+          <a href={DONATE.bmac} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-line px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-raised">
+            <Icon name="siBuymeacoffee" size={16} />
             {t(locale, 'donate.bmac')}
           </a>
         </div>

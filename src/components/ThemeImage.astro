@@ -1,7 +1,5 @@
 ---
-// Theme-aware image: dark asset in dark mode, light asset in light mode.
-// Both imgs load eagerly when loading="eager" so the theme flip is instant;
-// the off-theme copy is display:none which browsers deprioritise on load.
+// One visible asset per theme. Picture picks the OS default so LCP is a real img.
 interface Props {
   dark: string;
   light: string;
@@ -11,26 +9,47 @@ interface Props {
   height?: number | undefined;
   loading?: 'lazy' | 'eager';
   fetchpriority?: 'high' | 'low' | 'auto';
-  srcsetDark?: string;
-  srcsetLight?: string;
+  srcsetDark?: string | undefined;
+  srcsetLight?: string | undefined;
   sizes?: string;
+  fullDark?: string;
+  fullLight?: string;
 }
-const { dark, light, alt, class: cls = '', width, height, loading = 'lazy', fetchpriority = 'auto', srcsetDark, srcsetLight, sizes } = Astro.props;
+const {
+  dark,
+  light,
+  alt,
+  class: cls = '',
+  width,
+  height,
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  srcsetDark,
+  srcsetLight,
+  sizes,
+  fullDark,
+  fullLight,
+} = Astro.props;
 ---
 
-<>
-  <img src={dark} srcset={srcsetDark} sizes={sizes} alt={alt} width={width} height={height} loading={loading === 'eager' ? 'lazy' : loading} fetchpriority={fetchpriority} decoding="async" class:list={[cls, 'theme-img-dark']} />
-  <img src={light} srcset={srcsetLight} sizes={sizes} alt={alt} width={width} height={height} loading={loading} fetchpriority={fetchpriority} decoding="async" class:list={[cls, 'theme-img-light']} />
-</>
-
-<style>
-  .theme-img-light {
-    display: none;
-  }
-  :global([data-theme='light']) .theme-img-light {
-    display: block;
-  }
-  :global([data-theme='light']) .theme-img-dark {
-    display: none;
-  }
-</style>
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset={srcsetLight || light} sizes={sizes} />
+  <img
+    src={dark}
+    srcset={srcsetDark}
+    sizes={sizes}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding="async"
+    class={cls}
+    data-theme-dark={dark}
+    data-theme-light={light}
+    data-srcset-dark={srcsetDark || ''}
+    data-srcset-light={srcsetLight || ''}
+    data-full-dark={fullDark || dark}
+    data-full-light={fullLight || light}
+  />
+</picture>

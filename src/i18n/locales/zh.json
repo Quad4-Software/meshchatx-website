@@ -21,7 +21,8 @@
       "docs": "文档 | MeshChatX",
       "changelog": "更新日志 | MeshChatX",
       "offline": "离线 | MeshChatX",
-      "dependency": "依赖 | MeshChatX"
+      "dependency": "依赖 | MeshChatX",
+      "news": "新闻 | MeshChatX"
     },
     "og_image_alt": "MeshChatX 标志",
     "desc": {
@@ -36,10 +37,11 @@
       "error": "无法按请求显示此页面。",
       "changelog": "已发布的 MeshChatX 版本及上游 CHANGELOG 中的说明。",
       "branding": "MeshChatX 徽标、图标与品牌色，供媒体与产品使用。",
-      "git": "通过 Reticulum 上的 rngit 克隆 MeshChatX，或使用 GitHub 与 LavaForge 镜像。",
+      "git": "通过 Reticulum 上的 rngit 克隆 MeshChatX，或使用 GitHub 与 CodeFloe 镜像。",
       "docs": "来自应用文档包的 MeshChatX 文档：安装、消息、LXST 通话、NomadNet、接口与平台指南。",
       "offline": "你处于离线状态。打开已缓存的 MeshChatX 页面，或重新连接网络。",
-      "dependency": "按版本浏览 MeshChatX 发布附带的 CycloneDX SBOM：包依赖图、许可证与供应链。"
+      "dependency": "按版本浏览 MeshChatX 发布附带的 CycloneDX SBOM：包依赖图、许可证与供应链。",
+      "news": "MeshChatX 新闻、公告和 RSS 源。"
     }
   },
   "error": {
@@ -94,7 +96,8 @@
     "secondary": "更多",
     "theme_light": "浅色",
     "theme_dark": "深色",
-    "theme_system": "系统"
+    "theme_system": "系统",
+    "news": "新闻"
   },
   "lang": {
     "label": "语言",
@@ -119,9 +122,11 @@
     "privacy": "隐私政策",
     "license_badge": "MIT + 0BSD",
     "meta_copyright": "© 2026 MeshChatX。",
+    "developed_by": "由 Quad4 Software 开发",
     "meta_site": "MeshChatX 是 <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a> 的项目。",
     "product": "产品",
-    "explore": "探索"
+    "explore": "探索",
+    "legacy": "旧版"
   },
   "contact": {
     "h1": "联系",
@@ -144,7 +149,9 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "点击地址即可复制",
-    "copied": "已复制"
+    "copied": "已复制",
+    "banner": "请捐赠以支持 MeshChatX 的未来",
+    "banner_dismiss": "关闭"
   },
   "license": {
     "h1": "许可",
@@ -175,7 +182,8 @@
   "home": {
     "hero": {
       "h1": "一体化 Reticulum 客户端",
-      "lead": "MeshChatX 是一体化 Reticulum 客户端，具备消息、通话与 NomadNet 浏览器。"
+      "lead": "MeshChatX 是一体化 Reticulum 客户端，具备消息、通话与 NomadNet 浏览器。",
+      "shot_alt": "MeshChatX 会话界面"
     },
     "platform": {
       "macos": "macOS",
@@ -207,7 +215,7 @@
       "banishment": "封禁",
       "backups": "自动备份与快照",
       "customizable": "可定制",
-      "telemetry": "遥测（LXMF）",
+      "telemetry": "LXMF 遥测",
       "host_pages": "托管页面",
       "soon": "（即将推出）",
       "more": "+ 更多"
@@ -219,7 +227,7 @@
       "download_for": "下载适用于 %s"
     },
     "section": {
-      "infra_h2": "没有公司服务器",
+      "infra_h2": "没有企业服务器或云",
       "infra_lead": "MeshChatX 不运行聊天服务器。消息经由你配置的 Reticulum 链路传输。"
     },
     "feature": {
@@ -269,7 +277,14 @@
     },
     "preview": {
       "demo_label": "在线演示",
-      "demo_open": "打开 MeshChatX 在线演示"
+      "demo_open": "打开 MeshChatX 在线演示",
+      "mosaic_h2": "截图",
+      "desktop": "桌面",
+      "mobile": "手机",
+      "open": "查看截图",
+      "close": "关闭",
+      "prev": "上一张",
+      "next": "下一张"
     }
   },
   "roadmap": {
@@ -409,7 +424,7 @@
   },
   "git": {
     "h1": "源码仓库",
-    "lead": "rngit 是基于 Reticulum 的 Git，也是规范源树。GitHub 与 LavaForge 是用于 CI 与发布的公开镜像。",
+    "lead": "rngit 是基于 Reticulum 的 Git，也是规范源树。GitHub 与 CodeFloe 是用于 CI 与发布的公开镜像。",
     "primary_badge": "规范源",
     "mirror_badge": "镜像",
     "open_repo": "打开仓库",
@@ -422,8 +437,8 @@
     "rngit_lead": "基于 Reticulum 的 Git。在 mesh 上克隆，或打开 NomadNet 仓库页。没有 clearnet 端点。",
     "github_h3": "GitHub",
     "github_lead": "用于发布、CI 与分发的公开镜像。适合大多数贡献者。",
-    "lavaforge_h3": "LavaForge",
-    "lavaforge_lead": "社区 forge 镜像。若你已在 LavaForge 上工作，会更方便。"
+    "codefloe_h3": "CodeFloe",
+    "codefloe_lead": "公开 forge 镜像。若你更喜欢 CodeFloe 而非 GitHub，可用此源。"
   },
   "docs": {
     "meta_suffix": "MeshChatX 文档",
@@ -445,7 +460,8 @@
       "platforms": "平台指南",
       "ops": "运维"
     },
-    "copy_md": "复制 MD"
+    "copy_md": "复制 MD",
+    "updated": "最近更新 :date，作者 :author"
   },
   "dep": {
     "h1": "依赖",
@@ -487,5 +503,11 @@
     "more_deps": "还有 %n 个",
     "deps_count": "%n 个依赖",
     "copies": "×%n"
+  },
+  "news": {
+    "h1": "新闻",
+    "lead": "公告与站点更新。",
+    "empty": "暂无文章。订阅 RSS 以获取第一篇。",
+    "rss": "RSS 源"
   }
 }

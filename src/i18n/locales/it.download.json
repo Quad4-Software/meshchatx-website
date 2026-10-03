@@ -19,7 +19,7 @@
    "docker": "Docker / Podman",
    "python": "Python",
    "android": "Android",
-   "umbrel": "Umbrel",
+   "arch": "Arch",
    "flatpak": "Flatpak"
   },
   "macos": {
@@ -106,7 +106,8 @@
    "copy_run": "Copia comando di avvio",
    "trivy_before": "Le immagini Docker sono analizzate con ",
    "trivy_link": "Trivy",
-   "friendly": "Copia il file Compose se usi Docker o Podman ogni giorno. I comandi pull sono sotto altre opzioni."
+   "friendly": "Copia il file Compose se usi Docker o Podman ogni giorno. I comandi pull sono sotto altre opzioni.",
+   "engine_label": "Motore container"
   },
   "python": {
    "h2": "Python",
@@ -136,12 +137,22 @@
    "badge": "In arrivo",
    "btn_apk": "Scarica .apk",
    "obtainium_alt": "Scarica con Obtainium",
+   "appverifier": "AppVerifier",
+   "appverifier_lead": "SHA-256 del certificato di firma. Incolla nome pacchetto e questo hash in AppVerifier.",
+   "copy_appverifier": "Copia per AppVerifier",
    "friendly": "APK Android per l’app, oppure Termux per un nodo headless."
   },
-  "umbrel": {
-   "h2": "Umbrel",
-   "intro": "Installa MeshChatX sul tuo home server Umbrel dall'Umbrel App Store.",
-   "btn": "Scarica su Umbrel"
+  "archlinux": {
+   "h2": "Arch Linux",
+   "intro": "Installa dal repository pacman Quad4. Aggiungi il repo e installa con pacman.",
+   "warn": "Aggiungi prima il repository Quad4. Non installare MeshChatX da AUR.",
+   "btn": "Apri arch.quad4.io"
+  },
+  "torrent": {
+   "h2": "Torrent",
+   "intro": "BitTorrent con webseed HTTP da cdn.quad4.io. Funziona senza peer.",
+   "btn": "Scarica .torrent",
+   "magnet": "Copia magnet"
   },
   "termux": {
    "h2": "Termux",
@@ -162,7 +173,7 @@
    "android_hint": "APK / Termux",
    "docker_hint": "Container",
    "python_hint": "pip install",
-   "umbrel_hint": "App store",
+   "arch_hint": "pacman",
    "flatpak_hint": "Installazione in un clic"
   },
   "cta": {
@@ -193,6 +204,7 @@
   },
   "verify": "Verifica",
   "verify_copy": "Copia comando di verifica",
-  "recommended": "Consigliato"
+  "recommended": "Consigliato",
+  "cdn_powered": "CDN fornito da"
  }
 }

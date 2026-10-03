@@ -1,0 +1,202 @@
+---
+import ThemeImage from './ThemeImage.astro';
+import Icon from './Icon.astro';
+import ShotLightbox from './ShotLightbox.astro';
+import { appShot } from '../lib/screenshots';
+import type { Locale } from '../config/site';
+import { t } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  labelledBy?: string;
+}
+const { locale, labelledBy = 'mcx-shots-heading' } = Astro.props;
+
+type Kind = 'desktop' | 'mobile';
+
+const names: Record<Kind, string[]> = {
+  desktop: ['conversation', 'messages', 'network-visualiser', 'contacts', 'interfaces', 'settings'],
+  mobile: ['conversation', 'messages', 'call', 'contacts', 'interfaces', 'settings'],
+};
+
+function tilesFor(kind: Kind) {
+  return names[kind]
+    .map((name) => {
+      const shot = appShot(kind, name);
+      return shot ? { kind, name, shot } : null;
+    })
+    .filter((x): x is { kind: Kind; name: string; shot: NonNullable<ReturnType<typeof appShot>> } => x !== null);
+}
+
+const desktop = tilesFor('desktop');
+const mobile = tilesFor('mobile');
+const deskRatio = desktop[0] ? `${desktop[0].shot.width} / ${desktop[0].shot.height}` : '16 / 10';
+const phoneRatio = mobile[0] ? `${mobile[0].shot.width} / ${mobile[0].shot.height}` : '9 / 19';
+const labelDesk = t(locale, 'home.preview.desktop');
+const labelPhone = t(locale, 'home.preview.mobile');
+const heading = t(locale, 'home.preview.mosaic_h2');
+const labelOpen = t(locale, 'home.preview.open');
+
+function tileAlt(kindLabel: string, name: string) {
+  return `${heading} ${kindLabel} ${name.replace(/-/g, ' ')}`;
+}
+---
+
+{
+  desktop.length > 0 && (
+    <div class="mcx-shot-shell" data-mosaic data-shots data-kind="desktop">
+      <div class="mcx-shot-notch" role="tablist" aria-labelledby={labelledBy}>
+        <button
+          type="button"
+          role="tab"
+          id="mosaic-tab-desktop"
+          class="mcx-shot-tab"
+          data-kind="desktop"
+          aria-controls="mosaic-panel-desktop"
+          aria-selected="true"
+          tabindex="0"
+          style="display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;width:auto;height:auto;min-width:2.75rem;min-height:2.75rem;padding:0 0.85rem;white-space:nowrap;font-size:0.8125rem;font-weight:500;line-height:1"
+        >
+          <Icon name="mdiMonitor" size={18} />
+          <span>{labelDesk}</span>
+        </button>
+        {
+          mobile.length > 0 && (
+            <button
+              type="button"
+              role="tab"
+              id="mosaic-tab-mobile"
+              class="mcx-shot-tab"
+              data-kind="mobile"
+              aria-controls="mosaic-panel-mobile"
+              aria-selected="false"
+              tabindex="-1"
+              style="display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;width:auto;height:auto;min-width:2.75rem;min-height:2.75rem;padding:0 0.85rem;white-space:nowrap;font-size:0.8125rem;font-weight:500;line-height:1"
+            >
+              <Icon name="mdiCellphone" size={18} />
+              <span>{labelPhone}</span>
+            </button>
+          )
+        }
+      </div>
+
+      <div
+        class="mcx-shot-grid"
+        id="mosaic-panel-desktop"
+        data-panel="desktop"
+        role="tabpanel"
+        tabindex="0"
+        aria-labelledby="mosaic-tab-desktop"
+        style={`--shot-ratio: ${deskRatio}`}
+      >
+        {desktop.map((tile) => (
+          <figure class="mcx-shot-tile">
+            <button
+              type="button"
+              class="mcx-shot-open"
+              aria-haspopup="dialog"
+              aria-controls="mcx-shot-dialog"
+              aria-label={`${labelOpen}: ${tileAlt(labelDesk, tile.name)}`}
+            >
+              <ThemeImage
+                dark={tile.shot.displayDark}
+                light={tile.shot.displayLight}
+                fullDark={tile.shot.dark}
+                fullLight={tile.shot.light}
+                srcsetDark={tile.shot.srcsetDark}
+                srcsetLight={tile.shot.srcsetLight}
+                sizes="(min-width: 45rem) 30vw, 46vw"
+                alt={tileAlt(labelDesk, tile.name)}
+                width={tile.shot.width}
+                height={tile.shot.height}
+                loading="lazy"
+                fetchpriority="low"
+                class="mcx-shot-img"
+              />
+            </button>
+          </figure>
+        ))}
+      </div>
+
+      {
+        mobile.length > 0 && (
+          <div
+            class="mcx-shot-grid"
+            id="mosaic-panel-mobile"
+            data-panel="mobile"
+            role="tabpanel"
+            tabindex="0"
+            aria-labelledby="mosaic-tab-mobile"
+            hidden
+            style={`--shot-ratio: ${phoneRatio}`}
+          >
+            {mobile.map((tile) => (
+              <figure class="mcx-shot-tile">
+                <button
+                  type="button"
+                  class="mcx-shot-open"
+                  aria-haspopup="dialog"
+                  aria-controls="mcx-shot-dialog"
+                  aria-label={`${labelOpen}: ${tileAlt(labelPhone, tile.name)}`}
+                >
+                  <ThemeImage
+                    dark={tile.shot.displayDark}
+                    light={tile.shot.displayLight}
+                    fullDark={tile.shot.dark}
+                    fullLight={tile.shot.light}
+                    srcsetDark={tile.shot.srcsetDark}
+                    srcsetLight={tile.shot.srcsetLight}
+                    sizes="(min-width: 56rem) 14vw, (min-width: 32.5rem) 30vw, 46vw"
+                    alt={tileAlt(labelPhone, tile.name)}
+                    width={tile.shot.width}
+                    height={tile.shot.height}
+                    loading="lazy"
+                    fetchpriority="low"
+                    class="mcx-shot-img"
+                  />
+                </button>
+              </figure>
+            ))}
+          </div>
+        )
+      }
+
+      <ShotLightbox locale={locale} id="mcx-shot-dialog" />
+    </div>
+  )
+}
+
+<script>
+  document.querySelectorAll('[data-mosaic]').forEach((root) => {
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const setKind = (kind: string | null) => {
+      if (!kind) return;
+      root.setAttribute('data-kind', kind);
+      buttons.forEach((btn) => {
+        const on = btn.getAttribute('data-kind') === kind;
+        btn.setAttribute('aria-selected', on ? 'true' : 'false');
+        btn.tabIndex = on ? 0 : -1;
+      });
+      root.querySelectorAll<HTMLElement>('[data-panel]').forEach((panel) => {
+        panel.hidden = panel.getAttribute('data-panel') !== kind;
+      });
+    };
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => setKind(btn.getAttribute('data-kind')));
+      btn.addEventListener('keydown', (event) => {
+        const i = buttons.indexOf(btn);
+        let next = -1;
+        if (event.key === 'ArrowRight') next = (i + 1) % buttons.length;
+        else if (event.key === 'ArrowLeft') next = (i - 1 + buttons.length) % buttons.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = buttons.length - 1;
+        else return;
+        event.preventDefault();
+        const dest = buttons[next];
+        if (!dest) return;
+        dest.focus();
+        setKind(dest.getAttribute('data-kind'));
+      });
+    });
+  });
+</script>

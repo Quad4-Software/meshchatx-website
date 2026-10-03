@@ -10,14 +10,14 @@ export const SITE = {
     'https://raw.githubusercontent.com/Quad4-Software/MeshChatX/master/CHANGELOG.md',
   rngitRns: 'rns://06a54b505bb67b25ef3f8097e8001edc/public/MeshChatX',
   rngitNomadnet: '132f67e79d9b24aad014e93015fb858f:/page/repo.mu`g=public|r=MeshChatX',
-  lavaforgeUrl: 'https://lavaforge.org/Reticulum-Things/MeshChatX',
-  lavaforgeClone: 'https://lavaforge.org/Reticulum-Things/MeshChatX.git',
+  codefloeUrl: 'https://codefloe.com/Ivan/MeshChatX',
+  codefloeClone: 'https://codefloe.com/Ivan/MeshChatX.git',
   pypiUrl: 'https://pypi.org/project/reticulum-meshchatx/',
   pypiPackage: 'reticulum-meshchatx',
   pipRnsUrl: 'https://pip-rns.quad4.io/',
   dockerHub: 'quad4io/meshchatx:latest',
   ghcr: 'ghcr.io/quad4-software/meshchatx:latest',
-  umbrelUrl: 'https://apps.umbrel.com/app/meshchatx',
+  archUrl: 'https://arch.quad4.io/',
   flatpakCdnBase: 'https://cdn.quad4.io/flatpak',
   flatpakAppId: 'com.meshchatx.app',
   cdnBase: 'https://cdn.quad4.io',
@@ -26,6 +26,9 @@ export const SITE = {
     'https://directory.rns.recipes/api/directory/submitted?search=&type=&status=online',
   obtainiumUrl:
     'https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/Quad4-Software/MeshChatX',
+  androidPackage: 'com.meshchatx',
+  androidCertSha256:
+    '27:77:CA:A4:33:9B:EF:29:56:09:AB:25:85:ED:A2:81:7A:F1:1D:5C:4B:3D:3F:F9:5E:86:10:17:B6:EB:D3:C6',
   reticulumCrypto: 'https://reticulum.network/crypto.html',
   demoUrl: 'https://demo.meshchatx.com',
   apiBase: 'https://api.meshchatx.com',
@@ -75,7 +78,8 @@ export const OG_LOCALES: Record<Locale, string> = {
 
 export const NAV_LINKS = [
   { key: 'nav.docs', path: 'docs' },
-  { key: 'nav.download', path: 'download' },
+  { key: 'nav.news', path: 'news' },
+  { key: 'nav.roadmap', path: 'roadmap' },
   { key: 'nav.git', path: 'git' },
   { key: 'nav.contact', path: 'contact' },
 ] as const;
@@ -95,6 +99,7 @@ export const FOOTER_GROUPS = [
     links: [
       { key: 'nav.interfaces', path: 'interfaces' },
       { key: 'nav.dependency', path: 'dependency' },
+      { key: 'nav.news', path: 'news' },
       { key: 'footer.changelog', path: 'changelog' },
       { key: 'nav.branding', path: 'branding' },
       { key: 'nav.donate', path: 'donate' },

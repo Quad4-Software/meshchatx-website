@@ -19,7 +19,7 @@
    "docker": "Docker / Podman",
    "python": "Python",
    "android": "Android",
-   "umbrel": "Umbrel",
+   "arch": "Arch",
    "flatpak": "Flatpak"
   },
   "macos": {
@@ -106,7 +106,8 @@
    "copy_run": "Kopioi Run-komento",
    "trivy_before": "Docker-kuvat skannataan ",
    "trivy_link": "Trivyllä",
-   "friendly": "Kopioi Compose-tiedosto, jos käytät Dockeria tai Podmania päivittäin. Pull-komennot ovat lisäasetuksissa."
+   "friendly": "Kopioi Compose-tiedosto, jos käytät Dockeria tai Podmania päivittäin. Pull-komennot ovat lisäasetuksissa.",
+   "engine_label": "Konttimoottori"
   },
   "python": {
    "h2": "Python",
@@ -136,12 +137,22 @@
    "badge": "Tulossa pian",
    "btn_apk": "Lataa .apk",
    "obtainium_alt": "Hae Obtainiumista",
+   "appverifier": "AppVerifier",
+   "appverifier_lead": "Allekirjoitusvarmenteen SHA-256. Liitä paketinnimi ja tämä tiiviste AppVerifieriin.",
+   "copy_appverifier": "Kopioi AppVerifieriin",
    "friendly": "Android-APK sovellukselle tai Termux headless-nodelle."
   },
-  "umbrel": {
-   "h2": "Umbrel",
-   "intro": "Asenna MeshChatX Umbrel-kotipalvelimellesi Umbrel App Storesta.",
-   "btn": "Hae Umbrelissa"
+  "archlinux": {
+   "h2": "Arch Linux",
+   "intro": "Asenna Quad4in pacman-repositoriosta. Lisää repo ja asenna pacmanilla.",
+   "warn": "Lisää Quad4-repo ensin. Älä asenna MeshChatX AUR:sta.",
+   "btn": "Avaa arch.quad4.io"
+  },
+  "torrent": {
+   "h2": "Torrent",
+   "intro": "BitTorrent HTTP-webseedeillä cdn.quad4.io:sta. Toimii ilman peerejä.",
+   "btn": "Lataa .torrent",
+   "magnet": "Kopioi magnet"
   },
   "termux": {
    "h2": "Termux",
@@ -162,7 +173,7 @@
    "android_hint": "APK / Termux",
    "docker_hint": "Kontit",
    "python_hint": "pip install",
-   "umbrel_hint": "App store",
+   "arch_hint": "pacman",
    "flatpak_hint": "Yhden napsautuksen asennus"
   },
   "cta": {
@@ -193,6 +204,7 @@
   },
   "verify": "Varmista",
   "verify_copy": "Kopioi varmistuskomento",
-  "recommended": "Suositeltu"
+  "recommended": "Suositeltu",
+  "cdn_powered": "CDN-palvelun tarjoaa"
  }
 }

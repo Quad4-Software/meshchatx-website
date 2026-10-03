@@ -13,6 +13,11 @@ pnpm check        # astro check + tsc --noEmit
 pnpm lhci         # lighthouse autorun against dist/ (needs CHROME_PATH=/usr/bin/chromium)
 ```
 
+After `pnpm build`, deploy with OpenTofu (`cd opentofu && tofu init && tofu apply`) or
+Ansible (`cd ansible && ansible-playbook -i inventory.example playbook.yml`).
+The site image is Alpine lighttpd (`docker build -t meshchatx-web .`). OpenTofu
+builds the `runtime` stage and bind-mounts `dist/`.
+
 Lighthouse must stay at 100 in every category; thresholds live in
 `lighthouserc.json`.
 
@@ -21,7 +26,7 @@ Lighthouse must stay at 100 in every category; thresholds live in
 - `src/config/site.ts` - every constant: URLs, locales, nav, docs groups
 - `src/config/roadmap.ts` - roadmap milestones
 - `src/i18n/` - locale catalogs copied from the Laravel lang files, `t()` helper
-- `src/lib/` - build-time data: `releases.ts` (GitHub + CDN probe),
+- `src/lib/` - build-time data: `releases.ts` (GitHub + Bunny Storage listing when `BUNNY_STORAGE_ACCESS_KEY` is set),
   `changelog.ts`, `interfaces.ts`, `docs.ts`
 - `src/content/docs/<locale>/` - markdown docs (en only so far)
 - `src/pages/[...locale]/` - one route file per page; `locale` param is
@@ -29,6 +34,10 @@ Lighthouse must stay at 100 in every category; thresholds live in
 - `src/pages/api/` - static JSON endpoints baked at build
 - `src/components/` - Nav, Footer, Starfield, MeshGlyph, PageHero, CommandBlock, Icon
 - `public/` - favicons, og cards, showcase shots, branding media
+- `Dockerfile` - Alpine lighttpd (default target bakes dist/, `runtime` mounts it)
+- `docker/lighttpd.conf` - static-file config for the image
+- `opentofu/` - Docker lighttpd for dist/, optional site API from api/
+- `ansible/` - copy dist/ onto a host lighttpd vhost, optional API container
 
 ## Rules
 

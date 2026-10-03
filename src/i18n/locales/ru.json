@@ -21,7 +21,8 @@
       "docs": "Документация | MeshChatX",
       "changelog": "Список изменений | MeshChatX",
       "offline": "Офлайн | MeshChatX",
-      "dependency": "Зависимости | MeshChatX"
+      "dependency": "Зависимости | MeshChatX",
+      "news": "Новости | MeshChatX"
     },
     "og_image_alt": "Логотип MeshChatX",
     "desc": {
@@ -36,10 +37,11 @@
       "error": "Страница не может быть показана так, как вы запрашивали.",
       "changelog": "Выпущенные версии MeshChatX с заметками из upstream CHANGELOG.",
       "branding": "Логотипы, иконки и цвета MeshChatX для прессы и продукта.",
-      "git": "Клонируйте MeshChatX через rngit по Reticulum или используйте зеркала GitHub и LavaForge.",
+      "git": "Клонируйте MeshChatX через rngit по Reticulum или используйте зеркала GitHub и CodeFloe.",
       "docs": "Документация MeshChatX из пакета docs приложения: установка, сообщения, звонки LXST, NomadNet, интерфейсы и руководства по платформам.",
       "offline": "Вы офлайн. Откройте кэшированную страницу MeshChatX или восстановите соединение.",
-      "dependency": "CycloneDX SBOM релизов MeshChatX: граф пакетов, лицензии и цепочка поставок по версии."
+      "dependency": "CycloneDX SBOM релизов MeshChatX: граф пакетов, лицензии и цепочка поставок по версии.",
+      "news": "Новости MeshChatX, объявления и RSS-лента."
     }
   },
   "error": {
@@ -94,7 +96,8 @@
     "secondary": "Ещё",
     "theme_light": "Светлая",
     "theme_dark": "Тёмная",
-    "theme_system": "Системная"
+    "theme_system": "Системная",
+    "news": "Новости"
   },
   "lang": {
     "label": "Язык",
@@ -119,9 +122,11 @@
     "privacy": "Конфиденциальность",
     "license_badge": "MIT + 0BSD",
     "meta_copyright": "© 2026 MeshChatX.",
+    "developed_by": "Разработано Quad4 Software",
     "meta_site": "MeshChatX - проект <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>.",
     "product": "Продукт",
-    "explore": "Обзор"
+    "explore": "Обзор",
+    "legacy": "Устаревшие браузеры"
   },
   "contact": {
     "h1": "Контакты",
@@ -144,7 +149,9 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Нажмите адрес, чтобы скопировать",
-    "copied": "Скопировано"
+    "copied": "Скопировано",
+    "banner": "Пожертвуйте в поддержку будущего MeshChatX",
+    "banner_dismiss": "Скрыть"
   },
   "license": {
     "h1": "Лицензия",
@@ -175,7 +182,8 @@
   "home": {
     "hero": {
       "h1": "Единый клиент Reticulum",
-      "lead": "MeshChatX, клиент Reticulum «всё в одном». Обмен сообщениями, звонки и браузер NomadNet."
+      "lead": "MeshChatX, клиент Reticulum «всё в одном». Обмен сообщениями, звонки и браузер NomadNet.",
+      "shot_alt": "Переписка в MeshChatX"
     },
     "platform": {
       "macos": "macOS",
@@ -207,7 +215,7 @@
       "banishment": "Блокировка",
       "backups": "Авто-резервные копии и снимки",
       "customizable": "Настраиваемость",
-      "telemetry": "Телеметрия (LXMF)",
+      "telemetry": "Телеметрия LXMF",
       "host_pages": "Страницы хоста",
       "soon": "(скоро)",
       "more": "+ ещё"
@@ -219,7 +227,7 @@
       "download_for": "Скачать для %s"
     },
     "section": {
-      "infra_h2": "Без серверов компании",
+      "infra_h2": "Без корпоративных серверов и облака",
       "infra_lead": "MeshChatX не держит чат-серверов. Сообщения идут по линкам Reticulum, которые вы настраиваете сами."
     },
     "feature": {
@@ -269,7 +277,14 @@
     },
     "preview": {
       "demo_label": "Живое демо",
-      "demo_open": "Открыть живое демо MeshChatX"
+      "demo_open": "Открыть живое демо MeshChatX",
+      "mosaic_h2": "Снимки экрана",
+      "desktop": "Компьютер",
+      "mobile": "Телефон",
+      "open": "Показать снимок",
+      "close": "Закрыть",
+      "prev": "Предыдущий снимок",
+      "next": "Следующий снимок"
     }
   },
   "roadmap": {
@@ -409,7 +424,7 @@
   },
   "git": {
     "h1": "Исходные репозитории",
-    "lead": "rngit — это Git поверх Reticulum и каноническое дерево. GitHub и LavaForge — публичные зеркала для CI и релизов.",
+    "lead": "rngit — это Git поверх Reticulum и каноническое дерево. GitHub и CodeFloe — публичные зеркала для CI и релизов.",
     "primary_badge": "Канонический",
     "mirror_badge": "Зеркало",
     "open_repo": "Открыть репозиторий",
@@ -422,8 +437,8 @@
     "rngit_lead": "Git поверх Reticulum. Клонируйте в меше или откройте страницу репозитория в NomadNet. Clearnet-эндпоинта нет.",
     "github_h3": "GitHub",
     "github_lead": "Публичное зеркало для релизов, CI и распространения. Подходит большинству участников.",
-    "lavaforge_h3": "LavaForge",
-    "lavaforge_lead": "Зеркало community forge. Удобно, если вы уже работаете на LavaForge."
+    "codefloe_h3": "CodeFloe",
+    "codefloe_lead": "Публичное зеркало forge. Удобно, если вы предпочитаете CodeFloe вместо GitHub."
   },
   "docs": {
     "meta_suffix": "Документация MeshChatX",
@@ -445,7 +460,8 @@
       "platforms": "Платформы",
       "ops": "Эксплуатация"
     },
-    "copy_md": "Копировать MD"
+    "copy_md": "Копировать MD",
+    "updated": "Обновлено :date, :author"
   },
   "dep": {
     "h1": "Зависимости",
@@ -487,5 +503,11 @@
     "more_deps": "ещё %n",
     "deps_count": "%n зависимостей",
     "copies": "×%n"
+  },
+  "news": {
+    "h1": "Новости",
+    "lead": "Объявления и обновления сайта.",
+    "empty": "Пока нет записей. Подпишитесь на RSS, чтобы узнать о первой.",
+    "rss": "RSS-лента"
   }
 }

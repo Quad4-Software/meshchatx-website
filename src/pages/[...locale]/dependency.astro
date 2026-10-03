@@ -34,7 +34,7 @@ const sbomReleases = releases
       <p class="rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'dep.empty')}</p>
     )}
 
-    <div class="mb-6 flex flex-wrap items-center gap-3">
+    <div id="dep-controls" class="mb-6 flex flex-wrap items-center gap-3">
       <select id="dep-version" aria-label={t(locale, 'dep.version')} class="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-muted">
         {sbomReleases.map((r) => <option value={r.tag}>v{r.version}{r.prerelease ? ` (${t(locale, 'dep.prerelease')})` : ''}</option>)}
       </select>
@@ -111,8 +111,8 @@ const sbomReleases = releases
         const hay = `${p.name} ${p.version || ''} ${ecosystem(p)} ${licenseOf(p)} ${p.purl || ''}`.toLowerCase();
         return (!q || hay.includes(q)) && (!eco || ecosystem(p) === eco);
       });
-      body.innerHTML = rows
-        .slice(0, 500)
+      const shown = rows.slice(0, 40);
+      body.innerHTML = shown
         .map(
           (p) => `<tr class="border-b border-line last:border-0">
             <td class="px-4 py-2 font-mono text-xs text-fg">${esc(p.name)}</td>
@@ -123,7 +123,7 @@ const sbomReleases = releases
         )
         .join('');
       none.classList.toggle('hidden', rows.length > 0);
-      count.textContent = showingText.replace('%shown', rows.length).replace('%total', pkgs.length);
+      count.textContent = showingText.replace('%shown', String(shown.length)).replace('%total', String(pkgs.length));
     }
     function esc(s) {
       return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -149,6 +149,16 @@ const sbomReleases = releases
     versionSel?.addEventListener('change', () => load(versionSel.value));
     search?.addEventListener('input', render);
     ecoSel?.addEventListener('input', render);
-    if (versionSel?.value) load(versionSel.value);
+    const kick = () => {
+      versionSel?.removeEventListener('pointerdown', kick);
+      search?.removeEventListener('focus', kick);
+      ecoSel?.removeEventListener('pointerdown', kick);
+      document.getElementById('dep-controls')?.removeEventListener('pointerenter', kick);
+      if (versionSel?.value) load(versionSel.value);
+    };
+    versionSel?.addEventListener('pointerdown', kick);
+    search?.addEventListener('focus', kick);
+    ecoSel?.addEventListener('pointerdown', kick);
+    document.getElementById('dep-controls')?.addEventListener('pointerenter', kick);
   </script>
 </Base>

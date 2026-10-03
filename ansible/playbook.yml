@@ -1,0 +1,8 @@
+---
+# Deploy the built Astro site (and optional site API) to a host.
+# Usage from this directory: ansible-playbook -i inventory.example playbook.yml
+- name: Deploy meshchatx.com
+  hosts: meshchatx_web
+  become: true
+  roles:
+    - site

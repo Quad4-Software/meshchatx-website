@@ -1,0 +1,58 @@
+{
+  "tag": "v4.9.3",
+  "track": "release",
+  "infohash": "6267ce50ed77ee5528ba5bbdccc25e791baf940d",
+  "magnet": "magnet:?xt=urn:btih:6267ce50ed77ee5528ba5bbdccc25e791baf940d&dn=MeshChatX-v4.9.3&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&ws=https%3A%2F%2Fcdn.quad4.io%2Frelease%2F&ws=https%3A%2F%2Fgithub.com%2FQuad4-Software%2FMeshChatX%2Freleases%2Fdownload%2F",
+  "pieceLength": 2097152,
+  "files": [
+    {
+      "name": "meshchatx-py311-linux-arm64.pyz",
+      "size": 67088504
+    },
+    {
+      "name": "meshchatx-py311-linux-x64.pyz",
+      "size": 68888905
+    },
+    {
+      "name": "meshchatx-py314-linux-arm64.pyz",
+      "size": 66822674
+    },
+    {
+      "name": "meshchatx-py314-linux-x64.pyz",
+      "size": 68638686
+    },
+    {
+      "name": "reticulum_meshchatx-4.9.3-py3-none-any.whl",
+      "size": 21827984
+    },
+    {
+      "name": "ReticulumMeshChatX-v4.9.3-linux-alpine-x64.apk",
+      "size": 279922392
+    },
+    {
+      "name": "ReticulumMeshChatX-v4.9.3-linux-amd64.deb",
+      "size": 208202840
+    },
+    {
+      "name": "ReticulumMeshChatX-v4.9.3-linux-arm64.AppImage",
+      "size": 265813823
+    },
+    {
+      "name": "ReticulumMeshChatX-v4.9.3-linux-arm64.deb",
+      "size": 200924708
+    },
+    {
+      "name": "ReticulumMeshChatX-v4.9.3-linux-x86_64.AppImage",
+      "size": 267164268
+    },
+    {
+      "name": "ReticulumMeshChatX-v4.9.3-linux-x86_64.rpm",
+      "size": 179731673
+    }
+  ],
+  "webseeds": [
+    "https://cdn.quad4.io/release/",
+    "https://github.com/Quad4-Software/MeshChatX/releases/download/"
+  ],
+  "torrent": "MeshChatX-v4.9.3.torrent"
+}

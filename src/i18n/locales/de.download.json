@@ -19,7 +19,7 @@
    "docker": "Docker / Podman",
    "python": "Python",
    "android": "Android",
-   "umbrel": "Umbrel",
+   "arch": "Arch",
    "flatpak": "Flatpak"
   },
   "macos": {
@@ -106,7 +106,8 @@
    "copy_run": "Startbefehl kopieren",
    "trivy_before": "Docker-Images werden mit ",
    "trivy_link": "Trivy",
-   "friendly": "Compose-Datei kopieren, wenn du täglich Docker oder Podman nutzt. Pull-Befehle stehen unter weiteren Optionen."
+   "friendly": "Compose-Datei kopieren, wenn du täglich Docker oder Podman nutzt. Pull-Befehle stehen unter weiteren Optionen.",
+   "engine_label": "Container-Engine"
   },
   "python": {
    "h2": "Python",
@@ -136,12 +137,22 @@
    "badge": "Demnächst",
    "btn_apk": ".apk herunterladen",
    "obtainium_alt": "Mit Obtainium laden",
+   "appverifier": "AppVerifier",
+   "appverifier_lead": "SHA-256 des Signaturzertifikats. Paketname und diesen Hash in AppVerifier einfügen.",
+   "copy_appverifier": "Für AppVerifier kopieren",
    "friendly": "Android-APK für die App oder Termux für einen headless Node."
   },
-  "umbrel": {
-   "h2": "Umbrel",
-   "intro": "Installiere MeshChatX auf deinem Umbrel-Home-Server über den Umbrel App Store.",
-   "btn": "Auf Umbrel holen"
+  "archlinux": {
+   "h2": "Arch Linux",
+   "intro": "Installiere MeshChatX aus dem Quad4-Pacman-Repository. Repo eintragen, dann mit pacman installieren.",
+   "warn": "Zuerst das Quad4-Repository eintragen. Nicht aus dem AUR installieren.",
+   "btn": "arch.quad4.io öffnen"
+  },
+  "torrent": {
+   "h2": "Torrent",
+   "intro": "BitTorrent mit HTTP-Webseeds von cdn.quad4.io. Funktioniert ohne Peers.",
+   "btn": ".torrent herunterladen",
+   "magnet": "Magnet kopieren"
   },
   "termux": {
    "h2": "Termux",
@@ -162,7 +173,7 @@
    "android_hint": "APK / Termux",
    "docker_hint": "Container",
    "python_hint": "pip install",
-   "umbrel_hint": "App Store",
+   "arch_hint": "pacman",
    "flatpak_hint": "Ein-Klick-Installation"
   },
   "cta": {
@@ -193,6 +204,7 @@
   },
   "verify": "Verifizieren",
   "verify_copy": "Prüfbefehl kopieren",
-  "recommended": "Empfohlen"
+  "recommended": "Empfohlen",
+  "cdn_powered": "CDN bereitgestellt von"
  }
 }

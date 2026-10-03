@@ -8,4 +8,17 @@ dist/
 *.log
 .DS_Store
 .lighthouseci/
+
+# Generated screenshot srcset variants
+public/media/screenshots/**/*.w*.webp
 api/siteapi
+
+# OpenTofu local state
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json

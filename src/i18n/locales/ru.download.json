@@ -19,7 +19,7 @@
    "docker": "Docker / Podman",
    "python": "Python",
    "android": "Android",
-   "umbrel": "Umbrel",
+   "arch": "Arch",
    "flatpak": "Flatpak"
   },
   "macos": {
@@ -106,7 +106,8 @@
    "copy_run": "Копировать команду запуска",
    "trivy_before": "Образы Docker проверяются с помощью ",
    "trivy_link": "Trivy",
-   "friendly": "Скопируйте Compose-файл, если каждый день работаете с Docker или Podman. Команды pull — в дополнительных параметрах."
+   "friendly": "Скопируйте Compose-файл, если каждый день работаете с Docker или Podman. Команды pull — в дополнительных параметрах.",
+   "engine_label": "Движок контейнеров"
   },
   "python": {
    "h2": "Python",
@@ -136,12 +137,22 @@
    "badge": "Скоро",
    "btn_apk": "Скачать .apk",
    "obtainium_alt": "Получить в Obtainium",
+   "appverifier": "AppVerifier",
+   "appverifier_lead": "SHA-256 сертификата подписи. Вставьте имя пакета и этот хеш в AppVerifier.",
+   "copy_appverifier": "Копировать для AppVerifier",
    "friendly": "Android APK для приложения или Termux для headless-узла."
   },
-  "umbrel": {
-   "h2": "Umbrel",
-   "intro": "Установите MeshChatX на домашний сервер Umbrel из Umbrel App Store.",
-   "btn": "Установить на Umbrel"
+  "archlinux": {
+   "h2": "Arch Linux",
+   "intro": "Установите из pacman-репозитория Quad4. Добавьте репозиторий и установите через pacman.",
+   "warn": "Сначала добавьте репозиторий Quad4. Не устанавливайте MeshChatX из AUR.",
+   "btn": "Открыть arch.quad4.io"
+  },
+  "torrent": {
+   "h2": "Torrent",
+   "intro": "BitTorrent с HTTP-webseed с cdn.quad4.io. Работает без пиров.",
+   "btn": "Скачать .torrent",
+   "magnet": "Копировать magnet"
   },
   "termux": {
    "h2": "Termux",
@@ -162,7 +173,7 @@
    "android_hint": "APK / Termux",
    "docker_hint": "Контейнеры",
    "python_hint": "pip install",
-   "umbrel_hint": "Магазин приложений",
+   "arch_hint": "pacman",
    "flatpak_hint": "Установка в один клик"
   },
   "cta": {
@@ -193,6 +204,7 @@
   },
   "verify": "Проверить",
   "verify_copy": "Копировать команду проверки",
-  "recommended": "Рекомендуется"
+  "recommended": "Рекомендуется",
+  "cdn_powered": "CDN на базе"
  }
 }

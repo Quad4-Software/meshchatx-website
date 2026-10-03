@@ -19,7 +19,7 @@
    "docker": "Docker / Podman",
    "python": "Python",
    "android": "Android",
-   "umbrel": "Umbrel",
+   "arch": "Arch",
    "flatpak": "Flatpak"
   },
   "macos": {
@@ -106,7 +106,8 @@
    "copy_run": "Run-commando kopiëren",
    "trivy_before": "Docker-images worden gescand met ",
    "trivy_link": "Trivy",
-   "friendly": "Kopieer het Compose-bestand als je Docker of Podman dagelijks gebruikt. Pull-commando's staan onder meer opties."
+   "friendly": "Kopieer het Compose-bestand als je Docker of Podman dagelijks gebruikt. Pull-commando's staan onder meer opties.",
+   "engine_label": "Container-engine"
   },
   "python": {
    "h2": "Python",
@@ -136,12 +137,22 @@
    "badge": "Binnenkort",
    "btn_apk": ".apk downloaden",
    "obtainium_alt": "Haal het via Obtainium",
+   "appverifier": "AppVerifier",
+   "appverifier_lead": "SHA-256 van het ondertekeningscertificaat. Plak pakketnaam plus deze hash in AppVerifier.",
+   "copy_appverifier": "Kopiëren voor AppVerifier",
    "friendly": "Android-APK voor de app, of Termux voor een headless node."
   },
-  "umbrel": {
-   "h2": "Umbrel",
-   "intro": "Installeer MeshChatX op je Umbrel-thuisserver via de Umbrel App Store.",
-   "btn": "Op Umbrel ophalen"
+  "archlinux": {
+   "h2": "Arch Linux",
+   "intro": "Installeer vanuit de Quad4-pacman-repository. Voeg de repo toe en installeer met pacman.",
+   "warn": "Voeg eerst de Quad4-repository toe. Installeer MeshChatX niet uit de AUR.",
+   "btn": "Open arch.quad4.io"
+  },
+  "torrent": {
+   "h2": "Torrent",
+   "intro": "BitTorrent met HTTP-webseeds vanaf cdn.quad4.io. Werkt zonder peers.",
+   "btn": ".torrent downloaden",
+   "magnet": "Magnet kopieren"
   },
   "termux": {
    "h2": "Termux",
@@ -162,7 +173,7 @@
    "android_hint": "APK / Termux",
    "docker_hint": "Containers",
    "python_hint": "pip install",
-   "umbrel_hint": "App store",
+   "arch_hint": "pacman",
    "flatpak_hint": "Installatie met één klik"
   },
   "cta": {
@@ -193,6 +204,7 @@
   },
   "verify": "Verifiëren",
   "verify_copy": "Verificatiecommando kopiëren",
-  "recommended": "Aanbevolen"
+  "recommended": "Aanbevolen",
+  "cdn_powered": "CDN mogelijk gemaakt door"
  }
 }

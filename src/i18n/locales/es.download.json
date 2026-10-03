@@ -19,7 +19,7 @@
    "docker": "Docker / Podman",
    "python": "Python",
    "android": "Android",
-   "umbrel": "Umbrel",
+   "arch": "Arch",
    "flatpak": "Flatpak"
   },
   "macos": {
@@ -106,7 +106,8 @@
    "copy_run": "Copiar comando Run",
    "trivy_before": "Las imágenes Docker se escanean con ",
    "trivy_link": "Trivy",
-   "friendly": "Copia el archivo Compose si usas Docker o Podman a diario. Los comandos pull están en más opciones."
+   "friendly": "Copia el archivo Compose si usas Docker o Podman a diario. Los comandos pull están en más opciones.",
+   "engine_label": "Motor de contenedores"
   },
   "python": {
    "h2": "Python",
@@ -136,12 +137,22 @@
    "badge": "Próximamente",
    "btn_apk": "Descargar .apk",
    "obtainium_alt": "Consíguelo en Obtainium",
+   "appverifier": "AppVerifier",
+   "appverifier_lead": "SHA-256 del certificado de firma. Pega el nombre del paquete y este hash en AppVerifier.",
+   "copy_appverifier": "Copiar para AppVerifier",
    "friendly": "APK de Android para la app, o Termux para un nodo headless."
   },
-  "umbrel": {
-   "h2": "Umbrel",
-   "intro": "Instala MeshChatX en tu servidor doméstico Umbrel desde la Umbrel App Store.",
-   "btn": "Conseguir en Umbrel"
+  "archlinux": {
+   "h2": "Arch Linux",
+   "intro": "Instala MeshChatX desde el repositorio pacman de Quad4. Añade el repo e instala con pacman.",
+   "warn": "Añade primero el repositorio Quad4. No instales MeshChatX desde AUR.",
+   "btn": "Abrir arch.quad4.io"
+  },
+  "torrent": {
+   "h2": "Torrent",
+   "intro": "BitTorrent con webseeds HTTP de cdn.quad4.io. Funciona sin peers.",
+   "btn": "Descargar .torrent",
+   "magnet": "Copiar magnet"
   },
   "termux": {
    "h2": "Termux",
@@ -162,7 +173,7 @@
    "android_hint": "APK / Termux",
    "docker_hint": "Contenedores",
    "python_hint": "pip install",
-   "umbrel_hint": "Tienda de apps",
+   "arch_hint": "pacman",
    "flatpak_hint": "Instalación en un clic"
   },
   "cta": {
@@ -193,6 +204,7 @@
   },
   "verify": "Verificar",
   "verify_copy": "Copiar comando de verificación",
-  "recommended": "Recomendado"
+  "recommended": "Recomendado",
+  "cdn_powered": "CDN impulsado por"
  }
 }

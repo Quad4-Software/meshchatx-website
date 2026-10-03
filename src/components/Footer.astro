@@ -1,6 +1,7 @@
 ---
 import { FOOTER_GROUPS, SITE, type Locale } from '../config/site';
 import { t, localePath } from '../i18n';
+import ThemeImage from './ThemeImage.astro';
 
 interface Props {
   locale: Locale;
@@ -35,15 +36,53 @@ const { locale } = Astro.props;
         </div>
       ))}
     </div>
-    <div class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6 text-xs text-faint">
-      <span>{t(locale, 'footer.meta_copyright')}</span>
-      <span>
-        <a href={SITE.quad4Url} class="underline decoration-line underline-offset-2 hover:text-fg">quad4.io</a>
-        {' \u00b7 '}
+    <div class="mcx-footer-meta mt-12 border-t border-line pt-6 text-xs text-faint">
+      <span class="mcx-footer-meta-start">{t(locale, 'footer.meta_copyright')}</span>
+      <a
+        href={SITE.quad4Url}
+        class="mcx-footer-credit inline-flex items-center justify-center gap-1.5 transition-colors hover:text-fg"
+      >
+        <span>{t(locale, 'footer.developed_by')}</span>
+        <ThemeImage
+          dark="/media/quad4/quad4-mark.svg"
+          light="/media/quad4/quad4-mark-black.svg"
+          alt=""
+          width={20}
+          height={20}
+          class="h-5 w-5 shrink-0"
+        />
+      </a>
+      <span class="mcx-footer-meta-end">
         <a href={SITE.githubUrl} class="underline decoration-line underline-offset-2 hover:text-fg">{t(locale, 'footer.source')}</a>
+        {' \u00b7 '}
+        <a href="/legacy" class="underline decoration-line underline-offset-2 hover:text-fg">{t(locale, 'footer.legacy')}</a>
         {' \u00b7 '}
         {t(locale, 'footer.license_badge')}
       </span>
     </div>
   </div>
 </footer>
+
+<style>
+  .mcx-footer-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .mcx-footer-meta-start,
+  .mcx-footer-meta-end {
+    text-align: center;
+  }
+  @media (min-width: 48rem) {
+    .mcx-footer-meta {
+      grid-template-columns: 1fr auto 1fr;
+    }
+    .mcx-footer-meta-start {
+      text-align: left;
+    }
+    .mcx-footer-meta-end {
+      text-align: right;
+    }
+  }
+</style>

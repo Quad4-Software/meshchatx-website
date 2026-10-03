@@ -1,6 +1,8 @@
 ---
 import { NAV_LINKS, LOCALES, LOCALE_NAMES, type Locale } from '../config/site';
 import { t, localePath } from '../i18n';
+import DonateBanner from './DonateBanner.astro';
+import Icon from './Icon.astro';
 
 interface Props {
   locale: Locale;
@@ -10,8 +12,9 @@ const { locale } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\/|$)/, '');
 ---
 
-<header class="sticky top-0 z-40 border-b border-line bg-canvas-alpha backdrop-blur-md">
-  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5" aria-label={t(locale, 'nav.primary')}>
+<header class="mcx-header">
+  <div class="mcx-header-blur"></div>
+  <nav class="mcx-header-nav" aria-label={t(locale, 'nav.primary')}>
     <a href={localePath(locale)} class="flex items-center gap-2.5 text-fg">
       <img src="/media/branding/logo/logo-128.webp" alt="" width="30" height="30" class="h-[30px] w-[30px]" />
       <span class="text-lg font-semibold tracking-tight">MeshChatX</span>
@@ -32,10 +35,22 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
     </div>
 
     <div class="flex items-center gap-2">
+      <a
+        href={localePath(locale, 'donate')}
+        class:list={[
+          'rounded-md p-1.5 transition-colors',
+          currentPath.startsWith('/donate') ? 'text-fg' : 'text-muted hover:text-fg',
+        ]}
+        aria-label={t(locale, 'nav.donate')}
+        title={t(locale, 'nav.donate')}
+      >
+        <Icon name="mdiPiggyBank" size={18} />
+      </a>
+
       <button
         id="mcx-theme-toggle"
         type="button"
-        class="rounded-md border border-line bg-surface px-2.5 py-1.5 text-muted transition-colors hover:text-fg"
+        class="rounded-md px-1.5 py-1.5 text-muted transition-colors hover:text-fg"
         aria-label={t(locale, 'nav.toggle_theme')}
         title={t(locale, 'nav.toggle_theme')}
       >
@@ -43,35 +58,35 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
         <svg class="theme-icon-light hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
       </button>
 
-      <div class="relative">
+      <div class="mcx-flyout">
         <button
           id="mcx-lang-btn"
           type="button"
-          class="rounded-md border border-line bg-surface px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:text-fg"
+          class="inline-flex items-center gap-1 rounded-md px-1.5 py-1.5 text-xs font-medium text-muted transition-colors hover:text-fg"
           aria-haspopup="listbox"
           aria-expanded="false"
         >
           {locale.toUpperCase()}
+          <svg class="lang-chevron h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           <span class="sr-only"> {t(locale, 'lang.pick')}</span>
         </button>
-        <div
-          id="mcx-lang-menu"
-          class="absolute right-0 top-full mt-1 hidden min-w-36 rounded-lg border border-line bg-surface p-1 shadow-xl"
-          role="listbox"
-        >
-          {LOCALES.map((l) => (
-            <a
-              href={localePath(l, currentPath.replace(/^\//, ''))}
-              role="option"
-              aria-selected={l === locale}
-              class:list={[
-                'block rounded-md px-3 py-1.5 text-sm',
-                l === locale ? 'bg-raised text-fg' : 'text-muted hover:text-fg',
-              ]}
-            >
-              {LOCALE_NAMES[l]}
-            </a>
-          ))}
+        <div id="mcx-lang-menu" class="mcx-flyout-panel mcx-flyout-end" role="listbox">
+          <span class="dropdown-caret pointer-events-none absolute right-3.5 top-1.5 z-10 h-2 w-2 rotate-45 border-l border-t border-line bg-surface" aria-hidden="true"></span>
+          <div class="min-w-36 rounded-lg border border-line bg-surface p-1 shadow-xl">
+            {LOCALES.map((l) => (
+              <a
+                href={localePath(l, currentPath.replace(/^\//, ''))}
+                role="option"
+                aria-selected={l === locale}
+                class:list={[
+                  'block rounded-md px-3 py-1.5 text-sm',
+                  l === locale ? 'bg-raised text-fg' : 'text-muted hover:text-fg',
+                ]}
+              >
+                {LOCALE_NAMES[l]}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -82,38 +97,40 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
         {t(locale, 'nav.download')}
       </a>
 
-      <button
-        id="mcx-mobile-btn"
-        type="button"
-        class="rounded-md border border-line bg-surface p-1.5 text-muted md:hidden"
-        aria-label={t(locale, 'nav.mobile_menu')}
-        aria-expanded="false"
-      >
-        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-      </button>
+      <div class="mcx-flyout md:hidden">
+        <button
+          id="mcx-mobile-btn"
+          type="button"
+          class="rounded-md border border-line bg-surface p-1.5 text-muted"
+          aria-label={t(locale, 'nav.mobile_menu')}
+          aria-expanded="false"
+          aria-haspopup="true"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <div id="mcx-mobile-menu" class="mcx-flyout-panel mcx-flyout-end">
+          <div class="min-w-48 rounded-lg border border-line bg-surface p-1 shadow-xl">
+            {NAV_LINKS.map((l) => (
+              <a href={localePath(locale, l.path)} class="block rounded-md px-3 py-2 text-sm text-muted hover:bg-raised hover:text-fg">
+                {t(locale, l.key)}
+              </a>
+            ))}
+            <a href={localePath(locale, 'interfaces')} class="block rounded-md px-3 py-2 text-sm text-muted hover:bg-raised hover:text-fg">{t(locale, 'nav.interfaces')}</a>
+            <a href={localePath(locale, 'donate')} class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted hover:bg-raised hover:text-fg">
+              <Icon name="mdiPiggyBank" size={16} />
+              {t(locale, 'nav.donate')}
+            </a>
+            <a href={localePath(locale, 'download')} class="mt-1 block rounded-md bg-accent px-3 py-2 text-sm font-semibold text-on-accent">{t(locale, 'nav.download')}</a>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
-
-  <div id="mcx-mobile-menu" class="hidden border-t border-line px-5 py-3 md:hidden">
-    <div class="flex flex-col gap-0.5">
-      {NAV_LINKS.map((l) => (
-        <a href={localePath(locale, l.path)} class="rounded-md px-3 py-2 text-sm text-muted hover:text-fg">
-          {t(locale, l.key)}
-        </a>
-      ))}
-      <a href={localePath(locale, 'roadmap')} class="rounded-md px-3 py-2 text-sm text-muted hover:text-fg">{t(locale, 'nav.roadmap')}</a>
-      <a href={localePath(locale, 'interfaces')} class="rounded-md px-3 py-2 text-sm text-muted hover:text-fg">{t(locale, 'nav.interfaces')}</a>
-      <a href={localePath(locale, 'donate')} class="rounded-md px-3 py-2 text-sm text-muted hover:text-fg">{t(locale, 'nav.donate')}</a>
-    </div>
-  </div>
+  {!currentPath.startsWith('/donate') && <DonateBanner locale={locale} />}
 </header>
 
 <script>
   const themeBtn = document.getElementById('mcx-theme-toggle');
-  const langBtn = document.getElementById('mcx-lang-btn');
-  const langMenu = document.getElementById('mcx-lang-menu');
-  const mobileBtn = document.getElementById('mcx-mobile-btn');
-  const mobileMenu = document.getElementById('mcx-mobile-menu');
 
   const applyThemeIcons = () => {
     const dark = document.documentElement.dataset.theme !== 'light';
@@ -122,6 +139,21 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
   };
   applyThemeIcons();
 
+  const applyThemeImgs = () => {
+    const light = document.documentElement.dataset.theme === 'light';
+    document.querySelectorAll('img[data-theme-dark][data-theme-light]').forEach((node) => {
+      const img = node as HTMLImageElement;
+      const src = light ? img.dataset.themeLight : img.dataset.themeDark;
+      const ss = light ? img.dataset.srcsetLight : img.dataset.srcsetDark;
+      if (src && img.getAttribute('src') !== src) img.src = src;
+      if (ss) img.srcset = ss;
+      const source = img.parentElement?.querySelector('source');
+      if (source) source.media = light ? 'all' : 'not all';
+    });
+  };
+  const osLight = matchMedia('(prefers-color-scheme: light)').matches;
+  if ((document.documentElement.dataset.theme === 'light') !== osLight) applyThemeImgs();
+
   themeBtn?.addEventListener('click', () => {
     const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
     document.documentElement.dataset.theme = next;
@@ -129,22 +161,81 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
       localStorage.setItem('mcx-theme', next);
     } catch {}
     applyThemeIcons();
+    applyThemeImgs();
   });
 
-  langBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const open = langMenu?.classList.toggle('hidden') === false;
-    langBtn.setAttribute('aria-expanded', String(open));
-  });
-  document.addEventListener('click', (e) => {
-    if (langMenu && !langMenu.contains(e.target as Node) && e.target !== langBtn) {
-      langMenu.classList.add('hidden');
-      langBtn?.setAttribute('aria-expanded', 'false');
-    }
-  });
-
-  mobileBtn?.addEventListener('click', () => {
-    const open = mobileMenu?.classList.toggle('hidden') === false;
-    mobileBtn.setAttribute('aria-expanded', String(open));
+  document.querySelectorAll('.mcx-flyout').forEach((box) => {
+    const btn = box.querySelector('button');
+    const sync = () => {
+      const open = box.matches(':hover, :focus-within, .is-open');
+      btn?.setAttribute('aria-expanded', String(open));
+    };
+    box.addEventListener('mouseenter', sync);
+    box.addEventListener('mouseleave', () => {
+      box.classList.remove('is-open');
+      sync();
+    });
+    box.addEventListener('focusin', sync);
+    box.addEventListener('focusout', sync);
+    btn?.addEventListener('click', (ev) => {
+      if (matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+      ev.preventDefault();
+      box.classList.toggle('is-open');
+      sync();
+    });
   });
 </script>
+
+<style is:global>
+  .mcx-header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    overflow: visible;
+    isolation: isolate;
+  }
+  .mcx-flyout {
+    position: relative;
+  }
+  .mcx-flyout-panel {
+    position: absolute;
+    top: 100%;
+    z-index: 300;
+    display: none;
+    padding-top: 0.5rem;
+  }
+  .mcx-flyout-end {
+    right: 0;
+    min-width: 12rem;
+  }
+  .mcx-flyout-stretch {
+    left: 0;
+    right: 0;
+  }
+  .mcx-flyout:hover > .mcx-flyout-panel,
+  .mcx-flyout:focus-within > .mcx-flyout-panel,
+  .mcx-flyout.is-open > .mcx-flyout-panel {
+    display: block;
+  }
+  .mcx-header-blur {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-canvas-alpha);
+    backdrop-filter: blur(12px);
+  }
+  .mcx-header-nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    height: 4rem;
+    max-width: 72rem;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0 1.25rem;
+  }
+</style>

@@ -21,7 +21,8 @@
       "git": "Git | MeshChatX",
       "docs": "Docs | MeshChatX",
       "changelog": "Wijzigingslog | MeshChatX",
-      "offline": "Offline | MeshChatX"
+      "offline": "Offline | MeshChatX",
+      "news": "Nieuws | MeshChatX"
     },
     "og_image_alt": "MeshChatX-logo",
     "desc": {
@@ -37,9 +38,10 @@
       "dependency": "Bekijk CycloneDX-SBOM's voor MeshChatX-releases: pakketgrafiek, licenties en de volledige toeleveringsketen per versie.",
       "branding": "MeshChatX-logo's, pictogrammen en merkkleuren voor pers en productgebruik.",
       "error": "Deze pagina kon niet worden getoond zoals gevraagd.",
-      "git": "Kloon MeshChatX via rngit over Reticulum, of gebruik de GitHub- en LavaForge-mirrors.",
+      "git": "Kloon MeshChatX via rngit over Reticulum, of gebruik de GitHub- en CodeFloe-mirrors.",
       "docs": "MeshChatX-documentatie uit het docs-pakket van de app: installatie, berichten, LXST-gesprekken, NomadNet, interfaces en platformgidsen.",
-      "offline": "Je bent offline. Open een gecachte MeshChatX-pagina of maak opnieuw verbinding."
+      "offline": "Je bent offline. Open een gecachte MeshChatX-pagina of maak opnieuw verbinding.",
+      "news": "MeshChatX-nieuws, aankondigingen en een RSS-feed."
     }
   },
   "error": {
@@ -94,7 +96,8 @@
     "secondary": "Meer",
     "theme_light": "Licht",
     "theme_dark": "Donker",
-    "theme_system": "Systeem"
+    "theme_system": "Systeem",
+    "news": "Nieuws"
   },
   "lang": {
     "label": "Taal",
@@ -119,9 +122,11 @@
     "privacy": "Privacybeleid",
     "license_badge": "MIT + 0BSD",
     "meta_copyright": "© 2026 MeshChatX.",
+    "developed_by": "Ontwikkeld door Quad4 Software",
     "meta_site": "MeshChatX is een <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>-project.",
     "product": "Product",
-    "explore": "Verkennen"
+    "explore": "Verkennen",
+    "legacy": "Legacy"
   },
   "contact": {
     "h1": "Contact",
@@ -144,7 +149,9 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Klik op het adres om te kopiëren",
-    "copied": "Gekopieerd"
+    "copied": "Gekopieerd",
+    "banner": "Doneer om de toekomst van MeshChatX te steunen",
+    "banner_dismiss": "Sluiten"
   },
   "license": {
     "h1": "Licentie",
@@ -175,7 +182,8 @@
   "home": {
     "hero": {
       "h1": "Alles-in-één Reticulum-client",
-      "lead": "MeshChatX is een alles-in-één Reticulum-client met berichten, bellen en een NomadNet-browser."
+      "lead": "MeshChatX is een alles-in-één Reticulum-client met berichten, bellen en een NomadNet-browser.",
+      "shot_alt": "MeshChatX-gesprek"
     },
     "platform": {
       "macos": "macOS",
@@ -207,7 +215,7 @@
       "banishment": "Verbanning",
       "backups": "Automatische back-ups en snapshots",
       "customizable": "Aanpasbaar",
-      "telemetry": "Telemetrie (LXMF)",
+      "telemetry": "LXMF-telemetrie",
       "host_pages": "Pagina's hosten",
       "soon": "(binnenkort)",
       "more": "+ meer"
@@ -219,7 +227,7 @@
       "download_for": "Downloaden voor %s"
     },
     "section": {
-      "infra_h2": "Geen bedrijfsservers",
+      "infra_h2": "Geen bedrijfs- of cloudservers",
       "infra_lead": "MeshChatX draait geen chatservers. Berichten bewegen over de Reticulum-links die jij instelt."
     },
     "feature": {
@@ -269,7 +277,14 @@
     },
     "preview": {
       "demo_label": "Live-demo",
-      "demo_open": "Live-demo van MeshChatX openen"
+      "demo_open": "Live-demo van MeshChatX openen",
+      "mosaic_h2": "Screenshots",
+      "desktop": "Desktop",
+      "mobile": "Mobiel",
+      "open": "Screenshot bekijken",
+      "close": "Sluiten",
+      "prev": "Vorige screenshot",
+      "next": "Volgende screenshot"
     }
   },
   "roadmap": {
@@ -450,7 +465,7 @@
   },
   "git": {
     "h1": "Bronrepositories",
-    "lead": "rngit is Git over Reticulum en de canonieke boom. GitHub en LavaForge zijn openbare mirrors voor CI en releases.",
+    "lead": "rngit is Git over Reticulum en de canonieke boom. GitHub en CodeFloe zijn openbare mirrors voor CI en releases.",
     "primary_badge": "Canoniek",
     "mirror_badge": "Mirror",
     "open_repo": "Repository openen",
@@ -463,8 +478,8 @@
     "rngit_lead": "Git over Reticulum. Kloon op de mesh of open de NomadNet-repopagina. Geen clearnet-eindpunt.",
     "github_h3": "GitHub",
     "github_lead": "Openbare mirror voor releases, CI en distributie. Prima voor de meeste bijdragers.",
-    "lavaforge_h3": "LavaForge",
-    "lavaforge_lead": "Community-forge-mirror. Handig als je al op LavaForge zit."
+    "codefloe_h3": "CodeFloe",
+    "codefloe_lead": "Openbare forge-mirror. Handig als je CodeFloe boven GitHub verkiest."
   },
   "docs": {
     "meta_suffix": "MeshChatX Docs",
@@ -486,6 +501,13 @@
       "platforms": "Platformgidsen",
       "ops": "Beheer"
     },
-    "copy_md": "MD kopiëren"
+    "copy_md": "MD kopiëren",
+    "updated": "Laatst bijgewerkt :date door :author"
+  },
+  "news": {
+    "h1": "Nieuws",
+    "lead": "Aankondigingen en site-updates.",
+    "empty": "Nog geen berichten. Abonneer op de RSS-feed voor de eerste.",
+    "rss": "RSS-feed"
   }
 }

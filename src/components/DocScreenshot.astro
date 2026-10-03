@@ -1,0 +1,64 @@
+---
+import ThemeImage from './ThemeImage.astro';
+import ShotLightbox from './ShotLightbox.astro';
+import { docShot } from '../lib/screenshots';
+import type { Locale } from '../config/site';
+import { t } from '../i18n';
+
+interface Props {
+  slug: string;
+  alt: string;
+  locale: Locale;
+}
+const { slug, alt, locale } = Astro.props;
+const shot = docShot(slug);
+const labelOpen = t(locale, 'home.preview.open');
+---
+
+{
+  shot && (
+    <figure class="doc-shot" data-shots>
+      <button
+        type="button"
+        class="mcx-shot-open mcx-shot-open-flow"
+        aria-haspopup="dialog"
+        aria-controls="mcx-doc-shot-dialog"
+        aria-label={`${labelOpen}: ${alt}`}
+      >
+        <ThemeImage
+          dark={shot.displayDark}
+          light={shot.displayLight}
+          fullDark={shot.dark}
+          fullLight={shot.light}
+          srcsetDark={shot.srcsetDark}
+          srcsetLight={shot.srcsetLight}
+          sizes="(min-width: 72rem) 720px, 92vw"
+          alt={alt}
+          width={shot.width}
+          height={shot.height}
+          loading="lazy"
+          class="doc-shot-img"
+        />
+      </button>
+      <ShotLightbox locale={locale} id="mcx-doc-shot-dialog" />
+    </figure>
+  )
+}
+
+<style>
+  .doc-shot {
+    margin: 0 0 1.5rem;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    background: var(--color-surface);
+  }
+  .doc-shot :global(picture) {
+    display: block;
+  }
+  .doc-shot-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

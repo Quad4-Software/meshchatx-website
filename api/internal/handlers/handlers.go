@@ -18,16 +18,29 @@ import (
 var roadmapFS embed.FS
 
 type Config struct {
-	GitHubRepo    string // e.g. Quad4-Software/MeshChatX
-	CdnBase       string // e.g. https://cdn.quad4.io/releases
-	DirectoryURL  string
-	ChangelogURL  string
-	RoadmapURL    string // optional live URL, falls back to embedded JSON
-	PreferCDN     bool
-	TTLReleases   time.Duration
-	TTLInterfaces time.Duration
-	TTLChangelog  time.Duration
-	TTLRoadmap    time.Duration
+	GitHubRepo       string
+	CdnBase          string
+	DirectoryURL     string
+	ChangelogURL     string
+	RoadmapURL       string
+	PreferCDN        bool
+	BunnyStorageZone string
+	BunnyStorageKey  string
+	BunnyStorageURL  string
+	TTLReleases      time.Duration
+	TTLInterfaces    time.Duration
+	TTLChangelog     time.Duration
+	TTLRoadmap       time.Duration
+}
+
+func (cfg Config) cdn() upstream.CDN {
+	return upstream.CDN{
+		Base:            cfg.CdnBase,
+		Prefer:          cfg.PreferCDN,
+		StorageZone:     cfg.BunnyStorageZone,
+		StorageKey:      cfg.BunnyStorageKey,
+		StorageEndpoint: cfg.BunnyStorageURL,
+	}
 }
 
 type Server struct {
@@ -72,7 +85,7 @@ func (s *Server) respond(c echo.Context, key string, ttl time.Duration, fetch fu
 func (s *Server) releases(c echo.Context) error {
 	key := "releases"
 	return s.respond(c, key, s.cfg.TTLReleases, func() ([]byte, error) {
-		rels, err := s.up.Releases(c.Request().Context(), s.cfg.GitHubRepo, s.cfg.CdnBase, s.cfg.PreferCDN)
+		rels, err := s.up.Releases(c.Request().Context(), s.cfg.GitHubRepo, s.cfg.cdn())
 		if err != nil {
 			return nil, err
 		}
@@ -145,7 +158,7 @@ func (s *Server) roadmap(c echo.Context) error {
 				return nil, err
 			}
 		}
-		rels, err := s.up.Releases(c.Request().Context(), s.cfg.GitHubRepo, "", false)
+		rels, err := s.up.Releases(c.Request().Context(), s.cfg.GitHubRepo, upstream.CDN{})
 		if err != nil {
 			return nil, err
 		}

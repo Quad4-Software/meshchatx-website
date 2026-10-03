@@ -74,7 +74,7 @@ if (lastDone >= 0) {
     progress = 1;
   } else {
     const p = rail[lastDone]!.patches.length;
-    const tickOffset = p > 0 ? 0.12 + (p / (p + 1)) * 0.76 : 0;
+    const tickOffset = p > 0 ? p / (p + 1) : 0;
     progress = (lastDone + 0.5 + tickOffset) / rail.length;
   }
 }
@@ -105,53 +105,59 @@ const statusKey = {
   <div class="mx-auto max-w-6xl px-5 pb-24">
     <p class="mb-10 font-mono text-xs text-faint">{t(locale, 'roadmap.notice')}</p>
 
-    <!-- Version rail -->
-    <div class="mb-14 overflow-x-auto pb-4" role="img" aria-label={t(locale, 'roadmap.rail_label')}>
-      <div class="relative min-w-[720px] pt-8">
-        <div class="absolute left-0 right-0 top-[9px] h-px" style="background-image: repeating-linear-gradient(to right, var(--color-line) 0 8px, transparent 8px 16px)"></div>
-        <div
-          class="absolute left-0 top-[9px] h-px bg-fg transition-[width]"
-          style={`width:${(progress * 100).toFixed(1)}%`}
-        ></div>
-        <ol class="relative flex justify-between">
+    <!-- Version rail: overflow hidden, oldest versions clip off the left -->
+    <div class="rail-outer mb-14 overflow-hidden" role="img" aria-label={t(locale, 'roadmap.rail_label')}>
+      <div class="rail-wrap">
+        <div class="rail-track" style="position:absolute;left:0;right:0;top:3.5rem;height:16px;pointer-events:none">
+          <div class="rail-line" style="position:absolute;left:0;right:0;top:50%;height:1px;transform:translateY(-50%);background-image:repeating-linear-gradient(to right, var(--color-line) 0 8px, transparent 8px 16px)"></div>
+          <div class="rail-progress" style={`position:absolute;left:0;top:50%;height:1px;background:var(--color-fg);width:${(progress * 100).toFixed(1)}%`}></div>
+          <span class="rail-now" style={`position:absolute;top:50%;width:0.625rem;height:0.625rem;border-radius:9999px;background:var(--color-fg);left:${(progress * 100).toFixed(1)}%`}></span>
+        </div>
+        <ol class="rail-list">
           {rail.map((node) => (
-            <li class="relative flex flex-col items-center" style={`flex:1`}>
-              {node.patches.map((p, i) => (
-                <a
-                  href={localePath(locale, `changelog#v-${p}`)}
-                  class="group/tick absolute -top-[29px] block w-3"
-                  style={`left:calc(50% + ${((0.12 + ((i + 1) / (node.patches.length + 1)) * 0.76) * 100).toFixed(2)}%); transform:translateX(-50%)`}
-                  title={`v${p}`}
-                >
-                  <span class="mx-auto block h-3 w-px bg-faint/70 transition-colors group-hover/tick:bg-fg"></span>
+            <li class="rail-col">
+              <div class="rail-node" style="position:relative;display:flex;width:100%;height:16px;align-items:center;justify-content:center">
+                {node.patches.map((p, i) => (
                   <span
-                    class="absolute left-1/2 top-[14px] -translate-x-1/2 font-mono text-[9px] text-faint transition-colors group-hover/tick:text-fg"
-                    style="writing-mode: vertical-rl;"
-                  >v{p}</span>
+                    class="rail-tick"
+                    style={`left:${(50 + ((i + 1) / (node.patches.length + 1)) * 100).toFixed(2)}%`}
+                    title={`v${p}`}
+                  >
+                    <span class="rail-tick-label">{p}</span>
+                    <span class="rail-tick-stem"></span>
+                  </span>
+                ))}
+                <a
+                  href={`#ms-${node.version.replace(/\./g, '-')}`}
+                  class="rail-dot-link"
+                  title={`${node.label} · ${node.title}`}
+                >
+                  <span
+                    class:list={[
+                      'rail-dot',
+                      node.done && 'is-done',
+                      node.status === 'progress' && 'is-progress',
+                    ]}
+                    style={
+                      node.done
+                        ? 'display:block;width:16px;height:16px;border-radius:9999px;border:2px solid var(--color-fg);background:var(--color-fg)'
+                        : node.status === 'progress'
+                          ? 'display:block;width:16px;height:16px;border-radius:9999px;border:2px solid var(--color-fg);background:var(--color-canvas)'
+                          : 'display:block;width:16px;height:16px;border-radius:9999px;border:2px solid var(--color-line);background:var(--color-canvas)'
+                    }
+                  ></span>
                 </a>
-              ))}
+              </div>
               <a
                 href={`#ms-${node.version.replace(/\./g, '-')}`}
-                class="group flex flex-col items-center"
+                class="rail-meta"
+                style="display:flex;flex-direction:column;align-items:center;margin-top:0.4rem"
                 title={`${node.label} · ${node.title}`}
               >
-                <span
-                  class:list={[
-                    'block rounded-full border-2 transition-transform group-hover:scale-125 h-4 w-4',
-                    node.done ? 'border-fg bg-fg' : node.status === 'progress' ? 'border-fg bg-canvas' : 'border-line bg-canvas',
-                  ]}
-                ></span>
-                <span class="block h-2 w-px bg-line" aria-hidden="true"></span>
-                <span class="mt-1.5 font-mono text-[11px] font-semibold text-fg">
-                  {node.label}
-                </span>
-                {node.date && (
-                  <span class="mt-0.5 text-[10px] text-faint">{node.date}</span>
-                )}
+                <span class="rail-ver">{node.label}</span>
+                {node.date && <span class="rail-date">{node.date}</span>}
                 {node.patches.length > 0 && (
-                  <span class="mt-1 rounded-full border border-line px-1.5 py-px font-mono text-[9px] text-faint">
-                    +{node.patches.length}
-                  </span>
+                  <span class="rail-count">+{node.patches.length}</span>
                 )}
               </a>
             </li>
@@ -162,8 +168,12 @@ const statusKey = {
 
     <!-- Milestone cards -->
     <div class="relative space-y-6 border-l border-line pl-8">
-      {items.map((item) => (
-        <article id={`ms-${item.version.replace(/\./g, '-')}`} class="relative scroll-mt-24">
+      {items.map((item, i) => (
+        <article
+          id={`ms-${item.version.replace(/\./g, '-')}`}
+          class="ms-card relative scroll-mt-24"
+          style={`--ms-delay:${i * 90}ms`}
+        >
           <span class="absolute -left-[37px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-canvas bg-fg"></span>
           <div class="rounded-xl border border-line bg-surface p-6">
             <div class="flex flex-wrap items-center gap-3">
@@ -194,4 +204,223 @@ const statusKey = {
       </a>
     </div>
   </div>
+
+  <style is:global>
+    .rail-outer {
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+      padding-bottom: 0.5rem;
+    }
+    .rail-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 3.5rem;
+    }
+    .rail-track {
+      pointer-events: none;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 3.5rem;
+      height: 16px;
+    }
+    .rail-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      transform: translateY(-50%);
+      background-image: repeating-linear-gradient(
+        to right,
+        var(--color-line) 0 8px,
+        transparent 8px 16px
+      );
+    }
+    .rail-progress {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      height: 1px;
+      background: var(--color-fg);
+      transform-origin: left center;
+      animation: railGrow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .rail-now {
+      position: absolute;
+      top: 50%;
+      width: 0.625rem;
+      height: 0.625rem;
+      border-radius: 9999px;
+      background: var(--color-fg);
+      z-index: 20;
+      animation: railNow 0.35s ease-out 0.7s both;
+    }
+    .rail-list {
+      display: flex;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .rail-col {
+      position: relative;
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: visible;
+    }
+    @media (max-width: 720px) {
+      .rail-wrap {
+        width: max-content;
+        min-width: 100%;
+        margin-left: auto;
+      }
+      .rail-col {
+        flex: 0 0 6.75rem;
+        min-width: 6.75rem;
+      }
+    }
+    .rail-node {
+      position: relative;
+      display: flex;
+      width: 100%;
+      height: 16px;
+      align-items: center;
+      justify-content: center;
+    }
+    .rail-dot-link {
+      position: relative;
+      z-index: 12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 24px;
+      min-height: 24px;
+    }
+    .rail-dot {
+      display: block;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      border: 2px solid var(--color-line);
+      background: var(--color-canvas);
+    }
+    .rail-dot.is-done {
+      border-color: var(--color-fg);
+      background: var(--color-fg);
+    }
+    .rail-dot.is-progress {
+      border-color: var(--color-fg);
+      background: var(--color-canvas);
+    }
+    .rail-dot-link:hover .rail-dot {
+      transform: scale(1.2);
+    }
+    .rail-tick {
+      position: absolute;
+      bottom: 100%;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translateX(-50%);
+      padding-bottom: 0.4rem;
+      pointer-events: none;
+    }
+    .rail-tick-label {
+      margin-bottom: 0.3rem;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: var(--color-faint);
+      writing-mode: vertical-rl;
+    }
+    .rail-tick-stem {
+      width: 1px;
+      height: 0.5rem;
+      background: color-mix(in srgb, var(--color-faint) 70%, transparent);
+    }
+    .rail-tick:hover .rail-tick-label {
+      color: var(--color-fg);
+    }
+    .rail-tick:hover .rail-tick-stem {
+      background: var(--color-fg);
+    }
+    .rail-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 0.4rem;
+    }
+    .rail-ver {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-fg);
+    }
+    .rail-date {
+      margin-top: 2px;
+      font-size: 10px;
+      color: var(--color-faint);
+    }
+    .rail-count {
+      margin-top: 4px;
+      border: 1px solid var(--color-line);
+      border-radius: 9999px;
+      padding: 1px 6px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--color-faint);
+    }
+    .ms-card {
+      animation: msIn 0.55s ease-out both;
+      animation-delay: var(--ms-delay, 0ms);
+    }
+    @keyframes railGrow {
+      from {
+        transform: translateY(-50%) scaleX(0);
+      }
+      to {
+        transform: translateY(-50%) scaleX(1);
+      }
+    }
+    @keyframes railNow {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.4);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+    @keyframes msIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rail-progress,
+      .rail-now,
+      .ms-card {
+        animation: none;
+      }
+      .rail-progress {
+        transform: translateY(-50%);
+      }
+      .rail-now {
+        transform: translate(-50%, -50%);
+      }
+    }
+  </style>
 </Base>

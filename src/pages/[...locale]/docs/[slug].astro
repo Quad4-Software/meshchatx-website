@@ -1,9 +1,11 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
+import DocScreenshot from '../../../components/DocScreenshot.astro';
 import { LOCALES, type Locale } from '../../../config/site';
 import { t, localePath } from '../../../i18n';
 import { getDoc, docsNav, allDocSlugs } from '../../../lib/docs';
+import { docsGitStamp } from '../../../lib/gitMeta';
 
 export async function getStaticPaths() {
   const slugs = await allDocSlugs();
@@ -31,6 +33,7 @@ const idx = flatNav.findIndex((i) => i.slug === slug);
 const prev = idx > 0 ? flatNav[idx - 1] : null;
 const next = idx >= 0 && idx < flatNav.length - 1 ? flatNav[idx + 1] : null;
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const stamp = docsGitStamp(slug);
 ---
 
 <Base
@@ -87,27 +90,34 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
       </div>
     </aside>
 
-    <!-- Mobile docs menu -->
-    <details class="rounded-lg border border-line bg-surface lg:hidden">
-      <summary class="cursor-pointer px-4 py-3 text-sm font-medium text-muted">
+    <!-- Mobile docs menu: overlay on hover, does not push the page -->
+    <div class="mcx-flyout mb-4 lg:hidden">
+      <button
+        type="button"
+        class="flex w-full items-center justify-between rounded-lg border border-line bg-surface px-4 py-3 text-left text-sm font-medium text-muted"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
         {t(locale, 'docs.menu')}
-      </summary>
-      <nav class="border-t border-line px-4 py-3">
-        {nav.map((g) => (
-          <div class="mb-3">
-            <p class="mb-1 font-mono text-[10px] uppercase tracking-wider text-faint">{t(locale, g.labelKey)}</p>
-            {g.items.map((i) => (
-              <a
-                href={localePath(locale, `docs/${i.slug}`)}
-                class:list={['block py-1 text-sm', i.slug === slug ? 'text-fg' : 'text-muted']}
-              >
-                {i.title}
-              </a>
-            ))}
-          </div>
-        ))}
-      </nav>
-    </details>
+      </button>
+      <div class="mcx-flyout-panel mcx-flyout-stretch">
+        <nav class="max-h-[70vh] overflow-y-auto rounded-lg border border-line bg-surface px-4 py-3 shadow-xl">
+          {nav.map((g) => (
+            <div class="mb-3">
+              <p class="mb-1 font-mono text-[10px] uppercase tracking-wider text-faint">{t(locale, g.labelKey)}</p>
+              {g.items.map((i) => (
+                <a
+                  href={localePath(locale, `docs/${i.slug}`)}
+                  class:list={['block py-1 text-sm', i.slug === slug ? 'text-fg' : 'text-muted']}
+                >
+                  {i.title}
+                </a>
+              ))}
+            </div>
+          ))}
+        </nav>
+      </div>
+    </div>
 
     <!-- Body -->
     <article class="min-w-0">
@@ -124,7 +134,13 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
           </a>
         </span>
       </nav>
-      <h1 class="mb-6 text-4xl font-semibold tracking-tight text-fg">{entry.data.title}</h1>
+      <h1 class="mb-3 text-4xl font-semibold tracking-tight text-fg">{entry.data.title}</h1>
+      {stamp && (
+        <p class="mb-6 font-mono text-xs text-faint">
+          {t(locale, 'docs.updated', { date: stamp.date, author: stamp.author })}
+        </p>
+      )}
+      <DocScreenshot locale={locale} slug={slug} alt={entry.data.title} />
       <div class="doc-body">
         <Content />
       </div>

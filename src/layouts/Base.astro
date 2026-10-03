@@ -11,12 +11,12 @@ interface Props {
   locale: Locale;
   title: string;
   description: string;
-  ogCard?: string;
-  path?: string;
-  preloadImg?: string;
-  preloadSrcset?: string;
-  preloadImgLight?: string;
-  preloadSrcsetLight?: string;
+  ogCard?: string | undefined;
+  path?: string | undefined;
+  preloadImg?: string | undefined;
+  preloadSrcset?: string | undefined;
+  preloadImgLight?: string | undefined;
+  preloadSrcsetLight?: string | undefined;
 }
 
 const { locale, title, description, ogCard = 'card', path, preloadImg, preloadSrcset, preloadImgLight, preloadSrcsetLight } = Astro.props;
@@ -34,6 +34,7 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/webp" href="/favicon.webp" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="preload" href={fontGrotesk} as="font" type="font/woff2" crossorigin />
     {preloadImg && (
@@ -45,7 +46,7 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
         fetchpriority="high"
         media="(prefers-color-scheme: dark)"
         imagesrcset={preloadSrcset}
-        imagesizes={preloadSrcset ? '(max-width: 720px) 80vw, 660px' : undefined}
+        imagesizes={preloadSrcset ? '(min-width: 64rem) 720px, 92vw' : undefined}
       />
     )}
     {preloadImgLight && (
@@ -57,7 +58,7 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
         fetchpriority="high"
         media="(prefers-color-scheme: light)"
         imagesrcset={preloadSrcsetLight}
-        imagesizes={preloadSrcsetLight ? '(max-width: 720px) 80vw, 660px' : undefined}
+        imagesizes={preloadSrcsetLight ? '(min-width: 64rem) 720px, 92vw' : undefined}
       />
     )}
 
@@ -83,17 +84,54 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
     ))}
     <link rel="alternate" hreflang="en" href={new URL(localePath('en', path ?? ''), SITE.domain).href} />
     <link rel="alternate" hreflang="x-default" href={new URL(localePath('en', path ?? ''), SITE.domain).href} />
+    <link rel="alternate" href="/legacy" title="Legacy" />
+    <link rel="alternate" type="application/rss+xml" title="MeshChatX News" href="/news.xml" />
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/legacy" />
+    </noscript>
 
     <script is:inline>
       (function () {
+        var skip =
+          (location.search || '').indexOf('noredirect=1') !== -1 ||
+          (location.pathname || '').indexOf('/legacy') === 0;
+        if (!skip) {
+          try {
+            var ie = typeof document.documentMode === 'number';
+            var noFetch = typeof fetch === 'undefined';
+            var noPromise = typeof Promise === 'undefined';
+            var noFlex = typeof CSS === 'undefined' || !CSS.supports || !CSS.supports('display', 'flex');
+            if (ie || noFetch || noPromise || noFlex) {
+              location.replace('/legacy');
+              return;
+            }
+          } catch (e) {
+            location.replace('/legacy');
+            return;
+          }
+        }
         var theme = '';
         try {
           theme = localStorage.getItem('mcx-theme') || '';
-        } catch (e) {}
+        } catch (err) {}
         if (!theme) {
           theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
         }
         document.documentElement.dataset.theme = theme;
+        try {
+          var raw = localStorage.getItem('mcx-donate-banner');
+          var year = 365 * 24 * 60 * 60 * 1000;
+          var ts = 0;
+          if (raw === '1') {
+            ts = Date.now();
+            localStorage.setItem('mcx-donate-banner', String(ts));
+          } else if (raw) {
+            ts = parseInt(raw, 10) || 0;
+          }
+          if (ts && Date.now() - ts < year) {
+            document.documentElement.dataset.donateBanner = 'hide';
+          }
+        } catch (err) {}
       })();
     </script>
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -119,6 +157,9 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
     })} />
   </head>
   <body class="min-h-screen">
+    <noscript>
+      <p><a href="/legacy">Legacy / text-only site</a></p>
+    </noscript>
     <Starfield />
     <a
       href="#main"
@@ -163,6 +204,28 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
             .catch(() => {}));
         });
       }
+    </script>
+    <script is:inline>
+      (function () {
+        var apply = function () {
+          var light = document.documentElement.dataset.theme === 'light';
+          document.querySelectorAll('img[data-theme-dark][data-theme-light]').forEach(function (img) {
+            var src = light ? img.getAttribute('data-theme-light') : img.getAttribute('data-theme-dark');
+            var ss = light ? img.getAttribute('data-srcset-light') : img.getAttribute('data-srcset-dark');
+            if (src) img.setAttribute('src', src);
+            if (ss) img.setAttribute('srcset', ss);
+            var source = img.parentElement && img.parentElement.querySelector('source');
+            if (source) source.media = light ? 'all' : 'not all';
+          });
+        };
+        var osLight = matchMedia('(prefers-color-scheme: light)').matches;
+        var themedLight = document.documentElement.dataset.theme === 'light';
+        if (themedLight !== osLight) apply();
+        new MutationObserver(apply).observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['data-theme'],
+        });
+      })();
     </script>
   </body>
 </html>

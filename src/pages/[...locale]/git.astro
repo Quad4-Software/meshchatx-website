@@ -14,7 +14,17 @@ export function getStaticPaths() {
 
 const { locale } = Astro.props as { locale: Locale };
 
-const hosts = [
+type Host = {
+  key: string;
+  primary: boolean;
+  logo?: string;
+  icon?: string;
+  iconSize?: number;
+  url?: string;
+  commands: { label: string; cmd: string }[];
+};
+
+const hosts: Host[] = [
   {
     key: 'rngit',
     primary: true,
@@ -28,15 +38,17 @@ const hosts = [
     key: 'github',
     primary: false,
     icon: 'mdiGithub',
+    iconSize: 28,
     url: SITE.githubUrl,
     commands: [{ label: 'git', cmd: `git clone ${SITE.githubClone}` }],
   },
   {
-    key: 'lavaforge',
+    key: 'codefloe',
     primary: false,
-    icon: 'mdiPackageVariantClosed',
-    url: SITE.lavaforgeUrl,
-    commands: [{ label: 'git', cmd: `git clone ${SITE.lavaforgeClone}` }],
+    icon: 'siCodefloe',
+    iconSize: 32,
+    url: SITE.codefloeUrl,
+    commands: [{ label: 'git', cmd: `git clone ${SITE.codefloeClone}` }],
   },
 ];
 ---
@@ -64,7 +76,7 @@ const hosts = [
               <img src={h.logo} alt="" width="44" height="44" class="h-11 w-11 rounded-lg" loading="lazy" decoding="async" />
             ) : (
               <span class="flex h-11 w-11 items-center justify-center rounded-lg border border-line bg-raised text-muted">
-                <Icon name={h.icon!} size={22} />
+                <Icon name={h.icon!} size={h.iconSize ?? 22} />
               </span>
             )}
             <div>

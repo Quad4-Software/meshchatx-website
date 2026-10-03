@@ -9,42 +9,46 @@ import (
 )
 
 type Asset struct {
-	Name   string `json:"name"`
-	URL    string `json:"url"`
-	SHA256 string `json:"sha256,omitempty"`
+	Name      string `json:"name"`
+	URL       string `json:"url"`
+	GitHubURL string `json:"githubUrl,omitempty"`
+	CdnURL    string `json:"cdnUrl,omitempty"`
+	SHA256    string `json:"sha256,omitempty"`
 }
 
 type Downloads struct {
-	AppImageAmd64  *Asset `json:"appImageAmd64"`
-	AppImageArm64  *Asset `json:"appImageArm64"`
-	DebAmd64       *Asset `json:"debAmd64"`
-	DebArm64       *Asset `json:"debArm64"`
-	RpmAmd64       *Asset `json:"rpmAmd64"`
-	Wheel          *Asset `json:"wheel"`
-	WinInstaller   *Asset `json:"winInstaller"`
-	WinPortable    *Asset `json:"winPortable"`
-	MacDmg         *Asset `json:"macDmg"`
-	MacDmgX64      *Asset `json:"macDmgX64"`
-	PyzPy311X64    *Asset `json:"pyzPy311X64"`
-	PyzPy311Arm64  *Asset `json:"pyzPy311Arm64"`
-	PyzPy314X64    *Asset `json:"pyzPy314X64"`
-	PyzPy314Arm64  *Asset `json:"pyzPy314Arm64"`
-	Apk            *Asset `json:"apk"`
-	AlpineApk      *Asset `json:"alpineApk"`
-	Flatpak        *Asset `json:"flatpak"`
-	Sbom           *Asset `json:"sbom"`
+	AppImageAmd64 *Asset `json:"appImageAmd64"`
+	AppImageArm64 *Asset `json:"appImageArm64"`
+	DebAmd64      *Asset `json:"debAmd64"`
+	DebArm64      *Asset `json:"debArm64"`
+	RpmAmd64      *Asset `json:"rpmAmd64"`
+	Wheel         *Asset `json:"wheel"`
+	WinInstaller  *Asset `json:"winInstaller"`
+	WinPortable   *Asset `json:"winPortable"`
+	MacDmg        *Asset `json:"macDmg"`
+	MacDmgX64     *Asset `json:"macDmgX64"`
+	PyzPy311X64   *Asset `json:"pyzPy311X64"`
+	PyzPy311Arm64 *Asset `json:"pyzPy311Arm64"`
+	PyzPy314X64   *Asset `json:"pyzPy314X64"`
+	PyzPy314Arm64 *Asset `json:"pyzPy314Arm64"`
+	Apk           *Asset `json:"apk"`
+	AlpineApk     *Asset `json:"alpineApk"`
+	Flatpak       *Asset `json:"flatpak"`
+	Sbom          *Asset `json:"sbom"`
 }
 
 type Release struct {
-	Tag         string    `json:"tag"`
-	Version     string    `json:"version"`
-	Name        string    `json:"name"`
-	Body        string    `json:"body"`
-	PublishedAt string    `json:"publishedAt"`
-	Prerelease  bool      `json:"prerelease"`
-	Channel     string    `json:"channel"`
-	ReleaseURL  string    `json:"releaseUrl"`
-	Downloads   Downloads `json:"downloads"`
+	Tag             string    `json:"tag"`
+	Version         string    `json:"version"`
+	Name            string    `json:"name"`
+	Body            string    `json:"body"`
+	PublishedAt     string    `json:"publishedAt"`
+	Prerelease      bool      `json:"prerelease"`
+	Channel         string    `json:"channel"`
+	ReleaseURL      string    `json:"releaseUrl"`
+	Downloads       Downloads `json:"downloads"`
+	DownloadServer  string    `json:"downloadServer,omitempty"`
+	DownloadServers []string  `json:"downloadServers,omitempty"`
 }
 
 type ghAsset struct {
@@ -99,7 +103,7 @@ func pick(assets []ghAsset, pred func(string) bool) *Asset {
 	for _, a := range assets {
 		n := strings.ToLower(a.Name)
 		if pred(n) {
-			return &Asset{Name: a.Name, URL: a.BrowserDownloadURL, SHA256: shaOf(a)}
+			return &Asset{Name: a.Name, URL: a.BrowserDownloadURL, GitHubURL: a.BrowserDownloadURL, SHA256: shaOf(a)}
 		}
 	}
 	return nil
@@ -113,15 +117,23 @@ func matchDownloads(assets []ghAsset) Downloads {
 	}
 	return Downloads{
 		AppImageAmd64: firstNonNil(
-			pick(assets, func(n string) bool { return strings.HasSuffix(n, ".appimage") && strings.Contains(n, "linux") && reX64.MatchString(n) && !reArm.MatchString(n) }),
-			pick(assets, func(n string) bool { return strings.HasSuffix(n, ".appimage") && strings.Contains(n, "linux") && !reX64.MatchString(n) && !reArm.MatchString(n) }),
+			pick(assets, func(n string) bool {
+				return strings.HasSuffix(n, ".appimage") && strings.Contains(n, "linux") && reX64.MatchString(n) && !reArm.MatchString(n)
+			}),
+			pick(assets, func(n string) bool {
+				return strings.HasSuffix(n, ".appimage") && strings.Contains(n, "linux") && !reX64.MatchString(n) && !reArm.MatchString(n)
+			}),
 			pick(assets, func(n string) bool { return notMacWin(n) && reX64.MatchString(n) && !reArm.MatchString(n) }),
 		),
 		AppImageArm64: firstNonNil(
-			pick(assets, func(n string) bool { return strings.HasSuffix(n, ".appimage") && strings.Contains(n, "linux") && reArm.MatchString(n) }),
+			pick(assets, func(n string) bool {
+				return strings.HasSuffix(n, ".appimage") && strings.Contains(n, "linux") && reArm.MatchString(n)
+			}),
 			pick(assets, func(n string) bool { return notMacWin(n) && reArm.MatchString(n) }),
 		),
-		DebAmd64: pick(assets, func(n string) bool { return strings.HasSuffix(n, ".deb") && reX64.MatchString(n) && !reArm.MatchString(n) }),
+		DebAmd64: pick(assets, func(n string) bool {
+			return strings.HasSuffix(n, ".deb") && reX64.MatchString(n) && !reArm.MatchString(n)
+		}),
 		DebArm64: pick(assets, func(n string) bool { return strings.HasSuffix(n, ".deb") && reArm.MatchString(n) }),
 		RpmAmd64: pick(assets, func(n string) bool { return strings.HasSuffix(n, ".rpm") && reX64.MatchString(n) }),
 		Wheel: firstNonNil(
@@ -136,14 +148,24 @@ func matchDownloads(assets []ghAsset) Downloads {
 		MacDmgX64: pick(assets, func(n string) bool {
 			return strings.HasSuffix(n, ".dmg") && reX64.MatchString(n) && !reArm.MatchString(n) && !strings.Contains(n, ".cosign.") && !strings.HasSuffix(n, ".sha256")
 		}),
-		PyzPy311X64:   pick(assets, func(n string) bool { return strings.HasSuffix(n, ".pyz") && strings.Contains(n, "py311") && reX64.MatchString(n) && !reArm.MatchString(n) }),
-		PyzPy311Arm64: pick(assets, func(n string) bool { return strings.HasSuffix(n, ".pyz") && strings.Contains(n, "py311") && reArm.MatchString(n) }),
-		PyzPy314X64:   pick(assets, func(n string) bool { return strings.HasSuffix(n, ".pyz") && strings.Contains(n, "py314") && reX64.MatchString(n) && !reArm.MatchString(n) }),
-		PyzPy314Arm64: pick(assets, func(n string) bool { return strings.HasSuffix(n, ".pyz") && strings.Contains(n, "py314") && reArm.MatchString(n) }),
-		Apk:           pick(assets, func(n string) bool { return strings.HasSuffix(n, ".apk") && !strings.Contains(n, "alpine") && !strings.Contains(n, "linux") }),
-		AlpineApk:     pick(assets, func(n string) bool { return strings.HasSuffix(n, ".apk") && strings.Contains(n, "alpine") }),
-		Flatpak:       pick(assets, func(n string) bool { return strings.HasSuffix(n, ".flatpak") }),
-		Sbom:          pick(assets, func(n string) bool { return strings.HasSuffix(n, "sbom.cyclonedx.json") }),
+		PyzPy311X64: pick(assets, func(n string) bool {
+			return strings.HasSuffix(n, ".pyz") && strings.Contains(n, "py311") && reX64.MatchString(n) && !reArm.MatchString(n)
+		}),
+		PyzPy311Arm64: pick(assets, func(n string) bool {
+			return strings.HasSuffix(n, ".pyz") && strings.Contains(n, "py311") && reArm.MatchString(n)
+		}),
+		PyzPy314X64: pick(assets, func(n string) bool {
+			return strings.HasSuffix(n, ".pyz") && strings.Contains(n, "py314") && reX64.MatchString(n) && !reArm.MatchString(n)
+		}),
+		PyzPy314Arm64: pick(assets, func(n string) bool {
+			return strings.HasSuffix(n, ".pyz") && strings.Contains(n, "py314") && reArm.MatchString(n)
+		}),
+		Apk: pick(assets, func(n string) bool {
+			return strings.HasSuffix(n, ".apk") && !strings.Contains(n, "alpine") && !strings.Contains(n, "linux")
+		}),
+		AlpineApk: pick(assets, func(n string) bool { return strings.HasSuffix(n, ".apk") && strings.Contains(n, "alpine") }),
+		Flatpak:   pick(assets, func(n string) bool { return strings.HasSuffix(n, ".flatpak") }),
+		Sbom:      pick(assets, func(n string) bool { return strings.HasSuffix(n, "sbom.cyclonedx.json") }),
 	}
 }
 
@@ -156,9 +178,27 @@ func firstNonNil(a ...*Asset) *Asset {
 	return nil
 }
 
+type CDN struct {
+	Base            string
+	Prefer          bool
+	StorageZone     string
+	StorageKey      string
+	StorageEndpoint string
+}
+
+func (c CDN) bunny() bunnyConfig {
+	return bunnyConfig{
+		AccessKey: c.StorageKey,
+		Zone:      c.StorageZone,
+		Endpoint:  c.StorageEndpoint,
+		CdnBase:   c.Base,
+	}
+}
+
 // Releases fetches the GitHub release list, classifies channels, and swaps in
-// CDN mirror URLs when the file exists on cdnBase.
-func (c *Client) Releases(ctx context.Context, repo, cdnBase string, preferCdn bool) ([]Release, error) {
+// CDN mirror URLs. When a Storage AccessKey is set the zone is listed; otherwise
+// each asset is HEAD-probed on the public CDN.
+func (c *Client) Releases(ctx context.Context, repo string, cdn CDN) ([]Release, error) {
 	var gh []ghRelease
 	url := fmt.Sprintf("https://api.github.com/repos/%s/releases?per_page=50", repo)
 	if err := c.getJSON(ctx, url, &gh); err != nil {
@@ -171,21 +211,87 @@ func (c *Client) Releases(ctx context.Context, repo, cdnBase string, preferCdn b
 		}
 		ch := channelForTag(r.TagName, r.Prerelease)
 		out = append(out, Release{
-			Tag:         r.TagName,
-			Version:     versionDisplay(r.TagName),
-			Name:        orEmpty(r.Name, r.TagName),
-			Body:        r.Body,
-			PublishedAt: r.Published,
-			Prerelease:  r.Prerelease,
-			Channel:     ch,
-			ReleaseURL:  r.HTMLURL,
-			Downloads:   matchDownloads(r.Assets),
+			Tag:             r.TagName,
+			Version:         versionDisplay(r.TagName),
+			Name:            orEmpty(r.Name, r.TagName),
+			Body:            r.Body,
+			PublishedAt:     r.Published,
+			Prerelease:      r.Prerelease,
+			Channel:         ch,
+			ReleaseURL:      r.HTMLURL,
+			Downloads:       matchDownloads(r.Assets),
+			DownloadServer:  "github",
+			DownloadServers: []string{"github"},
 		})
 	}
-	if preferCdn && cdnBase != "" {
-		c.preferCdn(ctx, out, cdnBase)
+	if cdn.Prefer && cdn.Base != "" {
+		if cdn.bunny().enabled() {
+			c.preferBunnyStorage(ctx, out, cdn.bunny())
+		} else {
+			c.preferCdn(ctx, out, cdn.Base)
+		}
 	}
 	return out, nil
+}
+
+func downloadAssets(d *Downloads) []*Asset {
+	return []*Asset{
+		d.AppImageAmd64, d.AppImageArm64, d.DebAmd64, d.DebArm64,
+		d.RpmAmd64, d.Wheel, d.WinInstaller, d.WinPortable,
+		d.MacDmg, d.MacDmgX64, d.PyzPy311X64, d.PyzPy311Arm64,
+		d.PyzPy314X64, d.PyzPy314Arm64, d.Apk, d.AlpineApk,
+		d.Flatpak, d.Sbom,
+	}
+}
+
+func markDownloadServers(r *Release) {
+	bunny, github := false, false
+	for _, a := range downloadAssets(&r.Downloads) {
+		if a == nil {
+			continue
+		}
+		if a.CdnURL != "" {
+			bunny = true
+		}
+		if a.GitHubURL != "" {
+			github = true
+		}
+	}
+	servers := make([]string, 0, 2)
+	if bunny {
+		servers = append(servers, "bunny")
+	}
+	if github {
+		servers = append(servers, "github")
+	}
+	r.DownloadServers = servers
+	if bunny {
+		r.DownloadServer = "bunny"
+	} else {
+		r.DownloadServer = "github"
+	}
+}
+
+func (c *Client) preferBunnyStorage(ctx context.Context, rels []Release, b bunnyConfig) {
+	catalog := c.bunnyCatalog(ctx, b)
+	for i := range rels {
+		r := &rels[i]
+		path := pathForBunnyTag(catalog, r.Tag)
+		if path == "" {
+			markDownloadServers(r)
+			continue
+		}
+		files := c.walkBunnyAssets(ctx, b, path)
+		for _, a := range downloadAssets(&r.Downloads) {
+			if a == nil {
+				continue
+			}
+			if cdn, ok := files[strings.ToLower(a.Name)]; ok {
+				applyCdnURL(a, cdn)
+			}
+		}
+		markDownloadServers(r)
+	}
 }
 
 var cdnTrack = map[string]string{"stable": "release", "beta": "beta", "testing": "testing"}
@@ -198,14 +304,7 @@ func (c *Client) preferCdn(ctx context.Context, rels []Release, cdnBase string) 
 	for ri := range rels {
 		r := &rels[ri]
 		track := cdnTrack[r.Channel]
-		assets := []*Asset{
-			r.Downloads.AppImageAmd64, r.Downloads.AppImageArm64, r.Downloads.DebAmd64, r.Downloads.DebArm64,
-			r.Downloads.RpmAmd64, r.Downloads.Wheel, r.Downloads.WinInstaller, r.Downloads.WinPortable,
-			r.Downloads.MacDmg, r.Downloads.MacDmgX64, r.Downloads.PyzPy311X64, r.Downloads.PyzPy311Arm64,
-			r.Downloads.PyzPy314X64, r.Downloads.PyzPy314Arm64, r.Downloads.Apk, r.Downloads.AlpineApk,
-			r.Downloads.Flatpak, r.Downloads.Sbom,
-		}
-		for _, a := range assets {
+		for _, a := range downloadAssets(&r.Downloads) {
 			if a == nil {
 				continue
 			}
@@ -215,16 +314,19 @@ func (c *Client) preferCdn(ctx context.Context, rels []Release, cdnBase string) 
 			go func() {
 				defer wg.Done()
 				defer func() { <-sem }()
-				url := fmt.Sprintf("%s/%s/%s/%s", cdnBase, track, urlPathEscape(r.Tag), urlPathEscape(a.Name))
+				url := fmt.Sprintf("%s/%s/%s/%s", strings.TrimRight(cdnBase, "/"), track, urlPathEscape(r.Tag), urlPathEscape(a.Name))
 				if c.HeadOK(ctx, url) {
 					mu.Lock()
-					a.URL = url
+					applyCdnURL(a, url)
 					mu.Unlock()
 				}
 			}()
 		}
 	}
 	wg.Wait()
+	for i := range rels {
+		markDownloadServers(&rels[i])
+	}
 }
 
 func urlPathEscape(s string) string {

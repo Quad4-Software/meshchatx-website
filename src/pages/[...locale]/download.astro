@@ -6,6 +6,7 @@ import Icon from '../../components/Icon.astro';
 import { LOCALES, SITE, type Locale } from '../../config/site';
 import { t } from '../../i18n';
 import { releasesForChannel, type Channel, type Release } from '../../lib/releases';
+import { attachLocalTorrent, loadLocalTorrents } from '../../lib/torrents';
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({
@@ -17,12 +18,17 @@ export function getStaticPaths() {
 const { locale } = Astro.props as { locale: Locale };
 
 const channels: Channel[] = ['stable', 'beta', 'testing'];
+const localTorrents = loadLocalTorrents();
 
 const perChannel = Object.fromEntries(
   await Promise.all(
     channels.map(async (c) => [c, await releasesForChannel(c)]),
   ),
 ) as Record<Channel, Release[]>;
+
+for (const list of Object.values(perChannel)) {
+  for (const rel of list) attachLocalTorrent(rel, localTorrents);
+}
 
 // Baked payload for the client: tag -> downloads per channel.
 const payload = Object.fromEntries(
@@ -34,8 +40,20 @@ const payload = Object.fromEntries(
       publishedAt: r.publishedAt,
       releaseUrl: r.releaseUrl,
       downloads: Object.fromEntries(
-        Object.entries(r.downloads).map(([k, a]) => [k, a ? { url: a.url } : null]),
+        Object.entries(r.downloads).map(([k, a]) => [
+          k,
+          a
+            ? {
+                url: a.url,
+                githubUrl: a.githubUrl,
+                cdnUrl: a.cdnUrl ?? null,
+                magnet: a.magnet ?? null,
+              }
+            : null,
+        ]),
       ),
+      downloadServer: r.downloadServer,
+      downloadServers: r.downloadServers,
     })),
   ]),
 );
@@ -48,6 +66,9 @@ const flatpakCommands = (c: Channel) =>
 
 const flatpakRemote = (c: Channel) =>
   `flatpak remote-add --if-not-exists meshchatx ${SITE.flatpakCdnBase}/meshchatx.flatpakrepo\nflatpak install meshchatx ${SITE.flatpakAppId}//${c}`;
+
+const archPkg = (c: Channel) =>
+  c === 'beta' ? 'meshchatx-beta-bin' : c === 'testing' ? 'meshchatx-testing-bin' : 'meshchatx-bin';
 
 const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale, `dl.${key}`, vars);
 
@@ -64,7 +85,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
   ogCard="card-download"
   path="download"
 >
-  <PageHero title={dl('h1')} lead={dl('lead')} />
+  <PageHero title={dl('h1')} lead={dl('lead')} compact />
 
   <!-- Channel picker + version selector -->
   <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-5">
@@ -85,12 +106,43 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
         </button>
       ))}
     </div>
-    <select
-      id="dl-version"
-      aria-label={t(locale, 'js.download.select_version')}
-      class="ml-auto rounded-lg border border-line bg-surface px-3 py-1.5 font-mono text-xs text-muted focus:border-mist-500 focus:outline-none"
-    >
-    </select>
+    <div class="ml-auto flex flex-wrap items-center gap-2">
+      <select
+        id="dl-version"
+        aria-label={t(locale, 'js.download.select_version')}
+        class="rounded-lg border border-line bg-surface px-3 py-1.5 font-mono text-xs text-muted focus:border-mist-500 focus:outline-none"
+      >
+      </select>
+      <div
+        id="dl-source-wrap"
+        class="dl-source-notch hidden"
+        role="tablist"
+        aria-label={t(locale, 'dl.download_server')}
+      >
+        <button
+          type="button"
+          role="tab"
+          class="dl-source-tab"
+          data-source="bunny"
+          aria-selected="true"
+          tabindex="0"
+        >
+          <img src="/vendor/bunny-logo-orange.svg" alt="" width="12" height="14" />
+          <span>{t(locale, 'dl.download_server_bunny')}</span>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="dl-source-tab"
+          data-source="github"
+          aria-selected="false"
+          tabindex="-1"
+        >
+          <Icon name="mdiGithub" size={14} />
+          <span>{t(locale, 'dl.download_server_github')}</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <p id="dl-release-meta" class="mx-auto mt-4 max-w-6xl px-5 font-mono text-xs text-faint"></p>
@@ -192,18 +244,44 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
             <a href={SITE.obtainiumUrl} target="_blank" rel="noopener noreferrer" aria-label={t(locale, 'dl.android.obtainium_alt')} class="inline-flex items-center">
               <img src="/vendor/obtainium-badge.webp" alt={t(locale, 'dl.android.obtainium_alt')} width="564" height="168" class="h-9 w-auto rounded" />
             </a>
+            <div class="rounded-lg border border-line bg-canvas p-3">
+              <p class="font-mono text-[10px] uppercase tracking-wider text-faint">{t(locale, 'dl.android.appverifier')}</p>
+              <p class="mt-1 text-xs leading-relaxed text-muted">{t(locale, 'dl.android.appverifier_lead')}</p>
+              <p class="mt-2 font-mono text-[11px] text-muted">{SITE.androidPackage}</p>
+              <p class="mt-1 break-all font-mono text-[11px] leading-relaxed text-fg">{SITE.androidCertSha256}</p>
+              <button
+                type="button"
+                class="hash-copy mt-2 inline-flex items-center rounded-md border border-line px-2.5 py-1 font-mono text-[11px] text-muted transition-colors hover:text-fg"
+                data-copy={`${SITE.androidPackage}\n${SITE.androidCertSha256}`}
+                data-copied={t(locale, 'js.copied')}
+              >
+                {t(locale, 'dl.android.copy_appverifier')}
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Umbrel -->
-        <div id={c === 'stable' ? `dl-umbrel` : undefined} class={card} data-platform="umbrel">
+        <!-- Arch Linux -->
+        <div id={c === 'stable' ? `dl-arch` : undefined} class={card} data-platform="arch">
           <div class="flex items-center gap-2">
-            <Icon name="siUmbrel" size={20} class="text-muted" />
-            <h2 class="font-semibold text-fg">{t(locale, 'dl.umbrel.h2')}</h2>
+            <Icon name="siArchlinux" size={20} class="text-muted" />
+            <h2 class="font-semibold text-fg">{t(locale, 'dl.archlinux.h2')}</h2>
           </div>
-          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.umbrel.intro')}</p>
-          <a href={SITE.umbrelUrl} target="_blank" rel="noopener noreferrer" class:list={[btn, 'mt-4']}>
-            {t(locale, 'dl.umbrel.btn')}
+          <p class="mt-1 text-sm text-muted">{t(locale, 'dl.archlinux.intro')}</p>
+          <div class="arch-warn mt-4 flex gap-2 rounded-lg border p-3">
+            <Icon name="mdiAlertOutline" size={16} class="mt-0.5 shrink-0" />
+            <p class="text-xs leading-relaxed">{t(locale, 'dl.archlinux.warn')}</p>
+          </div>
+          <div class="mt-4">
+            <CommandBlock label="pacman" code={`sudo pacman -S ${archPkg(c)}`} copyLabel={t(locale, 'dl.python.copy')} />
+          </div>
+          <a
+            href={SITE.archUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 inline-flex items-center justify-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-medium text-fg transition-colors hover:bg-raised"
+          >
+            {t(locale, 'dl.archlinux.btn')}
           </a>
         </div>
 
@@ -267,14 +345,74 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
 
       <!-- Containers -->
       <div id={c === 'stable' ? `dl-containers` : undefined} class={`${card} mt-4`} data-platform="containers">
-        <div class="flex items-center gap-2">
-          <Icon name="mdiDocker" size={20} class="text-muted" />
+        <div class="flex flex-wrap items-center gap-3">
           <h2 class="font-semibold text-fg">{t(locale, 'dl.containers.h2')}</h2>
+          <div
+            class="ml-auto inline-flex rounded-lg border border-line bg-canvas p-0.5"
+            role="tablist"
+            aria-label={t(locale, 'dl.containers.engine_label')}
+          >
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              data-engine-tab="docker"
+              class="engine-tab inline-flex items-center gap-1.5 rounded-md bg-raised px-2.5 py-1 text-xs font-medium text-fg"
+            >
+              <Icon name="mdiDocker" size={16} />
+              {t(locale, 'dl.containers.docker')}
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-engine-tab="podman"
+              class="engine-tab inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium text-muted hover:text-fg"
+            >
+              <Icon name="siPodman" size={16} />
+              {t(locale, 'dl.containers.podman')}
+            </button>
+          </div>
         </div>
         <p class="mt-1 text-sm text-muted">{t(locale, 'dl.containers.friendly')}</p>
-        <div class="mt-5 grid gap-4 lg:grid-cols-2">
-          <CommandBlock label="Docker Hub" code={`docker pull ${SITE.dockerHub}`} copyLabel={t(locale, 'dl.python.copy')} />
-          <CommandBlock label="GHCR" code={`docker pull ${SITE.ghcr}`} copyLabel={t(locale, 'dl.python.copy')} />
+        <div data-engine-panel="docker" class="engine-panel mt-5">
+          <div class="grid gap-4 lg:grid-cols-2">
+            <CommandBlock label="Docker Hub" code={`docker pull ${SITE.dockerHub}`} copyLabel={t(locale, 'dl.python.copy')} />
+            <CommandBlock label="GHCR" code={`docker pull ${SITE.ghcr}`} copyLabel={t(locale, 'dl.python.copy')} />
+          </div>
+        </div>
+        <div data-engine-panel="podman" class="engine-panel mt-5 hidden">
+          <div class="grid gap-4 lg:grid-cols-2">
+            <CommandBlock label="Docker Hub" code={`podman pull ${SITE.dockerHub}`} copyLabel={t(locale, 'dl.python.copy')} />
+            <CommandBlock label="GHCR" code={`podman pull ${SITE.ghcr}`} copyLabel={t(locale, 'dl.python.copy')} />
+          </div>
+        </div>
+      </div>
+
+      <!-- Torrent -->
+      <div id={c === 'stable' ? `dl-torrent` : undefined} class:list={[card, 'mt-4', !d?.torrent && 'hidden']} data-platform="torrent">
+        <div class="flex items-center gap-2">
+          <Icon name="mdiDownloadNetwork" size={20} class="text-muted" />
+          <h2 class="font-semibold text-fg">{t(locale, 'dl.torrent.h2')}</h2>
+        </div>
+        <p class="mt-1 text-sm text-muted">{t(locale, 'dl.torrent.intro')}</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <a data-asset="torrent" href={d?.torrent?.url ?? '#'} class:list={[btn, !d?.torrent && 'hidden']}>
+            <Icon name="mdiDownload" size={15} />
+            {t(locale, 'dl.torrent.btn')}
+          </a>
+          <button
+            type="button"
+            class:list={[
+              'hash-copy inline-flex items-center justify-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-medium text-fg transition-colors hover:bg-raised',
+              !d?.torrent?.magnet && 'hidden',
+            ]}
+            data-magnet-from="torrent"
+            data-copy={d?.torrent?.magnet ?? ''}
+            data-copied={t(locale, 'js.copied')}
+          >
+            {t(locale, 'dl.torrent.magnet')}
+          </button>
         </div>
       </div>
 
@@ -309,14 +447,37 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     );
   })}
 
+  <p class="mx-auto flex max-w-6xl items-center justify-center gap-2 px-5 pb-16 pt-4 text-xs text-faint">
+    <span>{t(locale, 'dl.cdn_powered')}</span>
+    <a href="https://bunny.net/" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 hover:opacity-85" title="bunny.net">
+      <img src="/vendor/bunny-logo-orange.svg" alt="" width="22" height="25" class="h-6 w-auto" />
+      <span class="font-medium text-muted">bunny.net</span>
+    </a>
+  </p>
+
   <script type="application/json" id="dl-data" set:html={JSON.stringify(payload)} />
 
   <script define:vars={{ selectLabel: t(locale, 'js.download.select_version'), apiBase: SITE.apiBase }}>
     const dataEl = document.getElementById('dl-data');
     const data = dataEl ? JSON.parse(dataEl.textContent || '{}') : {};
     const versionSel = document.getElementById('dl-version');
+    const sourceWrap = document.getElementById('dl-source-wrap');
     const meta = document.getElementById('dl-release-meta');
     let channel = 'stable';
+    const params = new URLSearchParams(location.search);
+    let source = params.get('source') === 'github' ? 'github' : 'bunny';
+
+    function sourceTabs() {
+      return document.querySelectorAll('.dl-source-tab');
+    }
+
+    function paintSource() {
+      sourceTabs().forEach((b) => {
+        const on = b.getAttribute('data-source') === source;
+        b.setAttribute('aria-selected', String(on));
+        b.tabIndex = on ? 0 : -1;
+      });
+    }
 
     function fmtDate(iso) {
       try {
@@ -342,21 +503,51 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
       versionSel.classList.toggle('hidden', list.length === 0);
     }
 
+    function assetHref(asset) {
+      if (!asset) return '';
+      if (source === 'bunny' && asset.cdnUrl) return asset.cdnUrl;
+      if (source === 'github' && asset.githubUrl) return asset.githubUrl;
+      return asset.url || '';
+    }
+
+    function syncSource(rel) {
+      const servers = Array.isArray(rel?.downloadServers) ? rel.downloadServers : [];
+      sourceWrap?.classList.toggle('hidden', servers.length < 2);
+      if (servers.length < 2) {
+        source = servers[0] || 'github';
+        paintSource();
+        return;
+      }
+      if (!servers.includes(source)) source = rel.downloadServer || servers[0];
+      paintSource();
+    }
+
     function applyRelease() {
       const rel = currentRelease();
       const panel = document.querySelector(`[data-channel-panel="${channel}"]`);
       if (!panel || !rel) return;
+      syncSource(rel);
       const dl = rel.downloads || {};
       panel.querySelectorAll('.dl-link').forEach((a) => {
         const key = a.getAttribute('data-asset');
         const asset = key ? dl[key] : null;
         a.classList.toggle('hidden', !asset);
         a.classList.toggle('inline-flex', !!asset && !a.classList.contains('btn-mini'));
-        if (asset) a.href = asset.url;
+        if (asset) a.href = assetHref(asset);
       });
       panel.querySelectorAll('[data-asset-none]').forEach((el) => {
         const has = !!dl.winInstaller;
         el.classList.toggle('hidden', has);
+      });
+      panel.querySelectorAll('[data-magnet-from]').forEach((btn) => {
+        const key = btn.getAttribute('data-magnet-from');
+        const asset = key ? dl[key] : null;
+        const mag = asset?.magnet || '';
+        btn.classList.toggle('hidden', !mag);
+        if (mag) btn.setAttribute('data-copy', mag);
+      });
+      panel.querySelectorAll('[data-platform="torrent"]').forEach((card) => {
+        card.classList.toggle('hidden', !dl.torrent);
       });
       if (meta) {
         meta.innerHTML = '';
@@ -387,6 +578,17 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     });
 
     versionSel?.addEventListener('change', applyRelease);
+    sourceTabs().forEach((btn) => {
+      btn.addEventListener('click', () => {
+        source = btn.getAttribute('data-source') === 'github' ? 'github' : 'bunny';
+        const next = new URL(location.href);
+        if (source === 'github') next.searchParams.set('source', 'github');
+        else next.searchParams.delete('source');
+        history.replaceState(null, '', next);
+        paintSource();
+        applyRelease();
+      });
+    });
 
     // pip/pipx/uv/pyz/pip-rns tabs inside the Python card
     document.querySelectorAll('.pip-tab').forEach((btn) => {
@@ -406,6 +608,23 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
       });
     });
 
+    document.querySelectorAll('.engine-tab').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-engine-tab');
+        const card = btn.closest('[data-platform="containers"]');
+        card?.querySelectorAll('.engine-tab').forEach((b) => {
+          const on = b === btn;
+          b.setAttribute('aria-selected', String(on));
+          b.className =
+            'engine-tab inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium ' +
+            (on ? 'bg-raised text-fg' : 'text-muted hover:text-fg');
+        });
+        card?.querySelectorAll('.engine-panel').forEach((p) => {
+          p.classList.toggle('hidden', p.getAttribute('data-engine-panel') !== target);
+        });
+      });
+    });
+
     // UA-based recommendation
     const ua = navigator.userAgent.toLowerCase();
     const plat = /android/.test(ua) ? 'android' : /win/.test(ua) ? 'win' : /mac|iphone|ipad/.test(ua) ? 'mac' : /linux/.test(ua) ? 'linux' : '';
@@ -418,6 +637,27 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
 
     fillVersions();
     applyRelease();
+
+    document.querySelectorAll('.hash-copy').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.getAttribute('data-copy') || '';
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+        const orig = btn.textContent;
+        btn.textContent = btn.getAttribute('data-copied') || 'Copied';
+        setTimeout(() => {
+          btn.textContent = orig;
+        }, 1400);
+      });
+    });
 
     // Live refresh: swap baked release data for the API payload when reachable.
     if (location.hostname.endsWith('meshchatx.com')) {
@@ -436,3 +676,11 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     }
   </script>
 </Base>
+
+<style>
+  .arch-warn {
+    border-color: color-mix(in srgb, var(--color-warn) 50%, var(--color-line));
+    color: var(--color-warn);
+    background: var(--color-canvas);
+  }
+</style>

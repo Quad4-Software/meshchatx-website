@@ -1,0 +1,268 @@
+---
+import { CONTACT, DONATE, HOME_FEATURES, CAPABILITIES, SITE } from '../config/site';
+import { t } from '../i18n';
+import { latestForChannel } from '../lib/releases';
+
+export const prerender = true;
+
+const latest = await latestForChannel('stable');
+const d = latest?.downloads;
+
+const downloads: { label: string; href: string }[] = [];
+const add = (label: string, href?: string | null) => {
+  if (href) downloads.push({ label, href });
+};
+add('Windows installer', d?.winInstaller?.url);
+add('Windows portable', d?.winPortable?.url);
+add('macOS Apple silicon DMG', d?.macDmg?.url);
+add('macOS Intel DMG', d?.macDmgX64?.url);
+add('Linux AppImage x86_64', d?.appImageAmd64?.url);
+add('Linux AppImage arm64', d?.appImageArm64?.url);
+add('Debian / Ubuntu amd64', d?.debAmd64?.url);
+add('Debian / Ubuntu arm64', d?.debArm64?.url);
+add('RPM x86_64', d?.rpmAmd64?.url);
+add('Alpine APK', d?.alpineApk?.url);
+add('Android APK', d?.apk?.url);
+add('Python wheel', d?.wheel?.url);
+add('Flatpak', d?.flatpak?.url);
+add('Torrent', d?.torrent?.url);
+add('GitHub releases', SITE.githubReleases);
+add('PyPI', SITE.pypiUrl);
+add('Arch packages', SITE.archUrl);
+add('Docker Hub', `https://hub.docker.com/r/${SITE.dockerHub.split(':')[0]}`);
+
+const features = HOME_FEATURES.map((f) => ({
+  h: t('en', f.h),
+  p: t('en', f.p),
+}));
+const caps = CAPABILITIES.map((k) => t('en', `home.cap.${k}`));
+const capRows: string[][] = [];
+for (let i = 0; i < caps.length; i += 2) {
+  capRows.push([caps[i] ?? '', caps[i + 1] ?? '']);
+}
+
+const pages = [
+  { label: 'Docs', href: '/docs' },
+  { label: 'Roadmap', href: '/roadmap' },
+  { label: 'Changelog', href: '/changelog' },
+  { label: 'Source mirrors', href: '/git' },
+  { label: 'GitHub', href: SITE.githubUrl },
+  { label: 'CodeFloe', href: SITE.codefloeUrl },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Donate', href: '/donate' },
+  { label: 'License', href: '/license' },
+  { label: 'Privacy', href: '/privacy' },
+];
+
+const commands = [
+  { label: 'Python', code: `pip install ${SITE.pypiPackage}` },
+  { label: 'Docker', code: `docker pull ${SITE.dockerHub}` },
+  { label: 'Podman', code: `podman pull ${SITE.dockerHub}` },
+  { label: 'Arch Linux', code: 'sudo pacman -S meshchatx-bin' },
+];
+---
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>MeshChatX - Legacy</title>
+    <meta
+      name="description"
+      content="Text-only MeshChatX site for browsers without JavaScript or modern CSS."
+    />
+    <link rel="canonical" href={`${SITE.domain}/legacy`} />
+    <style is:inline type="text/css">
+      body {
+        margin: 1em auto;
+        max-width: 46em;
+        padding: 0 1em 2em;
+        color: #2a2a28;
+        background: #d8d4cc;
+        font-family: sans-serif;
+        line-height: 1.45;
+      }
+      a {
+        color: #243a5e;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      h2 {
+        font-size: 1.15em;
+        margin-top: 1.6em;
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid #b0aca4;
+      }
+      table {
+        width: 100%;
+      }
+      th {
+        background: #cdc9c1;
+        text-align: left;
+        vertical-align: top;
+      }
+      td {
+        text-align: left;
+        vertical-align: top;
+      }
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body bgcolor="#d8d4cc" text="#2a2a28" link="#243a5e" vlink="#4a3f55">
+    <h1>MeshChatX</h1>
+    <p>
+      All-in-one Reticulum client: messaging, calls, and NomadNet. No central
+      servers. This page is for text browsers, old browsers, and browsers with
+      JavaScript turned off.
+    </p>
+    <p><a href="/?noredirect=1">Open the full site</a> (needs a modern browser).</p>
+
+    <h2>Features</h2>
+    <table border="1" cellpadding="6" cellspacing="0" width="100%" bordercolor="#b0aca4">
+      <tr bgcolor="#cdc9c1">
+        <th>Feature</th>
+        <th>Detail</th>
+      </tr>
+      {features.map((f) => (
+        <tr>
+          <td>{f.h}</td>
+          <td>{f.p}</td>
+        </tr>
+      ))}
+    </table>
+
+    <h2>Capabilities</h2>
+    <table border="1" cellpadding="6" cellspacing="0" width="100%" bordercolor="#b0aca4">
+      {capRows.map((row) => (
+        <tr>
+          <td>{row[0]}</td>
+          <td>{row[1]}</td>
+        </tr>
+      ))}
+    </table>
+
+    <h2>Download{latest ? ` (v${latest.version})` : ''}</h2>
+    {
+      latest ? (
+        <p>
+          Release notes: <a href={latest.releaseUrl}>{latest.tag}</a>
+        </p>
+      ) : (
+        <p>
+          Live files: <a href={SITE.githubReleases}>{SITE.githubReleases}</a>
+        </p>
+      )
+    }
+    <table border="1" cellpadding="6" cellspacing="0" width="100%" bordercolor="#b0aca4">
+      <tr bgcolor="#cdc9c1">
+        <th>Package</th>
+        <th>File</th>
+      </tr>
+      {downloads.map((item) => (
+        <tr>
+          <td>{item.label}</td>
+          <td>
+            <a href={item.href}>Download</a>
+          </td>
+        </tr>
+      ))}
+    </table>
+
+    <h2>Install commands</h2>
+    <p>Arch Linux: add the Quad4 repository first.</p>
+    <table border="1" cellpadding="6" cellspacing="0" width="100%" bordercolor="#b0aca4">
+      <tr bgcolor="#cdc9c1">
+        <th>Method</th>
+        <th>Command</th>
+      </tr>
+      {commands.map((item) => (
+        <tr>
+          <td>{item.label}</td>
+          <td>
+            <pre>{item.code}</pre>
+          </td>
+        </tr>
+      ))}
+      {d?.torrent?.magnet && (
+        <tr>
+          <td>Magnet</td>
+          <td>
+            <a href={d.torrent.magnet}>magnet link</a>
+          </td>
+        </tr>
+      )}
+    </table>
+
+    <h2>Pages</h2>
+    <table border="1" cellpadding="6" cellspacing="0" width="100%" bordercolor="#b0aca4">
+      <tr bgcolor="#cdc9c1">
+        <th>Page</th>
+        <th>Address</th>
+      </tr>
+      {pages.map((item) => (
+        <tr>
+          <td>{item.label}</td>
+          <td>
+            <a href={item.href}>{item.href}</a>
+          </td>
+        </tr>
+      ))}
+    </table>
+
+    <h2>Contact</h2>
+    <table border="1" cellpadding="6" cellspacing="0" width="100%" bordercolor="#b0aca4">
+      <tr bgcolor="#cdc9c1">
+        <th>Channel</th>
+        <th>Address</th>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td>
+          <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>LXMF</td>
+        <td>{CONTACT.lxmf}</td>
+      </tr>
+    </table>
+
+    <h2>Donate</h2>
+    <table border="1" cellpadding="6" cellspacing="0" width="100%" bordercolor="#b0aca4">
+      <tr bgcolor="#cdc9c1">
+        <th>Method</th>
+        <th>Detail</th>
+      </tr>
+      <tr>
+        <td>Ko-fi</td>
+        <td>
+          <a href={DONATE.kofi}>{DONATE.kofi}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Buy Me a Coffee</td>
+        <td>
+          <a href={DONATE.bmac}>{DONATE.bmac}</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Monero</td>
+        <td>{DONATE.xmr}</td>
+      </tr>
+    </table>
+
+    <hr />
+    <p>
+      CDN: {SITE.cdnBase} (BunnyCDN). Project: <a href={SITE.quad4Url}>quad4.io</a>.
+      MIT + 0BSD.
+    </p>
+  </body>
+</html>

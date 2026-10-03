@@ -22,8 +22,13 @@ docker build -t siteapi -f api/Dockerfile .
 ## Config (env)
 
 `ADDR`, `GITHUB_REPO`, `CDN_BASE`, `DIRECTORY_URL`, `CHANGELOG_URL`,
-`ROADMAP_URL`, `PREFER_CDN`, `TTL_RELEASES`, `TTL_INTERFACES`,
+`ROADMAP_URL`, `PREFER_CDN`, `BUNNY_STORAGE_ACCESS_KEY`, `BUNNY_STORAGE_ZONE`,
+`BUNNY_STORAGE_ENDPOINT`, `TTL_RELEASES`, `TTL_INTERFACES`,
 `TTL_CHANGELOG`, `TTL_ROADMAP`.
+
+When `BUNNY_STORAGE_ACCESS_KEY` is set the API lists that Storage zone and
+rewrites matching GitHub assets to `CDN_BASE` URLs (GitHub stays as fallback).
+Without the key it HEAD-probes `CDN_BASE/<track>/<tag>/<file>`.
 
 ## Notes
 

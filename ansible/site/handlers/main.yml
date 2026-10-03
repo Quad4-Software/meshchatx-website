@@ -1,0 +1,5 @@
+---
+- name: Reload lighttpd
+  ansible.builtin.service:
+    name: lighttpd
+    state: reloaded

@@ -19,7 +19,7 @@
    "docker": "Docker / Podman",
    "python": "Python",
    "android": "Android",
-   "umbrel": "Umbrel",
+   "arch": "Arch",
    "flatpak": "Flatpak"
   },
   "macos": {
@@ -92,6 +92,7 @@
    "copy_compose": "Copy Compose",
    "docker": "Docker",
    "podman": "Podman",
+   "engine_label": "Container engine",
    "run_docker": "Run with Docker.",
    "run_podman": "Run with Podman.",
    "arch_badge": "AMD64 / ARM64",
@@ -104,7 +105,7 @@
    "copy_run": "Copy run command",
    "trivy_before": "Docker images are scanned with ",
    "trivy_link": "Trivy",
-   "friendly": "Already use Docker or Podman? Copy the Compose file below and start MeshChatX that way."
+   "friendly": "Already use Docker or Podman? Switch engine and pull the image."
   },
   "python": {
    "h2": "Python",
@@ -132,12 +133,22 @@
    "termux_h3": "Termux",
    "btn_apk": "Download .apk",
    "obtainium_alt": "Get it on Obtainium",
+   "appverifier": "AppVerifier",
+   "appverifier_lead": "Signing-certificate SHA-256. Paste the package name and this hash into AppVerifier.",
+   "copy_appverifier": "Copy for AppVerifier",
    "friendly": "APK when it ships. Until then, Termux can run a headless MeshChatX node."
   },
-  "umbrel": {
-   "h2": "Umbrel",
-   "intro": "Install MeshChatX on your Umbrel home server from the Umbrel App Store.",
-   "btn": "Get on Umbrel"
+  "archlinux": {
+   "h2": "Arch Linux",
+   "intro": "Install from the Quad4 pacman repository. Add the repo, then install with pacman.",
+   "warn": "Add the Quad4 repository first. Do not install MeshChatX from the AUR.",
+   "btn": "Open arch.quad4.io"
+  },
+  "torrent": {
+   "h2": "Torrent",
+   "intro": "BitTorrent with HTTP webseeds from cdn.quad4.io. Works with no peers.",
+   "btn": "Download .torrent",
+   "magnet": "Copy magnet"
   },
   "termux": {
    "h2": "Termux",
@@ -158,7 +169,7 @@
    "android_hint": "APK / Termux",
    "docker_hint": "Containers",
    "python_hint": "pip install",
-   "umbrel_hint": "App store",
+   "arch_hint": "pacman",
    "flatpak_hint": "One-click install"
   },
   "cta": {
@@ -170,6 +181,7 @@
   },
   "download_server": "Download server",
   "download_server_bunny": "BunnyCDN",
+  "cdn_powered": "CDN powered by",
   "download_server_github": "GitHub",
   "flatpak": {
    "h2": "Flatpak",

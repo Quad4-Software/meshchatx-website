@@ -1,11 +1,15 @@
 import { SITE } from '../config/site';
+import { bunnyAssetsByName, bunnyEnabled } from './bunny';
 
 export type Channel = 'stable' | 'beta' | 'testing';
 
 export interface ReleaseAsset {
   name: string;
   url: string;
+  githubUrl: string;
+  cdnUrl?: string;
   sha256: string | null;
+  magnet?: string;
 }
 
 export interface ReleaseDownloads {
@@ -27,6 +31,7 @@ export interface ReleaseDownloads {
   alpineApk: ReleaseAsset | null;
   flatpak: ReleaseAsset | null;
   sbom: ReleaseAsset | null;
+  torrent: ReleaseAsset | null;
 }
 
 export interface Release {
@@ -39,6 +44,8 @@ export interface Release {
   channel: Channel;
   releaseUrl: string;
   downloads: ReleaseDownloads;
+  downloadServer: 'bunny' | 'github';
+  downloadServers: Array<'bunny' | 'github'>;
 }
 
 interface GhAsset {
@@ -100,23 +107,57 @@ async function toAsset(a: GhAsset | null): Promise<ReleaseAsset | null> {
   return {
     name: a.name,
     url: a.browser_download_url,
+    githubUrl: a.browser_download_url,
     sha256: shaOfAsset(a),
   };
+}
+
+function eachAsset(d: ReleaseDownloads, fn: (a: ReleaseAsset) => void) {
+  for (const asset of Object.values(d)) {
+    if (asset) fn(asset);
+  }
+}
+
+function markServers(release: Release) {
+  const servers: Array<'bunny' | 'github'> = [];
+  let bunny = false;
+  let github = false;
+  eachAsset(release.downloads, (a) => {
+    if (a.cdnUrl) bunny = true;
+    if (a.githubUrl) github = true;
+  });
+  if (bunny) servers.push('bunny');
+  if (github) servers.push('github');
+  release.downloadServers = servers;
+  release.downloadServer = bunny ? 'bunny' : 'github';
+}
+
+async function applyBunnyStorage(release: Release): Promise<void> {
+  const files = await bunnyAssetsByName(release.tag);
+  if (files.size === 0) return;
+  eachAsset(release.downloads, (asset) => {
+    const hit = files.get(asset.name.toLowerCase());
+    if (!hit) return;
+    asset.cdnUrl = hit.url;
+    asset.url = hit.url;
+    if (hit.sha256 && !asset.sha256) asset.sha256 = hit.sha256;
+  });
 }
 
 /** Swap GitHub URLs for CDN mirrors where the file exists on the CDN. */
 export async function preferCdn(release: Release): Promise<Release> {
   const jobs: Promise<void>[] = [];
-  for (const key of Object.keys(release.downloads) as (keyof ReleaseDownloads)[]) {
-    const asset = release.downloads[key];
-    if (!asset) continue;
+  eachAsset(release.downloads, (asset) => {
     jobs.push(
       cdnUrl(release.channel, release.tag, asset.name).then((mirror) => {
-        if (mirror) asset.url = mirror;
+        if (!mirror) return;
+        asset.cdnUrl = mirror;
+        asset.url = mirror;
       }),
     );
-  }
+  });
   await Promise.all(jobs);
+  markServers(release);
   return release;
 }
 
@@ -174,6 +215,7 @@ async function matchDownloads(assets: GhAsset[]): Promise<ReleaseDownloads> {
     alpineApk: byName((n) => n.endsWith('.apk') && n.includes('alpine')),
     flatpak: byName((n) => n.endsWith('.flatpak')),
     sbom: byName((n) => /sbom\.cyclonedx\.json$/i.test(n)),
+    torrent: byName((n) => n.endsWith('.torrent')),
   };
 
   const entries = await Promise.all(
@@ -211,7 +253,20 @@ export async function getReleases(): Promise<Release[]> {
       channel,
       releaseUrl: r.html_url,
       downloads: await matchDownloads(r.assets),
+      downloadServer: 'github',
+      downloadServers: ['github'],
     });
+  }
+  if (bunnyEnabled()) {
+    await Promise.all(out.map((r) => applyBunnyStorage(r)));
+    for (const r of out) markServers(r);
+  } else {
+    const seen = new Set<Channel>();
+    for (const r of out) {
+      if (seen.has(r.channel)) continue;
+      seen.add(r.channel);
+      await preferCdn(r);
+    }
   }
   memo = out;
   return out;
@@ -219,8 +274,7 @@ export async function getReleases(): Promise<Release[]> {
 
 export async function latestForChannel(channel: Channel): Promise<Release | null> {
   const all = await getReleases();
-  const hit = all.find((r) => r.channel === channel) ?? null;
-  return hit ? preferCdn(hit) : null;
+  return all.find((r) => r.channel === channel) ?? null;
 }
 
 export async function releasesForChannel(channel: Channel): Promise<Release[]> {

@@ -16,7 +16,7 @@
     ph: number;
   }
 
-  const STAR_COUNT = 260;
+  const STAR_COUNT = matchMedia('(max-width: 720px)').matches ? 90 : 180;
   const cv = document.getElementById('mcx-stars') as HTMLCanvasElement | null;
   const ctx = cv?.getContext('2d');
   const motionOK = !matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -75,12 +75,21 @@
 
     if (motionOK) {
       let skip = false;
+      let raf = 0;
       const loop = () => {
-        requestAnimationFrame(loop);
+        raf = requestAnimationFrame(loop);
+        if (document.hidden) return;
         if ((skip = !skip)) return;
         step();
       };
-      requestAnimationFrame(loop);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          cancelAnimationFrame(raf);
+        } else {
+          raf = requestAnimationFrame(loop);
+        }
+      });
+      raf = requestAnimationFrame(loop);
     } else {
       t = 1;
       step();

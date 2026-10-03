@@ -1,0 +1,11 @@
+.git
+.astro
+.lighthouseci
+.terraform
+node_modules
+dist
+ansible
+opentofu
+api
+.env
+.env.*

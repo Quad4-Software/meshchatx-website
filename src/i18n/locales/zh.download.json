@@ -19,7 +19,7 @@
    "docker": "Docker / Podman",
    "python": "Python",
    "android": "Android",
-   "umbrel": "Umbrel",
+   "arch": "Arch",
    "flatpak": "Flatpak"
   },
   "macos": {
@@ -106,7 +106,8 @@
    "copy_run": "复制运行命令",
    "trivy_before": "Docker 镜像使用 ",
    "trivy_link": "Trivy",
-   "friendly": "若日常使用 Docker 或 Podman，复制 Compose 文件即可。拉取命令在更多选项中。"
+   "friendly": "若日常使用 Docker 或 Podman，复制 Compose 文件即可。拉取命令在更多选项中。",
+   "engine_label": "容器引擎"
   },
   "python": {
    "h2": "Python",
@@ -136,12 +137,22 @@
    "badge": "即将推出",
    "btn_apk": "下载 .apk",
    "obtainium_alt": "在 Obtainium 获取",
+   "appverifier": "AppVerifier",
+   "appverifier_lead": "签名证书 SHA-256。将包名与此哈希粘贴到 AppVerifier。",
+   "copy_appverifier": "复制到 AppVerifier",
    "friendly": "应用用 Android APK，无界面节点可用 Termux。"
   },
-  "umbrel": {
-   "h2": "Umbrel",
-   "intro": "通过 Umbrel 应用商店在 Umbrel 家庭服务器上安装 MeshChatX。",
-   "btn": "在 Umbrel 获取"
+  "archlinux": {
+   "h2": "Arch Linux",
+   "intro": "从 Quad4 的 pacman 仓库安装。添加仓库后用 pacman 安装。",
+   "warn": "请先添加 Quad4 仓库。不要从 AUR 安装。",
+   "btn": "打开 arch.quad4.io"
+  },
+  "torrent": {
+   "h2": "Torrent",
+   "intro": "通过 cdn.quad4.io 的 HTTP webseed 做 BitTorrent。没有节点也能下。",
+   "btn": "下载 .torrent",
+   "magnet": "复制 magnet"
   },
   "termux": {
    "h2": "Termux",
@@ -162,7 +173,7 @@
    "android_hint": "APK / Termux",
    "docker_hint": "容器",
    "python_hint": "pip install",
-   "umbrel_hint": "应用商店",
+   "arch_hint": "pacman",
    "flatpak_hint": "一键安装"
   },
   "cta": {
@@ -193,6 +204,7 @@
   },
   "verify": "校验",
   "verify_copy": "复制校验命令",
-  "recommended": "推荐"
+  "recommended": "推荐",
+  "cdn_powered": "CDN 由"
  }
 }

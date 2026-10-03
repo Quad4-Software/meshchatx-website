@@ -1,11 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
-import AppPreview from '../../components/AppPreview.astro';
+import ScreenshotMosaic from '../../components/ScreenshotMosaic.astro';
+import ShotLightbox from '../../components/ShotLightbox.astro';
 import ThemeImage from '../../components/ThemeImage.astro';
 import Icon from '../../components/Icon.astro';
 import { LOCALES, PLATFORMS, CAPABILITIES, HOME_FEATURES, type Locale } from '../../config/site';
 import { t, localePath } from '../../i18n';
 import { latestForChannel } from '../../lib/releases';
+import { appShot } from '../../lib/screenshots';
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({
@@ -19,6 +21,9 @@ const latest = await latestForChannel('stable');
 const features = HOME_FEATURES;
 const heroTitle = t(locale, 'home.hero.h1');
 const [heroPre, heroPost] = heroTitle.split('Reticulum');
+const heroShot = appShot('desktop', 'conversation');
+const heroAlt = t(locale, 'home.hero.shot_alt');
+const labelOpen = t(locale, 'home.preview.open');
 ---
 
 <Base
@@ -27,12 +32,11 @@ const [heroPre, heroPost] = heroTitle.split('Reticulum');
   description={t(locale, 'meta.desc.home')}
   ogCard="card"
   path=""
-  preloadImg="/media/preview-conversation-dark-560.webp"
-  preloadSrcset="/media/preview-conversation-dark-560.webp 560w, /media/preview-conversation-dark-800.webp 800w, /media/preview-conversation-dark-1120.webp 1120w, /media/preview-conversation-dark-1440.webp 1440w, /media/preview-conversation-dark-1920.webp 1920w, /media/preview-conversation-dark-2880.webp 2880w"
-  preloadImgLight="/media/preview-conversation-560.webp"
-  preloadSrcsetLight="/media/preview-conversation-560.webp 560w, /media/preview-conversation-800.webp 800w, /media/preview-conversation-1120.webp 1120w, /media/preview-conversation-1440.webp 1440w, /media/preview-conversation-1920.webp 1920w, /media/preview-conversation-2880.webp 2880w"
+  preloadImg={heroShot?.displayDark}
+  preloadImgLight={heroShot?.displayLight}
+  preloadSrcset={heroShot?.srcsetDark}
+  preloadSrcsetLight={heroShot?.srcsetLight}
 >
-  <!-- Hero -->
   <section class="relative mx-auto max-w-6xl px-5 pb-10 pt-14 sm:pt-20">
     <div class="grid items-center gap-10 lg:grid-cols-[1fr_1.3fr]">
       <div>
@@ -96,25 +100,42 @@ const [heroPre, heroPost] = heroTitle.split('Reticulum');
           ))}
         </div>
       </div>
-      <div class="relative mx-auto w-full max-w-[720px] overflow-hidden rounded-xl border border-line shadow-2xl shadow-black/30">
-        <ThemeImage
-          dark="/media/preview-conversation-dark-560.webp"
-          light="/media/preview-conversation-560.webp"
-          srcsetDark="/media/preview-conversation-dark-560.webp 560w, /media/preview-conversation-dark-800.webp 800w, /media/preview-conversation-dark-1120.webp 1120w, /media/preview-conversation-dark-1440.webp 1440w, /media/preview-conversation-dark-1920.webp 1920w, /media/preview-conversation-dark-2880.webp 2880w"
-          srcsetLight="/media/preview-conversation-560.webp 560w, /media/preview-conversation-800.webp 800w, /media/preview-conversation-1120.webp 1120w, /media/preview-conversation-1440.webp 1440w, /media/preview-conversation-1920.webp 1920w, /media/preview-conversation-2880.webp 2880w"
-          sizes="(max-width: 720px) 80vw, 660px"
-          alt="MeshChatX conversation view"
-          width={1120}
-          height={700}
-          loading="eager"
-          fetchpriority="high"
-          class="block h-auto w-full"
-        />
-      </div>
+      {
+        heroShot && (
+          <div
+            class="mcx-hero-shot relative mx-auto w-full max-w-[720px] overflow-hidden rounded-xl border border-line shadow-2xl shadow-black/30"
+            data-shots
+          >
+            <button
+              type="button"
+              class="mcx-shot-open mcx-shot-open-flow"
+              aria-haspopup="dialog"
+              aria-controls="mcx-hero-dialog"
+              aria-label={`${labelOpen}: ${heroAlt}`}
+            >
+              <ThemeImage
+                dark={heroShot.displayDark}
+                light={heroShot.displayLight}
+                fullDark={heroShot.dark}
+                fullLight={heroShot.light}
+                srcsetDark={heroShot.srcsetDark}
+                srcsetLight={heroShot.srcsetLight}
+                sizes="(min-width: 64rem) 720px, 92vw"
+                alt={heroAlt}
+                width={heroShot.width}
+                height={heroShot.height}
+                loading="eager"
+                fetchpriority="high"
+                class="block h-auto w-full"
+              />
+            </button>
+            <ShotLightbox locale={locale} id="mcx-hero-dialog" />
+          </div>
+        )
+      }
     </div>
   </section>
 
-  <!-- Capability strip -->
   <section class="border-y border-line bg-surface-alpha backdrop-blur-sm">
     <div class="mx-auto flex max-w-6xl flex-wrap gap-x-6 gap-y-2 px-5 py-4">
       {CAPABILITIES.map((c) => (
@@ -128,7 +149,6 @@ const [heroPre, heroPost] = heroTitle.split('Reticulum');
     </div>
   </section>
 
-  <!-- Features -->
   <section class="mx-auto max-w-6xl px-5 py-20">
     <h2 class="text-3xl font-semibold tracking-tight text-fg">{t(locale, 'home.section.infra_h2')}</h2>
     <p class="mt-3 max-w-2xl text-muted">{t(locale, 'home.section.infra_lead')}</p>
@@ -143,15 +163,13 @@ const [heroPre, heroPost] = heroTitle.split('Reticulum');
     </div>
   </section>
 
-  <!-- Live preview -->
   <section class="mx-auto max-w-6xl px-5 pb-20">
-    <h2 class="mb-6 text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
-      {t(locale, 'home.preview.demo_label')}
+    <h2 id="mcx-shots-heading" class="text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
+      {t(locale, 'home.preview.mosaic_h2')}
     </h2>
-    <AppPreview locale={locale} />
+    <ScreenshotMosaic locale={locale} labelledBy="mcx-shots-heading" />
   </section>
 
-  <!-- Anonymous split -->
   <section class="mx-auto max-w-6xl px-5 py-20">
     <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
       <h2 class="text-4xl font-semibold leading-tight tracking-tight text-fg sm:text-5xl">

@@ -21,7 +21,8 @@
       "git": "Git | MeshChatX",
       "docs": "Docs | MeshChatX",
       "changelog": "Registro de cambios | MeshChatX",
-      "offline": "Sin conexión | MeshChatX"
+      "offline": "Sin conexión | MeshChatX",
+      "news": "Noticias | MeshChatX"
     },
     "og_image_alt": "Logo de MeshChatX",
     "desc": {
@@ -37,9 +38,10 @@
       "dependency": "Explora los SBOM CycloneDX de las versiones de MeshChatX: grafo de paquetes, licencias y la cadena de suministro completa por versión.",
       "branding": "Logos, iconos y colores de marca de MeshChatX para prensa y uso de producto.",
       "error": "Esta página no se pudo mostrar como se solicitó.",
-      "git": "Clona MeshChatX desde rngit sobre Reticulum, o usa los espejos de GitHub y LavaForge.",
+      "git": "Clona MeshChatX desde rngit sobre Reticulum, o usa los espejos de GitHub y CodeFloe.",
       "docs": "Documentación de MeshChatX del paquete de docs de la aplicación: instalación, mensajería, llamadas LXST, NomadNet, interfaces y guías de plataforma.",
-      "offline": "Estás sin conexión. Abre una página de MeshChatX en caché o vuelve a conectarte."
+      "offline": "Estás sin conexión. Abre una página de MeshChatX en caché o vuelve a conectarte.",
+      "news": "Noticias de MeshChatX, anuncios y un feed RSS."
     }
   },
   "error": {
@@ -94,7 +96,8 @@
     "secondary": "Más",
     "theme_light": "Claro",
     "theme_dark": "Oscuro",
-    "theme_system": "Sistema"
+    "theme_system": "Sistema",
+    "news": "Noticias"
   },
   "lang": {
     "label": "Idioma",
@@ -119,9 +122,11 @@
     "privacy": "Política de privacidad",
     "license_badge": "MIT + 0BSD",
     "meta_copyright": "© 2026 MeshChatX.",
+    "developed_by": "Desarrollado por Quad4 Software",
     "meta_site": "MeshChatX es un proyecto de <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>.",
     "product": "Producto",
-    "explore": "Explorar"
+    "explore": "Explorar",
+    "legacy": "Legacy"
   },
   "contact": {
     "h1": "Contacto",
@@ -144,7 +149,9 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Haz clic en la dirección para copiar",
-    "copied": "Copiado"
+    "copied": "Copiado",
+    "banner": "Dona para apoyar el futuro de MeshChatX",
+    "banner_dismiss": "Cerrar"
   },
   "license": {
     "h1": "Licencia",
@@ -175,7 +182,8 @@
   "home": {
     "hero": {
       "h1": "Cliente Reticulum todo en uno",
-      "lead": "MeshChatX es un cliente Reticulum todo en uno con mensajería, llamadas y un navegador NomadNet."
+      "lead": "MeshChatX es un cliente Reticulum todo en uno con mensajería, llamadas y un navegador NomadNet.",
+      "shot_alt": "Conversacion de MeshChatX"
     },
     "platform": {
       "macos": "macOS",
@@ -207,7 +215,7 @@
       "banishment": "Expulsión",
       "backups": "Copias de seguridad y capturas automáticas",
       "customizable": "Personalizable",
-      "telemetry": "Telemetría (LXMF)",
+      "telemetry": "Telemetría LXMF",
       "host_pages": "Alojar páginas",
       "soon": "(próximamente)",
       "more": "+ más"
@@ -219,7 +227,7 @@
       "download_for": "Descargar para %s"
     },
     "section": {
-      "infra_h2": "Sin servidores de empresa",
+      "infra_h2": "Sin servidores corporativos ni nube",
       "infra_lead": "MeshChatX no opera servidores de chat. Los mensajes viajan por los enlaces de Reticulum que configuras."
     },
     "feature": {
@@ -269,7 +277,14 @@
     },
     "preview": {
       "demo_label": "Demo en vivo",
-      "demo_open": "Abrir la demo en vivo de MeshChatX"
+      "demo_open": "Abrir la demo en vivo de MeshChatX",
+      "mosaic_h2": "Capturas",
+      "desktop": "Escritorio",
+      "mobile": "Móvil",
+      "open": "Ver captura",
+      "close": "Cerrar",
+      "prev": "Captura anterior",
+      "next": "Captura siguiente"
     }
   },
   "roadmap": {
@@ -450,7 +465,7 @@
   },
   "git": {
     "h1": "Repositorios de código",
-    "lead": "rngit es Git sobre Reticulum y el árbol canónico. GitHub y LavaForge son espejos públicos para CI y releases.",
+    "lead": "rngit es Git sobre Reticulum y el árbol canónico. GitHub y CodeFloe son espejos públicos para CI y releases.",
     "primary_badge": "Canónico",
     "mirror_badge": "Espejo",
     "open_repo": "Abrir repositorio",
@@ -463,8 +478,8 @@
     "rngit_lead": "Git sobre Reticulum. Clona en la mesh o abre la página del repo en NomadNet. Sin endpoint en clearnet.",
     "github_h3": "GitHub",
     "github_lead": "Espejo público usado para releases, CI y distribución. Vale para la mayoría de colaboradores.",
-    "lavaforge_h3": "LavaForge",
-    "lavaforge_lead": "Espejo de forge comunitario. Útil si ya estás en LavaForge."
+    "codefloe_h3": "CodeFloe",
+    "codefloe_lead": "Espejo de forge público. Úsalo si prefieres CodeFloe a GitHub."
   },
   "docs": {
     "meta_suffix": "Docs de MeshChatX",
@@ -486,6 +501,13 @@
       "platforms": "Guías de plataforma",
       "ops": "Operaciones"
     },
-    "copy_md": "Copiar MD"
+    "copy_md": "Copiar MD",
+    "updated": "Ultima actualizacion :date por :author"
+  },
+  "news": {
+    "h1": "Noticias",
+    "lead": "Anuncios y actualizaciones del sitio.",
+    "empty": "Aun no hay publicaciones. Suscribete al RSS para enterarte de la primera.",
+    "rss": "Feed RSS"
   }
 }

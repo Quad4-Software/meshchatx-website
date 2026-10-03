@@ -21,7 +21,8 @@
       "git": "Git | MeshChatX",
       "docs": "Docs | MeshChatX",
       "changelog": "Muutosloki | MeshChatX",
-      "offline": "Offline | MeshChatX"
+      "offline": "Offline | MeshChatX",
+      "news": "Uutiset | MeshChatX"
     },
     "og_image_alt": "MeshChatX-logo",
     "desc": {
@@ -37,9 +38,10 @@
       "dependency": "Selaa MeshChatX-julkaisujen CycloneDX-SBOM:ia: pakettigraafi, lisenssit ja koko toimitusketju versiokohtaisesti.",
       "branding": "MeshChatX-logot, kuvakkeet ja brändivärit lehdistölle ja tuotekäyttöön.",
       "error": "Tätä sivua ei voitu näyttää pyydetyllä tavalla.",
-      "git": "Kloonaa MeshChatX rngitillä Reticulumin yli tai käytä GitHub- ja LavaForge-peilejä.",
+      "git": "Kloonaa MeshChatX rngitillä Reticulumin yli tai käytä GitHub- ja CodeFloe-peilejä.",
       "docs": "MeshChatX-dokumentaatio sovelluksen docs-paketista: asennus, viestintä, LXST-puhelut, NomadNet, rajapinnat ja alustaoppaat.",
-      "offline": "Olet offline. Avaa välimuistissa oleva MeshChatX-sivu tai muodosta yhteys uudelleen."
+      "offline": "Olet offline. Avaa välimuistissa oleva MeshChatX-sivu tai muodosta yhteys uudelleen.",
+      "news": "MeshChatX-uutiset, tiedotteet ja RSS-syote."
     }
   },
   "error": {
@@ -94,7 +96,8 @@
     "secondary": "Lisää",
     "theme_light": "Vaalea",
     "theme_dark": "Tumma",
-    "theme_system": "Järjestelmä"
+    "theme_system": "Järjestelmä",
+    "news": "Uutiset"
   },
   "lang": {
     "label": "Kieli",
@@ -119,9 +122,11 @@
     "privacy": "Tietosuojakäytäntö",
     "license_badge": "MIT + 0BSD",
     "meta_copyright": "© 2026 MeshChatX.",
+    "developed_by": "Kehittänyt Quad4 Software",
     "meta_site": "MeshChatX on <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>-projekti.",
     "product": "Tuote",
-    "explore": "Tutustu"
+    "explore": "Tutustu",
+    "legacy": "Legacy"
   },
   "contact": {
     "h1": "Yhteystiedot",
@@ -144,7 +149,9 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Kopioi napsauttamalla osoitetta",
-    "copied": "Kopioitu"
+    "copied": "Kopioitu",
+    "banner": "Lahjoita MeshChatX:n tulevaisuuden tueksi",
+    "banner_dismiss": "Sulje"
   },
   "license": {
     "h1": "Lisenssi",
@@ -175,7 +182,8 @@
   "home": {
     "hero": {
       "h1": "Kaiken kattava Reticulum-asiakas",
-      "lead": "MeshChatX on kaiken kattava Reticulum-asiakas viesteillä, puheluilla ja NomadNet-selaimella."
+      "lead": "MeshChatX on kaiken kattava Reticulum-asiakas viesteillä, puheluilla ja NomadNet-selaimella.",
+      "shot_alt": "MeshChatX-keskustelunakyma"
     },
     "platform": {
       "macos": "macOS",
@@ -207,7 +215,7 @@
       "banishment": "Karkotus",
       "backups": "Automaattiset varmuuskopiot ja tilannekuvat",
       "customizable": "Muokattava",
-      "telemetry": "Telemetria (LXMF)",
+      "telemetry": "LXMF-telemetria",
       "host_pages": "Sivujen isännöinti",
       "soon": "(tulossa pian)",
       "more": "+ lisää"
@@ -219,7 +227,7 @@
       "download_for": "Lataa %s:lle"
     },
     "section": {
-      "infra_h2": "Ei yrityksen palvelimia",
+      "infra_h2": "Ei yrityspalvelimia tai pilvea",
       "infra_lead": "MeshChatX ei ylläpidä chat-palvelimia. Viestit kulkevat määrittämiesi Reticulum-linkkien kautta."
     },
     "feature": {
@@ -269,7 +277,14 @@
     },
     "preview": {
       "demo_label": "Live-demo",
-      "demo_open": "Avaa MeshChatX:n live-demo"
+      "demo_open": "Avaa MeshChatX:n live-demo",
+      "mosaic_h2": "Kuvakaappaukset",
+      "desktop": "Työpöytä",
+      "mobile": "Mobiili",
+      "open": "Nayta kuvakaappaus",
+      "close": "Sulje",
+      "prev": "Edellinen kuvakaappaus",
+      "next": "Seuraava kuvakaappaus"
     }
   },
   "roadmap": {
@@ -450,7 +465,7 @@
   },
   "git": {
     "h1": "Lähdekoodivarastot",
-    "lead": "rngit on Git Reticulumin yli ja kanoninen puu. GitHub ja LavaForge ovat julkisia peilejä CI:lle ja julkaisuille.",
+    "lead": "rngit on Git Reticulumin yli ja kanoninen puu. GitHub ja CodeFloe ovat julkisia peilejä CI:lle ja julkaisuille.",
     "primary_badge": "Kanoninen",
     "mirror_badge": "Peili",
     "open_repo": "Avaa varasto",
@@ -463,8 +478,8 @@
     "rngit_lead": "Git Reticulumin yli. Kloonaa meshissä tai avaa NomadNet-repositoriosivu. Ei clearnet-päätettä.",
     "github_h3": "GitHub",
     "github_lead": "Julkinen peili julkaisuille, CI:lle ja jakelulle. Sopii useimmille tekijöille.",
-    "lavaforge_h3": "LavaForge",
-    "lavaforge_lead": "Yhteisön forge-peili. Hyödyllinen, jos olet jo LavaForgessa."
+    "codefloe_h3": "CodeFloe",
+    "codefloe_lead": "Julkinen forge-peili. Hyödyllinen, jos suosit CodeFloeta GitHubin sijaan."
   },
   "docs": {
     "meta_suffix": "MeshChatX Docs",
@@ -486,6 +501,13 @@
       "platforms": "Alustaoppaat",
       "ops": "Käyttö"
     },
-    "copy_md": "Kopioi MD"
+    "copy_md": "Kopioi MD",
+    "updated": "Paivitetty :date, :author"
+  },
+  "news": {
+    "h1": "Uutiset",
+    "lead": "Tiedotteet ja sivuston paivitykset.",
+    "empty": "Ei julkaisuja viela. Tilaa RSS, niin kuulet ensimmaisesta.",
+    "rss": "RSS-syote"
   }
 }

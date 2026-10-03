@@ -19,7 +19,7 @@
    "docker": "Docker / Podman",
    "python": "Python",
    "android": "Android",
-   "umbrel": "Umbrel",
+   "arch": "Arch",
    "flatpak": "Flatpak"
   },
   "macos": {
@@ -106,7 +106,8 @@
    "copy_run": "Copier la commande Run",
    "trivy_before": "Les images Docker sont scannées avec ",
    "trivy_link": "Trivy",
-   "friendly": "Copiez le fichier Compose si vous utilisez Docker ou Podman au quotidien. Les commandes pull sont sous plus d'options."
+   "friendly": "Copiez le fichier Compose si vous utilisez Docker ou Podman au quotidien. Les commandes pull sont sous plus d'options.",
+   "engine_label": "Moteur de conteneurs"
   },
   "python": {
    "h2": "Python",
@@ -136,12 +137,22 @@
    "badge": "Bientôt",
    "btn_apk": "Télécharger .apk",
    "obtainium_alt": "Obtenir sur Obtainium",
+   "appverifier": "AppVerifier",
+   "appverifier_lead": "SHA-256 du certificat de signature. Collez le nom du paquet et ce hash dans AppVerifier.",
+   "copy_appverifier": "Copier pour AppVerifier",
    "friendly": "APK Android pour l'app, ou Termux pour un nœud headless."
   },
-  "umbrel": {
-   "h2": "Umbrel",
-   "intro": "Installez MeshChatX sur votre serveur domestique Umbrel depuis l'Umbrel App Store.",
-   "btn": "Obtenir sur Umbrel"
+  "archlinux": {
+   "h2": "Arch Linux",
+   "intro": "Installez depuis le dépôt pacman Quad4. Ajoutez le dépôt, puis installez avec pacman.",
+   "warn": "Ajoutez d'abord le dépôt Quad4. N'installez pas MeshChatX depuis l'AUR.",
+   "btn": "Ouvrir arch.quad4.io"
+  },
+  "torrent": {
+   "h2": "Torrent",
+   "intro": "BitTorrent avec webseeds HTTP depuis cdn.quad4.io. Fonctionne sans pairs.",
+   "btn": "Telecharger .torrent",
+   "magnet": "Copier le magnet"
   },
   "termux": {
    "h2": "Termux",
@@ -162,7 +173,7 @@
    "android_hint": "APK / Termux",
    "docker_hint": "Conteneurs",
    "python_hint": "pip install",
-   "umbrel_hint": "App store",
+   "arch_hint": "pacman",
    "flatpak_hint": "Installation en un clic"
   },
   "cta": {
@@ -193,6 +204,7 @@
   },
   "verify": "Vérifier",
   "verify_copy": "Copier la commande de vérification",
-  "recommended": "Recommandé"
+  "recommended": "Recommandé",
+  "cdn_powered": "CDN fourni par"
  }
 }

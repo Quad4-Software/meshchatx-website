@@ -13,6 +13,7 @@ export const GET: APIRoute = async () => {
 - [Docs](${SITE.domain}/docs) - user documentation mirrored from the app
 - [Roadmap](${SITE.domain}/roadmap)
 - [Changelog](${SITE.domain}/changelog)
+- [News](${SITE.domain}/news) - announcements ([RSS](${SITE.domain}/news.xml))
 - [Interfaces](${SITE.domain}/interfaces) - public Reticulum interface directory
 - [Dependencies](${SITE.domain}/dependency) - CycloneDX SBOM browser
 - [Branding](${SITE.domain}/branding)
@@ -21,6 +22,7 @@ export const GET: APIRoute = async () => {
 - [License](${SITE.domain}/license)
 - [Privacy](${SITE.domain}/privacy)
 - [Git mirrors](${SITE.domain}/git)
+- [Legacy](${SITE.domain}/legacy) - text-only page for old browsers and no JavaScript
 
 ## APIs
 
@@ -33,7 +35,7 @@ export const GET: APIRoute = async () => {
 
 - Canonical: rngit over Reticulum at ${SITE.rngitRns}
 - GitHub mirror: ${SITE.githubUrl}
-- LavaForge mirror: ${SITE.lavaforgeUrl}
+- CodeFloe mirror: ${SITE.codefloeUrl}
 `;
   return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 };

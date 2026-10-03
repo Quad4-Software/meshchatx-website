@@ -45,16 +45,19 @@ func envBool(key string, def bool) bool {
 
 func main() {
 	cfg := handlers.Config{
-		GitHubRepo:    env("GITHUB_REPO", "Quad4-Software/MeshChatX"),
-		CdnBase:       env("CDN_BASE", "https://cdn.quad4.io/releases"),
-		DirectoryURL:  env("DIRECTORY_URL", "https://directory.rns.recipes/api/directory/submitted?search=&type=&status=online"),
-		ChangelogURL:  env("CHANGELOG_URL", "https://raw.githubusercontent.com/Quad4-Software/MeshChatX/master/CHANGELOG.md"),
-		RoadmapURL:    env("ROADMAP_URL", ""),
-		PreferCDN:     envBool("PREFER_CDN", true),
-		TTLReleases:   envDur("TTL_RELEASES", 15*time.Minute),
-		TTLInterfaces: envDur("TTL_INTERFACES", 12*time.Hour),
-		TTLChangelog:  envDur("TTL_CHANGELOG", 15*time.Minute),
-		TTLRoadmap:    envDur("TTL_ROADMAP", 15*time.Minute),
+		GitHubRepo:       env("GITHUB_REPO", "Quad4-Software/MeshChatX"),
+		CdnBase:          env("CDN_BASE", "https://cdn.quad4.io"),
+		DirectoryURL:     env("DIRECTORY_URL", "https://directory.rns.recipes/api/directory/submitted?search=&type=&status=online"),
+		ChangelogURL:     env("CHANGELOG_URL", "https://raw.githubusercontent.com/Quad4-Software/MeshChatX/master/CHANGELOG.md"),
+		RoadmapURL:       env("ROADMAP_URL", ""),
+		PreferCDN:        envBool("PREFER_CDN", true),
+		BunnyStorageZone: env("BUNNY_STORAGE_ZONE", "quad4"),
+		BunnyStorageKey:  env("BUNNY_STORAGE_ACCESS_KEY", ""),
+		BunnyStorageURL:  env("BUNNY_STORAGE_ENDPOINT", "https://ny.storage.bunnycdn.com"),
+		TTLReleases:      envDur("TTL_RELEASES", 15*time.Minute),
+		TTLInterfaces:    envDur("TTL_INTERFACES", 12*time.Hour),
+		TTLChangelog:     envDur("TTL_CHANGELOG", 15*time.Minute),
+		TTLRoadmap:       envDur("TTL_ROADMAP", 15*time.Minute),
 	}
 	srv := handlers.New(cfg)
 
