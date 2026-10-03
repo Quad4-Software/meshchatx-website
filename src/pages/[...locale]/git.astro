@@ -28,7 +28,7 @@ const hosts: Host[] = [
   {
     key: 'rngit',
     primary: true,
-    logo: '/vendor/reticulum-logo.webp',
+    logo: '/vendor/reticulum-logo-128.webp',
     commands: [
       { label: t(locale, 'git.clone_rns'), cmd: `git clone ${SITE.rngitRns}` },
       { label: t(locale, 'git.nomadnet'), cmd: SITE.rngitNomadnet },
@@ -73,7 +73,7 @@ const hosts: Host[] = [
         >
           <div class="flex items-center gap-3">
             {h.logo ? (
-              <img src={h.logo} alt="" width="44" height="44" class="h-11 w-11 rounded-lg" loading="lazy" decoding="async" />
+              <img src={h.logo} alt="" width="44" height="44" class="h-11 w-11 rounded-lg" loading="lazy" decoding="async" fetchpriority="low" />
             ) : (
               <span class="flex h-11 w-11 items-center justify-center rounded-lg border border-line bg-raised text-muted">
                 <Icon name={h.icon!} size={h.iconSize ?? 22} />
