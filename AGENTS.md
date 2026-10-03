@@ -15,8 +15,17 @@ pnpm lhci         # lighthouse autorun against dist/ (needs CHROME_PATH=/usr/bin
 
 After `pnpm build`, deploy with OpenTofu (`cd opentofu && tofu init && tofu apply`) or
 Ansible (`cd ansible && ansible-playbook -i inventory.example playbook.yml`).
-The site image is Alpine lighttpd (`docker build -t meshchatx-web .`). OpenTofu
-builds the `runtime` stage and bind-mounts `dist/`.
+The site image is Alpine lighttpd (`docker build -t meshchatx-web --target web .`).
+OpenTofu builds the `runtime` stage and bind-mounts `dist/`.
+
+Local stack: `docker compose up --build -d` (web :8080, api :8090).
+Coolify: use `docker-compose.coolify.yml`. Do not publish host ports. Assign the
+site domain only to the `web` service as `https://your.domain:8080`. Optional API
+domain on `api` as `:8090`. Set `BUNNY_STORAGE_ACCESS_KEY` on `api` for Storage
+listing.
+
+GHCR images (CI, zstd OCI layers): `ghcr.io/quad4-software/meshchatx-website/web`
+and `ghcr.io/quad4-software/meshchatx-website/api`.
 
 Lighthouse must stay at 100 in every category; thresholds live in
 `lighthouserc.json`.
@@ -34,8 +43,11 @@ Lighthouse must stay at 100 in every category; thresholds live in
 - `src/pages/api/` - static JSON endpoints baked at build
 - `src/components/` - Nav, Footer, Starfield, MeshGlyph, PageHero, CommandBlock, Icon
 - `public/` - favicons, og cards, showcase shots, branding media
-- `Dockerfile` - Alpine lighttpd (default target bakes dist/, `runtime` mounts it)
+- `Dockerfile` - Alpine lighttpd (default target bakes dist/, `runtime` mounts it, `web` is the GHCR image)
 - `docker/lighttpd.conf` - static-file config for the image
+- `docker-compose.yml` - local web + api
+- `docker-compose.coolify.yml` - Coolify stack (no host ports, no custom networks)
+- `.github/workflows/` - CI, Docker GHCR (zstd), zizmor, Scorecard, CodeQL
 - `opentofu/` - Docker lighttpd for dist/, optional site API from api/
 - `ansible/` - copy dist/ onto a host lighttpd vhost, optional API container
 

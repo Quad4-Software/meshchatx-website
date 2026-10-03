@@ -8,8 +8,10 @@ repo changelog, and the roadmap.
 
 ```sh
 go run ./cmd/server            # listens on :8090
-docker build -t siteapi -f api/Dockerfile .
+docker build -t siteapi -f api/Dockerfile api
 ```
+
+GHCR: `ghcr.io/quad4-software/meshchatx-website/api`.
 
 ## Endpoints
 
