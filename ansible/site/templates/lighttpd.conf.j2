@@ -72,7 +72,7 @@ $HTTP["url"] =~ "^/_astro/" {
 }
 
 url.rewrite-if-not-file = (
-  "^/(.+[^/])$" => "/$1.html"
+  "^(/[^?]+[^/?])" => "$1/index.html"
 )
 
 server.errorfile-prefix = "{{ meshchatx_web_root }}/"
