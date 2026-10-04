@@ -1,0 +1,12 @@
+minimumReleaseAgeExclude:
+  - http-cache-semantics@4.3.0
+# Dependency security overrides.
+# lighthouse 13 replaces the puppeteer-core@24 chain (extract-zip is
+# unmaintained and unpatched upstream) and its proxy-agent deps.
+overrides:
+  "@lhci/cli>lighthouse": "13.5.0"
+  "@lhci/utils>lighthouse": "13.5.0"
+  tmp: "^0.2.7"
+  uuid: "^11.1.1"
+  basic-ftp: "6.2.1"
+  http-cache-semantics: "^4.3.0"
