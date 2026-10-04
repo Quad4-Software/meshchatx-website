@@ -3,10 +3,12 @@
 package handlers
 
 import (
+	"context"
 	"embed"
 	"encoding/json"
 	"net/http"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -66,9 +68,16 @@ func (s *Server) Routes(e *echo.Echo) {
 	api.GET("/roadmap", s.roadmap)
 }
 
-// respond serves the cached JSON bytes with ETag / cache headers.
-func (s *Server) respond(c echo.Context, key string, ttl time.Duration, fetch func() ([]byte, error)) error {
-	data, etag, fetchedAt, err := s.c.GetOrFetch(key, ttl, fetch)
+// respond serves the cached JSON bytes with ETag / cache headers. The cached
+// payload ships with a precompressed gzip copy, so the hot path never
+// recompresses per request.
+func (s *Server) respond(c echo.Context, key string, ttl time.Duration, fetch func(ctx context.Context) ([]byte, error)) error {
+	// Fetches may run in a background stale-while-revalidate refresh, so they
+	// must not die with the request that happened to trigger them.
+	ctx := context.WithoutCancel(c.Request().Context())
+	data, gz, etag, fetchedAt, err := s.c.GetOrFetch(key, ttl, func() ([]byte, error) {
+		return fetch(ctx)
+	})
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadGateway, "upstream fetch failed").SetInternal(err)
 	}
@@ -79,19 +88,58 @@ func (s *Server) respond(c echo.Context, key string, ttl time.Duration, fetch fu
 	h.Set("ETag", etag)
 	h.Set("Cache-Control", "public, max-age=60, stale-while-revalidate=300")
 	h.Set("Last-Modified", fetchedAt.UTC().Format(http.TimeFormat))
+	h.Add("Vary", "Accept-Encoding")
+	if acceptsGzip(c.Request()) && gz != nil {
+		h.Set("Content-Encoding", "gzip")
+		return c.Blob(http.StatusOK, "application/json; charset=utf-8", gz)
+	}
 	return c.Blob(http.StatusOK, "application/json; charset=utf-8", data)
 }
 
-func (s *Server) releases(c echo.Context) error {
-	key := "releases"
-	return s.respond(c, key, s.cfg.TTLReleases, func() ([]byte, error) {
-		rels, err := s.up.Releases(c.Request().Context(), s.cfg.GitHubRepo, s.cfg.cdn())
+// acceptsGzip reports whether the request allows a gzip response body.
+func acceptsGzip(r *http.Request) bool {
+	for _, part := range strings.Split(r.Header.Get("Accept-Encoding"), ",") {
+		enc := strings.ToLower(strings.TrimSpace(strings.SplitN(part, ";", 2)[0]))
+		if enc == "gzip" || enc == "*" {
+			return true
+		}
+	}
+	return false
+}
+
+// releaseList returns the upstream release list through a shared cache key so
+// all releases routes hit GitHub at most once per TTL.
+func (s *Server) releaseList(ctx context.Context) ([]upstream.Release, error) {
+	raw, _, _, _, err := s.c.GetOrFetch("releases:upstream", s.cfg.TTLReleases, func() ([]byte, error) {
+		rels, err := s.up.Releases(ctx, s.cfg.GitHubRepo, s.cfg.cdn())
 		if err != nil {
 			return nil, err
 		}
-		ch := c.Param("channel")
+		return json.Marshal(rels)
+	})
+	if err != nil {
+		return nil, err
+	}
+	var rels []upstream.Release
+	if err := json.Unmarshal(raw, &rels); err != nil {
+		return nil, err
+	}
+	return rels, nil
+}
+
+func (s *Server) releases(c echo.Context) error {
+	ch := c.Param("channel")
+	key := "releases"
+	if ch != "" {
+		key = "releases:" + ch
+	}
+	return s.respond(c, key, s.cfg.TTLReleases, func(ctx context.Context) ([]byte, error) {
+		rels, err := s.releaseList(ctx)
+		if err != nil {
+			return nil, err
+		}
 		if ch != "" {
-			var filtered []upstream.Release
+			filtered := []upstream.Release{}
 			for _, r := range rels {
 				if r.Channel == ch {
 					filtered = append(filtered, r)
@@ -121,8 +169,8 @@ func firstOrNil(rs []upstream.Release) any {
 }
 
 func (s *Server) interfaces(c echo.Context) error {
-	return s.respond(c, "interfaces", s.cfg.TTLInterfaces, func() ([]byte, error) {
-		payload, err := s.up.Interfaces(c.Request().Context(), s.cfg.DirectoryURL)
+	return s.respond(c, "interfaces", s.cfg.TTLInterfaces, func(ctx context.Context) ([]byte, error) {
+		payload, err := s.up.Interfaces(ctx, s.cfg.DirectoryURL)
 		if err != nil {
 			return nil, err
 		}
@@ -131,8 +179,8 @@ func (s *Server) interfaces(c echo.Context) error {
 }
 
 func (s *Server) changelog(c echo.Context) error {
-	return s.respond(c, "changelog", s.cfg.TTLChangelog, func() ([]byte, error) {
-		entries, err := s.up.Changelog(c.Request().Context(), s.cfg.ChangelogURL)
+	return s.respond(c, "changelog", s.cfg.TTLChangelog, func(ctx context.Context) ([]byte, error) {
+		entries, err := s.up.Changelog(ctx, s.cfg.ChangelogURL)
 		if err != nil {
 			return nil, err
 		}
@@ -141,10 +189,10 @@ func (s *Server) changelog(c echo.Context) error {
 }
 
 func (s *Server) roadmap(c echo.Context) error {
-	return s.respond(c, "roadmap", s.cfg.TTLRoadmap, func() ([]byte, error) {
+	return s.respond(c, "roadmap", s.cfg.TTLRoadmap, func(ctx context.Context) ([]byte, error) {
 		var items []upstream.RoadmapItem
 		if s.cfg.RoadmapURL != "" {
-			live, err := s.up.Roadmap(c.Request().Context(), s.cfg.RoadmapURL)
+			live, err := s.up.Roadmap(ctx, s.cfg.RoadmapURL)
 			if err == nil {
 				items = live
 			}
@@ -158,7 +206,7 @@ func (s *Server) roadmap(c echo.Context) error {
 				return nil, err
 			}
 		}
-		rels, err := s.up.Releases(c.Request().Context(), s.cfg.GitHubRepo, upstream.CDN{})
+		rels, err := s.releaseList(ctx)
 		if err != nil {
 			return nil, err
 		}

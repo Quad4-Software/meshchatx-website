@@ -65,7 +65,7 @@ func main() {
 	e.HideBanner = true
 	e.HidePort = true
 	e.Use(middleware.Recover())
-	e.Use(middleware.Gzip())
+	// Gzip happens in the handler: cached payloads store precompressed bytes.
 	e.Use(middleware.Secure())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{
@@ -85,6 +85,7 @@ func main() {
 	)))
 	e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{Timeout: 25 * time.Second}))
 	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
+		Skipper:   func(c echo.Context) bool { return c.Path() == "/healthz" },
 		LogStatus: true, LogURI: true, LogLatency: true, LogRemoteIP: true,
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
 			log.Printf("%s %s status=%d latency=%s ip=%s", c.Request().Method, v.URI, v.Status, v.Latency, v.RemoteIP)
