@@ -9,7 +9,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
   CMD wget -q -O /dev/null http://127.0.0.1:8080/ || exit 1
 CMD ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
 
-FROM node:24-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /src
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 RUN corepack enable && corepack prepare pnpm@10 --activate
