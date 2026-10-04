@@ -1,4 +1,4 @@
-FROM alpine:3.22 AS runtime
+FROM alpine:3.24 AS runtime
 RUN apk add --no-cache lighttpd=1.4.85-r0 \
  && mkdir -p /var/www/html \
  && chown -R lighttpd:lighttpd /var/www/html
