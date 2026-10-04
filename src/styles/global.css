@@ -29,7 +29,7 @@
   --color-paper-300: #d9d9de;
 
   --color-canvas: var(--color-void-900);
-  --color-canvas-alpha: rgba(10, 10, 11, 0.78);
+  --color-canvas-alpha: rgba(10, 10, 11, 0.88);
   --color-surface: var(--color-void-850);
   --color-surface-alpha: rgba(16, 16, 19, 0.86);
   --color-raised: var(--color-void-800);
@@ -46,7 +46,7 @@
 
 [data-theme='light'] {
   --color-canvas: var(--color-paper-50);
-  --color-canvas-alpha: rgba(250, 250, 250, 0.82);
+  --color-canvas-alpha: rgba(250, 250, 250, 0.9);
   --color-surface: #ffffff;
   --color-surface-alpha: rgba(255, 255, 255, 0.88);
   --color-raised: var(--color-paper-100);

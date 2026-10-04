@@ -71,8 +71,8 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
           <span class="sr-only"> {t(locale, 'lang.pick')}</span>
         </button>
         <div id="mcx-lang-menu" class="mcx-flyout-panel mcx-flyout-end" role="listbox">
-          <span class="dropdown-caret pointer-events-none absolute right-3.5 top-1.5 z-10 h-2 w-2 rotate-45 border-l border-t border-line bg-surface" aria-hidden="true"></span>
-          <div class="min-w-36 rounded-lg border border-line bg-surface p-1 shadow-xl">
+          <span class="dropdown-caret pointer-events-none absolute right-3.5 top-1.5 z-10 h-2 w-2 rotate-45 border-l border-t border-line bg-raised" aria-hidden="true"></span>
+          <div class="min-w-36 rounded-lg border border-line bg-raised p-1 shadow-2xl">
             {LOCALES.map((l) => (
               <a
                 href={localePath(l, currentPath.replace(/^\//, ''))}
@@ -80,7 +80,7 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
                 aria-selected={l === locale}
                 class:list={[
                   'block rounded-md px-3 py-1.5 text-sm',
-                  l === locale ? 'bg-raised text-fg' : 'text-muted hover:text-fg',
+                  l === locale ? 'bg-line text-fg' : 'text-muted hover:bg-line hover:text-fg',
                 ]}
               >
                 {LOCALE_NAMES[l]}
@@ -109,14 +109,14 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
           <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
         <div id="mcx-mobile-menu" class="mcx-flyout-panel mcx-flyout-end">
-          <div class="min-w-48 rounded-lg border border-line bg-surface p-1 shadow-xl">
+          <div class="min-w-48 rounded-lg border border-line bg-raised p-1 shadow-2xl">
             {NAV_LINKS.map((l) => (
-              <a href={localePath(locale, l.path)} class="block rounded-md px-3 py-2 text-sm text-muted hover:bg-raised hover:text-fg">
+              <a href={localePath(locale, l.path)} class="block rounded-md px-3 py-2 text-sm text-muted hover:bg-line hover:text-fg">
                 {t(locale, l.key)}
               </a>
             ))}
-            <a href={localePath(locale, 'interfaces')} class="block rounded-md px-3 py-2 text-sm text-muted hover:bg-raised hover:text-fg">{t(locale, 'nav.interfaces')}</a>
-            <a href={localePath(locale, 'donate')} class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted hover:bg-raised hover:text-fg">
+            <a href={localePath(locale, 'interfaces')} class="block rounded-md px-3 py-2 text-sm text-muted hover:bg-line hover:text-fg">{t(locale, 'nav.interfaces')}</a>
+            <a href={localePath(locale, 'donate')} class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted hover:bg-line hover:text-fg">
               <Icon name="mdiPiggyBank" size={16} />
               {t(locale, 'nav.donate')}
             </a>
