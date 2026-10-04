@@ -4,7 +4,7 @@ import PageHero from '../../components/PageHero.astro';
 import { LOCALES, SITE, type Locale } from '../../config/site';
 import { t } from '../../i18n';
 import { getChangelog } from '../../lib/changelog';
-import { marked } from 'marked';
+import { renderMarkdown } from '../../lib/markdown';
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({
@@ -72,7 +72,7 @@ const shown = entries.slice(0, 12);
             </h2>
             {e.date && <span class="font-mono text-xs text-faint">{e.date}</span>}
           </header>
-          <div class="doc-body text-sm" set:html={marked.parse(e.body)} />
+          <div class="doc-body text-sm" set:html={renderMarkdown(e.body)} />
         </article>
       ))}
       <p id="cl-none" class="hidden rounded-xl border border-line bg-surface p-6 text-sm text-muted">{t(locale, 'docs.search_empty')}</p>
