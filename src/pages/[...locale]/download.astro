@@ -70,9 +70,6 @@ const flatpakCommands = (c: Channel) =>
 const flatpakRemote = (c: Channel) =>
   `flatpak remote-add --if-not-exists meshchatx ${SITE.flatpakCdnBase}/meshchatx.flatpakrepo\nflatpak install meshchatx ${SITE.flatpakAppId}//${c}`;
 
-const archPkg = (c: Channel) =>
-  c === 'beta' ? 'meshchatx-beta-bin' : c === 'testing' ? 'meshchatx-testing-bin' : 'meshchatx-bin';
-
 const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale, `dl.${key}`, vars);
 
 const card = 'dl-card rounded-xl border border-line bg-surface p-6';
@@ -279,14 +276,11 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
             <Icon name="mdiAlertOutline" size={16} class="mt-0.5 shrink-0" />
             <p class="text-xs leading-relaxed">{t(locale, 'dl.archlinux.warn')}</p>
           </div>
-          <div class="mt-4">
-            <CommandBlock label="pacman" code={`sudo pacman -S ${archPkg(c)}`} copyLabel={t(locale, 'dl.python.copy')} />
-          </div>
           <a
             href={SITE.archUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-4 inline-flex items-center justify-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-medium text-fg transition-colors hover:bg-raised"
+            class:list={[btn, 'mt-4']}
           >
             {t(locale, 'dl.archlinux.btn')}
           </a>
@@ -422,7 +416,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
             {t(locale, 'dl.torrent.magnet')}
           </button>
         </div>
-        <p class="mt-3 flex items-start gap-1.5 text-xs text-faint">
+        <p class="mt-3 flex items-start gap-1.5 text-xs text-warn">
           <Icon name="mdiShieldAlertOutline" size={14} class="mt-px shrink-0" />
           {t(locale, 'dl.torrent.privacy')}
         </p>
@@ -544,7 +538,8 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
       const dl = rel.downloads || {};
       panel.querySelectorAll('.dl-link').forEach((a) => {
         const key = a.getAttribute('data-asset');
-        const asset = key ? dl[key] : null;
+        if (!key) return;
+        const asset = dl[key] || null;
         a.classList.toggle('hidden', !asset);
         a.classList.toggle('inline-flex', !!asset && !a.classList.contains('btn-mini'));
         if (asset) a.href = assetHref(asset);
