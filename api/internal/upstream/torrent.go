@@ -14,9 +14,12 @@ import (
 	"time"
 )
 
-// TorrentFile is one payload file in a generated torrent.
+// TorrentFile is one payload file in a generated torrent. Path is the
+// slash-separated location under the torrent root; it doubles as the
+// webseed-relative path, so it must mirror the CDN layout.
 type TorrentFile struct {
 	Name string
+	Path []string
 	Size int64
 	URL  string
 }
@@ -37,15 +40,18 @@ var torrentTrackers = []string{
 	"udp://tracker.torrent.eu.org:451/announce",
 }
 
-// TorrentFiles returns the release assets bundled into a generated torrent:
-// the Linux packages and Python artifacts, sorted by basename. Windows, macOS,
-// Android, Flatpak, SBOM, and .torrent assets are left out.
+// TorrentFiles returns every release asset for a generated torrent, sorted by
+// webseed path. When the asset has a CDN mirror its path under <track>/<tag>
+// is preserved so the CDN GetRight seed resolves it; without a mirror the
+// bare filename is used, which at least resolves on the flat GitHub seed.
 func (r *Release) TorrentFiles() []TorrentFile {
 	d := &r.Downloads
 	picks := []*Asset{
-		d.PyzPy311X64, d.PyzPy311Arm64, d.PyzPy314X64, d.PyzPy314Arm64,
-		d.Wheel, d.AlpineApk, d.DebAmd64, d.DebArm64, d.RpmAmd64,
-		d.AppImageAmd64, d.AppImageArm64,
+		d.AppImageAmd64, d.AppImageArm64, d.DebAmd64, d.DebArm64,
+		d.RpmAmd64, d.Wheel, d.WinInstaller, d.WinPortable,
+		d.MacDmg, d.MacDmgX64, d.PyzPy311X64, d.PyzPy311Arm64,
+		d.PyzPy314X64, d.PyzPy314Arm64, d.Apk, d.AlpineApk,
+		d.Flatpak, d.Sbom,
 	}
 	seen := map[string]bool{}
 	out := []TorrentFile{}
@@ -64,10 +70,32 @@ func (r *Release) TorrentFiles() []TorrentFile {
 		if u == "" {
 			continue
 		}
-		out = append(out, TorrentFile{Name: a.Name, Size: a.Size, URL: u})
+		out = append(out, TorrentFile{
+			Name: a.Name,
+			Path: r.torrentPath(a),
+			Size: a.Size,
+			URL:  u,
+		})
 	}
-	sort.Slice(out, func(i, j int) bool { return out[i].Name < out[j].Name })
+	sort.Slice(out, func(i, j int) bool {
+		return strings.Join(out[i].Path, "/") < strings.Join(out[j].Path, "/")
+	})
 	return out
+}
+
+// torrentPath derives the file path inside the torrent. The CDN url already
+// encodes <base>/<track>/<tag>/<path>, so the path is whatever follows the
+// tag segment.
+func (r *Release) torrentPath(a *Asset) []string {
+	if a.CdnURL != "" {
+		if i := strings.Index(a.CdnURL, "/"+r.Tag+"/"); i >= 0 {
+			sub := a.CdnURL[i+len(r.Tag)+2:]
+			if segs := strings.Split(sub, "/"); len(segs) > 0 && segs[0] != "" {
+				return segs
+			}
+		}
+	}
+	return []string{a.Name}
 }
 
 // bdecode parses bencode into string, int64, []any, or map[string]any.
@@ -353,9 +381,13 @@ func (c *Client) BuildTorrent(ctx context.Context, rel *Release, seeds []string)
 	}
 	fl := make([]any, 0, len(files))
 	for _, f := range files {
+		path := make([]any, 0, len(f.Path))
+		for _, seg := range f.Path {
+			path = append(path, seg)
+		}
 		fl = append(fl, map[string]any{
 			"length": f.Size,
-			"path":   []any{f.Name},
+			"path":   path,
 		})
 	}
 	info := map[string]any{

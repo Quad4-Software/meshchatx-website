@@ -50,14 +50,20 @@ func tdecode(b []byte, i *int) any {
 }
 
 func TestBuildTorrent(t *testing.T) {
-	fileA := bytes.Repeat([]byte("a"), 3<<20) // 3 MiB -> 1.5 pieces
-	fileB := bytes.Repeat([]byte("b"), 1<<20) // 1 MiB -> fills remainder + 0.5 piece
+	fileA := bytes.Repeat([]byte("a"), 3<<20) // 3 MiB
+	fileB := bytes.Repeat([]byte("b"), 1<<20) // 1 MiB
+	fileW := bytes.Repeat([]byte("w"), 100)   // win installer via CDN subdir
+	fileS := bytes.Repeat([]byte("s"), 50)    // sbom, flat
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case "/release/v9.9.9/a.bin":
 			w.Write(fileA)
 		case "/release/v9.9.9/b.bin":
 			w.Write(fileB)
+		case "/release/v9.9.9/win/win.exe":
+			w.Write(fileW)
+		case "/release/v9.9.9/sbom.cyclonedx.json":
+			w.Write(fileS)
 		default:
 			http.NotFound(w, r)
 		}
@@ -67,9 +73,13 @@ func TestBuildTorrent(t *testing.T) {
 	rel := &Release{Tag: "v9.9.9", Channel: "stable"}
 	rel.Downloads.AppImageAmd64 = &Asset{Name: "a.bin", Size: int64(len(fileA)), GitHubURL: srv.URL + "/release/v9.9.9/a.bin"}
 	rel.Downloads.DebAmd64 = &Asset{Name: "b.bin", Size: int64(len(fileB)), GitHubURL: srv.URL + "/release/v9.9.9/b.bin"}
-	// Not torrentable: must be excluded.
-	rel.Downloads.WinInstaller = &Asset{Name: "win.exe", Size: 10, GitHubURL: srv.URL + "/x"}
-	rel.Downloads.Sbom = &Asset{Name: "sbom.cyclonedx.json", Size: 10, GitHubURL: srv.URL + "/x"}
+	rel.Downloads.WinInstaller = &Asset{
+		Name:      "win.exe",
+		Size:      int64(len(fileW)),
+		GitHubURL: srv.URL + "/win.exe",
+		CdnURL:    srv.URL + "/release/v9.9.9/win/win.exe",
+	}
+	rel.Downloads.Sbom = &Asset{Name: "sbom.cyclonedx.json", Size: int64(len(fileS)), GitHubURL: srv.URL + "/release/v9.9.9/sbom.cyclonedx.json"}
 
 	seeds := []string{srv.URL + "/release/", "https://github.com/Quad4-Software/MeshChatX/releases/download/"}
 	res, err := New().BuildTorrent(context.Background(), rel, seeds)
@@ -103,12 +113,24 @@ func TestBuildTorrent(t *testing.T) {
 		t.Fatalf("piece length %v", info["piece length"])
 	}
 	fl := info["files"].([]any)
-	if len(fl) != 2 {
+	if len(fl) != 4 {
 		t.Fatalf("files %d", len(fl))
 	}
+	// The win asset must keep its CDN subdir path so the GetRight seed resolves.
+	var sawWin bool
+	for _, f := range fl {
+		fm := f.(map[string]any)
+		p := fm["path"].([]any)
+		if len(p) == 2 && p[0] == "win" && p[1] == "win.exe" {
+			sawWin = true
+		}
+	}
+	if !sawWin {
+		t.Fatalf("win asset missing its subdir path: %v", fl)
+	}
 
-	// Pieces must match the concatenated stream a+b split at 2 MiB.
-	stream := append(append([]byte{}, fileA...), fileB...)
+	// Pieces must match the concatenated stream in sorted path order.
+	stream := append(append(append(append([]byte{}, fileA...), fileB...), fileS...), fileW...)
 	var want []byte
 	for off := 0; off < len(stream); off += torrentPieceLen {
 		end := off + torrentPieceLen
