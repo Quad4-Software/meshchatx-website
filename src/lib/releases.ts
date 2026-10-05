@@ -92,15 +92,23 @@ const CDN_TRACK: Record<Channel, string> = {
   testing: 'testing',
 };
 
+const CDN_SUBDIRS = ['', 'win/', 'mac/', 'android/', 'flatpak/'];
+
 async function cdnUrl(channel: Channel, tag: string, name: string): Promise<string | null> {
-  // Probe the CDN mirror path. The storage layout is <track>/<tag>/<file>.
-  const url = `${SITE.cdnBase}/${CDN_TRACK[channel]}/${encodeURIComponent(tag)}/${encodeURIComponent(name)}`;
-  try {
-    const res = await fetch(url, { method: 'HEAD' });
-    return res.ok ? url : null;
-  } catch {
-    return null;
+  // Probe the CDN mirror paths. The storage layout is <track>/<tag>/<file>
+  // with some assets in subdirs like win/ or android/. Nested mac build dirs
+  // are not guessable and get covered by applyApiMirrors instead.
+  const base = `${SITE.cdnBase}/${CDN_TRACK[channel]}/${encodeURIComponent(tag)}`;
+  for (const sub of CDN_SUBDIRS) {
+    const url = `${base}/${sub}${encodeURIComponent(name)}`;
+    try {
+      const res = await fetch(url, { method: 'HEAD' });
+      if (res.ok) return url;
+    } catch {
+      // try the next candidate
+    }
   }
+  return null;
 }
 
 async function toAsset(a: GhAsset | null): Promise<ReleaseAsset | null> {
@@ -143,6 +151,46 @@ async function applyBunnyStorage(release: Release): Promise<void> {
     asset.url = hit.url;
     if (hit.sha256 && !asset.sha256) asset.sha256 = hit.sha256;
   });
+}
+
+/** Merge CDN mirrors resolved by the release API, which can list storage
+ * subdirectories that a HEAD probe cannot guess. */
+async function applyApiMirrors(releases: Release[]): Promise<void> {
+  let list: Array<{ tag?: string; downloads?: Record<string, { name?: string; cdnUrl?: string } | null> }> = [];
+  try {
+    const res = await Promise.all(
+      (['stable', 'beta', 'testing'] as const).map((ch) =>
+        fetch(`${SITE.apiBase}/api/releases/${ch}`, {
+          headers: { 'User-Agent': 'meshchatx-site-build' },
+        }),
+      ),
+    );
+    for (const r of res) {
+      if (!r.ok) continue;
+      const data = (await r.json()) as { releases?: typeof list } & Record<string, unknown>;
+      if (Array.isArray(data)) list.push(...data);
+      else if (Array.isArray(data.releases)) list.push(...data.releases);
+      else if (data.downloads) list.push(data as (typeof list)[number]);
+    }
+  } catch {
+    return;
+  }
+  const byTag = new Map(list.map((r) => [r.tag, r]));
+  for (const rel of releases) {
+    const ar = byTag.get(rel.tag);
+    if (!ar?.downloads) continue;
+    const apiAssets = Object.values(ar.downloads);
+    eachAsset(rel.downloads, (a) => {
+      if (a.cdnUrl) return;
+      const hit = apiAssets.find(
+        (x) => x?.cdnUrl && x.name?.toLowerCase() === a.name.toLowerCase(),
+      );
+      if (hit?.cdnUrl) {
+        a.cdnUrl = hit.cdnUrl;
+        a.url = hit.cdnUrl;
+      }
+    });
+  }
 }
 
 /** Swap GitHub URLs for CDN mirrors where the file exists on the CDN. */
@@ -269,6 +317,8 @@ export async function getReleases(): Promise<Release[]> {
       await preferCdn(r);
     }
   }
+  await applyApiMirrors(out);
+  for (const r of out) markServers(r);
   await attachTorrentMagnets(out);
   memo = out;
   return out;
