@@ -420,7 +420,11 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
           <Icon name="mdiShieldAlertOutline" size={14} class="mt-px shrink-0" />
           {t(locale, 'dl.torrent.privacy')}
         </p>
-        <ShaDetails locale={locale} downloads={d} keys={['torrent']} />
+        <ShaDetails
+          locale={locale}
+          downloads={d}
+          keys={['winInstaller', 'winPortable', 'macDmg', 'macDmgX64', 'apk', 'alpineApk', 'flatpak', 'appImageAmd64', 'appImageArm64', 'debAmd64', 'debArm64', 'rpmAmd64', 'pyzPy314X64', 'pyzPy314Arm64', 'pyzPy311X64', 'pyzPy311Arm64', 'wheel', 'sbom', 'torrent']}
+        />
       </div>
 
       <!-- Flatpak -->
