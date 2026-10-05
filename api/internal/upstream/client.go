@@ -16,19 +16,30 @@ const maxBody = 8 << 20 // 8 MiB, plenty for release metadata / SBOM JSON
 
 type Client struct {
 	hc        *http.Client
+	hcStream  *http.Client
 	userAgent string
 }
 
 func New() *Client {
+	tr := &http.Transport{
+		MaxIdleConns:        16,
+		MaxIdleConnsPerHost: 8,
+		IdleConnTimeout:     60 * time.Second,
+	}
 	return &Client{
-		hc: &http.Client{
-			Timeout: 20 * time.Second,
-			Transport: &http.Transport{
-				MaxIdleConns:        16,
-				MaxIdleConnsPerHost: 8,
-				IdleConnTimeout:     60 * time.Second,
-			},
-		},
+		hc: &http.Client{Timeout: 20 * time.Second, Transport: tr},
+		// Streams multi-hundred-MB release assets for torrent piece hashing:
+		// no whole-request timeout, just a header deadline. The caller's
+		// context bounds the total build.
+		hcStream: &http.Client{Transport: &http.Transport{
+			MaxIdleConns:          8,
+			MaxIdleConnsPerHost:   4,
+			IdleConnTimeout:       60 * time.Second,
+			ResponseHeaderTimeout: 30 * time.Second,
+			ExpectContinueTimeout: 5 * time.Second,
+			TLSHandshakeTimeout:   15 * time.Second,
+			DisableCompression:    true,
+		}},
 		userAgent: "meshchatx-site-api/1.0",
 	}
 }

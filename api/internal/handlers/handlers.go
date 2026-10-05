@@ -6,9 +6,13 @@ import (
 	"context"
 	"embed"
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
+	"net/url"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -22,6 +26,7 @@ var roadmapFS embed.FS
 type Config struct {
 	GitHubRepo       string
 	CdnBase          string
+	PublicBase       string
 	DirectoryURL     string
 	ChangelogURL     string
 	RoadmapURL       string
@@ -49,10 +54,23 @@ type Server struct {
 	cfg Config
 	up  *upstream.Client
 	c   *cache.Cache
+
+	tMu    sync.Mutex
+	tBuilt map[string]*upstream.TorrentResult
+	tBusy  map[string]bool
+	tFail  map[string]time.Time
+	tBuild sync.Mutex
 }
 
 func New(cfg Config) *Server {
-	return &Server{cfg: cfg, up: upstream.New(), c: cache.New()}
+	return &Server{
+		cfg:    cfg,
+		up:     upstream.New(),
+		c:      cache.New(),
+		tBuilt: map[string]*upstream.TorrentResult{},
+		tBusy:  map[string]bool{},
+		tFail:  map[string]time.Time{},
+	}
 }
 
 // Routes registers all endpoints on e.
@@ -66,6 +84,7 @@ func (s *Server) Routes(e *echo.Echo) {
 	api.GET("/interfaces", s.interfaces)
 	api.GET("/changelog", s.changelog)
 	api.GET("/roadmap", s.roadmap)
+	api.GET("/torrents/:tag", s.torrentFile)
 }
 
 // respond serves the cached JSON bytes with ETag / cache headers. The cached
@@ -124,6 +143,8 @@ func (s *Server) releaseList(ctx context.Context) ([]upstream.Release, error) {
 	if err := json.Unmarshal(raw, &rels); err != nil {
 		return nil, err
 	}
+	s.attachTorrents(rels)
+	s.maybeBuildTorrents(rels)
 	return rels, nil
 }
 
@@ -218,4 +239,130 @@ func (s *Server) roadmap(c echo.Context) error {
 			"published": published,
 		})
 	})
+}
+
+// attachTorrents points downloads.torrent at the generated .torrent for
+// releases that carry none, once the build has finished.
+func (s *Server) attachTorrents(rels []upstream.Release) {
+	s.tMu.Lock()
+	defer s.tMu.Unlock()
+	for i := range rels {
+		r := &rels[i]
+		if r.Downloads.Torrent != nil {
+			continue
+		}
+		g, ok := s.tBuilt[r.Tag]
+		if !ok {
+			continue
+		}
+		u := s.cfg.PublicBase + "/api/torrents/" + url.PathEscape(r.Tag)
+		r.Downloads.Torrent = &upstream.Asset{
+			Name:      g.FileName,
+			URL:       u,
+			GitHubURL: u,
+			Magnet:    g.Magnet,
+		}
+	}
+}
+
+// maybeBuildTorrents kicks a background torrent build when the newest release
+// of a channel has no .torrent asset of its own. Older releases are left
+// alone: backfilling them would burn GBs of bandwidth per build.
+func (s *Server) maybeBuildTorrents(rels []upstream.Release) {
+	seen := map[string]bool{}
+	for i := range rels {
+		r := &rels[i]
+		if seen[r.Channel] {
+			continue
+		}
+		seen[r.Channel] = true
+		if r.Downloads.Torrent != nil || len(r.TorrentFiles()) == 0 {
+			continue
+		}
+		s.queueTorrentBuild(r)
+	}
+}
+
+func (s *Server) queueTorrentBuild(r *upstream.Release) {
+	s.tMu.Lock()
+	if s.tBusy[r.Tag] || s.tBuilt[r.Tag] != nil {
+		s.tMu.Unlock()
+		return
+	}
+	if failedAt, ok := s.tFail[r.Tag]; ok && time.Since(failedAt) < time.Hour {
+		s.tMu.Unlock()
+		return
+	}
+	s.tBusy[r.Tag] = true
+	s.tMu.Unlock()
+
+	go func(tag string, seeds []string) {
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Minute)
+		defer cancel()
+		// Serialize builds: one multi-GB pull at a time.
+		s.tBuild.Lock()
+		defer s.tBuild.Unlock()
+		res, err := s.up.BuildTorrent(ctx, r, seeds)
+		s.tMu.Lock()
+		delete(s.tBusy, tag)
+		if err != nil {
+			s.tFail[tag] = time.Now()
+			s.tMu.Unlock()
+			log.Printf("torrent build %s failed: %v", tag, err)
+			return
+		}
+		s.tBuilt[tag] = res
+		s.tMu.Unlock()
+		// Drop the cached responses so the next request re-marshals with the
+		// generated torrent attached.
+		for _, key := range []string{"releases", "releases:stable", "releases:beta", "releases:testing"} {
+			s.c.Invalidate(key)
+		}
+		log.Printf("torrent build %s done: %s", tag, res.InfoHash)
+	}(r.Tag, s.torrentSeeds(r.Channel))
+}
+
+func (s *Server) torrentSeeds(channel string) []string {
+	return []string{
+		strings.TrimRight(s.cfg.CdnBase, "/") + "/" + upstream.TrackForChannel(channel) + "/",
+		"https://github.com/" + s.cfg.GitHubRepo + "/releases/download/",
+	}
+}
+
+func (s *Server) torrentFile(c echo.Context) error {
+	tag := c.Param("tag")
+	s.tMu.Lock()
+	g := s.tBuilt[tag]
+	busy := s.tBusy[tag]
+	s.tMu.Unlock()
+	if g != nil {
+		h := c.Response().Header()
+		h.Set("Content-Disposition", fmt.Sprintf("attachment; filename=%q", g.FileName))
+		h.Set("Cache-Control", "public, max-age=86400, immutable")
+		return c.Blob(http.StatusOK, "application/x-bittorrent", g.Data)
+	}
+	if busy {
+		c.Response().Header().Set("Retry-After", "30")
+		return c.NoContent(http.StatusAccepted)
+	}
+	rels, err := s.releaseList(context.WithoutCancel(c.Request().Context()))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadGateway, "upstream fetch failed").SetInternal(err)
+	}
+	for i := range rels {
+		r := &rels[i]
+		if r.Tag != tag {
+			continue
+		}
+		if r.Downloads.Torrent != nil {
+			return c.Redirect(http.StatusFound, r.Downloads.Torrent.URL)
+		}
+		if len(r.TorrentFiles()) == 0 {
+			break
+		}
+		s.queueTorrentBuild(r)
+		c.Response().Header().Set("Retry-After", "30")
+		return c.NoContent(http.StatusAccepted)
+	}
+	return echo.NewHTTPError(http.StatusNotFound, "no torrent for "+tag)
 }

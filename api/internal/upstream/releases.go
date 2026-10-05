@@ -14,6 +14,8 @@ type Asset struct {
 	GitHubURL string `json:"githubUrl,omitempty"`
 	CdnURL    string `json:"cdnUrl,omitempty"`
 	SHA256    string `json:"sha256,omitempty"`
+	Size      int64  `json:"size,omitempty"`
+	Magnet    string `json:"magnet,omitempty"`
 }
 
 type Downloads struct {
@@ -35,6 +37,7 @@ type Downloads struct {
 	AlpineApk     *Asset `json:"alpineApk"`
 	Flatpak       *Asset `json:"flatpak"`
 	Sbom          *Asset `json:"sbom"`
+	Torrent       *Asset `json:"torrent,omitempty"`
 }
 
 type Release struct {
@@ -55,6 +58,7 @@ type ghAsset struct {
 	Name               string `json:"name"`
 	BrowserDownloadURL string `json:"browser_download_url"`
 	Digest             string `json:"digest"`
+	Size               int64  `json:"size"`
 }
 
 type ghRelease struct {
@@ -103,7 +107,7 @@ func pick(assets []ghAsset, pred func(string) bool) *Asset {
 	for _, a := range assets {
 		n := strings.ToLower(a.Name)
 		if pred(n) {
-			return &Asset{Name: a.Name, URL: a.BrowserDownloadURL, GitHubURL: a.BrowserDownloadURL, SHA256: shaOf(a)}
+			return &Asset{Name: a.Name, URL: a.BrowserDownloadURL, GitHubURL: a.BrowserDownloadURL, SHA256: shaOf(a), Size: a.Size}
 		}
 	}
 	return nil
@@ -166,6 +170,7 @@ func matchDownloads(assets []ghAsset) Downloads {
 		AlpineApk: pick(assets, func(n string) bool { return strings.HasSuffix(n, ".apk") && strings.Contains(n, "alpine") }),
 		Flatpak:   pick(assets, func(n string) bool { return strings.HasSuffix(n, ".flatpak") }),
 		Sbom:      pick(assets, func(n string) bool { return strings.HasSuffix(n, "sbom.cyclonedx.json") }),
+		Torrent:   pick(assets, func(n string) bool { return strings.HasSuffix(n, ".torrent") }),
 	}
 }
 
@@ -240,7 +245,7 @@ func downloadAssets(d *Downloads) []*Asset {
 		d.RpmAmd64, d.Wheel, d.WinInstaller, d.WinPortable,
 		d.MacDmg, d.MacDmgX64, d.PyzPy311X64, d.PyzPy311Arm64,
 		d.PyzPy314X64, d.PyzPy314Arm64, d.Apk, d.AlpineApk,
-		d.Flatpak, d.Sbom,
+		d.Flatpak, d.Sbom, d.Torrent,
 	}
 }
 
@@ -295,6 +300,11 @@ func (c *Client) preferBunnyStorage(ctx context.Context, rels []Release, b bunny
 }
 
 var cdnTrack = map[string]string{"stable": "release", "beta": "beta", "testing": "testing"}
+
+// TrackForChannel maps a release channel to its CDN directory.
+func TrackForChannel(ch string) string {
+	return cdnTrack[ch]
+}
 
 // preferCdn HEAD-probes the CDN mirror per asset and swaps the URL when it exists.
 func (c *Client) preferCdn(ctx context.Context, rels []Release, cdnBase string) {

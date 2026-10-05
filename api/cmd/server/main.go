@@ -47,6 +47,7 @@ func main() {
 	cfg := handlers.Config{
 		GitHubRepo:       env("GITHUB_REPO", "Quad4-Software/MeshChatX"),
 		CdnBase:          env("CDN_BASE", "https://cdn.quad4.io"),
+		PublicBase:       env("PUBLIC_BASE", "https://api.meshchatx.com"),
 		DirectoryURL:     env("DIRECTORY_URL", "https://directory.rns.recipes/api/directory/submitted?search=&type=&status=online"),
 		ChangelogURL:     env("CHANGELOG_URL", "https://raw.githubusercontent.com/Quad4-Software/MeshChatX/master/CHANGELOG.md"),
 		RoadmapURL:       env("ROADMAP_URL", ""),
