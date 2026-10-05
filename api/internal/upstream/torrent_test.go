@@ -190,3 +190,25 @@ func TestBuildTorrentSizeMismatch(t *testing.T) {
 		t.Fatalf("want size mismatch error, got %v", err)
 	}
 }
+
+func TestTorrentPaths(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("payload"))
+	}))
+	defer srv.Close()
+	rel := &Release{Tag: "v0.0.1", Channel: "stable"}
+	rel.Downloads.WinInstaller = &Asset{
+		Name: "x.exe", Size: 7, URL: srv.URL + "/x.exe", CdnURL: srv.URL + "/release/v0.0.1/win/x.exe",
+	}
+	res, err := New().BuildTorrent(context.Background(), rel, []string{srv.URL + "/"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	paths, err := TorrentPaths(res.Data)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(paths) != 1 || paths[0] != "win/x.exe" {
+		t.Fatalf("want win/x.exe path, got %v", paths)
+	}
+}

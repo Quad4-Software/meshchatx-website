@@ -12,6 +12,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"path"
 	"sort"
 	"strings"
 	"sync"
@@ -57,27 +58,29 @@ type Server struct {
 	up  *upstream.Client
 	c   *cache.Cache
 
-	tMu     sync.Mutex
-	tBuilt  map[string]*upstream.TorrentResult
-	tMagnet map[string]string
-	tBusy   map[string]bool
-	tFail   map[string]time.Time
-	mBusy   map[string]bool
-	mFail   map[string]time.Time
-	tBuild  sync.Mutex
+	tMu      sync.Mutex
+	tBuilt   map[string]*upstream.TorrentResult
+	tMagnet  map[string]string
+	tBusy    map[string]bool
+	tChecked map[string]bool
+	tFail    map[string]time.Time
+	mBusy    map[string]bool
+	mFail    map[string]time.Time
+	tBuild   sync.Mutex
 }
 
 func New(cfg Config) *Server {
 	return &Server{
-		cfg:     cfg,
-		up:      upstream.New(),
-		c:       cache.New(),
-		tBuilt:  map[string]*upstream.TorrentResult{},
-		tMagnet: map[string]string{},
-		tBusy:   map[string]bool{},
-		tFail:   map[string]time.Time{},
-		mBusy:   map[string]bool{},
-		mFail:   map[string]time.Time{},
+		cfg:      cfg,
+		up:       upstream.New(),
+		c:        cache.New(),
+		tBuilt:   map[string]*upstream.TorrentResult{},
+		tMagnet:  map[string]string{},
+		tBusy:    map[string]bool{},
+		tChecked: map[string]bool{},
+		tFail:    map[string]time.Time{},
+		mBusy:    map[string]bool{},
+		mFail:    map[string]time.Time{},
 	}
 }
 
@@ -249,33 +252,30 @@ func (s *Server) roadmap(c echo.Context) error {
 	})
 }
 
-// attachTorrents points downloads.torrent at the generated .torrent for
-// releases that carry none, once the build has finished. Releases that ship
-// a real .torrent asset get their derived magnet attached instead.
+// attachTorrents points downloads.torrent at the generated .torrent when the
+// API built one, which happens when the release ships no .torrent or ships one
+// that does not cover all assets. Complete upstream .torrents keep their own
+// URL and get their derived magnet attached instead.
 func (s *Server) attachTorrents(rels []upstream.Release) {
 	s.tMu.Lock()
 	defer s.tMu.Unlock()
 	for i := range rels {
 		r := &rels[i]
-		if t := r.Downloads.Torrent; t != nil {
-			if t.Magnet == "" {
-				t.Magnet = s.tMagnet[r.Tag]
+		if g, ok := s.tBuilt[r.Tag]; ok {
+			u := s.cfg.PublicBase + "/api/torrents/" + url.PathEscape(r.Tag)
+			sum := sha256.Sum256(g.Data)
+			r.Downloads.Torrent = &upstream.Asset{
+				Name:      g.FileName,
+				URL:       u,
+				GitHubURL: u,
+				SHA256:    hex.EncodeToString(sum[:]),
+				Size:      int64(len(g.Data)),
+				Magnet:    g.Magnet,
 			}
 			continue
 		}
-		g, ok := s.tBuilt[r.Tag]
-		if !ok {
-			continue
-		}
-		u := s.cfg.PublicBase + "/api/torrents/" + url.PathEscape(r.Tag)
-		sum := sha256.Sum256(g.Data)
-		r.Downloads.Torrent = &upstream.Asset{
-			Name:      g.FileName,
-			URL:       u,
-			GitHubURL: u,
-			SHA256:    hex.EncodeToString(sum[:]),
-			Size:      int64(len(g.Data)),
-			Magnet:    g.Magnet,
+		if t := r.Downloads.Torrent; t != nil && t.Magnet == "" {
+			t.Magnet = s.tMagnet[r.Tag]
 		}
 	}
 }
@@ -295,10 +295,71 @@ func (s *Server) maybeTorrentWork(rels []upstream.Release) {
 			continue
 		}
 		seen[r.Channel] = true
-		if r.Downloads.Torrent == nil && len(r.TorrentFiles()) > 0 {
+		if len(r.TorrentFiles()) == 0 {
+			continue
+		}
+		if r.Downloads.Torrent == nil {
 			s.queueTorrentBuild(r)
+		} else {
+			s.maybeUpgradeTorrent(r)
 		}
 	}
+}
+
+// maybeUpgradeTorrent fetches the upstream .torrent once per tag and queues a
+// generated build when it does not cover every release asset. The upstream
+// check is cheap since the file is only tens of KB.
+func (s *Server) maybeUpgradeTorrent(r *upstream.Release) {
+	t := r.Downloads.Torrent
+	u := ""
+	if t != nil {
+		u = t.CdnURL
+		if u == "" {
+			u = t.URL
+		}
+	}
+	if u == "" {
+		return
+	}
+	s.tMu.Lock()
+	if s.tChecked[r.Tag] || s.tBusy[r.Tag] || s.tBuilt[r.Tag] != nil {
+		s.tMu.Unlock()
+		return
+	}
+	s.tChecked[r.Tag] = true
+	s.tMu.Unlock()
+
+	want := map[string]bool{}
+	for _, f := range r.TorrentFiles() {
+		want[f.Path[len(f.Path)-1]] = true
+	}
+	tag := r.Tag
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+		defer cancel()
+		data, err := s.up.FetchTorrentBytes(ctx, u)
+		if err != nil {
+			// Transient failure: allow another check on a later refresh.
+			s.tMu.Lock()
+			delete(s.tChecked, tag)
+			s.tMu.Unlock()
+			return
+		}
+		paths, err := upstream.TorrentPaths(data)
+		if err != nil {
+			return
+		}
+		have := map[string]bool{}
+		for _, p := range paths {
+			have[path.Base(p)] = true
+		}
+		for name := range want {
+			if !have[name] {
+				s.queueTorrentBuild(r)
+				return
+			}
+		}
+	}()
 }
 
 func (s *Server) invalidateReleaseKeys() {

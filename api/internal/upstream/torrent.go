@@ -250,22 +250,77 @@ func MagnetFromTorrent(data []byte, dn string) (string, error) {
 	return m.String(), nil
 }
 
-// FetchTorrentMagnet downloads a small .torrent asset and returns its magnet.
-func (c *Client) FetchTorrentMagnet(ctx context.Context, torrentURL, dn string) (string, error) {
+// bdecodeTop decodes a torrent payload into its top level dict.
+func bdecodeTop(data []byte) (map[string]any, error) {
+	i := 0
+	v, err := bdecode(data, &i)
+	if err != nil {
+		return nil, err
+	}
+	top, ok := v.(map[string]any)
+	if !ok {
+		return nil, fmt.Errorf("bdecode: torrent root is not a dict")
+	}
+	return top, nil
+}
+
+// TorrentPaths lists the file paths inside a torrent payload so the caller can
+// compare coverage against the release assets.
+func TorrentPaths(data []byte) ([]string, error) {
+	top, err := bdecodeTop(data)
+	if err != nil {
+		return nil, err
+	}
+	info, ok := top["info"].(map[string]any)
+	if !ok {
+		return nil, fmt.Errorf("bdecode: missing info dict")
+	}
+	var paths []string
+	if files, ok := info["files"].([]any); ok {
+		for _, f := range files {
+			fd, ok := f.(map[string]any)
+			if !ok {
+				continue
+			}
+			if segs, ok := fd["path"].([]any); ok {
+				var parts []string
+				for _, s := range segs {
+					if str, ok := s.(string); ok {
+						parts = append(parts, str)
+					}
+				}
+				paths = append(paths, strings.Join(parts, "/"))
+			}
+		}
+		return paths, nil
+	}
+	if name, ok := info["name"].(string); ok {
+		return []string{name}, nil
+	}
+	return nil, fmt.Errorf("bdecode: info has neither files nor name")
+}
+
+// FetchTorrentBytes downloads a small .torrent asset and returns the payload.
+func (c *Client) FetchTorrentBytes(ctx context.Context, torrentURL string) ([]byte, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, torrentURL, nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	req.Header.Set("User-Agent", c.userAgent)
 	res, err := c.hc.Do(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	defer res.Body.Close()
 	if res.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("fetch torrent: %s", res.Status)
+		return nil, fmt.Errorf("fetch torrent: %s", res.Status)
 	}
-	data, err := io.ReadAll(io.LimitReader(res.Body, maxBody))
+	return io.ReadAll(io.LimitReader(res.Body, maxBody))
+}
+
+// FetchTorrentMagnet downloads a small .torrent asset and returns its magnet.
+func (c *Client) FetchTorrentMagnet(ctx context.Context, torrentURL, dn string) (string, error) {
+	data, err := c.FetchTorrentBytes(ctx, torrentURL)
 	if err != nil {
 		return "", err
 	}
