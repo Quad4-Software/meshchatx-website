@@ -78,8 +78,9 @@ const labelOpen = t(locale, 'home.preview.open');
           </a>
           <a
             href={localePath(locale, 'docs')}
-            class="rounded-lg px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:text-fg"
+            class="inline-flex items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:text-fg"
           >
+            <Icon name="mdiBookOpenVariant" size={16} class="-mt-px opacity-80" />
             {t(locale, 'home.cta.docs')}
           </a>
         </div>
