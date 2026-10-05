@@ -152,7 +152,8 @@
    "h2": "Torrent",
    "intro": "BitTorrent con webseed HTTP da cdn.quad4.io. Funziona senza peer.",
    "btn": "Scarica .torrent",
-   "magnet": "Copia magnet"
+   "magnet": "Copia magnet",
+   "privacy": "I peer dello swarm possono vedere il tuo indirizzo IP. Usa una VPN per proteggere la privacy."
   },
   "termux": {
    "h2": "Termux",

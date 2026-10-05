@@ -152,7 +152,8 @@
    "h2": "Torrent",
    "intro": "BitTorrent HTTP-webseedeillä cdn.quad4.io:sta. Toimii ilman peerejä.",
    "btn": "Lataa .torrent",
-   "magnet": "Kopioi magnet"
+   "magnet": "Kopioi magnet",
+   "privacy": "Swarmin peert voivat nahda IP-osoitteesi. Kayta VPN-yhteytta yksityisyytesi suojaamiseksi."
   },
   "termux": {
    "h2": "Termux",

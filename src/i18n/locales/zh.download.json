@@ -152,7 +152,8 @@
    "h2": "Torrent",
    "intro": "通过 cdn.quad4.io 的 HTTP webseed 做 BitTorrent。没有节点也能下。",
    "btn": "下载 .torrent",
-   "magnet": "复制 magnet"
+   "magnet": "复制 magnet",
+   "privacy": "其他节点可以看到你的 IP 地址。请使用 VPN 保护隐私。"
   },
   "termux": {
    "h2": "Termux",

@@ -422,6 +422,10 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
             {t(locale, 'dl.torrent.magnet')}
           </button>
         </div>
+        <p class="mt-3 flex items-start gap-1.5 text-xs text-faint">
+          <Icon name="mdiShieldAlertOutline" size={14} class="mt-px shrink-0" />
+          {t(locale, 'dl.torrent.privacy')}
+        </p>
         <ShaDetails locale={locale} downloads={d} keys={['torrent']} />
       </div>
 

@@ -152,7 +152,8 @@
    "h2": "Torrent",
    "intro": "BitTorrent avec webseeds HTTP depuis cdn.quad4.io. Fonctionne sans pairs.",
    "btn": "Telecharger .torrent",
-   "magnet": "Copier le magnet"
+   "magnet": "Copier le magnet",
+   "privacy": "Les pairs peuvent voir votre adresse IP. Utilisez un VPN pour proteger votre vie privee."
   },
   "termux": {
    "h2": "Termux",

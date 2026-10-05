@@ -152,7 +152,8 @@
    "h2": "Torrent",
    "intro": "BitTorrent con webseeds HTTP de cdn.quad4.io. Funciona sin peers.",
    "btn": "Descargar .torrent",
-   "magnet": "Copiar magnet"
+   "magnet": "Copiar magnet",
+   "privacy": "Los peers del enjambre pueden ver tu direccion IP. Usa una VPN para proteger tu privacidad."
   },
   "termux": {
    "h2": "Termux",
