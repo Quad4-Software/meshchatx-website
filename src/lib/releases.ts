@@ -1,5 +1,6 @@
 import { SITE } from '../config/site';
 import { bunnyAssetsByName, bunnyEnabled } from './bunny';
+import { attachTorrentMagnets } from './torrents';
 
 export type Channel = 'stable' | 'beta' | 'testing';
 
@@ -268,6 +269,7 @@ export async function getReleases(): Promise<Release[]> {
       await preferCdn(r);
     }
   }
+  await attachTorrentMagnets(out);
   memo = out;
   return out;
 }

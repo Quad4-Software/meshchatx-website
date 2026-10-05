@@ -55,21 +55,27 @@ type Server struct {
 	up  *upstream.Client
 	c   *cache.Cache
 
-	tMu    sync.Mutex
-	tBuilt map[string]*upstream.TorrentResult
-	tBusy  map[string]bool
-	tFail  map[string]time.Time
-	tBuild sync.Mutex
+	tMu     sync.Mutex
+	tBuilt  map[string]*upstream.TorrentResult
+	tMagnet map[string]string
+	tBusy   map[string]bool
+	tFail   map[string]time.Time
+	mBusy   map[string]bool
+	mFail   map[string]time.Time
+	tBuild  sync.Mutex
 }
 
 func New(cfg Config) *Server {
 	return &Server{
-		cfg:    cfg,
-		up:     upstream.New(),
-		c:      cache.New(),
-		tBuilt: map[string]*upstream.TorrentResult{},
-		tBusy:  map[string]bool{},
-		tFail:  map[string]time.Time{},
+		cfg:     cfg,
+		up:      upstream.New(),
+		c:       cache.New(),
+		tBuilt:  map[string]*upstream.TorrentResult{},
+		tMagnet: map[string]string{},
+		tBusy:   map[string]bool{},
+		tFail:   map[string]time.Time{},
+		mBusy:   map[string]bool{},
+		mFail:   map[string]time.Time{},
 	}
 }
 
@@ -144,7 +150,7 @@ func (s *Server) releaseList(ctx context.Context) ([]upstream.Release, error) {
 		return nil, err
 	}
 	s.attachTorrents(rels)
-	s.maybeBuildTorrents(rels)
+	s.maybeTorrentWork(rels)
 	return rels, nil
 }
 
@@ -242,13 +248,17 @@ func (s *Server) roadmap(c echo.Context) error {
 }
 
 // attachTorrents points downloads.torrent at the generated .torrent for
-// releases that carry none, once the build has finished.
+// releases that carry none, once the build has finished. Releases that ship
+// a real .torrent asset get their derived magnet attached instead.
 func (s *Server) attachTorrents(rels []upstream.Release) {
 	s.tMu.Lock()
 	defer s.tMu.Unlock()
 	for i := range rels {
 		r := &rels[i]
-		if r.Downloads.Torrent != nil {
+		if t := r.Downloads.Torrent; t != nil {
+			if t.Magnet == "" {
+				t.Magnet = s.tMagnet[r.Tag]
+			}
 			continue
 		}
 		g, ok := s.tBuilt[r.Tag]
@@ -265,22 +275,73 @@ func (s *Server) attachTorrents(rels []upstream.Release) {
 	}
 }
 
-// maybeBuildTorrents kicks a background torrent build when the newest release
-// of a channel has no .torrent asset of its own. Older releases are left
-// alone: backfilling them would burn GBs of bandwidth per build.
-func (s *Server) maybeBuildTorrents(rels []upstream.Release) {
+// maybeTorrentWork queues background work around releases: a magnet derived
+// from every upstream .torrent asset that lacks one, and a full torrent build
+// for the newest release of a channel with no .torrent asset at all. Older
+// releases are not backfilled: each build burns GBs of bandwidth.
+func (s *Server) maybeTorrentWork(rels []upstream.Release) {
 	seen := map[string]bool{}
 	for i := range rels {
 		r := &rels[i]
+		if t := r.Downloads.Torrent; t != nil && t.Magnet == "" {
+			s.queueMagnetFetch(r)
+		}
 		if seen[r.Channel] {
 			continue
 		}
 		seen[r.Channel] = true
-		if r.Downloads.Torrent != nil || len(r.TorrentFiles()) == 0 {
-			continue
+		if r.Downloads.Torrent == nil && len(r.TorrentFiles()) > 0 {
+			s.queueTorrentBuild(r)
 		}
-		s.queueTorrentBuild(r)
 	}
+}
+
+func (s *Server) invalidateReleaseKeys() {
+	for _, key := range []string{"releases", "releases:stable", "releases:beta", "releases:testing"} {
+		s.c.Invalidate(key)
+	}
+}
+
+func (s *Server) queueMagnetFetch(r *upstream.Release) {
+	t := r.Downloads.Torrent
+	if t == nil {
+		return
+	}
+	u := t.CdnURL
+	if u == "" {
+		u = t.URL
+	}
+	if u == "" {
+		return
+	}
+	s.tMu.Lock()
+	if s.mBusy[r.Tag] || s.tMagnet[r.Tag] != "" {
+		s.tMu.Unlock()
+		return
+	}
+	if failedAt, ok := s.mFail[r.Tag]; ok && time.Since(failedAt) < time.Hour {
+		s.tMu.Unlock()
+		return
+	}
+	s.mBusy[r.Tag] = true
+	s.tMu.Unlock()
+
+	go func(tag, torrentURL, dn string) {
+		ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+		defer cancel()
+		mag, err := s.up.FetchTorrentMagnet(ctx, torrentURL, dn)
+		s.tMu.Lock()
+		delete(s.mBusy, tag)
+		if err != nil {
+			s.mFail[tag] = time.Now()
+			s.tMu.Unlock()
+			log.Printf("magnet derive %s failed: %v", tag, err)
+			return
+		}
+		s.tMagnet[tag] = mag
+		s.tMu.Unlock()
+		s.invalidateReleaseKeys()
+	}(r.Tag, u, "MeshChatX-"+r.Tag)
 }
 
 func (s *Server) queueTorrentBuild(r *upstream.Release) {
@@ -315,9 +376,7 @@ func (s *Server) queueTorrentBuild(r *upstream.Release) {
 		s.tMu.Unlock()
 		// Drop the cached responses so the next request re-marshals with the
 		// generated torrent attached.
-		for _, key := range []string{"releases", "releases:stable", "releases:beta", "releases:testing"} {
-			s.c.Invalidate(key)
-		}
+		s.invalidateReleaseKeys()
 		log.Printf("torrent build %s done: %s", tag, res.InfoHash)
 	}(r.Tag, s.torrentSeeds(r.Channel))
 }

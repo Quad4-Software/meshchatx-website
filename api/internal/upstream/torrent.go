@@ -70,6 +70,180 @@ func (r *Release) TorrentFiles() []TorrentFile {
 	return out
 }
 
+// bdecode parses bencode into string, int64, []any, or map[string]any.
+func bdecode(b []byte, i *int) (any, error) {
+	if *i >= len(b) {
+		return nil, fmt.Errorf("bdecode: unexpected end")
+	}
+	switch c := b[*i]; {
+	case c == 'i':
+		j := bytes.IndexByte(b[*i:], 'e')
+		if j < 0 {
+			return nil, fmt.Errorf("bdecode: unterminated int")
+		}
+		var n int64
+		if _, err := fmt.Sscanf(string(b[*i+1:*i+j]), "%d", &n); err != nil {
+			return nil, err
+		}
+		*i += j + 1
+		return n, nil
+	case c == 'l':
+		*i++
+		var out []any
+		for *i < len(b) && b[*i] != 'e' {
+			v, err := bdecode(b, i)
+			if err != nil {
+				return nil, err
+			}
+			out = append(out, v)
+		}
+		*i++
+		return out, nil
+	case c == 'd':
+		*i++
+		out := map[string]any{}
+		for *i < len(b) && b[*i] != 'e' {
+			k, err := bdecode(b, i)
+			if err != nil {
+				return nil, err
+			}
+			ks, ok := k.(string)
+			if !ok {
+				return nil, fmt.Errorf("bdecode: non-string dict key")
+			}
+			v, err := bdecode(b, i)
+			if err != nil {
+				return nil, err
+			}
+			out[ks] = v
+		}
+		*i++
+		return out, nil
+	case c >= '0' && c <= '9':
+		j := bytes.IndexByte(b[*i:], ':')
+		if j < 0 {
+			return nil, fmt.Errorf("bdecode: bad string")
+		}
+		var n int
+		if _, err := fmt.Sscanf(string(b[*i:*i+j]), "%d", &n); err != nil {
+			return nil, err
+		}
+		*i += j + 1
+		if *i+n > len(b) {
+			return nil, fmt.Errorf("bdecode: string overruns input")
+		}
+		s := string(b[*i : *i+n])
+		*i += n
+		return s, nil
+	default:
+		return nil, fmt.Errorf("bdecode: bad byte %q at %d", c, *i)
+	}
+}
+
+// strList flattens bencoded tracker tiers or url-list entries into a flat
+// string slice.
+func strList(v any) []string {
+	var out []string
+	var walk func(any)
+	walk = func(x any) {
+		switch t := x.(type) {
+		case string:
+			out = append(out, t)
+		case []any:
+			for _, e := range t {
+				walk(e)
+			}
+		}
+	}
+	walk(v)
+	return out
+}
+
+// MagnetFromTorrent derives a magnet URI from an existing .torrent file:
+// the infohash, tracker list, and webseed list are all inside the payload.
+// The magnet needs no download of the release files themselves.
+func MagnetFromTorrent(data []byte, dn string) (string, error) {
+	if len(data) == 0 || data[0] != 'd' {
+		return "", fmt.Errorf("bdecode: torrent root is not a dict")
+	}
+	// Walk the top-level dict and hash the info value's raw bytes so a
+	// non-canonical key order still yields the right infohash.
+	var hash string
+	var trackers, webseeds []string
+	i := 1
+	for i < len(data) && data[i] != 'e' {
+		k, err := bdecode(data, &i)
+		if err != nil {
+			return "", err
+		}
+		start := i
+		v, err := bdecode(data, &i)
+		if err != nil {
+			return "", err
+		}
+		switch k {
+		case "info":
+			sum := sha1.Sum(data[start:i])
+			hash = hex.EncodeToString(sum[:])
+		case "announce":
+			if s, ok := v.(string); ok {
+				trackers = append(trackers, s)
+			}
+		case "announce-list":
+			trackers = append(trackers, strList(v)...)
+		case "url-list":
+			webseeds = strList(v)
+		}
+	}
+	if hash == "" {
+		return "", fmt.Errorf("bdecode: missing info dict")
+	}
+
+	var m strings.Builder
+	m.WriteString("magnet:?xt=urn:btih:")
+	m.WriteString(hash)
+	if dn != "" {
+		m.WriteString("&dn=")
+		m.WriteString(url.PathEscape(dn))
+	}
+	seen := map[string]bool{}
+	for _, tr := range trackers {
+		if seen[tr] {
+			continue
+		}
+		seen[tr] = true
+		m.WriteString("&tr=")
+		m.WriteString(url.QueryEscape(tr))
+	}
+	for _, ws := range webseeds {
+		m.WriteString("&ws=")
+		m.WriteString(url.QueryEscape(ws))
+	}
+	return m.String(), nil
+}
+
+// FetchTorrentMagnet downloads a small .torrent asset and returns its magnet.
+func (c *Client) FetchTorrentMagnet(ctx context.Context, torrentURL, dn string) (string, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, torrentURL, nil)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("User-Agent", c.userAgent)
+	res, err := c.hc.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer res.Body.Close()
+	if res.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("fetch torrent: %s", res.Status)
+	}
+	data, err := io.ReadAll(io.LimitReader(res.Body, maxBody))
+	if err != nil {
+		return "", err
+	}
+	return MagnetFromTorrent(data, dn)
+}
+
 // benc appends the bencode encoding of v to buf. Dict keys sort bytewise.
 func benc(buf *bytes.Buffer, v any) {
 	switch x := v.(type) {
