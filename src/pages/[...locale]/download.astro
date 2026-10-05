@@ -423,6 +423,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
         <ShaDetails
           locale={locale}
           downloads={d}
+          combined
           keys={['winInstaller', 'winPortable', 'macDmg', 'macDmgX64', 'apk', 'alpineApk', 'flatpak', 'appImageAmd64', 'appImageArm64', 'debAmd64', 'debArm64', 'rpmAmd64', 'pyzPy314X64', 'pyzPy314Arm64', 'pyzPy311X64', 'pyzPy311Arm64', 'wheel', 'sbom', 'torrent']}
         />
       </div>
@@ -567,30 +568,42 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
         const list = det.querySelector('[data-sha256-list]');
         if (!list) return;
         list.innerHTML = '';
-        let shown = 0;
-        for (const k of keys) {
-          const a = dl[k];
-          if (!a || !a.sha256) continue;
-          shown++;
-          const row = document.createElement('div');
-          row.className = 'dl-sha256-row';
-          const nm = document.createElement('span');
-          nm.className = 'dl-sha256-name';
-          nm.textContent = a.name || k;
+        const rows = keys
+          .map((k) => dl[k])
+          .filter((a) => a && a.sha256);
+        if (det.hasAttribute('data-sha-combined')) {
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'hash-copy dl-sha256-box';
-          btn.setAttribute('data-copy', a.sha256);
+          btn.setAttribute('data-copy', rows.map((a) => `${a.sha256}  ${a.name}`).join('\n'));
           btn.setAttribute('data-copied', copiedLabel);
           btn.title = copyShaLabel;
           const code = document.createElement('code');
-          code.textContent = a.sha256;
+          code.textContent = rows.map((a) => `${a.sha256}  ${a.name}`).join('\n');
           btn.appendChild(code);
-          row.appendChild(nm);
-          row.appendChild(btn);
-          list.appendChild(row);
+          list.appendChild(btn);
+        } else {
+          for (const a of rows) {
+            const row = document.createElement('div');
+            row.className = 'dl-sha256-row';
+            const nm = document.createElement('span');
+            nm.className = 'dl-sha256-name';
+            nm.textContent = a.name || '';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'hash-copy dl-sha256-box';
+            btn.setAttribute('data-copy', a.sha256);
+            btn.setAttribute('data-copied', copiedLabel);
+            btn.title = copyShaLabel;
+            const code = document.createElement('code');
+            code.textContent = a.sha256;
+            btn.appendChild(code);
+            row.appendChild(nm);
+            row.appendChild(btn);
+            list.appendChild(row);
+          }
         }
-        det.classList.toggle('hidden', shown === 0);
+        det.classList.toggle('hidden', rows.length === 0);
       });
       if (meta) {
         meta.innerHTML = '';

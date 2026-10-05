@@ -714,6 +714,7 @@ details[open] > summary::after {
   font-size: 10px;
   line-height: 1.5;
   color: var(--color-muted);
+  white-space: pre-wrap;
   overflow-wrap: anywhere;
   word-break: break-all;
 }

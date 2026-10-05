@@ -7,34 +7,49 @@ interface Props {
   locale: Locale;
   downloads?: ReleaseDownloads | undefined;
   keys: string[];
+  combined?: boolean;
 }
-const { locale, downloads, keys } = Astro.props;
+const { locale, downloads, keys, combined = false } = Astro.props;
 
 const rows = keys
   .map((key) => ({ key, a: (downloads as Record<string, { name: string; sha256: string | null } | null> | undefined)?.[key] }))
   .filter((r): r is { key: string; a: { name: string; sha256: string } } => !!r.a?.sha256);
+const combinedText = rows.map((r) => `${r.a.sha256}  ${r.a.name}`).join('\n');
 ---
 
 <details
   class:list={['dl-sha256', rows.length === 0 && 'hidden']}
   data-sha256-card
   data-sha-keys={keys.join(',')}
+  data-sha-combined={combined || undefined}
 >
   <summary>{t(locale, 'dl.sha256')}</summary>
   <div class="dl-sha256-list" data-sha256-list>
-    {rows.map((r) => (
-      <div class="dl-sha256-row" data-sha-key={r.key}>
-        <span class="dl-sha256-name">{r.a.name}</span>
-        <button
-          type="button"
-          class="hash-copy dl-sha256-box"
-          data-copy={r.a.sha256}
-          data-copied={t(locale, 'js.copied')}
-          title={t(locale, 'dl.copy_sha256')}
-        >
-          <code>{r.a.sha256}</code>
-        </button>
-      </div>
-    ))}
+    {combined ? (
+      <button
+        type="button"
+        class="hash-copy dl-sha256-box"
+        data-copy={combinedText}
+        data-copied={t(locale, 'js.copied')}
+        title={t(locale, 'dl.copy_sha256')}
+      >
+        <code>{combinedText}</code>
+      </button>
+    ) : (
+      rows.map((r) => (
+        <div class="dl-sha256-row" data-sha-key={r.key}>
+          <span class="dl-sha256-name">{r.a.name}</span>
+          <button
+            type="button"
+            class="hash-copy dl-sha256-box"
+            data-copy={r.a.sha256}
+            data-copied={t(locale, 'js.copied')}
+            title={t(locale, 'dl.copy_sha256')}
+          >
+            <code>{r.a.sha256}</code>
+          </button>
+        </div>
+      ))
+    )}
   </div>
 </details>
