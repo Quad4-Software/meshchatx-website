@@ -153,7 +153,7 @@
    "intro": "BitTorrent met HTTP-webseeds vanaf cdn.quad4.io. Werkt zonder peers.",
    "btn": ".torrent downloaden",
    "magnet": "Magnet kopieren",
-   "privacy": "Peers in de swarm kunnen je IP-adres zien. Gebruik een VPN om je privacy te beschermen."
+   "privacy": "Peers kunnen je IP-adres zien. Gebruik een VPN om je privacy te beschermen."
   },
   "termux": {
    "h2": "Termux",

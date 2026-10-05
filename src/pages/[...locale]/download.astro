@@ -580,7 +580,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
           nm.textContent = a.name || k;
           const btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'hash-copy dl-sha256-hex';
+          btn.className = 'hash-copy dl-sha256-box';
           btn.setAttribute('data-copy', a.sha256);
           btn.setAttribute('data-copied', copiedLabel);
           btn.title = copyShaLabel;
@@ -727,61 +727,5 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     border-color: color-mix(in srgb, var(--color-warn) 50%, var(--color-line));
     color: var(--color-warn);
     background: var(--color-canvas);
-  }
-  .dl-sha256 {
-    margin-top: 1rem;
-    border-top: 1px solid var(--color-line);
-    padding-top: 0.5rem;
-  }
-  .dl-sha256 > summary {
-    cursor: pointer;
-    list-style-position: inside;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-faint);
-    user-select: none;
-  }
-  .dl-sha256 > summary:hover {
-    color: var(--color-fg);
-  }
-  .dl-sha256-list {
-    display: grid;
-    gap: 0.5rem;
-    margin-top: 0.6rem;
-  }
-  .dl-sha256-name {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--color-faint);
-    overflow-wrap: anywhere;
-  }
-  .dl-sha256-hex {
-    display: block;
-    width: 100%;
-    padding: 0;
-    border: 0;
-    background: none;
-    text-align: left;
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-  .dl-sha256-hex code {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    line-height: 1.45;
-    color: var(--color-muted);
-    overflow-wrap: anywhere;
-    word-break: break-all;
-  }
-  .dl-sha256-hex:hover code,
-  .dl-sha256-hex:focus-visible code {
-    color: var(--color-fg);
-  }
-  .dl-sha256-hex:focus-visible {
-    outline: 2px solid var(--color-fg);
-    outline-offset: 2px;
   }
 </style>

@@ -27,8 +27,10 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
           class:list={[
             'rounded-md px-3 py-1.5 text-sm transition-colors',
             currentPath.startsWith(`/${l.path}`) ? 'text-fg' : 'text-muted hover:text-fg',
+            'icon' in l && 'inline-flex items-center gap-1.5',
           ]}
         >
+          {'icon' in l && <Icon name={l.icon} size={15} class="-mt-px opacity-80" />}
           {t(locale, l.key)}
         </a>
       ))}
@@ -111,7 +113,8 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
         <div id="mcx-mobile-menu" class="mcx-flyout-panel mcx-flyout-end">
           <div class="min-w-48 rounded-lg border border-line bg-raised p-1 shadow-2xl">
             {NAV_LINKS.map((l) => (
-              <a href={localePath(locale, l.path)} class="block rounded-md px-3 py-2 text-sm text-muted hover:bg-line hover:text-fg">
+              <a href={localePath(locale, l.path)} class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted hover:bg-line hover:text-fg">
+                {'icon' in l && <Icon name={l.icon} size={15} class="opacity-80" />}
                 {t(locale, l.key)}
               </a>
             ))}

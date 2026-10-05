@@ -351,8 +351,6 @@ details[open] > summary::after {
 .mcx-shot-shell {
   position: relative;
   margin-top: 2.75rem;
-  content-visibility: auto;
-  contain-intrinsic-size: auto 36rem;
 }
 .mcx-shot-notch {
   position: absolute;
@@ -455,6 +453,11 @@ details[open] > summary::after {
 .mcx-shot-grid {
   display: grid;
   gap: 0.55rem;
+  /* Skip rendering below the fold. Lives on the grid, not the shell: paint
+     suppression on the shell also dropped the absolutely positioned tab
+     notch that floats above it. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 34rem;
 }
 .mcx-shot-grid[hidden] {
   display: none !important;
@@ -659,4 +662,69 @@ details[open] > summary::after {
   .disk-flow {
     animation: none;
   }
+}
+
+/* checksum details blocks on the download cards, built by ShaDetails.astro
+   and rebuilt by the download page script so they need global styles */
+.dl-sha256 {
+  margin-top: 1rem;
+  border-top: 1px solid var(--color-line);
+  padding-top: 0.5rem;
+}
+.dl-sha256 > summary {
+  cursor: pointer;
+  list-style-position: inside;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+  user-select: none;
+}
+.dl-sha256 > summary:hover {
+  color: var(--color-fg);
+}
+.dl-sha256-list {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+.dl-sha256-name {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-faint);
+  overflow-wrap: anywhere;
+}
+.dl-sha256-box {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.5rem;
+  background: var(--color-canvas);
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.dl-sha256-box code {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--color-muted);
+  overflow-wrap: anywhere;
+  word-break: break-all;
+}
+.dl-sha256-box:hover {
+  border-color: var(--color-faint);
+}
+.dl-sha256-box:hover code,
+.dl-sha256-box:focus-visible code {
+  color: var(--color-fg);
+}
+.dl-sha256-box:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
 }

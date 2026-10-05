@@ -77,7 +77,7 @@ export const OG_LOCALES: Record<Locale, string> = {
 };
 
 export const NAV_LINKS = [
-  { key: 'nav.docs', path: 'docs' },
+  { key: 'nav.docs', path: 'docs', icon: 'mdiBookOpenVariant' },
   { key: 'nav.news', path: 'news' },
   { key: 'nav.roadmap', path: 'roadmap' },
   { key: 'nav.git', path: 'git' },

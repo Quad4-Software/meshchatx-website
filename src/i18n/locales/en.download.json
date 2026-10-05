@@ -149,7 +149,7 @@
    "intro": "BitTorrent with HTTP webseeds from cdn.quad4.io. Works with no peers.",
    "btn": "Download .torrent",
    "magnet": "Copy magnet",
-   "privacy": "Swarm peers can see your IP address. Use a VPN for privacy."
+   "privacy": "Peers can see your IP address. Use a VPN for privacy."
   },
   "termux": {
    "h2": "Termux",

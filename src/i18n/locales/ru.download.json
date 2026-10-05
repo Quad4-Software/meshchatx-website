@@ -153,7 +153,7 @@
    "intro": "BitTorrent с HTTP-webseed с cdn.quad4.io. Работает без пиров.",
    "btn": "Скачать .torrent",
    "magnet": "Копировать magnet",
-   "privacy": "Другие пиры видят ваш IP-адрес. Используйте VPN для защиты приватности."
+   "privacy": "Пиры видят ваш IP-адрес. Используйте VPN для защиты приватности."
   },
   "termux": {
    "h2": "Termux",
