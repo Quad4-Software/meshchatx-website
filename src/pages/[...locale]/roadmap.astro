@@ -274,14 +274,20 @@ const statusKey = {
       overflow: visible;
     }
     @media (max-width: 720px) {
+      /* Wider than the viewport: scroll horizontally instead of clipping the
+         oldest milestones off the left edge. */
+      .rail-outer {
+        overflow-x: auto;
+        scrollbar-width: thin;
+      }
       .rail-wrap {
         width: max-content;
         min-width: 100%;
-        margin-left: auto;
+        margin-inline: auto;
       }
       .rail-col {
-        flex: 0 0 6.75rem;
-        min-width: 6.75rem;
+        flex: 0 0 6.25rem;
+        min-width: 6.25rem;
       }
     }
     .rail-node {

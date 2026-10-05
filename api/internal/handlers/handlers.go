@@ -4,7 +4,9 @@ package handlers
 
 import (
 	"context"
+	"crypto/sha256"
 	"embed"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -266,10 +268,13 @@ func (s *Server) attachTorrents(rels []upstream.Release) {
 			continue
 		}
 		u := s.cfg.PublicBase + "/api/torrents/" + url.PathEscape(r.Tag)
+		sum := sha256.Sum256(g.Data)
 		r.Downloads.Torrent = &upstream.Asset{
 			Name:      g.FileName,
 			URL:       u,
 			GitHubURL: u,
+			SHA256:    hex.EncodeToString(sum[:]),
+			Size:      int64(len(g.Data)),
 			Magnet:    g.Magnet,
 		}
 	}

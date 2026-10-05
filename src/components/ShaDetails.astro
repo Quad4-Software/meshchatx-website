@@ -1,0 +1,40 @@
+---
+import { t } from '../i18n';
+import type { Locale } from '../config/site';
+import type { ReleaseDownloads } from '../lib/releases';
+
+interface Props {
+  locale: Locale;
+  downloads?: ReleaseDownloads | undefined;
+  keys: string[];
+}
+const { locale, downloads, keys } = Astro.props;
+
+const rows = keys
+  .map((key) => ({ key, a: (downloads as Record<string, { name: string; sha256: string | null } | null> | undefined)?.[key] }))
+  .filter((r): r is { key: string; a: { name: string; sha256: string } } => !!r.a?.sha256);
+---
+
+<details
+  class:list={['dl-sha256', rows.length === 0 && 'hidden']}
+  data-sha256-card
+  data-sha-keys={keys.join(',')}
+>
+  <summary>{t(locale, 'dl.sha256')}</summary>
+  <div class="dl-sha256-list" data-sha256-list>
+    {rows.map((r) => (
+      <div class="dl-sha256-row" data-sha-key={r.key}>
+        <span class="dl-sha256-name">{r.a.name}</span>
+        <button
+          type="button"
+          class="hash-copy dl-sha256-hex"
+          data-copy={r.a.sha256}
+          data-copied={t(locale, 'js.copied')}
+          title={t(locale, 'dl.copy_sha256')}
+        >
+          <code>{r.a.sha256}</code>
+        </button>
+      </div>
+    ))}
+  </div>
+</details>

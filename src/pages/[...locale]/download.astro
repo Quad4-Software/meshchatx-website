@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import CommandBlock from '../../components/CommandBlock.astro';
 import Icon from '../../components/Icon.astro';
+import ShaDetails from '../../components/ShaDetails.astro';
 import { LOCALES, SITE, type Locale } from '../../config/site';
 import { t } from '../../i18n';
 import { releasesForChannel, type Channel, type Release } from '../../lib/releases';
@@ -44,10 +45,12 @@ const payload = Object.fromEntries(
           k,
           a
             ? {
+                name: a.name,
                 url: a.url,
                 githubUrl: a.githubUrl,
                 cdnUrl: a.cdnUrl ?? null,
                 magnet: a.magnet ?? null,
+                sha256: a.sha256 ?? null,
               }
             : null,
         ]),
@@ -182,6 +185,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
             </a>
             <span data-asset-none="windows" class:list={['text-sm text-faint', d?.winInstaller && 'hidden']}>{t(locale, 'dl.windows.no_win')}</span>
           </div>
+          <ShaDetails locale={locale} downloads={d} keys={['winInstaller', 'winPortable']} />
         </div>
 
         <!-- macOS -->
@@ -201,6 +205,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
               {t(locale, 'dl.macos.btn_dmg_x64')}
             </a>
           </div>
+          <ShaDetails locale={locale} downloads={d} keys={['macDmg', 'macDmgX64']} />
         </div>
 
         <!-- Linux -->
@@ -226,6 +231,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
               <a data-asset="alpineApk" href={d?.alpineApk?.url ?? '#'} class:list={[btnMini, 'gap-1.5', !d?.alpineApk && 'hidden']}><Icon name="siAlpinelinux" size={13} />.apk alpine</a>
             </div>
           </div>
+          <ShaDetails locale={locale} downloads={d} keys={['appImageAmd64', 'appImageArm64', 'debAmd64', 'debArm64', 'rpmAmd64', 'alpineApk']} />
         </div>
 
         <!-- Android -->
@@ -259,6 +265,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
               </button>
             </div>
           </div>
+          <ShaDetails locale={locale} downloads={d} keys={['apk']} />
         </div>
 
         <!-- Arch Linux -->
@@ -340,6 +347,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
           <a data-asset="wheel" href={d?.wheel?.url ?? '#'} class:list={[btnMini, 'mt-4', !d?.wheel && 'hidden']}>
             {t(locale, 'dl.python.btn_whl')}
           </a>
+          <ShaDetails locale={locale} downloads={d} keys={['pyzPy314X64', 'pyzPy314Arm64', 'pyzPy311X64', 'pyzPy311Arm64', 'wheel']} />
         </div>
       </div>
 
@@ -414,6 +422,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
             {t(locale, 'dl.torrent.magnet')}
           </button>
         </div>
+        <ShaDetails locale={locale} downloads={d} keys={['torrent']} />
       </div>
 
       <!-- Flatpak -->
@@ -442,6 +451,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
         {c !== 'stable' && (
           <p class="mt-2 text-xs text-faint">{t(locale, 'dl.flatpak.remote_channels')}</p>
         )}
+        <ShaDetails locale={locale} downloads={d} keys={['flatpak']} />
       </div>
     </section>
     );
@@ -457,7 +467,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
 
   <script type="application/json" id="dl-data" set:html={JSON.stringify(payload)} />
 
-  <script define:vars={{ selectLabel: t(locale, 'js.download.select_version'), apiBase: SITE.apiBase }}>
+  <script define:vars={{ selectLabel: t(locale, 'js.download.select_version'), apiBase: SITE.apiBase, copiedLabel: t(locale, 'js.copied'), copyShaLabel: t(locale, 'dl.copy_sha256') }}>
     const dataEl = document.getElementById('dl-data');
     const data = dataEl ? JSON.parse(dataEl.textContent || '{}') : {};
     const versionSel = document.getElementById('dl-version');
@@ -549,6 +559,36 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
       panel.querySelectorAll('[data-platform="torrent"]').forEach((card) => {
         card.classList.toggle('hidden', !dl.torrent);
       });
+      panel.querySelectorAll('[data-sha256-card]').forEach((det) => {
+        const keys = (det.getAttribute('data-sha-keys') || '').split(',').filter(Boolean);
+        const list = det.querySelector('[data-sha256-list]');
+        if (!list) return;
+        list.innerHTML = '';
+        let shown = 0;
+        for (const k of keys) {
+          const a = dl[k];
+          if (!a || !a.sha256) continue;
+          shown++;
+          const row = document.createElement('div');
+          row.className = 'dl-sha256-row';
+          const nm = document.createElement('span');
+          nm.className = 'dl-sha256-name';
+          nm.textContent = a.name || k;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'hash-copy dl-sha256-hex';
+          btn.setAttribute('data-copy', a.sha256);
+          btn.setAttribute('data-copied', copiedLabel);
+          btn.title = copyShaLabel;
+          const code = document.createElement('code');
+          code.textContent = a.sha256;
+          btn.appendChild(code);
+          row.appendChild(nm);
+          row.appendChild(btn);
+          list.appendChild(row);
+        }
+        det.classList.toggle('hidden', shown === 0);
+      });
       if (meta) {
         meta.innerHTML = '';
         const a = document.createElement('a');
@@ -638,25 +678,26 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     fillVersions();
     applyRelease();
 
-    document.querySelectorAll('.hash-copy').forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        const text = btn.getAttribute('data-copy') || '';
-        try {
-          await navigator.clipboard.writeText(text);
-        } catch {
-          const ta = document.createElement('textarea');
-          ta.value = text;
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand('copy');
-          ta.remove();
-        }
-        const orig = btn.textContent;
-        btn.textContent = btn.getAttribute('data-copied') || 'Copied';
-        setTimeout(() => {
-          btn.textContent = orig;
-        }, 1400);
-      });
+    // Delegated so rebuilt sha256 rows keep working.
+    document.addEventListener('click', async (ev) => {
+      const btn = ev.target instanceof Element ? ev.target.closest('.hash-copy') : null;
+      if (!btn) return;
+      const text = btn.getAttribute('data-copy') || '';
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+      const orig = btn.textContent;
+      btn.textContent = btn.getAttribute('data-copied') || 'Copied';
+      setTimeout(() => {
+        btn.textContent = orig;
+      }, 1400);
     });
 
     // Live refresh: swap baked release data for the API payload when reachable.
@@ -682,5 +723,61 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     border-color: color-mix(in srgb, var(--color-warn) 50%, var(--color-line));
     color: var(--color-warn);
     background: var(--color-canvas);
+  }
+  .dl-sha256 {
+    margin-top: 1rem;
+    border-top: 1px solid var(--color-line);
+    padding-top: 0.5rem;
+  }
+  .dl-sha256 > summary {
+    cursor: pointer;
+    list-style-position: inside;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+    user-select: none;
+  }
+  .dl-sha256 > summary:hover {
+    color: var(--color-fg);
+  }
+  .dl-sha256-list {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+  }
+  .dl-sha256-name {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-faint);
+    overflow-wrap: anywhere;
+  }
+  .dl-sha256-hex {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .dl-sha256-hex code {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.45;
+    color: var(--color-muted);
+    overflow-wrap: anywhere;
+    word-break: break-all;
+  }
+  .dl-sha256-hex:hover code,
+  .dl-sha256-hex:focus-visible code {
+    color: var(--color-fg);
+  }
+  .dl-sha256-hex:focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 2px;
   }
 </style>
