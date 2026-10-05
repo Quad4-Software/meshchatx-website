@@ -697,17 +697,41 @@ details[open] > summary::after {
   overflow-wrap: anywhere;
 }
 .dl-sha256-box {
+  position: relative;
   display: block;
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  padding: 0.45rem 0.6rem;
+  padding: 0.45rem 2rem 0.45rem 0.6rem;
   border: 1px solid var(--color-line);
   border-radius: 0.5rem;
   background: var(--color-canvas);
   text-align: left;
+}
+.dl-sha256-copy {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: none;
+  color: var(--color-faint);
   cursor: pointer;
+  line-height: 0;
   touch-action: manipulation;
+}
+.dl-sha256-copy:hover,
+.dl-sha256-copy:focus-visible,
+.dl-sha256-copy.copied {
+  color: var(--color-fg);
+}
+.dl-sha256-copy:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 1px;
 }
 .dl-sha256-box code {
   font-family: var(--font-mono);
@@ -720,12 +744,4 @@ details[open] > summary::after {
 }
 .dl-sha256-box:hover {
   border-color: var(--color-faint);
-}
-.dl-sha256-box:hover code,
-.dl-sha256-box:focus-visible code {
-  color: var(--color-fg);
-}
-.dl-sha256-box:focus-visible {
-  outline: 2px solid var(--color-fg);
-  outline-offset: 2px;
 }

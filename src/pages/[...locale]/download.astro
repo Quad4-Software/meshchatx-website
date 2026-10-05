@@ -571,17 +571,27 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
         const rows = keys
           .map((k) => dl[k])
           .filter((a) => a && a.sha256);
-        if (det.hasAttribute('data-sha-combined')) {
+        const copyIcon =
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/></svg>';
+        const makeBox = (text) => {
+          const box = document.createElement('div');
+          box.className = 'dl-sha256-box';
           const btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'hash-copy dl-sha256-box';
-          btn.setAttribute('data-copy', rows.map((a) => `${a.sha256}  ${a.name}`).join('\n'));
+          btn.className = 'hash-copy dl-sha256-copy';
+          btn.setAttribute('data-copy', text);
           btn.setAttribute('data-copied', copiedLabel);
+          btn.setAttribute('aria-label', copyShaLabel);
           btn.title = copyShaLabel;
+          btn.innerHTML = copyIcon;
           const code = document.createElement('code');
-          code.textContent = rows.map((a) => `${a.sha256}  ${a.name}`).join('\n');
-          btn.appendChild(code);
-          list.appendChild(btn);
+          code.textContent = text;
+          box.appendChild(btn);
+          box.appendChild(code);
+          return box;
+        };
+        if (det.hasAttribute('data-sha-combined')) {
+          list.appendChild(makeBox(rows.map((a) => `${a.sha256}  ${a.name}`).join('\n')));
         } else {
           for (const a of rows) {
             const row = document.createElement('div');
@@ -589,17 +599,8 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
             const nm = document.createElement('span');
             nm.className = 'dl-sha256-name';
             nm.textContent = a.name || '';
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'hash-copy dl-sha256-box';
-            btn.setAttribute('data-copy', a.sha256);
-            btn.setAttribute('data-copied', copiedLabel);
-            btn.title = copyShaLabel;
-            const code = document.createElement('code');
-            code.textContent = a.sha256;
-            btn.appendChild(code);
             row.appendChild(nm);
-            row.appendChild(btn);
+            row.appendChild(makeBox(a.sha256));
             list.appendChild(row);
           }
         }
@@ -709,11 +710,16 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
         document.execCommand('copy');
         ta.remove();
       }
-      const orig = btn.textContent;
-      btn.textContent = btn.getAttribute('data-copied') || 'Copied';
-      setTimeout(() => {
-        btn.textContent = orig;
-      }, 1400);
+      if (!btn.textContent.trim()) {
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 1400);
+      } else {
+        const orig = btn.textContent;
+        btn.textContent = btn.getAttribute('data-copied') || 'Copied';
+        setTimeout(() => {
+          btn.textContent = orig;
+        }, 1400);
+      }
     });
 
     // Live refresh: swap baked release data for the API payload when reachable.

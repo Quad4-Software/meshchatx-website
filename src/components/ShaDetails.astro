@@ -1,5 +1,6 @@
 ---
 import { t } from '../i18n';
+import Icon from './Icon.astro';
 import type { Locale } from '../config/site';
 import type { ReleaseDownloads } from '../lib/releases';
 
@@ -26,28 +27,36 @@ const combinedText = rows.map((r) => `${r.a.sha256}  ${r.a.name}`).join('\n');
   <summary>{t(locale, 'dl.sha256')}</summary>
   <div class="dl-sha256-list" data-sha256-list>
     {combined ? (
-      <button
-        type="button"
-        class="hash-copy dl-sha256-box"
-        data-copy={combinedText}
-        data-copied={t(locale, 'js.copied')}
-        title={t(locale, 'dl.copy_sha256')}
-      >
+      <div class="dl-sha256-box">
+        <button
+          type="button"
+          class="hash-copy dl-sha256-copy"
+          data-copy={combinedText}
+          data-copied={t(locale, 'js.copied')}
+          aria-label={t(locale, 'dl.copy_sha256')}
+          title={t(locale, 'dl.copy_sha256')}
+        >
+          <Icon name="mdiContentCopy" size={13} />
+        </button>
         <code>{combinedText}</code>
-      </button>
+      </div>
     ) : (
       rows.map((r) => (
         <div class="dl-sha256-row" data-sha-key={r.key}>
           <span class="dl-sha256-name">{r.a.name}</span>
-          <button
-            type="button"
-            class="hash-copy dl-sha256-box"
-            data-copy={r.a.sha256}
-            data-copied={t(locale, 'js.copied')}
-            title={t(locale, 'dl.copy_sha256')}
-          >
+          <div class="dl-sha256-box">
+            <button
+              type="button"
+              class="hash-copy dl-sha256-copy"
+              data-copy={r.a.sha256}
+              data-copied={t(locale, 'js.copied')}
+              aria-label={t(locale, 'dl.copy_sha256')}
+              title={t(locale, 'dl.copy_sha256')}
+            >
+              <Icon name="mdiContentCopy" size={13} />
+            </button>
             <code>{r.a.sha256}</code>
-          </button>
+          </div>
         </div>
       ))
     )}
