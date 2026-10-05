@@ -228,7 +228,9 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
   }
   .mcx-header-nav {
     position: relative;
-    z-index: 1;
+    /* z-2 keeps flyout menus above the donate banner (z-1). Without it the
+       banner wins the tie by DOM order and covers the dropdown. */
+    z-index: 2;
     display: flex;
     height: 4rem;
     max-width: 72rem;
