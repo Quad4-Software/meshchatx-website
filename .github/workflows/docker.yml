@@ -9,6 +9,12 @@ on:
     tags: ["v*"]
   pull_request:
     branches: [master, main]
+  # Daily rebuild picks up new MeshChatX releases for the roadmap, download,
+  # and changelog pages, which fetch GitHub data at image build time.
+  schedule:
+    - cron: "23 5 * * *"
+  repository_dispatch:
+    types: [meshchatx-release]
   workflow_dispatch:
 
 concurrency:

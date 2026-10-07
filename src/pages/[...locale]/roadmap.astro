@@ -29,7 +29,7 @@ const items = ROADMAP.map((item) => {
     status = 'upcoming';
     markedUpcoming = true;
   }
-  return { ...item, status };
+  return { ...item, status, shipped };
 });
 
 // Rail: milestones only. Patch releases get a count badge under each milestone.
@@ -61,22 +61,21 @@ for (let i = 0; i < sorted.length; i++) {
     title: m.title,
     date: m.date,
     status: m.status,
-    done: m.status === 'done',
+    done: m.shipped || m.status === 'done',
     patches,
   });
 }
-// Road fills up to the last shipped version: the done milestone's node, or
-// the furthest patch tick beyond it when patch releases landed.
-const lastDone = rail.reduce((acc, r, i) => (r.done ? i : acc), -1);
+// Road fills up to the last shipped version: the shipped milestone's node, or
+// the furthest patch tick beyond it when patch releases landed. A milestone
+// still marked in progress counts once its version line is published.
 let progress = 0;
-if (lastDone >= 0) {
-  if (lastDone === rail.length - 1) {
-    progress = 1;
-  } else {
-    const p = rail[lastDone]!.patches.length;
-    const tickOffset = p > 0 ? p / (p + 1) : 0;
-    progress = (lastDone + 0.5 + tickOffset) / rail.length;
-  }
+for (let i = rail.length - 1; i >= 0; i--) {
+  const r = rail[i]!;
+  if (!r.done) continue;
+  const p = r.patches.length;
+  const tickOffset = p > 0 ? p / (p + 1) : 0;
+  progress = i === rail.length - 1 ? 1 : (i + 0.5 + tickOffset) / rail.length;
+  break;
 }
 
 const statusStyle = {
