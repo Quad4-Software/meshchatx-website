@@ -47,7 +47,8 @@ Lighthouse must stay at 100 in every category; thresholds live in
 - `docker/lighttpd.conf` - static-file config for the image
 - `docker-compose.yml` - local web + api
 - `docker-compose.coolify.yml` - Coolify stack (no host ports, no custom networks)
-- `.github/workflows/` - CI, Docker GHCR (zstd), zizmor, Scorecard, CodeQL
+- `.github/workflows/` - CI, Docker GHCR (zstd), Pages preview
+  (preview.meshchatx.com), zizmor, Scorecard, CodeQL
 - `opentofu/` - Docker lighttpd for dist/, optional site API from api/
 - `ansible/` - copy dist/ onto a host lighttpd vhost, optional API container
 
