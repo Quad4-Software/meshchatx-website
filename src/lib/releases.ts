@@ -280,12 +280,21 @@ export async function getReleases(): Promise<Release[]> {
   if (memo) return memo;
   let gh: GhRelease[] = [];
   try {
-    const res = await fetch(`${SITE.githubReleasesApi}?per_page=50`, {
-      headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'meshchatx-site-build' },
-    });
-    if (res.ok) gh = (await res.json()) as GhRelease[];
-  } catch {
+    const headers: Record<string, string> = {
+      Accept: 'application/vnd.github+json',
+      'User-Agent': 'meshchatx-site-build',
+    };
+    const token = process.env.GITHUB_TOKEN?.trim();
+    if (token) headers.Authorization = `Bearer ${token}`;
+    const res = await fetch(`${SITE.githubReleasesApi}?per_page=50`, { headers });
+    if (res.ok) {
+      gh = (await res.json()) as GhRelease[];
+    } else {
+      console.warn(`[releases] GitHub returned ${res.status}; releases list is empty`);
+    }
+  } catch (err) {
     // offline build; the download page degrades to GitHub links
+    console.warn(`[releases] GitHub fetch failed: ${String(err)}`);
   }
   const out: Release[] = [];
   for (const r of gh) {
