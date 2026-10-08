@@ -31,7 +31,6 @@ export interface ReleaseDownloads {
   apk: ReleaseAsset | null;
   alpineApk: ReleaseAsset | null;
   flatpak: ReleaseAsset | null;
-  sbom: ReleaseAsset | null;
   torrent: ReleaseAsset | null;
 }
 
@@ -264,7 +263,6 @@ async function matchDownloads(assets: GhAsset[]): Promise<ReleaseDownloads> {
     apk: byName((n) => n.endsWith('.apk') && !n.includes('alpine') && !n.includes('linux')),
     alpineApk: byName((n) => n.endsWith('.apk') && n.includes('alpine')),
     flatpak: byName((n) => n.endsWith('.flatpak')),
-    sbom: byName((n) => /sbom\.cyclonedx\.json$/i.test(n)),
     torrent: byName((n) => n.endsWith('.torrent')),
   };
 

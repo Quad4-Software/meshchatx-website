@@ -54,11 +54,17 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Rust cache
+        uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+        with:
+          workspaces: edge
+          cache-on-failure: true
+
       - name: Edge wasm
         run: |
           rustup target add wasm32-wasip2
           cargo test --manifest-path edge/Cargo.toml
-          cargo build --release --target wasm32-wasip2 --manifest-path edge/Cargo.toml
+          scripts/build-edge.sh
 
   lighthouse:
     name: Lighthouse

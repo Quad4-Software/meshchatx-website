@@ -99,7 +99,6 @@ export const FOOTER_GROUPS = [
     group: 'footer.explore',
     links: [
       { key: 'nav.interfaces', path: 'interfaces' },
-      { key: 'nav.dependency', path: 'dependency' },
       { key: 'nav.news', path: 'news' },
       { key: 'footer.changelog', path: 'changelog' },
       { key: 'nav.branding', path: 'branding' },

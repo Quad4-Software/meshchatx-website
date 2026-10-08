@@ -15,7 +15,6 @@ export const GET: APIRoute = async () => {
 - [Changelog](${SITE.domain}/changelog)
 - [News](${SITE.domain}/news) - announcements ([RSS](${SITE.domain}/news.xml))
 - [Interfaces](${SITE.domain}/interfaces) - public Reticulum interface directory
-- [Dependencies](${SITE.domain}/dependency) - CycloneDX SBOM browser
 - [Branding](${SITE.domain}/branding)
 - [Contact](${SITE.domain}/contact)
 - [Donate](${SITE.domain}/donate)
@@ -28,8 +27,6 @@ export const GET: APIRoute = async () => {
 
 - ${SITE.domain}/api/mcx-releases - releases per channel with download URLs
 - ${SITE.domain}/api/mcx-interfaces - cached interface directory
-- ${SITE.domain}/api/mcx-sbom - SBOM version index
-- ${SITE.domain}/api/mcx-sbom/{tag} - CycloneDX SBOM for a release tag
 
 ## Source
 

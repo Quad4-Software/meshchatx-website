@@ -126,6 +126,28 @@ fn inflate_brotli(br: &[u8]) -> Option<Vec<u8>> {
     Some(out)
 }
 
+/// Variant length and Content-Encoding without copying the body, for HEAD.
+/// Follows the same fallback order as body_for.
+fn head_variant(asset: &Asset, enc: Encoding) -> Option<(usize, Option<&'static str>)> {
+    match enc {
+        Encoding::Brotli => {
+            if let Some(br) = asset.br {
+                return Some((br.len(), Some("br")));
+            }
+        }
+        Encoding::Identity => {
+            if let Some(raw) = asset.raw {
+                return Some((raw.len(), None));
+            }
+        }
+    }
+    if let Some(raw) = asset.raw {
+        return Some((raw.len(), None));
+    }
+    // Identity on a brotli-only asset inflates to the raw length.
+    asset.br.map(|_| (asset.len, None))
+}
+
 /// Matches the old lighttpd expire rules.
 pub fn cache_control(path: &str) -> &'static str {
     if path.starts_with("/_astro/") {
@@ -147,8 +169,17 @@ mod wasm_app {
         enc: Encoding,
         head_only: bool,
     ) -> anyhow::Result<Response<Body>> {
-        let (body, content_encoding) = body_for(asset, enc)
-            .ok_or_else(|| anyhow::anyhow!("no variant for {}", asset.path))?;
+        // HEAD resolves the variant length without materializing the body.
+        let (body, content_encoding, body_len) = if head_only {
+            let (len, ce) = head_variant(asset, enc)
+                .ok_or_else(|| anyhow::anyhow!("no variant for {}", asset.path))?;
+            (Vec::new(), ce, len)
+        } else {
+            let (bytes, ce) = body_for(asset, enc)
+                .ok_or_else(|| anyhow::anyhow!("no variant for {}", asset.path))?;
+            let len = bytes.len();
+            (bytes, ce, len)
+        };
         // The gateway rewrites cache-control to no-store; CDN-Cache-Control
         // passes through and still drives the CDN layer in front of the app.
         let cache = cache_control(asset.path);
@@ -165,8 +196,7 @@ mod wasm_app {
             b = b.header("content-encoding", ce);
         }
         if head_only {
-            b = b.header("content-length", body.len().to_string());
-            return Ok(b.body(Body::from(Vec::new()))?);
+            b = b.header("content-length", body_len.to_string());
         }
         Ok(b.body(Body::from(body))?)
     }
