@@ -19,7 +19,7 @@
     "@fontsource-variable/space-grotesk": "^5.3.0",
     "@fontsource/space-mono": "^5.3.0",
     "@mdi/js": "^7.4.47",
-    "astro": "^7.3.4",
+    "astro": "^7.3.5",
     "marked": "^18.0.14",
     "sharp": "^0.35.4"
   },
