@@ -1,0 +1,99 @@
+name: Release sync
+
+# Rebuilds the site and redeploys the FastEdge app when release data
+# changes. Runs on a timer, on demand, or when the MeshChatX repo sends a
+# release-published repository_dispatch event.
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [release-published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-sync
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Rebuild and redeploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GCORE_API_KEY: ${{ secrets.GCORE_API_KEY }}
+      GCORE_APP_ID: ${{ secrets.GCORE_APP_ID }}
+      GCORE_CDN_RESOURCE_ID: "1104132"
+      BUNNY_STORAGE_ACCESS_KEY: ${{ secrets.BUNNY_STORAGE_ACCESS_KEY }}
+      LIVE_API: https://meshchatx.com/api/releases
+      LIVE_INTERFACES: https://meshchatx.com/api/interfaces
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: "10"
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        run: pnpm build
+
+      - name: Skip deploy when live data matches
+        id: check
+        run: |
+          stale=0
+          for pair in "dist/api/releases.json $LIVE_API" "dist/api/interfaces.json $LIVE_INTERFACES"; do
+            set -- $pair
+            live=$(curl -fsS --max-time 15 "$2" | sha256sum | cut -d' ' -f1) || live=fetch-failed
+            baked=$(sha256sum "$1" | cut -d' ' -f1)
+            echo "$1 baked=$baked live=$live"
+            [ "$live" = "$baked" ] || stale=1
+          done
+          echo "stale=$stale" >> "$GITHUB_OUTPUT"
+
+      - name: Rust cache
+        if: steps.check.outputs.stale == '1'
+        uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+        with:
+          workspaces: edge
+          cache-on-failure: true
+
+      - name: Edge wasm
+        if: steps.check.outputs.stale == '1'
+        run: |
+          rustup target add wasm32-wasip2
+          cargo test --manifest-path edge/Cargo.toml
+          scripts/build-edge.sh
+
+      - name: Deploy to FastEdge
+        if: steps.check.outputs.stale == '1'
+        run: scripts/deploy-fastedge.sh
+
+      - name: Purge CDN cache
+        if: steps.check.outputs.stale == '1'
+        run: |
+          curl -fsS -X POST "https://api.gcore.com/cdn/resources/$GCORE_CDN_RESOURCE_ID/purge" \
+            -H "Authorization: apikey $GCORE_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"paths":["/*"]}'
