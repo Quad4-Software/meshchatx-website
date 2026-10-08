@@ -723,7 +723,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     });
 
     // Live refresh: swap baked release data for the API payload when reachable.
-    if (location.hostname.endsWith('meshchatx.com')) {
+    {
       const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
       idle(() => fetch(`${apiBase}/api/releases`)
       .then((r) => (r.ok ? r.json() : null))

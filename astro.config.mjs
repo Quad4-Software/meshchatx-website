@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import solidJs from '@astrojs/solid-js';
 import tailwindcss from '@tailwindcss/vite';
 import { generateShotVariants } from './scripts/shot-variants.mjs';
 
@@ -19,11 +18,7 @@ function shotVariantsIntegration() {
 export default defineConfig({
   site: 'https://meshchatx.com',
   output: 'static',
-  integrations: [
-    shotVariantsIntegration(),
-    sitemap(),
-    solidJs(),
-  ],
+  integrations: [shotVariantsIntegration(), sitemap()],
 
   build: {
     inlineStylesheets: 'always',

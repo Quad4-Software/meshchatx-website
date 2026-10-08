@@ -1,14 +1,15 @@
 //! Embeds dist/ into the wasm binary.
 //!
-//! Compressible assets get brotli and gzip variants baked in so requests
-//! never compress at runtime. Clients that accept neither get the gzip
-//! blob inflated in wasm at request time.
+//! Compressible assets are baked as a single brotli blob each; identical
+//! files share one blob. Clients that do not accept brotli get the blob
+//! inflated in wasm at request time.
 
 use anyhow::{bail, Context, Result};
-use flate2::write::GzEncoder;
-use flate2::Compression;
+use std::collections::hash_map::DefaultHasher;
+use std::collections::HashMap;
 use std::env;
 use std::fs;
+use std::hash::{Hash, Hasher};
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
@@ -109,48 +110,67 @@ fn main() -> Result<()> {
          \x20   pub mime: &'static str,\n\
          \x20   pub len: usize,\n\
          \x20   pub br: Option<&'static [u8]>,\n\
-         \x20   pub gzip: Option<&'static [u8]>,\n\
          \x20   pub raw: Option<&'static [u8]>,\n\
          }\n\
          pub static ASSETS: &[Asset] = &[\n",
     );
 
-    for (i, (rel, file)) in files.iter().enumerate() {
+    // (len, content hash) -> blob indices, so identical files embed once.
+    // Blob N lives at blobs/N.bin (raw) and optionally blobs/N.br.
+    let mut seen: HashMap<(usize, u64), Vec<usize>> = HashMap::new();
+    let mut contents: Vec<Vec<u8>> = Vec::new();
+    let mut wrote_raw: Vec<bool> = Vec::new();
+    let mut wrote_br: Vec<bool> = Vec::new();
+
+    for (rel, file) in &files {
         println!("cargo:rerun-if-changed={}", file.display());
         let mime = mime_of(rel);
         let data = fs::read(file)?;
 
+        let mut hasher = DefaultHasher::new();
+        data.hash(&mut hasher);
+        let key = (data.len(), hasher.finish());
+        let blob_idx = seen
+            .get(&key)
+            .and_then(|ids| ids.iter().copied().find(|&i| contents[i] == data))
+            .unwrap_or_else(|| {
+                let i = contents.len();
+                seen.entry(key).or_default().push(i);
+                contents.push(data.clone());
+                wrote_raw.push(false);
+                wrote_br.push(false);
+                i
+            });
+
         let mut br = "None".to_string();
-        let mut gz = "None".to_string();
-        let mut raw = format!("Some(include_bytes!({:?}) as &[u8])", file.display().to_string());
-
+        let mut raw = "None".to_string();
         if compressible(mime) && data.len() >= 128 {
-            let br_path = blobs.join(format!("{i}.br"));
-            let mut enc = brotli::CompressorWriter::new(
-                fs::File::create(&br_path)?,
-                4096,
-                BROTLI_QUALITY,
-                BROTLI_WINDOW,
-            );
-            enc.write_all(&data)?;
-            drop(enc);
-
-            let gz_path = blobs.join(format!("{i}.gz"));
-            let mut enc = GzEncoder::new(Vec::new(), Compression::best());
-            enc.write_all(&data)?;
-            fs::write(&gz_path, enc.finish()?)?;
-
+            if !wrote_br[blob_idx] {
+                let mut enc = brotli::CompressorWriter::new(
+                    fs::File::create(blobs.join(format!("{blob_idx}.br")))?,
+                    4096,
+                    BROTLI_QUALITY,
+                    BROTLI_WINDOW,
+                );
+                enc.write_all(&data)?;
+                drop(enc);
+                wrote_br[blob_idx] = true;
+            }
             br = format!(
-                "Some(include_bytes!(concat!(env!(\"OUT_DIR\"), \"/blobs/{i}.br\")) as &[u8])"
+                "Some(include_bytes!(concat!(env!(\"OUT_DIR\"), \"/blobs/{blob_idx}.br\")) as &[u8])"
             );
-            gz = format!(
-                "Some(include_bytes!(concat!(env!(\"OUT_DIR\"), \"/blobs/{i}.gz\")) as &[u8])"
+        } else {
+            if !wrote_raw[blob_idx] {
+                fs::write(blobs.join(format!("{blob_idx}.bin")), &data)?;
+                wrote_raw[blob_idx] = true;
+            }
+            raw = format!(
+                "Some(include_bytes!(concat!(env!(\"OUT_DIR\"), \"/blobs/{blob_idx}.bin\")) as &[u8])"
             );
-            raw = "None".to_string();
         }
 
         manifest.push_str(&format!(
-            "    Asset {{ path: {rel:?}, mime: {mime:?}, len: {}, br: {br}, gzip: {gz}, raw: {raw} }},\n",
+            "    Asset {{ path: {rel:?}, mime: {mime:?}, len: {}, br: {br}, raw: {raw} }},\n",
             data.len(),
         ));
     }

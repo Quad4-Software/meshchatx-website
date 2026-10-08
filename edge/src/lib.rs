@@ -9,7 +9,6 @@ pub use generated::{Asset, ASSETS};
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Encoding {
     Brotli,
-    Gzip,
     Identity,
 }
 
@@ -77,57 +76,54 @@ pub fn resolve(raw_path: &str) -> Option<&'static Asset> {
     None
 }
 
-/// Picks the response encoding from Accept-Encoding, preferring brotli.
+/// Picks the response encoding from Accept-Encoding.
 pub fn negotiate(accept_encoding: &str) -> Encoding {
-    let accepts = |enc: &str| {
-        accept_encoding.split(',').any(|token| {
-            let mut parts = token.trim().splitn(2, ';');
-            if !parts.next().unwrap_or("").trim().eq_ignore_ascii_case(enc) {
-                return false;
-            }
-            match parts.next() {
-                Some(params) => !params.trim().starts_with("q=0"),
-                None => true,
-            }
-        })
-    };
-    if accepts("br") {
+    let accepted = accept_encoding.split(',').any(|token| {
+        let mut parts = token.trim().splitn(2, ';');
+        let name = parts.next().unwrap_or("").trim();
+        if !(name.eq_ignore_ascii_case("br") || name == "*") {
+            return false;
+        }
+        match parts.next() {
+            Some(params) => !params.trim().starts_with("q=0"),
+            None => true,
+        }
+    });
+    if accepted {
         Encoding::Brotli
-    } else if accepts("gzip") || accepts("*") {
-        Encoding::Gzip
     } else {
         Encoding::Identity
     }
 }
 
-/// Bytes and Content-Encoding for one asset variant. Falls back to whatever
-/// the asset carries: raw when it has no compressed blobs, the gzip blob
-/// inflated when identity is all the client takes.
+/// Bytes and Content-Encoding for one asset variant. Identity on a
+/// compressed-only asset inflates the brotli blob at request time.
 pub fn body_for(asset: &Asset, enc: Encoding) -> Option<(Vec<u8>, Option<&'static str>)> {
-    let preferred = match enc {
-        Encoding::Brotli => asset.br.map(|b| (b, Some("br"))),
-        Encoding::Gzip => asset.gzip.map(|b| (b, Some("gzip"))),
-        Encoding::Identity => asset.raw.map(|b| (b, None)),
-    };
-    if let Some((bytes, ce)) = preferred {
-        return Some((bytes.to_vec(), ce));
+    match enc {
+        Encoding::Brotli => {
+            if let Some(br) = asset.br {
+                return Some((br.to_vec(), Some("br")));
+            }
+        }
+        Encoding::Identity => {
+            if let Some(raw) = asset.raw {
+                return Some((raw.to_vec(), None));
+            }
+        }
     }
     if let Some(raw) = asset.raw {
         return Some((raw.to_vec(), None));
     }
-    let gz = asset.gzip?;
-    if enc == Encoding::Identity {
-        return inflate_gzip(gz).map(|b| (b, None));
-    }
-    Some((gz.to_vec(), Some("gzip")))
+    asset.br.and_then(|br| inflate_brotli(br).map(|b| (b, None)))
 }
 
-fn inflate_gzip(gzip: &[u8]) -> Option<Vec<u8>> {
-    // Our own blobs: fixed 10 byte header, 8 byte trailer, raw deflate body.
-    if gzip.len() < 18 || gzip[0] != 0x1f || gzip[1] != 0x8b || gzip[3] != 0 {
-        return None;
-    }
-    miniz_oxide::inflate::decompress_to_vec(&gzip[10..gzip.len() - 8]).ok()
+fn inflate_brotli(br: &[u8]) -> Option<Vec<u8>> {
+    use std::io::Read;
+    let mut out = Vec::new();
+    brotli::Decompressor::new(br, 4096)
+        .read_to_end(&mut out)
+        .ok()?;
+    Some(out)
 }
 
 /// Matches the old lighttpd expire rules.
@@ -255,22 +251,24 @@ mod tests {
     #[test]
     fn negotiates_encoding() {
         assert_eq!(negotiate("gzip, deflate, br, zstd"), Encoding::Brotli);
-        assert_eq!(negotiate("gzip, deflate"), Encoding::Gzip);
-        assert_eq!(negotiate("*"), Encoding::Gzip);
+        assert_eq!(negotiate("br"), Encoding::Brotli);
+        assert_eq!(negotiate("gzip, deflate"), Encoding::Identity);
         assert_eq!(negotiate(""), Encoding::Identity);
-        assert_eq!(negotiate("br;q=0, gzip"), Encoding::Gzip);
+        assert_eq!(negotiate("br;q=0, gzip"), Encoding::Identity);
+        assert_eq!(negotiate("*"), Encoding::Brotli);
     }
 
     #[test]
     fn every_asset_has_a_body() {
         for a in ASSETS {
-            assert!(a.raw.is_some() || a.gzip.is_some(), "{} has no body", a.path);
-            for enc in [Encoding::Brotli, Encoding::Gzip, Encoding::Identity] {
-                let (body, _) = body_for(a, enc).unwrap_or_else(|| {
+            assert!(a.raw.is_some() || a.br.is_some(), "{} has no body", a.path);
+            for enc in [Encoding::Brotli, Encoding::Identity] {
+                let (body, ce) = body_for(a, enc).unwrap_or_else(|| {
                     panic!("{} has no {enc:?} body", a.path);
                 });
                 if enc == Encoding::Identity {
                     assert_eq!(body.len(), a.len, "{}", a.path);
+                    assert!(ce.is_none());
                 }
             }
         }

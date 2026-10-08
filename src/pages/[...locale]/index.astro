@@ -194,7 +194,7 @@ const labelOpen = t(locale, 'home.preview.open');
     // Live refresh: the baked version goes stale between rebuilds, so pull the
     // latest stable tag from the site API (cached upstream) when reachable.
     const cta = document.getElementById('mcx-dl-cta');
-    if (cta && location.hostname.endsWith('meshchatx.com')) {
+    if (cta) {
       const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
       idle(() => fetch(`${apiBase}/api/releases`)
         .then((r) => (r.ok ? r.json() : null))
