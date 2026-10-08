@@ -6,6 +6,8 @@ mod generated {
 
 pub use generated::{Asset, ASSETS};
 
+use bytes::Bytes;
+
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Encoding {
     Brotli,
@@ -98,23 +100,25 @@ pub fn negotiate(accept_encoding: &str) -> Encoding {
 
 /// Bytes and Content-Encoding for one asset variant. Identity on a
 /// compressed-only asset inflates the brotli blob at request time.
-pub fn body_for(asset: &Asset, enc: Encoding) -> Option<(Vec<u8>, Option<&'static str>)> {
+pub fn body_for(asset: &Asset, enc: Encoding) -> Option<(Bytes, Option<&'static str>)> {
     match enc {
         Encoding::Brotli => {
             if let Some(br) = asset.br {
-                return Some((br.to_vec(), Some("br")));
+                return Some((Bytes::from_static(br), Some("br")));
             }
         }
         Encoding::Identity => {
             if let Some(raw) = asset.raw {
-                return Some((raw.to_vec(), None));
+                return Some((Bytes::from_static(raw), None));
             }
         }
     }
     if let Some(raw) = asset.raw {
-        return Some((raw.to_vec(), None));
+        return Some((Bytes::from_static(raw), None));
     }
-    asset.br.and_then(|br| inflate_brotli(br).map(|b| (b, None)))
+    asset
+        .br
+        .and_then(|br| inflate_brotli(br).map(|b| (Bytes::from(b), None)))
 }
 
 fn inflate_brotli(br: &[u8]) -> Option<Vec<u8>> {
@@ -128,6 +132,7 @@ fn inflate_brotli(br: &[u8]) -> Option<Vec<u8>> {
 
 /// Variant length and Content-Encoding without copying the body, for HEAD.
 /// Follows the same fallback order as body_for.
+#[cfg(target_arch = "wasm32")]
 fn head_variant(asset: &Asset, enc: Encoding) -> Option<(usize, Option<&'static str>)> {
     match enc {
         Encoding::Brotli => {
@@ -173,7 +178,7 @@ mod wasm_app {
         let (body, content_encoding, body_len) = if head_only {
             let (len, ce) = head_variant(asset, enc)
                 .ok_or_else(|| anyhow::anyhow!("no variant for {}", asset.path))?;
-            (Vec::new(), ce, len)
+            (Bytes::new(), ce, len)
         } else {
             let (bytes, ce) = body_for(asset, enc)
                 .ok_or_else(|| anyhow::anyhow!("no variant for {}", asset.path))?;
@@ -219,7 +224,15 @@ mod wasm_app {
         let enc = negotiate(ae);
         let head_only = method == Method::HEAD;
         match resolve(req.uri().path()) {
-            Some(asset) => respond(StatusCode::OK, asset, enc, head_only),
+            Some(asset) => match asset.redirect {
+                Some(loc) => Ok(Response::builder()
+                    .status(StatusCode::MOVED_PERMANENTLY)
+                    .header("location", loc)
+                    .header("cache-control", "public, max-age=86400")
+                    .header("cdn-cache-control", "public, max-age=86400")
+                    .body(Body::from(Vec::new()))?),
+                None => respond(StatusCode::OK, asset, enc, head_only),
+            },
             None => match find("/404.html") {
                 Some(asset) => respond(StatusCode::NOT_FOUND, asset, enc, head_only),
                 None => Ok(Response::builder()
@@ -289,8 +302,22 @@ mod tests {
     }
 
     #[test]
+    fn redirects_are_jsdelivr() {
+        let redirected: Vec<_> = ASSETS.iter().filter(|a| a.redirect.is_some()).collect();
+        assert!(!redirected.is_empty());
+        for a in redirected {
+            let url = a.redirect.unwrap();
+            assert!(url.starts_with("https://cdn.jsdelivr.net/gh/"), "{url}");
+            assert!(a.raw.is_none() && a.br.is_none(), "{} still embeds", a.path);
+        }
+    }
+
+    #[test]
     fn every_asset_has_a_body() {
         for a in ASSETS {
+            if a.redirect.is_some() {
+                continue;
+            }
             assert!(a.raw.is_some() || a.br.is_some(), "{} has no body", a.path);
             for enc in [Encoding::Brotli, Encoding::Identity] {
                 let (body, ce) = body_for(a, enc).unwrap_or_else(|| {

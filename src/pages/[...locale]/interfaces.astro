@@ -89,7 +89,7 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
 
   <script type="application/json" id="ifx-data" set:html={JSON.stringify(items)} />
 
-  <script define:vars={{ showingText: t(locale, 'ifx.showing'), configText: t(locale, 'ifx.config'), apiBase: SITE.apiBase }}>
+  <script define:vars={{ showingText: t(locale, 'ifx.showing'), configText: t(locale, 'ifx.config'), directoryUrl: SITE.rnsDirectoryApi }}>
     const search = document.getElementById('ifx-search');
     const typeSel = document.getElementById('ifx-type');
     const netSel = document.getElementById('ifx-net');
@@ -166,14 +166,28 @@ const networks = [...new Set(items.map((i) => i.network))].sort();
     [search, typeSel, netSel].forEach((el) => el?.addEventListener('input', apply));
     apply();
 
-    // Live refresh: replace the baked list when the API answers with data.
+    // Live refresh: pull the directory upstream directly, keeping the baked
+    // list until fresh data arrives. Rows are normalized like lib/interfaces.
     {
       const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
-      idle(() => fetch(`${apiBase}/api/interfaces`)
+      const norm = (row) => {
+        const name = typeof row?.name === 'string' ? row.name.trim() : '';
+        const host = typeof row?.host === 'string' ? row.host.trim() : '';
+        if (!name || !host) return null;
+        const port = typeof row.port === 'number' && row.port >= 1 && row.port <= 65535 ? row.port : null;
+        const str = (v) => (typeof v === 'string' ? v : '');
+        return { id: typeof row.id === 'number' ? row.id : null, name, host, port,
+          type: str(row.type), typeName: str(row.typeName), network: str(row.network),
+          status: str(row.status), config: str(row.config) };
+      };
+      idle(() => fetch(directoryUrl, { headers: { Accept: 'application/json' } })
       .then((r) => (r.ok ? r.json() : null))
-      .then((live) => {
-        if (!live?.items?.length) return;
-        items = live.items;
+      .then((data) => {
+        const rows = Array.isArray(data) ? data : (data?.data ?? data?.interfaces ?? []);
+        const live = rows.map(norm).filter(Boolean)
+          .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+        if (!live.length) return;
+        items = live;
         render(items);
         apply();
       })

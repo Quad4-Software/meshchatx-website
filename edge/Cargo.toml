@@ -10,6 +10,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 anyhow = "1"
 brotli = "9"
+bytes = "1"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wstd = "0.6"
