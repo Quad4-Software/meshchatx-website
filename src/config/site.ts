@@ -31,7 +31,8 @@ export const SITE = {
     '27:77:CA:A4:33:9B:EF:29:56:09:AB:25:85:ED:A2:81:7A:F1:1D:5C:4B:3D:3F:F9:5E:86:10:17:B6:EB:D3:C6',
   reticulumCrypto: 'https://reticulum.network/crypto.html',
   demoUrl: 'https://demo.meshchatx.com',
-  apiBase: 'https://api.meshchatx.com',
+  // Same origin: the edge app serves /api/* from baked JSON.
+  apiBase: '',
   quad4Url: 'https://quad4.io/',
   themeKey: 'mcx-theme',
 } as const;

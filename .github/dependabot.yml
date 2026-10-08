@@ -24,8 +24,8 @@ updates:
       - dependencies
       - javascript
 
-  - package-ecosystem: gomod
-    directory: /api
+  - package-ecosystem: cargo
+    directory: /edge
     cooldown:
       default-days: 7
     schedule:
@@ -34,28 +34,4 @@ updates:
     open-pull-requests-limit: 10
     labels:
       - dependencies
-      - go
-
-  - package-ecosystem: docker
-    directory: /
-    cooldown:
-      default-days: 7
-    schedule:
-      interval: weekly
-      day: monday
-    open-pull-requests-limit: 5
-    labels:
-      - dependencies
-      - docker
-
-  - package-ecosystem: docker
-    directory: /api
-    cooldown:
-      default-days: 7
-    schedule:
-      interval: weekly
-      day: monday
-    open-pull-requests-limit: 5
-    labels:
-      - dependencies
-      - docker
+      - rust

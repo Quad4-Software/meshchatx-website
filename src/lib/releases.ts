@@ -153,9 +153,10 @@ async function applyBunnyStorage(release: Release): Promise<void> {
   });
 }
 
-/** Merge CDN mirrors resolved by the release API, which can list storage
- * subdirectories that a HEAD probe cannot guess. */
+/** Merge CDN mirrors resolved by a release API, which can list storage
+ * subdirectories that a HEAD probe cannot guess. Skipped without apiBase. */
 async function applyApiMirrors(releases: Release[]): Promise<void> {
+  if (!SITE.apiBase) return;
   let list: Array<{ tag?: string; downloads?: Record<string, { name?: string; cdnUrl?: string } | null> }> = [];
   try {
     const res = await Promise.all(

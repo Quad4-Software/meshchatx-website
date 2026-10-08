@@ -1,7 +1,8 @@
 # MeshChatX website (Astro)
 
-Static marketing + docs site for meshchatx.com. Rebuild of the Laravel site on
-Astro 7, TypeScript strictest, Tailwind 4, zero-JS-by-default.
+Static marketing + docs site for meshchatx.com, served from a Rust wasm
+binary on Gcore FastEdge. Astro 7, TypeScript strictest, Tailwind 4,
+zero-JS-by-default.
 
 ## Commands
 
@@ -11,21 +12,27 @@ pnpm build        # static build to dist/ (fetches GitHub/directory data)
 pnpm preview      # serve dist/
 pnpm check        # astro check + tsc --noEmit
 pnpm lhci         # lighthouse autorun against dist/ (needs CHROME_PATH=/usr/bin/chromium)
+pnpm edge         # compile edge/ to wasm32-wasip2 (needs dist/)
+pnpm build:edge   # astro build + wasm in one step
+pnpm deploy       # scripts/deploy-fastedge.sh (needs GCORE_API_KEY, GCORE_APP_ID)
 ```
 
-After `pnpm build`, deploy with OpenTofu (`cd opentofu && tofu init && tofu apply`) or
-Ansible (`cd ansible && ansible-playbook -i inventory.example playbook.yml`).
-The site image is Alpine lighttpd (`docker build -t meshchatx-web --target web .`).
-OpenTofu builds the `runtime` stage and bind-mounts `dist/`.
+## Deploy
 
-Local stack: `docker compose up --build -d` (web :8080, api :8090).
-Coolify: use `docker-compose.coolify.yml`. Do not publish host ports. Assign the
-site domain only to the `web` service as `https://your.domain:8080`. Optional API
-domain on `api` as `:8090`. Set `BUNNY_STORAGE_ACCESS_KEY` on `api` for Storage
-listing.
+`edge/build.rs` embeds all of dist/ into the wasm binary: compressible
+assets (html, css, js, json, xml, txt, svg) ship as brotli + gzip blobs
+selected off Accept-Encoding at request time; the rest is embedded raw.
+`wasmtime serve edge/target/wasm32-wasip2/release/meshchatx_edge.wasm`
+runs it locally.
 
-GHCR images (CI, zstd OCI layers): `ghcr.io/quad4-software/meshchatx-website/web`
-and `ghcr.io/quad4-software/meshchatx-website/api`.
+Deploy is `pnpm deploy`, which POSTs the binary to the FastEdge API and
+PATCHes `GCORE_APP_ID` onto it. The app is created once in the Gcore
+portal; point the site domain at its fastedge URL there.
+
+The old site API (releases, interfaces refresh endpoints) is gone.
+`/api/releases`, `/api/releases/{channel}`, and `/api/interfaces` map to
+baked JSON under dist/api/, so live-refresh widgets now get build-time
+data. Rebuild to refresh.
 
 Lighthouse must stay at 100 in every category; thresholds live in
 `lighthouserc.json`.
@@ -42,20 +49,18 @@ Lighthouse must stay at 100 in every category; thresholds live in
   undefined for en, `de|es|fi|fr|it|nl|ru|zh` for the rest
 - `src/pages/api/` - static JSON endpoints baked at build
 - `src/components/` - Nav, Footer, Starfield, MeshGlyph, PageHero, CommandBlock, Icon
+- `edge/` - FastEdge wasm app (wstd, wasm32-wasip2 cdylib); `build.rs`
+  bakes dist/ into the binary
 - `public/` - favicons, og cards, showcase shots, branding media
-- `Dockerfile` - Alpine lighttpd (default target bakes dist/, `runtime` mounts it, `web` is the GHCR image)
-- `docker/lighttpd.conf` - static-file config for the image
-- `docker-compose.yml` - local web + api
-- `docker-compose.coolify.yml` - Coolify stack (no host ports, no custom networks)
-- `.github/workflows/` - CI, Docker GHCR (zstd), Pages preview
+- `scripts/deploy-fastedge.sh` - uploads the wasm binary via the FastEdge API
+- `.github/workflows/` - CI (site + edge wasm), Pages preview
   (preview.meshchatx.com), zizmor, Scorecard, CodeQL
-- `opentofu/` - Docker lighttpd for dist/, optional site API from api/
-- `ansible/` - copy dist/ onto a host lighttpd vhost, optional API container
 
 ## Rules
 
-- No runtime server. Everything is prerendered; external data (GitHub
-  releases, interface directory, changelog) is fetched at build time.
+- No runtime server of our own. Everything is prerendered; external data
+  (GitHub releases, interface directory, changelog) is fetched at build
+  time.
 - Copy lives in `src/i18n/locales/*.json`, not in components.
 - New page: add `src/pages/[...locale]/<name>.astro` with the standard
   `getStaticPaths` over `LOCALES`, add nav/footer keys to `site.ts` and the

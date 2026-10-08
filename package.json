@@ -9,7 +9,10 @@
     "preview": "astro preview",
     "check": "astro check && tsc --noEmit",
     "lhci": "lhci autorun",
-    "check:site": "node scripts/check-site.mjs"
+    "check:site": "node scripts/check-site.mjs",
+    "edge": "cargo build --release --target wasm32-wasip2 --manifest-path edge/Cargo.toml",
+    "build:edge": "astro build && pnpm edge",
+    "deploy": "scripts/deploy-fastedge.sh"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",

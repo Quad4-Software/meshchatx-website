@@ -1,2 +1,0 @@
-[meshchatx_web]
-localhost ansible_connection=local

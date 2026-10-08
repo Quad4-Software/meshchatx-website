@@ -54,36 +54,11 @@ jobs:
       - name: Build
         run: pnpm build
 
-  api:
-    name: API
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read # clone the repo
-    steps:
-      - name: Harden runner
-        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
-        with:
-          egress-policy: audit
-
-      - name: Checkout
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-        with:
-          persist-credentials: false
-
-      - name: Setup Go
-        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-        with:
-          go-version-file: api/go.mod
-          cache-dependency-path: api/go.sum
-
-      - name: Test
-        working-directory: api
-        run: go test ./...
-
-      - name: Build
-        working-directory: api
-        run: CGO_ENABLED=0 go build -trimpath -o /tmp/siteapi ./cmd/server
+      - name: Edge wasm
+        run: |
+          rustup target add wasm32-wasip2
+          cargo test --manifest-path edge/Cargo.toml
+          cargo build --release --target wasm32-wasip2 --manifest-path edge/Cargo.toml
 
   lighthouse:
     name: Lighthouse
