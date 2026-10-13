@@ -20,8 +20,7 @@
       "git": "Git | MeshChatX",
       "docs": "Docs | MeshChatX",
       "changelog": "Registro de cambios | MeshChatX",
-      "offline": "Sin conexión | MeshChatX",
-      "news": "Noticias | MeshChatX"
+      "offline": "Sin conexión | MeshChatX"
     },
     "og_image_alt": "Logo de MeshChatX",
     "desc": {
@@ -38,8 +37,7 @@
       "error": "Esta página no se pudo mostrar como se solicitó.",
       "git": "Clona MeshChatX desde rngit sobre Reticulum, o usa los espejos de GitHub y CodeFloe.",
       "docs": "Documentación de MeshChatX del paquete de docs de la aplicación: instalación, mensajería, llamadas LXST, NomadNet, interfaces y guías de plataforma.",
-      "offline": "Estás sin conexión. Abre una página de MeshChatX en caché o vuelve a conectarte.",
-      "news": "Noticias de MeshChatX, anuncios y un feed RSS."
+      "offline": "Estás sin conexión. Abre una página de MeshChatX en caché o vuelve a conectarte."
     }
   },
   "error": {
@@ -93,8 +91,7 @@
     "secondary": "Más",
     "theme_light": "Claro",
     "theme_dark": "Oscuro",
-    "theme_system": "Sistema",
-    "news": "Noticias"
+    "theme_system": "Sistema"
   },
   "lang": {
     "label": "Idioma",
@@ -136,6 +133,9 @@
     "click_copy": "Haz clic en la dirección para copiar",
     "copied": "Copiado"
   },
+  "eol": {
+    "banner": "MeshChatX llega al fin de su ciclo de vida el 1 de enero de 2027."
+  },
   "donate": {
     "h1": "Apoyar MeshChatX",
     "lead": "MeshChatX se construye para la comunidad. Tu donación ayuda a financiar el desarrollo y los costes de infraestructura.",
@@ -146,9 +146,7 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Haz clic en la dirección para copiar",
-    "copied": "Copiado",
-    "banner": "Dona para apoyar el futuro de MeshChatX",
-    "banner_dismiss": "Cerrar"
+    "copied": "Copiado"
   },
   "license": {
     "h1": "Licencia",
@@ -459,11 +457,5 @@
     },
     "copy_md": "Copiar MD",
     "updated": "Ultima actualizacion :date por :author"
-  },
-  "news": {
-    "h1": "Noticias",
-    "lead": "Anuncios y actualizaciones del sitio.",
-    "empty": "Aun no hay publicaciones. Suscribete al RSS para enterarte de la primera.",
-    "rss": "Feed RSS"
   }
 }

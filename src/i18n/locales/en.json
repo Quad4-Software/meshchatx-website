@@ -20,7 +20,6 @@
       "git": "Git | MeshChatX",
       "docs": "Docs | MeshChatX",
       "changelog": "Changelog | MeshChatX",
-      "news": "News | MeshChatX",
       "offline": "Offline | MeshChatX"
     },
     "og_image_alt": "MeshChatX logo",
@@ -38,7 +37,6 @@
       "error": "This page could not be shown as requested.",
       "git": "Clone MeshChatX from rngit over Reticulum, or use the GitHub and CodeFloe mirrors.",
       "docs": "MeshChatX documentation from the application docs bundle: install, messaging, LXST calls, NomadNet, interfaces, and platform guides.",
-      "news": "MeshChatX news, announcements, and an RSS feed.",
       "offline": "You are offline. Open a cached MeshChatX page or reconnect."
     }
   },
@@ -90,7 +88,6 @@
     "mobile_menu_close": "Close menu",
     "mobile_nav": "Mobile",
     "docs": "Docs",
-    "news": "News",
     "secondary": "More",
     "theme_light": "Light",
     "theme_dark": "Dark",
@@ -136,6 +133,9 @@
     "click_copy": "Click the address to copy",
     "copied": "Copied"
   },
+  "eol": {
+    "banner": "MeshChatX reaches end of life on 1 January 2027."
+  },
   "donate": {
     "h1": "Support MeshChatX",
     "lead": "MeshChatX is built for the community. Your donation helps fund development and infrastructure costs.",
@@ -146,9 +146,7 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Click the address to copy",
-    "copied": "Copied",
-    "banner": "Please donate to support the future of MeshChatX",
-    "banner_dismiss": "Dismiss"
+    "copied": "Copied"
   },
   "license": {
     "h1": "License",
@@ -459,11 +457,5 @@
     },
     "copy_md": "Copy MD",
     "updated": "Last updated :date by :author"
-  },
-  "news": {
-    "h1": "News",
-    "lead": "Announcements and site updates.",
-    "empty": "No posts yet. Subscribe to the RSS feed to hear when the first one lands.",
-    "rss": "RSS feed"
   }
 }

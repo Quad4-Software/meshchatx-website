@@ -85,7 +85,6 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
     <link rel="alternate" hreflang="en" href={new URL(localePath('en', path ?? ''), SITE.domain).href} />
     <link rel="alternate" hreflang="x-default" href={new URL(localePath('en', path ?? ''), SITE.domain).href} />
     <link rel="alternate" href="/legacy" title="Legacy" />
-    <link rel="alternate" type="application/rss+xml" title="MeshChatX News" href="/news.xml" />
     <noscript>
       <meta http-equiv="refresh" content="0;url=/legacy" />
     </noscript>
@@ -118,20 +117,6 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
           theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
         }
         document.documentElement.dataset.theme = theme;
-        try {
-          var raw = localStorage.getItem('mcx-donate-banner');
-          var year = 365 * 24 * 60 * 60 * 1000;
-          var ts = 0;
-          if (raw === '1') {
-            ts = Date.now();
-            localStorage.setItem('mcx-donate-banner', String(ts));
-          } else if (raw) {
-            ts = parseInt(raw, 10) || 0;
-          }
-          if (ts && Date.now() - ts < year) {
-            document.documentElement.dataset.donateBanner = 'hide';
-          }
-        } catch (err) {}
       })();
     </script>
     <script type="application/ld+json" set:html={JSON.stringify({

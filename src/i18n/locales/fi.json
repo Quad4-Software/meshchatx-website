@@ -20,8 +20,7 @@
       "git": "Git | MeshChatX",
       "docs": "Docs | MeshChatX",
       "changelog": "Muutosloki | MeshChatX",
-      "offline": "Offline | MeshChatX",
-      "news": "Uutiset | MeshChatX"
+      "offline": "Offline | MeshChatX"
     },
     "og_image_alt": "MeshChatX-logo",
     "desc": {
@@ -38,8 +37,7 @@
       "error": "Tätä sivua ei voitu näyttää pyydetyllä tavalla.",
       "git": "Kloonaa MeshChatX rngitillä Reticulumin yli tai käytä GitHub- ja CodeFloe-peilejä.",
       "docs": "MeshChatX-dokumentaatio sovelluksen docs-paketista: asennus, viestintä, LXST-puhelut, NomadNet, rajapinnat ja alustaoppaat.",
-      "offline": "Olet offline. Avaa välimuistissa oleva MeshChatX-sivu tai muodosta yhteys uudelleen.",
-      "news": "MeshChatX-uutiset, tiedotteet ja RSS-syote."
+      "offline": "Olet offline. Avaa välimuistissa oleva MeshChatX-sivu tai muodosta yhteys uudelleen."
     }
   },
   "error": {
@@ -93,8 +91,7 @@
     "secondary": "Lisää",
     "theme_light": "Vaalea",
     "theme_dark": "Tumma",
-    "theme_system": "Järjestelmä",
-    "news": "Uutiset"
+    "theme_system": "Järjestelmä"
   },
   "lang": {
     "label": "Kieli",
@@ -136,6 +133,9 @@
     "click_copy": "Kopioi napsauttamalla osoitetta",
     "copied": "Kopioitu"
   },
+  "eol": {
+    "banner": "MeshChatX:n elinkaari päättyy 1. tammikuuta 2027."
+  },
   "donate": {
     "h1": "Tue MeshChatX:ää",
     "lead": "MeshChatX rakennetaan yhteisölle. Lahjoituksesi auttaa rahoittamaan kehitystä ja infrastruktuurikustannuksia.",
@@ -146,9 +146,7 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Kopioi napsauttamalla osoitetta",
-    "copied": "Kopioitu",
-    "banner": "Lahjoita MeshChatX:n tulevaisuuden tueksi",
-    "banner_dismiss": "Sulje"
+    "copied": "Kopioitu"
   },
   "license": {
     "h1": "Lisenssi",
@@ -459,11 +457,5 @@
     },
     "copy_md": "Kopioi MD",
     "updated": "Paivitetty :date, :author"
-  },
-  "news": {
-    "h1": "Uutiset",
-    "lead": "Tiedotteet ja sivuston paivitykset.",
-    "empty": "Ei julkaisuja viela. Tilaa RSS, niin kuulet ensimmaisesta.",
-    "rss": "RSS-syote"
   }
 }

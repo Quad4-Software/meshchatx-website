@@ -20,8 +20,7 @@
       "git": "Git | MeshChatX",
       "docs": "Docs | MeshChatX",
       "changelog": "Änderungsprotokoll | MeshChatX",
-      "offline": "Offline | MeshChatX",
-      "news": "News | MeshChatX"
+      "offline": "Offline | MeshChatX"
     },
     "og_image_alt": "MeshChatX-Logo",
     "desc": {
@@ -38,8 +37,7 @@
       "branding": "MeshChatX-Logos, Icons und Markenfarben für Presse und Produktnutzung.",
       "git": "MeshChatX per rngit über Reticulum klonen oder die Spiegel auf GitHub und CodeFloe nutzen.",
       "docs": "MeshChatX-Dokumentation aus dem App-Docs-Paket: Installation, Messaging, LXST-Anrufe, NomadNet, Interfaces und Plattformleitfäden.",
-      "offline": "Sie sind offline. Öffnen Sie eine zwischengespeicherte MeshChatX-Seite oder stellen Sie die Verbindung wieder her.",
-      "news": "MeshChatX-News, Ankuendigungen und ein RSS-Feed."
+      "offline": "Sie sind offline. Öffnen Sie eine zwischengespeicherte MeshChatX-Seite oder stellen Sie die Verbindung wieder her."
     }
   },
   "error": {
@@ -93,8 +91,7 @@
     "secondary": "Mehr",
     "theme_light": "Hell",
     "theme_dark": "Dunkel",
-    "theme_system": "System",
-    "news": "News"
+    "theme_system": "System"
   },
   "lang": {
     "label": "Sprache",
@@ -136,6 +133,9 @@
     "click_copy": "Adresse anklicken zum Kopieren",
     "copied": "Kopiert"
   },
+  "eol": {
+    "banner": "MeshChatX erreicht am 1. Januar 2027 sein End-of-Life."
+  },
   "donate": {
     "h1": "MeshChatX unterstützen",
     "lead": "MeshChatX entsteht für die Community. Deine Spende hilft bei Entwicklung und Infrastruktur.",
@@ -146,9 +146,7 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Adresse anklicken zum Kopieren",
-    "copied": "Kopiert",
-    "banner": "Bitte spende, um die Zukunft von MeshChatX zu sichern",
-    "banner_dismiss": "Ausblenden"
+    "copied": "Kopiert"
   },
   "license": {
     "h1": "Lizenz",
@@ -459,11 +457,5 @@
     },
     "copy_md": "MD kopieren",
     "updated": "Zuletzt aktualisiert :date von :author"
-  },
-  "news": {
-    "h1": "News",
-    "lead": "Ankuendigungen und Website-Updates.",
-    "empty": "Noch keine Beitraege. RSS-Feed abonnieren, um den ersten zu erhalten.",
-    "rss": "RSS-Feed"
   }
 }

@@ -20,8 +20,7 @@
       "git": "Git | MeshChatX",
       "docs": "Documentazione | MeshChatX",
       "changelog": "Changelog | MeshChatX",
-      "offline": "Offline | MeshChatX",
-      "news": "Notizie | MeshChatX"
+      "offline": "Offline | MeshChatX"
     },
     "og_image_alt": "Logo MeshChatX",
     "desc": {
@@ -38,8 +37,7 @@
       "branding": "Loghi, icone e colori MeshChatX per stampa e uso prodotto.",
       "git": "Clona MeshChatX da rngit su Reticulum, oppure usa i mirror GitHub e CodeFloe.",
       "docs": "Documentazione MeshChatX dal pacchetto docs dell’app: installazione, messaggistica, chiamate LXST, NomadNet, interfacce e guide di piattaforma.",
-      "offline": "Sei offline. Apri una pagina MeshChatX in cache o riconnettiti.",
-      "news": "Notizie MeshChatX, annunci e feed RSS."
+      "offline": "Sei offline. Apri una pagina MeshChatX in cache o riconnettiti."
     }
   },
   "error": {
@@ -93,8 +91,7 @@
     "secondary": "Altro",
     "theme_light": "Chiaro",
     "theme_dark": "Scuro",
-    "theme_system": "Sistema",
-    "news": "Notizie"
+    "theme_system": "Sistema"
   },
   "lang": {
     "label": "Lingua",
@@ -136,6 +133,9 @@
     "click_copy": "Clicca l’indirizzo per copiare",
     "copied": "Copiato"
   },
+  "eol": {
+    "banner": "MeshChatX raggiunge la fine del ciclo di vita il 1 gennaio 2027."
+  },
   "donate": {
     "h1": "Sostieni MeshChatX",
     "lead": "MeshChatX è costruito per la community. La tua donazione aiuta sviluppo e infrastruttura.",
@@ -146,9 +146,7 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Clicca l’indirizzo per copiare",
-    "copied": "Copiato",
-    "banner": "Dona per sostenere il futuro di MeshChatX",
-    "banner_dismiss": "Chiudi"
+    "copied": "Copiato"
   },
   "license": {
     "h1": "Licenza",
@@ -459,11 +457,5 @@
     },
     "copy_md": "Copia MD",
     "updated": "Ultimo aggiornamento :date da :author"
-  },
-  "news": {
-    "h1": "Notizie",
-    "lead": "Annunci e aggiornamenti del sito.",
-    "empty": "Nessun articolo ancora. Iscriviti al feed RSS per il primo.",
-    "rss": "Feed RSS"
   }
 }

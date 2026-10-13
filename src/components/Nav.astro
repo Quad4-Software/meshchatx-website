@@ -1,7 +1,7 @@
 ---
 import { NAV_LINKS, LOCALES, LOCALE_NAMES, type Locale } from '../config/site';
 import { t, localePath } from '../i18n';
-import DonateBanner from './DonateBanner.astro';
+import EolBanner from './EolBanner.astro';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -13,6 +13,7 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
 ---
 
 <header class="mcx-header">
+  <EolBanner locale={locale} />
   <div class="mcx-header-blur"></div>
   <nav class="mcx-header-nav" aria-label={t(locale, 'nav.primary')}>
     <a href={localePath(locale)} class="flex items-center gap-2.5 text-fg">
@@ -126,7 +127,6 @@ const currentPath = Astro.url.pathname.replace(/^\/(de|es|fi|fr|it|nl|ru|zh)(?=\
       </div>
     </div>
   </nav>
-  {!currentPath.startsWith('/donate') && <DonateBanner locale={locale} />}
 </header>
 
 <script>

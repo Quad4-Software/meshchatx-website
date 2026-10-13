@@ -20,8 +20,7 @@
       "git": "Git | MeshChatX",
       "docs": "文档 | MeshChatX",
       "changelog": "更新日志 | MeshChatX",
-      "offline": "离线 | MeshChatX",
-      "news": "新闻 | MeshChatX"
+      "offline": "离线 | MeshChatX"
     },
     "og_image_alt": "MeshChatX 标志",
     "desc": {
@@ -38,8 +37,7 @@
       "branding": "MeshChatX 徽标、图标与品牌色，供媒体与产品使用。",
       "git": "通过 Reticulum 上的 rngit 克隆 MeshChatX，或使用 GitHub 与 CodeFloe 镜像。",
       "docs": "来自应用文档包的 MeshChatX 文档：安装、消息、LXST 通话、NomadNet、接口与平台指南。",
-      "offline": "你处于离线状态。打开已缓存的 MeshChatX 页面，或重新连接网络。",
-      "news": "MeshChatX 新闻、公告和 RSS 源。"
+      "offline": "你处于离线状态。打开已缓存的 MeshChatX 页面，或重新连接网络。"
     }
   },
   "error": {
@@ -93,8 +91,7 @@
     "secondary": "更多",
     "theme_light": "浅色",
     "theme_dark": "深色",
-    "theme_system": "系统",
-    "news": "新闻"
+    "theme_system": "系统"
   },
   "lang": {
     "label": "语言",
@@ -136,6 +133,9 @@
     "click_copy": "点击地址即可复制",
     "copied": "已复制"
   },
+  "eol": {
+    "banner": "MeshChatX 将于 2027 年 1 月 1 日结束生命周期。"
+  },
   "donate": {
     "h1": "支持 MeshChatX",
     "lead": "MeshChatX 为社区而构建。您的捐赠有助于开发与基础设施成本。",
@@ -146,9 +146,7 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "点击地址即可复制",
-    "copied": "已复制",
-    "banner": "请捐赠以支持 MeshChatX 的未来",
-    "banner_dismiss": "关闭"
+    "copied": "已复制"
   },
   "license": {
     "h1": "许可",
@@ -459,11 +457,5 @@
     },
     "copy_md": "复制 MD",
     "updated": "最近更新 :date，作者 :author"
-  },
-  "news": {
-    "h1": "新闻",
-    "lead": "公告与站点更新。",
-    "empty": "暂无文章。订阅 RSS 以获取第一篇。",
-    "rss": "RSS 源"
   }
 }

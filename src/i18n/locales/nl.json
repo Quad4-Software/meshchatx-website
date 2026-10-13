@@ -20,8 +20,7 @@
       "git": "Git | MeshChatX",
       "docs": "Docs | MeshChatX",
       "changelog": "Wijzigingslog | MeshChatX",
-      "offline": "Offline | MeshChatX",
-      "news": "Nieuws | MeshChatX"
+      "offline": "Offline | MeshChatX"
     },
     "og_image_alt": "MeshChatX-logo",
     "desc": {
@@ -38,8 +37,7 @@
       "error": "Deze pagina kon niet worden getoond zoals gevraagd.",
       "git": "Kloon MeshChatX via rngit over Reticulum, of gebruik de GitHub- en CodeFloe-mirrors.",
       "docs": "MeshChatX-documentatie uit het docs-pakket van de app: installatie, berichten, LXST-gesprekken, NomadNet, interfaces en platformgidsen.",
-      "offline": "Je bent offline. Open een gecachte MeshChatX-pagina of maak opnieuw verbinding.",
-      "news": "MeshChatX-nieuws, aankondigingen en een RSS-feed."
+      "offline": "Je bent offline. Open een gecachte MeshChatX-pagina of maak opnieuw verbinding."
     }
   },
   "error": {
@@ -93,8 +91,7 @@
     "secondary": "Meer",
     "theme_light": "Licht",
     "theme_dark": "Donker",
-    "theme_system": "Systeem",
-    "news": "Nieuws"
+    "theme_system": "Systeem"
   },
   "lang": {
     "label": "Taal",
@@ -136,6 +133,9 @@
     "click_copy": "Klik op het adres om te kopiëren",
     "copied": "Gekopieerd"
   },
+  "eol": {
+    "banner": "MeshChatX bereikt het einde van de levensduur op 1 januari 2027."
+  },
   "donate": {
     "h1": "Steun MeshChatX",
     "lead": "MeshChatX wordt gebouwd voor de community. Jouw donatie helpt ontwikkeling en infrastructuurkosten te financieren.",
@@ -146,9 +146,7 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Klik op het adres om te kopiëren",
-    "copied": "Gekopieerd",
-    "banner": "Doneer om de toekomst van MeshChatX te steunen",
-    "banner_dismiss": "Sluiten"
+    "copied": "Gekopieerd"
   },
   "license": {
     "h1": "Licentie",
@@ -459,11 +457,5 @@
     },
     "copy_md": "MD kopiëren",
     "updated": "Laatst bijgewerkt :date door :author"
-  },
-  "news": {
-    "h1": "Nieuws",
-    "lead": "Aankondigingen en site-updates.",
-    "empty": "Nog geen berichten. Abonneer op de RSS-feed voor de eerste.",
-    "rss": "RSS-feed"
   }
 }

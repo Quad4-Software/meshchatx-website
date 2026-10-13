@@ -20,8 +20,7 @@
       "git": "Git | MeshChatX",
       "docs": "Docs | MeshChatX",
       "changelog": "Journal des changements | MeshChatX",
-      "offline": "Hors ligne | MeshChatX",
-      "news": "Actualites | MeshChatX"
+      "offline": "Hors ligne | MeshChatX"
     },
     "og_image_alt": "Logo MeshChatX",
     "desc": {
@@ -38,8 +37,7 @@
       "error": "Cette page n'a pas pu être affichée comme demandé.",
       "git": "Clonez MeshChatX depuis rngit sur Reticulum, ou utilisez les miroirs GitHub et CodeFloe.",
       "docs": "Documentation MeshChatX du paquet docs de l'application : installation, messagerie, appels LXST, NomadNet, interfaces et guides de plateforme.",
-      "offline": "Vous êtes hors ligne. Ouvrez une page MeshChatX en cache ou reconnectez-vous.",
-      "news": "Actualites MeshChatX, annonces et flux RSS."
+      "offline": "Vous êtes hors ligne. Ouvrez une page MeshChatX en cache ou reconnectez-vous."
     }
   },
   "error": {
@@ -93,8 +91,7 @@
     "secondary": "Plus",
     "theme_light": "Clair",
     "theme_dark": "Sombre",
-    "theme_system": "Système",
-    "news": "Actualites"
+    "theme_system": "Système"
   },
   "lang": {
     "label": "Langue",
@@ -136,6 +133,9 @@
     "click_copy": "Cliquez sur l'adresse pour copier",
     "copied": "Copié"
   },
+  "eol": {
+    "banner": "MeshChatX arrive en fin de vie le 1er janvier 2027."
+  },
   "donate": {
     "h1": "Soutenir MeshChatX",
     "lead": "MeshChatX est construit pour la communauté. Votre don aide à financer le développement et les coûts d'infrastructure.",
@@ -146,9 +146,7 @@
     "kofi": "Ko-fi",
     "bmac": "Buy Me a Coffee",
     "click_copy": "Cliquez sur l'adresse pour copier",
-    "copied": "Copié",
-    "banner": "Faites un don pour l'avenir de MeshChatX",
-    "banner_dismiss": "Fermer"
+    "copied": "Copié"
   },
   "license": {
     "h1": "Licence",
@@ -459,11 +457,5 @@
     },
     "copy_md": "Copier MD",
     "updated": "Derniere mise a jour :date par :author"
-  },
-  "news": {
-    "h1": "Actualites",
-    "lead": "Annonces et mises a jour du site.",
-    "empty": "Pas encore d'articles. Abonnez-vous au flux RSS pour le premier.",
-    "rss": "Flux RSS"
   }
 }
