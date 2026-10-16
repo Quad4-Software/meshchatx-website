@@ -9,10 +9,7 @@
     "preview": "astro preview",
     "check": "astro check && tsc --noEmit",
     "lhci": "lhci autorun",
-    "check:site": "node scripts/check-site.mjs",
-    "edge": "scripts/build-edge.sh",
-    "build:edge": "astro build && pnpm edge",
-    "deploy": "scripts/deploy-fastedge.sh"
+    "check:site": "node scripts/check-site.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

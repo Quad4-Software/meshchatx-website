@@ -1,4 +1,4 @@
-# CodeQL analysis for JS/TS, Rust, and Actions workflows
+# CodeQL analysis for JS/TS and Actions workflows
 # https://docs.github.com/en/code-security
 
 name: CodeQL
@@ -31,8 +31,6 @@ jobs:
       matrix:
         include:
           - language: javascript-typescript
-            build-mode: none
-          - language: rust
             build-mode: none
           - language: actions
             build-mode: none

@@ -1,4 +1,7 @@
-# GitHub Pages preview deploy for master
+# GitHub Pages deploy for meshchatx.com.
+# Rebuilds and redeploys on push, on a timer, on demand, or when the app
+# repo sends a release-published repository_dispatch event. Timed and
+# dispatched runs skip the deploy when the live baked JSON already matches.
 # Least privilege, SHA-pinned actions, no pull_request_target.
 # https://docs.github.com/en/actions/reference/security/secure-use
 
@@ -7,7 +10,11 @@ name: Pages
 on:
   push:
     branches: [master, main]
+  schedule:
+    - cron: "*/30 * * * *"
   workflow_dispatch:
+  repository_dispatch:
+    types: [release-published]
 
 concurrency:
   group: pages-${{ github.workflow }}-${{ github.ref }}
@@ -15,9 +22,13 @@ concurrency:
 
 permissions: {}
 
+env:
+  LIVE_API: https://meshchatx.com/api/releases.json
+  LIVE_INTERFACES: https://meshchatx.com/api/interfaces.json
+
 jobs:
   deploy:
-    name: Deploy preview
+    name: Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -55,20 +66,39 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # The CNAME file lives only in this artifact so production dist/ stays
-      # untouched. Requires a preview.meshchatx.com CNAME record pointing at
+      # The CNAME file lives only in this artifact so repo files stay
+      # untouched. Requires meshchatx.com DNS pointing at
       # quad4-software.github.io and Pages set to GitHub Actions deploys.
       - name: Write Pages CNAME
-        run: echo "preview.meshchatx.com" > dist/CNAME
+        run: echo "meshchatx.com" > dist/CNAME
+
+      # Pushes always deploy; timer and dispatch runs only deploy when the
+      # live baked API payloads differ from what this build produced.
+      - name: Skip deploy when live data matches
+        if: github.event_name != 'push'
+        id: check
+        run: |
+          stale=0
+          for pair in "dist/api/releases.json $LIVE_API" "dist/api/interfaces.json $LIVE_INTERFACES"; do
+            set -- $pair
+            live=$(curl -fsS --max-time 15 "$2" | sha256sum | cut -d' ' -f1) || live=fetch-failed
+            baked=$(sha256sum "$1" | cut -d' ' -f1)
+            echo "$1 baked=$baked live=$live"
+            [ "$live" = "$baked" ] || stale=1
+          done
+          echo "stale=$stale" >> "$GITHUB_OUTPUT"
 
       - name: Setup Pages
+        if: github.event_name == 'push' || steps.check.outputs.stale == '1'
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: Upload Pages artifact
+        if: github.event_name == 'push' || steps.check.outputs.stale == '1'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: dist
 
       - name: Deploy to Pages
+        if: github.event_name == 'push' || steps.check.outputs.stale == '1'
         id: deploy
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

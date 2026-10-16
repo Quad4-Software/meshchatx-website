@@ -196,7 +196,7 @@ const labelOpen = t(locale, 'home.preview.open');
     const cta = document.getElementById('mcx-dl-cta');
     if (cta) {
       const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
-      idle(() => fetch(`${apiBase}/api/releases`)
+      idle(() => fetch(`${apiBase}/api/releases.json`)
         .then((r) => (r.ok ? r.json() : null))
         .then((live) => {
           const v = live?.stable?.version;

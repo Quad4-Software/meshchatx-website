@@ -12,5 +12,3 @@ dist/
 # Generated screenshot srcset variants
 public/media/screenshots/**/*.w*.webp
 
-# Rust
-edge/target/

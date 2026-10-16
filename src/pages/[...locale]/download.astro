@@ -617,7 +617,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     // Live refresh: swap baked release data for the API payload when reachable.
     {
       const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
-      idle(() => fetch(`${apiBase}/api/releases`)
+      idle(() => fetch(`${apiBase}/api/releases.json`)
       .then((r) => (r.ok ? r.json() : null))
       .then((live) => {
         if (!live?.channels) return;
