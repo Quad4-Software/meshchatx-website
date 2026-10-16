@@ -21,7 +21,7 @@
     "@mdi/js": "^7.4.47",
     "astro": "^7.3.4",
     "marked": "^18.0.14",
-    "sharp": "^0.35.4"
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

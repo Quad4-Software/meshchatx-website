@@ -4,6 +4,8 @@ minimumReleaseAgeExclude:
 # lighthouse 13 replaces the puppeteer-core@24 chain (extract-zip is
 # unmaintained and unpatched upstream) and its proxy-agent deps.
 overrides:
+  "js-yaml>argparse": "^2.0.1"
+  "source-map-js": "^1.2.2"
   "@lhci/cli>lighthouse": "13.5.0"
   "@lhci/utils>lighthouse": "13.5.0"
   tmp: "^0.2.7"
