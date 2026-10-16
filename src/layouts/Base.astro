@@ -25,7 +25,7 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} data-theme-key={SITE.themeKey}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -63,14 +63,14 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
     )}
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="MeshChatX" />
+    <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="MeshChatX logo" />
+    <meta property="og:image:alt" content={`${SITE.name} logo`} />
     <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
     <meta property="og:locale" content={OG_LOCALES[locale]} />
@@ -111,7 +111,7 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
         }
         var theme = '';
         try {
-          theme = localStorage.getItem('mcx-theme') || '';
+          theme = localStorage.getItem(document.documentElement.getAttribute('data-theme-key') || 'theme') || '';
         } catch (err) {}
         if (!theme) {
           theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
@@ -122,7 +122,7 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
-      name: 'MeshChatX',
+      name: SITE.name,
       applicationCategory: 'CommunicationApplication',
       operatingSystem: 'Windows, macOS, Linux, Android',
       description: t(locale, 'meta.desc.home'),
@@ -132,12 +132,12 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
       codeRepository: SITE.githubUrl,
       isAccessibleForFree: true,
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      author: { '@type': 'Organization', name: 'Quad4', url: SITE.quad4Url },
+      author: { '@type': 'Organization', name: SITE.authorName, url: SITE.authorUrl },
     })} />
     <script type="application/ld+json" set:html={JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: 'MeshChatX',
+      name: SITE.name,
       url: SITE.domain,
     })} />
   </head>

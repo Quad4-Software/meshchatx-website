@@ -1,8 +1,13 @@
 // @ts-check
+import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { generateShotVariants } from './scripts/shot-variants.mjs';
+
+const brand = JSON.parse(
+  readFileSync(new URL('./src/config/site.json', import.meta.url), 'utf8'),
+);
 
 function shotVariantsIntegration() {
   return {
@@ -16,7 +21,7 @@ function shotVariantsIntegration() {
 }
 
 export default defineConfig({
-  site: 'https://meshchatx.com',
+  site: brand.domain,
   output: 'static',
   integrations: [shotVariantsIntegration(), sitemap()],
 

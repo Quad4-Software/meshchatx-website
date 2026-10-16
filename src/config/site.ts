@@ -1,52 +1,26 @@
+import brand from './site.json';
+
+// Fork/rebrand surface: everything identity-specific lives in site.json.
+// URLs below are derived so a fork edits one file.
+const repo = brand.githubRepo;
+const branch = brand.githubBranch;
+const gh = `https://github.com/${repo}`;
+
 export const SITE = {
-  name: 'MeshChatX',
-  domain: 'https://meshchatx.com',
-  githubRepo: 'Quad4-Software/MeshChatX',
-  githubUrl: 'https://github.com/Quad4-Software/MeshChatX',
-  githubReleases: 'https://github.com/Quad4-Software/MeshChatX/releases',
-  githubReleasesApi: 'https://api.github.com/repos/Quad4-Software/MeshChatX/releases',
-  githubClone: 'https://github.com/Quad4-Software/MeshChatX.git',
-  githubChangelogRaw:
-    'https://raw.githubusercontent.com/Quad4-Software/MeshChatX/master/CHANGELOG.md',
-  rngitRns: 'rns://06a54b505bb67b25ef3f8097e8001edc/public/MeshChatX',
-  rngitNomadnet: '132f67e79d9b24aad014e93015fb858f:/page/repo.mu`g=public|r=MeshChatX',
-  codefloeUrl: 'https://codefloe.com/Ivan/MeshChatX',
-  codefloeClone: 'https://codefloe.com/Ivan/MeshChatX.git',
-  pypiUrl: 'https://pypi.org/project/reticulum-meshchatx/',
-  pypiPackage: 'reticulum-meshchatx',
-  pipRnsUrl: 'https://pip-rns.quad4.io/',
-  dockerHub: 'quad4io/meshchatx:latest',
-  ghcr: 'ghcr.io/quad4-software/meshchatx:latest',
-  archUrl: 'https://arch.quad4.io/',
-  flatpakCdnBase: 'https://cdn.quad4.io/flatpak',
-  flatpakAppId: 'com.meshchatx.app',
-  cdnBase: 'https://cdn.quad4.io',
-  rnsDirectoryUrl: 'https://directory.rns.recipes/',
-  rnsDirectoryApi:
-    'https://directory.rns.recipes/api/directory/submitted?search=&type=&status=online',
-  obtainiumUrl:
-    'https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/https://github.com/Quad4-Software/MeshChatX',
-  androidPackage: 'com.meshchatx',
-  androidCertSha256:
-    '27:77:CA:A4:33:9B:EF:29:56:09:AB:25:85:ED:A2:81:7A:F1:1D:5C:4B:3D:3F:F9:5E:86:10:17:B6:EB:D3:C6',
-  reticulumCrypto: 'https://reticulum.network/crypto.html',
-  demoUrl: 'https://demo.meshchatx.com',
-  // Same origin: the edge app serves /api/* from baked JSON.
-  apiBase: '',
-  quad4Url: 'https://quad4.io/',
-  themeKey: 'mcx-theme',
+  ...brand,
+  slug: brand.name.toLowerCase().replace(/[^a-z0-9]+/g, ''),
+  githubUrl: gh,
+  githubReleases: `${gh}/releases`,
+  githubReleasesApi: `https://api.github.com/repos/${repo}/releases`,
+  githubClone: `${gh}.git`,
+  githubChangelogRaw: `https://raw.githubusercontent.com/${repo}/${branch}/CHANGELOG.md`,
+  githubChangelogBlob: `${gh}/blob/${branch}/CHANGELOG.md`,
+  pypiUrl: `https://pypi.org/project/${brand.pypiPackage}/`,
+  obtainiumUrl: `https://apps.obtainium.imranr.dev/redirect.html?r=obtainium://add/${gh}`,
 } as const;
 
-export const CONTACT = {
-  lxmf: 'f489752fbef161c64d65e385a4e9fc74',
-  email: 'team@quad4.io',
-} as const;
-
-export const DONATE = {
-  xmr: '8AfDSLVeTSt1oku5ifK4jkbJ94fp5kW6y5RWxuP1FYmyZmLHYRVSrPXJJaX7mK1n7MQUzwYE15uVdQVeAuWWnR5pDkN52xU',
-  kofi: 'https://ko-fi.com/quad4',
-  bmac: 'https://buymeacoffee.com/quad4',
-} as const;
+export const CONTACT = brand.contact;
+export const DONATE = brand.donate;
 
 export const LOCALES = ['en', 'de', 'es', 'fi', 'fr', 'it', 'nl', 'ru', 'zh'] as const;
 export type Locale = (typeof LOCALES)[number];

@@ -3,41 +3,41 @@
     "skip": "Saltar al contenido"
   },
   "brand": {
-    "name": "MeshChatX"
+    "name": "{app}"
   },
   "meta": {
     "title": {
-      "home": "MeshChatX",
-      "download": "Descargar | MeshChatX",
-      "contact": "Contacto | MeshChatX",
-      "donate": "Donar | MeshChatX",
-      "license": "Licencia | MeshChatX",
-      "privacy": "Política de privacidad | MeshChatX",
-      "roadmap": "Hoja de ruta | MeshChatX",
-      "interfaces": "Interfaces | MeshChatX",
-      "branding": "Marca | MeshChatX",
-      "error": "Error | MeshChatX",
-      "git": "Git | MeshChatX",
-      "docs": "Docs | MeshChatX",
-      "changelog": "Registro de cambios | MeshChatX",
-      "offline": "Sin conexión | MeshChatX"
+      "home": "{app}",
+      "download": "Descargar | {app}",
+      "contact": "Contacto | {app}",
+      "donate": "Donar | {app}",
+      "license": "Licencia | {app}",
+      "privacy": "Política de privacidad | {app}",
+      "roadmap": "Hoja de ruta | {app}",
+      "interfaces": "Interfaces | {app}",
+      "branding": "Marca | {app}",
+      "error": "Error | {app}",
+      "git": "Git | {app}",
+      "docs": "Docs | {app}",
+      "changelog": "Registro de cambios | {app}",
+      "offline": "Sin conexión | {app}"
     },
-    "og_image_alt": "Logo de MeshChatX",
+    "og_image_alt": "Logo de {app}",
     "desc": {
-      "home": "Cliente MeshChatX para mensajería, llamadas y NomadNet sobre Reticulum. Sin servidores centrales.",
-      "download": "Descarga MeshChatX para Windows, Linux, macOS, Docker y Python. Mensajería descentralizada sobre Reticulum.",
-      "contact": "Contacta con MeshChatX por LXMF (Reticulum) o por correo a team@quad4.io.",
-      "donate": "Apoya MeshChatX en Ko-fi, Buy Me a Coffee o con Monero (XMR).",
-      "license": "Licencias del sitio meshchatx.com (0BSD) y de la aplicación MeshChatX (0BSD + MIT).",
-      "privacy": "Cómo meshchatx.com trata los datos cuando visitas el Sitio.",
-      "roadmap": "Versiones previstas de MeshChatX, trabajo en curso y hitos completados.",
-      "changelog": "Versiones publicadas de MeshChatX con notas del CHANGELOG upstream.",
+      "home": "Cliente {app} para mensajería, llamadas y NomadNet sobre Reticulum. Sin servidores centrales.",
+      "download": "Descarga {app} para Windows, Linux, macOS, Docker y Python. Mensajería descentralizada sobre Reticulum.",
+      "contact": "Contacta con {app} por LXMF (Reticulum) o por correo a {email}.",
+      "donate": "Apoya {app} en Ko-fi, Buy Me a Coffee o con Monero (XMR).",
+      "license": "Licencias del sitio {up:domain} (0BSD) y de la aplicación {app} (0BSD + MIT).",
+      "privacy": "Cómo {up:domain} trata los datos cuando visitas el Sitio.",
+      "roadmap": "Versiones previstas de {app}, trabajo en curso y hitos completados.",
+      "changelog": "Versiones publicadas de {app} con notas del CHANGELOG upstream.",
       "interfaces": "Interfaces Reticulum en línea en caché desde directory.rns.recipes, con bloques de config para ~/.reticulum/config.",
-      "branding": "Logos, iconos y colores de marca de MeshChatX para prensa y uso de producto.",
+      "branding": "Logos, iconos y colores de marca de {app} para prensa y uso de producto.",
       "error": "Esta página no se pudo mostrar como se solicitó.",
-      "git": "Clona MeshChatX desde rngit sobre Reticulum, o usa los espejos de GitHub y CodeFloe.",
-      "docs": "Documentación de MeshChatX del paquete de docs de la aplicación: instalación, mensajería, llamadas LXST, NomadNet, interfaces y guías de plataforma.",
-      "offline": "Estás sin conexión. Abre una página de MeshChatX en caché o vuelve a conectarte."
+      "git": "Clona {app} desde rngit sobre Reticulum, o usa los espejos de GitHub y CodeFloe.",
+      "docs": "Documentación de {app} del paquete de docs de la aplicación: instalación, mensajería, llamadas LXST, NomadNet, interfaces y guías de plataforma.",
+      "offline": "Estás sin conexión. Abre una página de {app} en caché o vuelve a conectarte."
     }
   },
   "error": {
@@ -70,7 +70,7 @@
     "title_5xx": "Algo salió mal",
     "lead_5xx": "Ocurrió un error inesperado. Inténtalo de nuevo más tarde.",
     "cta_home": "Volver al inicio",
-    "cta_download": "Descargar MeshChatX"
+    "cta_download": "Descargar {app}"
   },
   "nav": {
     "primary": "Principal",
@@ -115,9 +115,9 @@
     "license": "Licencia",
     "privacy": "Política de privacidad",
     "license_badge": "MIT + 0BSD",
-    "meta_copyright": "© 2026 MeshChatX.",
-    "developed_by": "Desarrollado por Quad4 Software",
-    "meta_site": "MeshChatX es un proyecto de <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>.",
+    "meta_copyright": "© 2026 {app}.",
+    "developed_by": "Desarrollado por {author} Software",
+    "meta_site": "{app} es un proyecto de <a href=\"{authorUrl}\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">{up:authorUrl}</a>.",
     "product": "Producto",
     "explore": "Explorar",
     "legacy": "Legacy"
@@ -127,18 +127,18 @@
     "panel_title": "Contacto por LXMF",
     "copy_title": "Copiar dirección LXMF",
     "panel_email": "Correo",
-    "email_lead": "Para preguntas generales, escribe al equipo de Quad4 por correo.",
-    "email": "team@quad4.io",
+    "email_lead": "Para preguntas generales, escribe al equipo de {author} por correo.",
+    "email": "{email}",
     "copy_email": "Copiar dirección de correo",
     "click_copy": "Haz clic en la dirección para copiar",
     "copied": "Copiado"
   },
   "eol": {
-    "banner": "MeshChatX llega al fin de su ciclo de vida el 1 de enero de 2027."
+    "banner": "{app} llega al fin de su ciclo de vida el 1 de enero de 2027."
   },
   "donate": {
-    "h1": "Apoyar MeshChatX",
-    "lead": "MeshChatX se construye para la comunidad. Tu donación ayuda a financiar el desarrollo y los costes de infraestructura.",
+    "h1": "Apoyar {app}",
+    "lead": "{app} se construye para la comunidad. Tu donación ayuda a financiar el desarrollo y los costes de infraestructura.",
     "xmr_only": "Criptomoneda: solo Monero (XMR).",
     "monero": "Monero",
     "copy_xmr": "Copiar dirección Monero",
@@ -150,24 +150,24 @@
   },
   "license": {
     "h1": "Licencia",
-    "intro": "El sitio público meshchatx.com y el código de este sitio se publican bajo 0BSD (copyright Quad4). La aplicación MeshChatX se publica bajo 0BSD y MIT. Los textos completos de la licencia de la aplicación siguen abajo.",
+    "intro": "El sitio público {up:domain} y el código de este sitio se publican bajo 0BSD (copyright {author}). La aplicación {app} se publica bajo 0BSD y MIT. Los textos completos de la licencia de la aplicación siguen abajo.",
     "h2_website": "Sitio web",
-    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
-    "h2_app": "Aplicación MeshChatX",
-    "app_intro": "Estos términos se aplican al código fuente y a las compilaciones distribuidas de MeshChatX.",
-    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 {author}\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+    "h2_app": "Aplicación {app}",
+    "app_intro": "Estos términos se aplican al código fuente y a las compilaciones distribuidas de {app}.",
+    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 {author}\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 {author}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "privacy": {
     "h1": "Política de privacidad",
     "updated": "Última actualización: 5 de agosto de 2026",
-    "p_scope": "Esta política describe cómo el sitio de marketing público en meshchatx.com (el \"Sitio\") trata la información cuando visitas páginas del Sitio. No rige la aplicación MeshChatX, Reticulum ni los servicios de terceros que uses por separado.",
+    "p_scope": "Esta política describe cómo el sitio de marketing público en {up:domain} (el \"Sitio\") trata la información cuando visitas páginas del Sitio. No rige la aplicación {app}, Reticulum ni los servicios de terceros que uses por separado.",
     "h2_no_tracking": "Sin seguimiento, telemetría ni anuncios",
     "p_no_tracking": "No recopilamos telemetría de analítica, no mostramos publicidad y no te rastreamos por la web. El Sitio no carga analítica de terceros, publicidad ni píxeles de seguimiento social.",
     "h2_cookies": "Cookies y almacenamiento local",
     "p_cookies": "Las cookies o el almacenamiento del navegador que usa el Sitio son estrictamente funcionales. Solo existen para que el Sitio recuerde preferencias que eliges o que tu navegador ya indica.",
     "p_cookies_detail": "Ejemplos: preferencia de tema (claro, oscuro o seguir el sistema) e idioma cuando eliges una locale o cuando coincidimos con la cabecera Accept-Language del navegador en la primera visita. No se usan para publicidad, perfiles ni seguimiento entre sitios.",
     "h2_analytics": "Datos de versión y enlaces externos",
-    "p_analytics": "Los datos de descarga, versión y directorio de interfaces se cargan desde este Sitio. Cuando caduca la caché, el Sitio obtiene metadatos públicos de releases de GitHub para MeshChatX y la lista en línea enviada a directory.rns.recipes. Ese proceso no es publicidad y no se usa para crear un perfil personal.",
+    "p_analytics": "Los datos de descarga, versión y directorio de interfaces se cargan desde este Sitio. Cuando caduca la caché, el Sitio obtiene metadatos públicos de releases de GitHub para {app} y la lista en línea enviada a directory.rns.recipes. Ese proceso no es publicidad y no se usa para crear un perfil personal.",
     "p_analytics_detail": "Si sigues enlaces de descarga, código, donación o documentación, esas peticiones van al host al que haces clic. Esos terceros tienen sus propias políticas.",
     "h2_rights": "Tus derechos (EEE y Reino Unido)",
     "p_rights": "Según dónde vivas, puedes tener derechos de acceso, rectificación, borrado o limitación del tratamiento de datos personales, y de presentar una reclamación ante una autoridad de control. Este Sitio de marketing está diseñado para mantener el tratamiento al mínimo. Si tienes una solicitud concreta sobre este Sitio, contáctanos como se indica abajo y responderemos según la ley aplicable.",
@@ -177,8 +177,8 @@
   "home": {
     "hero": {
       "h1": "Cliente Reticulum todo en uno",
-      "lead": "MeshChatX es un cliente Reticulum todo en uno con mensajería, llamadas y un navegador NomadNet.",
-      "shot_alt": "Conversacion de MeshChatX"
+      "lead": "{app} es un cliente Reticulum todo en uno con mensajería, llamadas y un navegador NomadNet.",
+      "shot_alt": "Conversacion de {app}"
     },
     "platform": {
       "macos": "macOS",
@@ -223,20 +223,20 @@
     },
     "section": {
       "infra_h2": "Sin servidores corporativos ni nube",
-      "infra_lead": "MeshChatX no opera servidores de chat. Los mensajes viajan por los enlaces de Reticulum que configuras."
+      "infra_lead": "{app} no opera servidores de chat. Los mensajes viajan por los enlaces de Reticulum que configuras."
     },
     "feature": {
       "crypto_h3": "Cifrado de extremo a extremo",
       "crypto_p": "Reticulum cifra cada mensaje para la clave de identidad del destinatario. Los nodos intermedios solo reenvían texto cifrado.",
       "crypto_link": "Reticulum Crypto",
       "no_cloud_h3": "Sin servidores centrales",
-      "no_cloud_p": "MeshChatX no opera servidores de mensajes. La entrega ocurre por los enlaces y nodos de Reticulum que tú eliges.",
+      "no_cloud_p": "{app} no opera servidores de mensajes. La entrega ocurre por los enlaces y nodos de Reticulum que tú eliges.",
       "no_account_h3": "Sin registro",
       "no_account_p": "Sin número de teléfono, correo ni cuenta. Tu dirección es el hash de una clave de identidad que generas tú.",
       "tunnels_h3": "Radio, malla o internet",
       "tunnels_p": "Reticulum funciona sobre LoRa, radio por paquetes, Wi-Fi u overlays como I2P y Yggdrasil. Usa el camino que tengas.",
       "languages_h3": "Muchos idiomas",
-      "languages_p": "MeshChatX está en nueve idiomas. Elige uno para esta página.",
+      "languages_p": "{app} está en nueve idiomas. Elige uno para esta página.",
       "local_h3": "Guardado en tu dispositivo",
       "local_p": "Las claves de identidad y el historial quedan en el almacenamiento local de tu máquina. Nada se sincroniza con un servidor de empresa.",
       "source_h3": "Código abierto",
@@ -265,14 +265,14 @@
     },
     "videos": {
       "h2": "Vídeos",
-      "lead": "Vídeos de MeshChatX",
-      "youtube_title": "MeshChatX en YouTube",
-      "youtube_title_2": "MeshChatX en YouTube",
+      "lead": "Vídeos de {app}",
+      "youtube_title": "{app} en YouTube",
+      "youtube_title_2": "{app} en YouTube",
       "play": "Reproducir vídeo: :title"
     },
     "preview": {
       "demo_label": "Demo en vivo",
-      "demo_open": "Abrir la demo en vivo de MeshChatX",
+      "demo_open": "Abrir la demo en vivo de {app}",
       "mosaic_h2": "Capturas",
       "desktop": "Escritorio",
       "mobile": "Móvil",
@@ -284,7 +284,7 @@
   },
   "roadmap": {
     "h1": "Hoja de ruta",
-    "lead": "Las versiones mayores de MeshChatX salen aproximadamente cada dos o tres meses. Cada entrada lista el trabajo previsto para esa versión.",
+    "lead": "Las versiones mayores de {app} salen aproximadamente cada dos o tres meses. Cada entrada lista el trabajo previsto para esa versión.",
     "notice": "Las fechas y las funciones pueden moverse si cambian las prioridades.",
     "rail_label": "Cronología de versiones",
     "status_done": "Hecho",
@@ -296,9 +296,9 @@
   },
   "changelog": {
     "h1": "Registro de cambios",
-    "lead": "Notas de versión del repositorio MeshChatX, de más reciente a más antigua. El trabajo no publicado se queda arriba hasta que se publica.",
+    "lead": "Notas de versión del repositorio {app}, de más reciente a más antigua. El trabajo no publicado se queda arriba hasta que se publica.",
     "rss": "Feed RSS",
-    "rss_title": "RSS del registro de cambios de MeshChatX",
+    "rss_title": "RSS del registro de cambios de {app}",
     "source": "Ver en GitHub",
     "empty": "No se pudo cargar el registro ahora. Inténtalo más tarde o ábrelo en GitHub.",
     "toc": "Versiones",
@@ -327,11 +327,11 @@
   },
   "branding": {
     "h1": "Marca",
-    "lead": "Marcas, iconos y colores oficiales de MeshChatX para kits de prensa, docs y tiendas.",
+    "lead": "Marcas, iconos y colores oficiales de {app} para kits de prensa, docs y tiendas.",
     "colors_h2": "Colores",
-    "colors_lead": "Paleta principal usada en meshchatx.com.",
+    "colors_lead": "Paleta principal usada en {up:domain}.",
     "lockup_h2": "Logo con texto",
-    "lockup_lead": "Marca más MeshChatX en Outfit. PNG y WebP mantienen fondo transparente en tipografía oscura y clara. JPG claro sobre blanco. JPG oscuro sobre casi negro.",
+    "lockup_lead": "Marca más {app} en Outfit. PNG y WebP mantienen fondo transparente en tipografía oscura y clara. JPG claro sobre blanco. JPG oscuro sobre casi negro.",
     "logo_h2": "Logo",
     "logo_lead": "Marca completa en tamaños de exportación habituales. PNG y WebP mantienen transparencia. Variantes JPG sobre blanco o casi negro.",
     "icon_h2": "Iconos de la app",
@@ -363,7 +363,7 @@
       "mobile_fmt": "Móvil - %s"
     },
     "home": {
-      "version_here": "MeshChatX v%s ya está aquí"
+      "version_here": "{app} v%s ya está aquí"
     },
     "download": {
       "no_release": "No hay información de release disponible.",
@@ -436,7 +436,7 @@
     "codefloe_lead": "Espejo de forge público. Úsalo si prefieres CodeFloe a GitHub."
   },
   "docs": {
-    "meta_suffix": "Docs de MeshChatX",
+    "meta_suffix": "Docs de {app}",
     "nav_label": "Documentación",
     "search_placeholder": "Buscar docs...",
     "search_empty": "Ninguna página coincide.",

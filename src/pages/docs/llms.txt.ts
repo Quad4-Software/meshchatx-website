@@ -7,7 +7,7 @@ export const GET: APIRoute = async () => {
   const bySlug = new Map(
     docs.filter((d) => docSlug(d).locale === 'en').map((d) => [docSlug(d).slug, d]),
   );
-  const lines = ['# MeshChatX Documentation', ''];
+  const lines = [`# ${SITE.name} Documentation`, ''];
   for (const g of DOCS_GROUPS) {
     lines.push(`## ${g.labelKey.split('.').pop()}`);
     for (const slug of g.items) {

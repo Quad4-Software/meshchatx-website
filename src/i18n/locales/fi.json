@@ -3,41 +3,41 @@
     "skip": "Siirry sisältöön"
   },
   "brand": {
-    "name": "MeshChatX"
+    "name": "{app}"
   },
   "meta": {
     "title": {
-      "home": "MeshChatX",
-      "download": "Lataa | MeshChatX",
-      "contact": "Yhteystiedot | MeshChatX",
-      "donate": "Lahjoita | MeshChatX",
-      "license": "Lisenssi | MeshChatX",
-      "privacy": "Tietosuojakäytäntö | MeshChatX",
-      "roadmap": "Tiekartta | MeshChatX",
-      "interfaces": "Rajapinnat | MeshChatX",
-      "branding": "Brändi | MeshChatX",
-      "error": "Virhe | MeshChatX",
-      "git": "Git | MeshChatX",
-      "docs": "Docs | MeshChatX",
-      "changelog": "Muutosloki | MeshChatX",
-      "offline": "Offline | MeshChatX"
+      "home": "{app}",
+      "download": "Lataa | {app}",
+      "contact": "Yhteystiedot | {app}",
+      "donate": "Lahjoita | {app}",
+      "license": "Lisenssi | {app}",
+      "privacy": "Tietosuojakäytäntö | {app}",
+      "roadmap": "Tiekartta | {app}",
+      "interfaces": "Rajapinnat | {app}",
+      "branding": "Brändi | {app}",
+      "error": "Virhe | {app}",
+      "git": "Git | {app}",
+      "docs": "Docs | {app}",
+      "changelog": "Muutosloki | {app}",
+      "offline": "Offline | {app}"
     },
-    "og_image_alt": "MeshChatX-logo",
+    "og_image_alt": "{app}-logo",
     "desc": {
-      "home": "MeshChatX-asiakas viesteille, puheluille ja NomadNetille Reticulumin yli. Ei keskitettyjä palvelimia.",
-      "download": "Lataa MeshChatX Windowsille, Linuxille, macOS:lle, Dockerille ja Pythonille. Hajautettu viestintä Reticulumin yli.",
-      "contact": "Ota yhteyttä MeshChatX:ään LXMF:llä (Reticulum) tai sähköpostilla team@quad4.io.",
-      "donate": "Tue MeshChatX:ää Ko-fissa, Buy Me a Coffeessa tai Monerolla (XMR).",
-      "license": "meshchatx.com-sivuston (0BSD) ja MeshChatX-sovelluksen (0BSD + MIT) lisensointi.",
-      "privacy": "Miten meshchatx.com käsittelee tietoja, kun vierailet Sivustolla.",
-      "roadmap": "MeshChatX:n suunnitellut julkaisut, käynnissä oleva työ ja valmiit virstanpylväät.",
-      "changelog": "Julkaistut MeshChatX-versiot muistiinpanoineen upstream-CHANGELOGista.",
+      "home": "{app}-asiakas viesteille, puheluille ja NomadNetille Reticulumin yli. Ei keskitettyjä palvelimia.",
+      "download": "Lataa {app} Windowsille, Linuxille, macOS:lle, Dockerille ja Pythonille. Hajautettu viestintä Reticulumin yli.",
+      "contact": "Ota yhteyttä {app}:ään LXMF:llä (Reticulum) tai sähköpostilla {email}.",
+      "donate": "Tue {app}:ää Ko-fissa, Buy Me a Coffeessa tai Monerolla (XMR).",
+      "license": "{up:domain}-sivuston (0BSD) ja {app}-sovelluksen (0BSD + MIT) lisensointi.",
+      "privacy": "Miten {up:domain} käsittelee tietoja, kun vierailet Sivustolla.",
+      "roadmap": "{app}:n suunnitellut julkaisut, käynnissä oleva työ ja valmiit virstanpylväät.",
+      "changelog": "Julkaistut {app}-versiot muistiinpanoineen upstream-CHANGELOGista.",
       "interfaces": "Online-Reticulum-rajapinnat välimuistissa directory.rns.recipesistä, config-lohkoineen polkuun ~/.reticulum/config.",
-      "branding": "MeshChatX-logot, kuvakkeet ja brändivärit lehdistölle ja tuotekäyttöön.",
+      "branding": "{app}-logot, kuvakkeet ja brändivärit lehdistölle ja tuotekäyttöön.",
       "error": "Tätä sivua ei voitu näyttää pyydetyllä tavalla.",
-      "git": "Kloonaa MeshChatX rngitillä Reticulumin yli tai käytä GitHub- ja CodeFloe-peilejä.",
-      "docs": "MeshChatX-dokumentaatio sovelluksen docs-paketista: asennus, viestintä, LXST-puhelut, NomadNet, rajapinnat ja alustaoppaat.",
-      "offline": "Olet offline. Avaa välimuistissa oleva MeshChatX-sivu tai muodosta yhteys uudelleen."
+      "git": "Kloonaa {app} rngitillä Reticulumin yli tai käytä GitHub- ja CodeFloe-peilejä.",
+      "docs": "{app}-dokumentaatio sovelluksen docs-paketista: asennus, viestintä, LXST-puhelut, NomadNet, rajapinnat ja alustaoppaat.",
+      "offline": "Olet offline. Avaa välimuistissa oleva {app}-sivu tai muodosta yhteys uudelleen."
     }
   },
   "error": {
@@ -70,7 +70,7 @@
     "title_5xx": "Jokin meni pieleen",
     "lead_5xx": "Tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.",
     "cta_home": "Takaisin etusivulle",
-    "cta_download": "Lataa MeshChatX"
+    "cta_download": "Lataa {app}"
   },
   "nav": {
     "primary": "Ensisijainen",
@@ -115,9 +115,9 @@
     "license": "Lisenssi",
     "privacy": "Tietosuojakäytäntö",
     "license_badge": "MIT + 0BSD",
-    "meta_copyright": "© 2026 MeshChatX.",
-    "developed_by": "Kehittänyt Quad4 Software",
-    "meta_site": "MeshChatX on <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>-projekti.",
+    "meta_copyright": "© 2026 {app}.",
+    "developed_by": "Kehittänyt {author} Software",
+    "meta_site": "{app} on <a href=\"{authorUrl}\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">{up:authorUrl}</a>-projekti.",
     "product": "Tuote",
     "explore": "Tutustu",
     "legacy": "Legacy"
@@ -127,18 +127,18 @@
     "panel_title": "Yhteys LXMF:llä",
     "copy_title": "Kopioi LXMF-osoite",
     "panel_email": "Sähköposti",
-    "email_lead": "Yleisiin kysymyksiin tavoitat Quad4-tiimin sähköpostilla.",
-    "email": "team@quad4.io",
+    "email_lead": "Yleisiin kysymyksiin tavoitat {author}-tiimin sähköpostilla.",
+    "email": "{email}",
     "copy_email": "Kopioi sähköpostiosoite",
     "click_copy": "Kopioi napsauttamalla osoitetta",
     "copied": "Kopioitu"
   },
   "eol": {
-    "banner": "MeshChatX:n elinkaari päättyy 1. tammikuuta 2027."
+    "banner": "{app}:n elinkaari päättyy 1. tammikuuta 2027."
   },
   "donate": {
-    "h1": "Tue MeshChatX:ää",
-    "lead": "MeshChatX rakennetaan yhteisölle. Lahjoituksesi auttaa rahoittamaan kehitystä ja infrastruktuurikustannuksia.",
+    "h1": "Tue {app}:ää",
+    "lead": "{app} rakennetaan yhteisölle. Lahjoituksesi auttaa rahoittamaan kehitystä ja infrastruktuurikustannuksia.",
     "xmr_only": "Kryptovaluutta: vain Monero (XMR).",
     "monero": "Monero",
     "copy_xmr": "Kopioi Monero-osoite",
@@ -150,24 +150,24 @@
   },
   "license": {
     "h1": "Lisenssi",
-    "intro": "Julkinen meshchatx.com-sivusto ja tämän sivuston koodi julkaistaan 0BSD-lisenssillä (copyright Quad4). MeshChatX-sovellus julkaistaan 0BSD- ja MIT-lisensseillä. Sovelluksen täydelliset lisenssitekstit seuraavat alla.",
+    "intro": "Julkinen {up:domain}-sivusto ja tämän sivuston koodi julkaistaan 0BSD-lisenssillä (copyright {author}). {app}-sovellus julkaistaan 0BSD- ja MIT-lisensseillä. Sovelluksen täydelliset lisenssitekstit seuraavat alla.",
     "h2_website": "Verkkosivusto",
-    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
-    "h2_app": "MeshChatX-sovellus",
-    "app_intro": "Nämä ehdot koskevat MeshChatX-sovelluksen lähdekoodia ja jaettuja buildoja.",
-    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 {author}\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+    "h2_app": "{app}-sovellus",
+    "app_intro": "Nämä ehdot koskevat {app}-sovelluksen lähdekoodia ja jaettuja buildoja.",
+    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 {author}\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 {author}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "privacy": {
     "h1": "Tietosuojakäytäntö",
     "updated": "Päivitetty viimeksi: 5. elokuuta 2026",
-    "p_scope": "Tämä käytäntö kuvaa, miten julkinen markkinointisivusto meshchatx.com (\"Sivusto\") käsittelee tietoja, kun vierailet Sivuston sivuilla. Se ei koske MeshChatX-sovellusta, Reticulumia eikä kolmansien osapuolten palveluita, joita käytät erikseen.",
+    "p_scope": "Tämä käytäntö kuvaa, miten julkinen markkinointisivusto {up:domain} (\"Sivusto\") käsittelee tietoja, kun vierailet Sivuston sivuilla. Se ei koske {app}-sovellusta, Reticulumia eikä kolmansien osapuolten palveluita, joita käytät erikseen.",
     "h2_no_tracking": "Ei seurantaa, telemetriaa eikä mainoksia",
     "p_no_tracking": "Emme kerää analytiikkatelemetriaa, emme näytä mainoksia emmekä seuraa sinua verkossa. Sivusto ei lataa kolmansien osapuolten analytiikkaa, mainontaa eikä sosiaalisia seurantapikseleitä.",
     "h2_cookies": "Evästeet ja paikallinen tallennus",
     "p_cookies": "Sivuston käyttämät evästeet tai selaintallennus ovat tiukasti toiminnallisia. Ne ovat olemassa vain, jotta Sivusto muistaa valitsemasi asetukset tai ne, jotka selain jo ilmoittaa.",
     "p_cookies_detail": "Esimerkkejä: teema-asetus (vaalea, tumma tai järjestelmän mukaan) ja kieliasetus, kun valitset localen tai kun sovitamme selaimen Accept-Language-otsikon ensimmäisellä käynnillä. Näitä ei käytetä mainontaan, profilointiin eikä sivustojen väliseen seurantaan.",
     "h2_analytics": "Versiotiedot ja ulkoiset linkit",
-    "p_analytics": "Lataus-, versio- ja rajapintahakemistotiedot ladataan tältä Sivustolta. Kun välimuisti vanhenee, Sivusto hakee MeshChatX:n julkiset GitHub-release-metatiedot ja directory.rns.recipesiin lähetetyn online-listan. Prosessi ei ole mainontaa eikä sitä käytetä henkilökohtaisen profiilin rakentamiseen.",
+    "p_analytics": "Lataus-, versio- ja rajapintahakemistotiedot ladataan tältä Sivustolta. Kun välimuisti vanhenee, Sivusto hakee {app}:n julkiset GitHub-release-metatiedot ja directory.rns.recipesiin lähetetyn online-listan. Prosessi ei ole mainontaa eikä sitä käytetä henkilökohtaisen profiilin rakentamiseen.",
     "p_analytics_detail": "Jos seuraat lataus-, lähdekoodi-, lahjoitus- tai dokumentaatiolinkkejä, pyynnöt menevät kohteeseen, jota napsautat. Näillä kolmansilla osapuolilla on omat käytäntönsä.",
     "h2_rights": "Oikeutesi (ETA ja Iso-Britannia)",
     "p_rights": "Asuinpaikastasi riippuen sinulla voi olla oikeus saada pääsy henkilötietoihin, korjata, poistaa tai rajoittaa niiden käsittelyä sekä tehdä valitus valvontaviranomaiselle. Tämä markkinointisivusto on suunniteltu pitämään käsittely vähäisenä. Jos sinulla on tätä Sivustoa koskeva tarkka pyyntö, ota yhteyttä alla olevalla tavalla, ja vastaamme sovellettavan lain mukaisesti.",
@@ -177,8 +177,8 @@
   "home": {
     "hero": {
       "h1": "Kaiken kattava Reticulum-asiakas",
-      "lead": "MeshChatX on kaiken kattava Reticulum-asiakas viesteillä, puheluilla ja NomadNet-selaimella.",
-      "shot_alt": "MeshChatX-keskustelunakyma"
+      "lead": "{app} on kaiken kattava Reticulum-asiakas viesteillä, puheluilla ja NomadNet-selaimella.",
+      "shot_alt": "{app}-keskustelunakyma"
     },
     "platform": {
       "macos": "macOS",
@@ -223,20 +223,20 @@
     },
     "section": {
       "infra_h2": "Ei yrityspalvelimia tai pilvea",
-      "infra_lead": "MeshChatX ei ylläpidä chat-palvelimia. Viestit kulkevat määrittämiesi Reticulum-linkkien kautta."
+      "infra_lead": "{app} ei ylläpidä chat-palvelimia. Viestit kulkevat määrittämiesi Reticulum-linkkien kautta."
     },
     "feature": {
       "crypto_h3": "Salattu päästä päähän",
       "crypto_p": "Reticulum salaa jokaisen viestin vastaanottajan identiteettiavaimelle. Välissä olevat solmut välittävät vain salattua tekstiä.",
       "crypto_link": "Reticulum Crypto",
       "no_cloud_h3": "Ei keskuspalvelimia",
-      "no_cloud_p": "MeshChatX ei ylläpidä viestipalvelimia. Toimitus tapahtuu valitsemiesi Reticulum-linkkien ja -solmujen kautta.",
+      "no_cloud_p": "{app} ei ylläpidä viestipalvelimia. Toimitus tapahtuu valitsemiesi Reticulum-linkkien ja -solmujen kautta.",
       "no_account_h3": "Ei rekisteröitymistä",
       "no_account_p": "Ei puhelinnumeroa, sähköpostia tai tiliä. Osi osoitteesi on itse luomasi identiteettiavaimen tiiviste.",
       "tunnels_h3": "Radio, mesh tai internet",
       "tunnels_p": "Reticulum toimii LoRan, pakettradion, Wi-Fin tai I2P:n ja Yggdrasilin kaltaisten overlay-verkkojen kautta. Käytä mitä sinulla on.",
       "languages_h3": "Monia kieliä",
-      "languages_p": "MeshChatX on saatavilla yhdeksällä kielellä. Valitse yksi tälle sivulle.",
+      "languages_p": "{app} on saatavilla yhdeksällä kielellä. Valitse yksi tälle sivulle.",
       "local_h3": "Säilyy laitteellasi",
       "local_p": "Identiteettiavaimet ja viestihistoria pysyvät laitteesi paikallisessa tallennuksessa. Mitään ei synkronoida yrityspalvelimelle.",
       "source_h3": "Avoin lähdekoodi",
@@ -265,14 +265,14 @@
     },
     "videos": {
       "h2": "Videot",
-      "lead": "MeshChatX-videot",
-      "youtube_title": "MeshChatX YouTubessa",
-      "youtube_title_2": "MeshChatX YouTubessa",
+      "lead": "{app}-videot",
+      "youtube_title": "{app} YouTubessa",
+      "youtube_title_2": "{app} YouTubessa",
       "play": "Toista video: :title"
     },
     "preview": {
       "demo_label": "Live-demo",
-      "demo_open": "Avaa MeshChatX:n live-demo",
+      "demo_open": "Avaa {app}:n live-demo",
       "mosaic_h2": "Kuvakaappaukset",
       "desktop": "Työpöytä",
       "mobile": "Mobiili",
@@ -284,7 +284,7 @@
   },
   "roadmap": {
     "h1": "Tiekartta",
-    "lead": "MeshChatX:n isot julkaisut ilmestyvät noin kahden–kolmen kuukauden välein. Kukin kohta listaa kyseiseen versioon suunnitellun työn.",
+    "lead": "{app}:n isot julkaisut ilmestyvät noin kahden–kolmen kuukauden välein. Kukin kohta listaa kyseiseen versioon suunnitellun työn.",
     "notice": "Päivämäärät ja ominaisuudet voivat siirtyä prioriteettien muuttuessa.",
     "rail_label": "Julkaisuaikajana",
     "status_done": "Valmis",
@@ -296,9 +296,9 @@
   },
   "changelog": {
     "h1": "Muutosloki",
-    "lead": "Versiomerkinnät MeshChatX-repositoriosta, uusin ensin. Julkaisematon työ pysyy ylhäällä kunnes se julkaistaan.",
+    "lead": "Versiomerkinnät {app}-repositoriosta, uusin ensin. Julkaisematon työ pysyy ylhäällä kunnes se julkaistaan.",
     "rss": "RSS-syöte",
-    "rss_title": "MeshChatX-muutoslokin RSS",
+    "rss_title": "{app}-muutoslokin RSS",
     "source": "Näytä GitHubissa",
     "empty": "Muutoslokia ei voitu ladata juuri nyt. Yritä myöhemmin tai avaa se GitHubissa.",
     "toc": "Versiot",
@@ -327,11 +327,11 @@
   },
   "branding": {
     "h1": "Brändi",
-    "lead": "Viralliset MeshChatX-merkit, kuvakkeet ja värit lehdistökiteille, docsille ja kaupoille.",
+    "lead": "Viralliset {app}-merkit, kuvakkeet ja värit lehdistökiteille, docsille ja kaupoille.",
     "colors_h2": "Värit",
-    "colors_lead": "meshchatx.comin käyttämä pääpaletti.",
+    "colors_lead": "{up:domain}in käyttämä pääpaletti.",
     "lockup_h2": "Logo tekstillä",
-    "lockup_lead": "Merkki plus MeshChatX Outfitissa. PNG ja WebP säilyttävät läpinäkyvän taustan tummassa ja vaaleassa tekstissä. Vaalea JPG valkoisella. Tumma JPG lähes mustalla.",
+    "lockup_lead": "Merkki plus {app} Outfitissa. PNG ja WebP säilyttävät läpinäkyvän taustan tummassa ja vaaleassa tekstissä. Vaalea JPG valkoisella. Tumma JPG lähes mustalla.",
     "logo_h2": "Logo",
     "logo_lead": "Koko merkki yleisissä vientikoossa. PNG ja WebP säilyttävät läpinäkyvyyden. JPG-versiot valkoisella tai lähes mustalla.",
     "icon_h2": "Sovelluskuvakkeet",
@@ -363,7 +363,7 @@
       "mobile_fmt": "Mobiili - %s"
     },
     "home": {
-      "version_here": "MeshChatX v%s on täällä"
+      "version_here": "{app} v%s on täällä"
     },
     "download": {
       "no_release": "Julkaisutietoja ei ole saatavilla.",
@@ -436,7 +436,7 @@
     "codefloe_lead": "Julkinen forge-peili. Hyödyllinen, jos suosit CodeFloeta GitHubin sijaan."
   },
   "docs": {
-    "meta_suffix": "MeshChatX Docs",
+    "meta_suffix": "{app} Docs",
     "nav_label": "Dokumentaatio",
     "search_placeholder": "Hae docs...",
     "search_empty": "Ei vastaavia sivuja.",

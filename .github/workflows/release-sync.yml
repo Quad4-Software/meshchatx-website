@@ -28,7 +28,6 @@ jobs:
       GCORE_API_KEY: ${{ secrets.GCORE_API_KEY }}
       GCORE_APP_ID: ${{ secrets.GCORE_APP_ID }}
       GCORE_CDN_RESOURCE_ID: "1104132"
-      BUNNY_STORAGE_ACCESS_KEY: ${{ secrets.BUNNY_STORAGE_ACCESS_KEY }}
       LIVE_API: https://meshchatx.com/api/releases
       LIVE_INTERFACES: https://meshchatx.com/api/interfaces
     steps:

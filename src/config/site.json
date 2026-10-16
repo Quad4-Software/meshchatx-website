@@ -1,0 +1,39 @@
+{
+  "name": "MeshChatX",
+  "domain": "https://meshchatx.com",
+  "authorName": "Quad4",
+  "authorUrl": "https://quad4.io/",
+  "authorMarkDark": "/media/quad4/quad4-mark.svg",
+  "authorMarkLight": "/media/quad4/quad4-mark-black.svg",
+  "themeKey": "mcx-theme",
+  "githubRepo": "Quad4-Software/MeshChatX",
+  "githubBranch": "master",
+  "siteRepo": "Quad4-Software/meshchatx-website",
+  "apiBase": "",
+  "rngitRns": "rns://06a54b505bb67b25ef3f8097e8001edc/public/MeshChatX",
+  "rngitNomadnet": "132f67e79d9b24aad014e93015fb858f:/page/repo.mu`g=public|r=MeshChatX",
+  "codefloeUrl": "https://codefloe.com/Ivan/MeshChatX",
+  "codefloeClone": "https://codefloe.com/Ivan/MeshChatX.git",
+  "pypiPackage": "reticulum-meshchatx",
+  "pipRnsUrl": "https://pip-rns.quad4.io/",
+  "dockerHub": "quad4io/meshchatx:latest",
+  "ghcr": "ghcr.io/quad4-software/meshchatx:latest",
+  "archUrl": "https://arch.quad4.io/",
+  "archPackage": "meshchatx-bin",
+  "rnsDirectoryUrl": "https://directory.rns.recipes/",
+  "rnsDirectoryApi": "https://directory.rns.recipes/api/directory/submitted?search=&type=&status=online",
+  "androidPackage": "com.meshchatx",
+  "androidCertSha256": "27:77:CA:A4:33:9B:EF:29:56:09:AB:25:85:ED:A2:81:7A:F1:1D:5C:4B:3D:3F:F9:5E:86:10:17:B6:EB:D3:C6",
+  "reticulumCrypto": "https://reticulum.network/crypto.html",
+  "demoUrl": "https://demo.meshchatx.com",
+  "deadWebseedHosts": ["cdn.quad4.io"],
+  "contact": {
+    "lxmf": "f489752fbef161c64d65e385a4e9fc74",
+    "email": "team@quad4.io"
+  },
+  "donate": {
+    "xmr": "8AfDSLVeTSt1oku5ifK4jkbJ94fp5kW6y5RWxuP1FYmyZmLHYRVSrPXJJaX7mK1n7MQUzwYE15uVdQVeAuWWnR5pDkN52xU",
+    "kofi": "https://ko-fi.com/quad4",
+    "bmac": "https://buymeacoffee.com/quad4"
+  }
+}

@@ -112,7 +112,26 @@ fn repo_root(root: &Path) -> Option<PathBuf> {
         .filter(|p| p.is_dir())
 }
 
-const CDN_MIRROR: &str = "https://cdn.jsdelivr.net/gh/Quad4-Software/meshchatx-website";
+/// jsDelivr mirror base for repo-committed public/ assets. Set
+/// MCX_CDN_MIRROR to override; otherwise derived from the siteRepo field of
+/// src/config/site.json in the repo checkout.
+fn cdn_mirror(root: &Path) -> Option<String> {
+    if let Ok(v) = env::var("MCX_CDN_MIRROR") {
+        let v = v.trim().trim_end_matches('/');
+        if !v.is_empty() {
+            return Some(v.to_string());
+        }
+    }
+    let json = fs::read_to_string(root.join("../src/config/site.json")).ok()?;
+    let key = json.find("\"siteRepo\"")?;
+    let rest = json[key + "\"siteRepo\"".len()..].trim_start_matches([':', ' ', '"']);
+    let repo: String = rest.chars().take_while(|c| *c != '"').collect();
+    if repo.is_empty() {
+        return None;
+    }
+    Some(format!("https://cdn.jsdelivr.net/gh/{repo}"))
+}
+
 // Below this a redirect hop costs more than the bytes saved.
 const REDIRECT_MIN: usize = 4096;
 
@@ -153,6 +172,7 @@ fn main() -> Result<()> {
     files.sort_by(|a, b| a.0.cmp(&b.0));
 
     let repo = repo_root(&root);
+    let cdn_mirror = cdn_mirror(&root);
     let git_sha = repo
         .as_ref()
         .and_then(|r| git(r, &["rev-parse", "HEAD"]))
@@ -205,7 +225,7 @@ fn main() -> Result<()> {
         // Repo-committed media are served from jsDelivr via redirect. The
         // blob hash check keeps modified-but-uncommitted files embedded.
         let mut redirect = "None".to_string();
-        if let Some(sha) = &git_sha {
+        if let (Some(sha), Some(mirror)) = (&git_sha, &cdn_mirror) {
             let repo_path = format!("public{rel}");
             if !compressible(mime)
                 && data.len() >= REDIRECT_MIN
@@ -217,7 +237,7 @@ fn main() -> Result<()> {
                 })
             {
                 redirect = format!(
-                    "Some(concat!(\"{CDN_MIRROR}@{sha}\", \"/public{rel}\"))"
+                    "Some(concat!(\"{mirror}@{sha}\", \"/public{rel}\"))"
                 );
             }
         }

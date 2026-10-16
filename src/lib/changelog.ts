@@ -15,7 +15,7 @@ export async function getChangelog(): Promise<ChangelogEntry[]> {
   let md = '';
   try {
     const res = await fetch(SITE.githubChangelogRaw, {
-      headers: { 'User-Agent': 'meshchatx-site-build' },
+      headers: { 'User-Agent': `${SITE.slug}-site-build` },
     });
     if (res.ok) md = await res.text();
   } catch {

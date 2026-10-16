@@ -31,7 +31,7 @@
       "hint_mid": " oder ",
       "hint_docker": "Docker",
       "hint_after": " nutzen.",
-      "friendly": "DMG herunterladen, öffnen und MeshChatX in Programme ziehen.",
+      "friendly": "DMG herunterladen, öffnen und {app} in Programme ziehen.",
       "btn_dmg_arm": ".dmg laden (Apple Silicon)",
       "btn_dmg_x64": ".dmg laden (Intel)"
     },
@@ -69,7 +69,7 @@
       "arch_step2": "2. Bauen & installieren",
       "view_pkgbuild": "PKGBUILD ansehen",
       "source": "Aus dem Quellcode",
-      "source_intro": "Wenn du MeshChatX lokal aus dem Quellcode starten willst:",
+      "source_intro": "Wenn du {app} lokal aus dem Quellcode starten willst:",
       "source_step1": "1. Repository klonen",
       "source_step2": "2. Frontend bauen (Node.js/pnpm)",
       "source_step3": "3. Backend starten (Python 3.10+/Poetry)",
@@ -82,7 +82,7 @@
       "btn_installer": "Installer",
       "btn_portable": "Portable",
       "no_win": "Keine Windows-Dateien im neuesten Release.",
-      "friendly": "Installer herunterladen, ausführen und MeshChatX über das Startmenü öffnen. Portable, wenn du ohne Installation willst."
+      "friendly": "Installer herunterladen, ausführen und {app} über das Startmenü öffnen. Portable, wenn du ohne Installation willst."
     },
     "containers": {
       "h2": "Container",
@@ -112,8 +112,8 @@
       "h2": "Python",
       "intro": "Installation über PyPI (mit gebautem Frontend). Direkte Wheel-URLs von GitHub-Releases erscheinen unten, wenn verfügbar.",
       "pypi_heading": "PyPI",
-      "pypi_link_text": "pypi.org/project/reticulum-meshchatx",
-      "pypi_link_aria": "reticulum-meshchatx auf PyPI",
+      "pypi_link_text": "{up:pypiUrl}",
+      "pypi_link_aria": "{pypiPackage} auf PyPI",
       "wheel_heading": "Direkte Wheel-URL",
       "wheel_intro": "Exakte Wheel-Datei für dieses Release von GitHub pinnen.",
       "btn_whl": ".whl herunterladen",
@@ -123,7 +123,7 @@
       "poetry": "Poetry",
       "uv": "uv",
       "uvx": "uvx",
-      "uvx_hint": "Starte den meshchatx-Einstieg aus dem Paket ohne dauerhafte Installation (uv tool run).",
+      "uvx_hint": "Starte den {slug}-Einstieg aus dem Paket ohne dauerhafte Installation (uv tool run).",
       "copy": "Kopieren",
       "friendly": "Mit pip von PyPI installieren. Das reicht für die meisten.",
       "pip_rns_intro": "Installiere über Reticulum mit pip-rns, unserem mesh-nativen Paket-Tool."
@@ -143,23 +143,23 @@
     },
     "archlinux": {
       "h2": "Arch Linux",
-      "intro": "Installiere MeshChatX aus dem Quad4-Pacman-Repository. Repo eintragen, dann mit pacman installieren.",
-      "warn": "Zuerst das Quad4-Repository eintragen. Nicht aus dem AUR installieren.",
-      "btn": "arch.quad4.io öffnen"
+      "intro": "Installiere {app} aus dem {author}-Pacman-Repository. Repo eintragen, dann mit pacman installieren.",
+      "warn": "Zuerst das {author}-Repository eintragen. Nicht aus dem AUR installieren.",
+      "btn": "{h:archUrl} öffnen"
     },
     "torrent": {
       "h2": "Torrent",
-      "intro": "BitTorrent mit HTTP-Webseeds von cdn.quad4.io. Funktioniert ohne Peers.",
+      "intro": "BitTorrent mit HTTP-Webseeds. Funktioniert ohne Peers.",
       "btn": ".torrent herunterladen",
       "magnet": "Magnet kopieren",
       "privacy": "Peers konnen deine IP-Adresse sehen. Nutze ein VPN fur mehr Privatsphare."
     },
     "termux": {
       "h2": "Termux",
-      "intro_before": "Installation unter Android mit Termux. Abhängigkeiten installieren, dann MeshChatX über PyPI. Headless mit ",
+      "intro_before": "Installation unter Android mit Termux. Abhängigkeiten installieren, dann {app} über PyPI. Headless mit ",
       "intro_after": ".",
       "step1": "1. Pakete aktualisieren und installieren",
-      "step2": "2. MeshChatX installieren (pip install reticulum-meshchatx)",
+      "step2": "2. {app} installieren (pip install {pypiPackage})",
       "step3": "3. Headless starten"
     },
     "lead": "Wähle dein System, lade den Build herunter und starte ihn. Erweiterte Installationen sind einen Klick entfernt, falls du sie brauchst.",
@@ -182,28 +182,14 @@
       "interfaces": "Interface-Verzeichnis",
       "open_tab": "Andere Plattformen"
     },
-    "download_server": "Download-Server",
-    "download_server_bunny": "BunnyCDN",
-    "download_server_github": "GitHub",
     "flatpak": {
       "h2": "Flatpak",
-      "friendly": "Wenn dein Linux Flatpak nutzt, installiere MeshChatX mit einem Klick. Flatpak hält die App danach aktuell.",
-      "remote_h3": "Terminal-Befehle",
-      "remote_intro": "Lieber Terminal? Diese Befehle entsprechen dem Installieren-Button oben.",
-      "remote_install": "Installieren und aktualisieren",
-      "remote_add": "MeshChatX-Quelle hinzufügen",
-      "remote_note": "Schon von einer älteren MeshChatX-Flatpak-Quelle installiert? Entferne sie zuerst mit: flatpak remote-delete meshchatx",
-      "remote_channels": "Beta- und Testing-Kanäle erscheinen, sobald der erste Beta- oder Testing-Build veröffentlicht wurde. Bis dahin gibt es in dieser Quelle nur stable.",
-      "bundle_h3": "Heruntergeladene Datei",
-      "bundle_intro": "Die .flatpak-Datei schon heruntergeladen? So installierst du sie:",
-      "btn": ".flatpak-Datei herunterladen",
-      "no_bundle": "In dieser Version gibt es noch keine Flatpak-Datei.",
-      "install": "Installieren und öffnen",
-      "btn_install": "MeshChatX installieren"
+      "friendly": "Wenn dein Linux Flatpak nutzt, installiere {app} mit einem Klick. Flatpak hält die App danach aktuell.",
+      "remote_note": "Schon von einer älteren {app}-Flatpak-Quelle installiert? Entferne sie zuerst mit: flatpak remote-delete {slug}",
+      "btn": ".flatpak-Datei herunterladen"
     },
     "verify": "Verifizieren",
     "verify_copy": "Prüfbefehl kopieren",
-    "recommended": "Empfohlen",
-    "cdn_powered": "CDN bereitgestellt von"
+    "recommended": "Empfohlen"
   }
 }

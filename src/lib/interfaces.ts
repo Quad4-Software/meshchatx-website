@@ -66,7 +66,7 @@ export async function getInterfaces(): Promise<IfxPayload> {
   if (memo) return memo;
   try {
     const res = await fetch(SITE.rnsDirectoryApi, {
-      headers: { Accept: 'application/json', 'User-Agent': 'meshchatx-website' },
+      headers: { Accept: 'application/json', 'User-Agent': `${SITE.slug}-website` },
       signal: AbortSignal.timeout(15000),
     });
     if (res.ok) {

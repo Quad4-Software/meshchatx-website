@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE, PREFIXED_LOCALES, type Locale } from '../config/site';
+import { CONTACT, DEFAULT_LOCALE, DONATE, PREFIXED_LOCALES, SITE, type Locale } from '../config/site';
 
 type Dict = Record<string, unknown>;
 
@@ -29,6 +29,41 @@ function deepMerge(target: Dict, src: Dict) {
 
 const en = catalogs.get('en') ?? {};
 
+// Tokens available in locale strings: {app} -> SITE.name, {author} ->
+// SITE.authorName, {key} -> any string field of SITE/CONTACT/DONATE,
+// {h:key} -> that URL's host, {up:key} -> that URL without scheme.
+const TOKENS: Record<string, string> = {};
+for (const src of [SITE, CONTACT, DONATE] as const) {
+  for (const [k, v] of Object.entries(src)) {
+    if (typeof v === 'string') TOKENS[k] = v;
+  }
+}
+TOKENS.app = SITE.name;
+TOKENS.author = SITE.authorName;
+
+function tokenHost(key: string): string | undefined {
+  const v = TOKENS[key];
+  if (!v) return undefined;
+  try {
+    return new URL(v).host;
+  } catch {
+    return undefined;
+  }
+}
+
+function tokenBare(key: string): string | undefined {
+  const v = TOKENS[key];
+  if (!v) return undefined;
+  return v.replace(/^https?:\/\//, '').replace(/\/+$/, '');
+}
+
+function substitute(value: string): string {
+  return value
+    .replace(/\{h:([a-zA-Z][a-zA-Z0-9]*)\}/g, (m, k: string) => tokenHost(k) ?? m)
+    .replace(/\{up:([a-zA-Z][a-zA-Z0-9]*)\}/g, (m, k: string) => tokenBare(k) ?? m)
+    .replace(/\{([a-zA-Z][a-zA-Z0-9]*)\}/g, (m, k: string) => TOKENS[k] ?? m);
+}
+
 function lookup(dict: Dict, key: string): string | undefined {
   let node: unknown = dict;
   for (const part of key.split('.')) {
@@ -48,13 +83,13 @@ export function t(locale: Locale, key: string, vars: Record<string, string | num
     if (name === 's') value = value.replace('%s', String(raw));
     if (name === 'n') value = value.replace('%n', String(raw));
   }
-  return value;
+  return substitute(value);
 }
 
 /** Translate, falling back to a raw value when the key is missing. */
 export function tOr(locale: Locale, key: string, fallback: string): string {
   const dict = catalogs.get(locale) ?? en;
-  return lookup(dict, key) ?? lookup(en, key) ?? fallback;
+  return substitute(lookup(dict, key) ?? lookup(en, key) ?? fallback);
 }
 
 /** Prefix a path with the locale. English stays unprefixed. */

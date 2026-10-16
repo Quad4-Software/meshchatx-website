@@ -3,41 +3,41 @@
     "skip": "跳到正文"
   },
   "brand": {
-    "name": "MeshChatX"
+    "name": "{app}"
   },
   "meta": {
     "title": {
-      "home": "MeshChatX",
-      "download": "下载 | MeshChatX",
-      "contact": "联系 | MeshChatX",
-      "donate": "捐赠 | MeshChatX",
-      "license": "许可 | MeshChatX",
-      "privacy": "隐私政策 | MeshChatX",
-      "roadmap": "路线图 | MeshChatX",
-      "interfaces": "接口 | MeshChatX",
-      "error": "错误 | MeshChatX",
-      "branding": "品牌 | MeshChatX",
-      "git": "Git | MeshChatX",
-      "docs": "文档 | MeshChatX",
-      "changelog": "更新日志 | MeshChatX",
-      "offline": "离线 | MeshChatX"
+      "home": "{app}",
+      "download": "下载 | {app}",
+      "contact": "联系 | {app}",
+      "donate": "捐赠 | {app}",
+      "license": "许可 | {app}",
+      "privacy": "隐私政策 | {app}",
+      "roadmap": "路线图 | {app}",
+      "interfaces": "接口 | {app}",
+      "error": "错误 | {app}",
+      "branding": "品牌 | {app}",
+      "git": "Git | {app}",
+      "docs": "文档 | {app}",
+      "changelog": "更新日志 | {app}",
+      "offline": "离线 | {app}"
     },
-    "og_image_alt": "MeshChatX 标志",
+    "og_image_alt": "{app} 标志",
     "desc": {
-      "home": "MeshChatX 客户端：基于 Reticulum 的消息、通话与 NomadNet。无中心服务器。",
-      "download": "下载适用于 Windows、Linux、macOS、Docker 与 Python 的 MeshChatX。基于 Reticulum 的去中心化消息。",
-      "contact": "通过 LXMF（Reticulum）或电子邮件 team@quad4.io 联系 MeshChatX。",
-      "donate": "在 Ko-fi、Buy Me a Coffee 或使用门罗币（XMR）支持 MeshChatX。",
-      "license": "meshchatx.com 网站（0BSD）与 MeshChatX 应用（0BSD + MIT）的许可说明。",
-      "privacy": "meshchatx.com 在您访问本站时如何处理数据。",
-      "roadmap": "MeshChatX 已规划版本、进行中的工作与已完成里程碑。",
+      "home": "{app} 客户端：基于 Reticulum 的消息、通话与 NomadNet。无中心服务器。",
+      "download": "下载适用于 Windows、Linux、macOS、Docker 与 Python 的 {app}。基于 Reticulum 的去中心化消息。",
+      "contact": "通过 LXMF（Reticulum）或电子邮件 {email} 联系 {app}。",
+      "donate": "在 Ko-fi、Buy Me a Coffee 或使用门罗币（XMR）支持 {app}。",
+      "license": "{up:domain} 网站（0BSD）与 {app} 应用（0BSD + MIT）的许可说明。",
+      "privacy": "{up:domain} 在您访问本站时如何处理数据。",
+      "roadmap": "{app} 已规划版本、进行中的工作与已完成里程碑。",
       "interfaces": "来自 directory.rns.recipes 的在线 Reticulum 接口，含可写入 ~/.reticulum/config 的配置块。",
       "error": "无法按请求显示此页面。",
-      "changelog": "已发布的 MeshChatX 版本及上游 CHANGELOG 中的说明。",
-      "branding": "MeshChatX 徽标、图标与品牌色，供媒体与产品使用。",
-      "git": "通过 Reticulum 上的 rngit 克隆 MeshChatX，或使用 GitHub 与 CodeFloe 镜像。",
-      "docs": "来自应用文档包的 MeshChatX 文档：安装、消息、LXST 通话、NomadNet、接口与平台指南。",
-      "offline": "你处于离线状态。打开已缓存的 MeshChatX 页面，或重新连接网络。"
+      "changelog": "已发布的 {app} 版本及上游 CHANGELOG 中的说明。",
+      "branding": "{app} 徽标、图标与品牌色，供媒体与产品使用。",
+      "git": "通过 Reticulum 上的 rngit 克隆 {app}，或使用 GitHub 与 CodeFloe 镜像。",
+      "docs": "来自应用文档包的 {app} 文档：安装、消息、LXST 通话、NomadNet、接口与平台指南。",
+      "offline": "你处于离线状态。打开已缓存的 {app} 页面，或重新连接网络。"
     }
   },
   "error": {
@@ -48,7 +48,7 @@
     "title_5xx": "出了点问题",
     "lead_5xx": "发生意外错误。请稍后再试。",
     "cta_home": "返回首页",
-    "cta_download": "下载 MeshChatX",
+    "cta_download": "下载 {app}",
     "title_400": "请求无效",
     "lead_400": "请求格式错误或不完整。请检查网址后重试。",
     "title_401": "需要身份验证",
@@ -115,9 +115,9 @@
     "license": "许可",
     "privacy": "隐私政策",
     "license_badge": "MIT + 0BSD",
-    "meta_copyright": "© 2026 MeshChatX。",
-    "developed_by": "由 Quad4 Software 开发",
-    "meta_site": "MeshChatX 是 <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a> 的项目。",
+    "meta_copyright": "© 2026 {app}。",
+    "developed_by": "由 {author} Software 开发",
+    "meta_site": "{app} 是 <a href=\"{authorUrl}\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">{up:authorUrl}</a> 的项目。",
     "product": "产品",
     "explore": "探索",
     "legacy": "旧版"
@@ -127,18 +127,18 @@
     "panel_title": "通过 LXMF 联系",
     "copy_title": "复制 LXMF 地址",
     "panel_email": "电子邮件",
-    "email_lead": "如有一般问题，请通过电子邮件联系 Quad4 团队。",
-    "email": "team@quad4.io",
+    "email_lead": "如有一般问题，请通过电子邮件联系 {author} 团队。",
+    "email": "{email}",
     "copy_email": "复制邮箱地址",
     "click_copy": "点击地址即可复制",
     "copied": "已复制"
   },
   "eol": {
-    "banner": "MeshChatX 将于 2027 年 1 月 1 日结束生命周期。"
+    "banner": "{app} 将于 2027 年 1 月 1 日结束生命周期。"
   },
   "donate": {
-    "h1": "支持 MeshChatX",
-    "lead": "MeshChatX 为社区而构建。您的捐赠有助于开发与基础设施成本。",
+    "h1": "支持 {app}",
+    "lead": "{app} 为社区而构建。您的捐赠有助于开发与基础设施成本。",
     "xmr_only": "加密货币：仅支持门罗币（XMR）。",
     "monero": "门罗币",
     "copy_xmr": "复制门罗地址",
@@ -150,19 +150,19 @@
   },
   "license": {
     "h1": "许可",
-    "intro": "meshchatx.com 公开网站及本站代码在 0BSD 许可下发布（版权 Quad4）。MeshChatX 应用在 0BSD 与 MIT 下发布。完整应用许可文本见下文。",
+    "intro": "{up:domain} 公开网站及本站代码在 0BSD 许可下发布（版权 {author}）。{app} 应用在 0BSD 与 MIT 下发布。完整应用许可文本见下文。",
     "h2_website": "网站",
-    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
-    "h2_app": "MeshChatX 应用",
-    "app_intro": "以下条款适用于 MeshChatX 应用源代码与分发构建。",
-    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 {author}\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+    "h2_app": "{app} 应用",
+    "app_intro": "以下条款适用于 {app} 应用源代码与分发构建。",
+    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 {author}\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 {author}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "privacy": {
     "h1": "隐私政策",
     "updated": "最近更新：2026 年 7 月 12 日",
-    "p_scope": "本政策说明当您访问 meshchatx.com（「本站」）上的页面时，该公开营销网站如何处理信息。它不约束 MeshChatX 应用、Reticulum 或您另行使用的第三方服务。",
+    "p_scope": "本政策说明当您访问 {up:domain}（「本站」）上的页面时，该公开营销网站如何处理信息。它不约束 {app} 应用、Reticulum 或您另行使用的第三方服务。",
     "h2_analytics": "分析与数据请求",
-    "p_analytics": "下载、版本与接口目录数据由本站提供。缓存过期后，本站会读取 MeshChatX 的公开 GitHub 发布元数据，以及 directory.rns.recipes 上提交的在线列表。该过程不是广告，也不用于建立个人档案。",
+    "p_analytics": "下载、版本与接口目录数据由本站提供。缓存过期后，本站会读取 {app} 的公开 GitHub 发布元数据，以及 directory.rns.recipes 上提交的在线列表。该过程不是广告，也不用于建立个人档案。",
     "p_analytics_detail": "首页与下载区从本站提供的静态文件读取版本信息。不会为分析收集个人数据，您的浏览行为也不会与第三方分析服务共享。若您使用下载或源码链接，相关请求将发往您点击跳转的主机。",
     "h2_rights": "您的权利（欧洲经济区与英国）",
     "p_rights": "根据您所在地区，您可能有权访问、更正、删除或限制处理个人数据，并向监管机构投诉。本营销站点的数据处理设计为尽量少。若您对本站有具体请求，请按下方方式联系我们，我们将在适用法律要求的范围内回复。",
@@ -177,8 +177,8 @@
   "home": {
     "hero": {
       "h1": "一体化 Reticulum 客户端",
-      "lead": "MeshChatX 是一体化 Reticulum 客户端，具备消息、通话与 NomadNet 浏览器。",
-      "shot_alt": "MeshChatX 会话界面"
+      "lead": "{app} 是一体化 Reticulum 客户端，具备消息、通话与 NomadNet 浏览器。",
+      "shot_alt": "{app} 会话界面"
     },
     "platform": {
       "macos": "macOS",
@@ -223,20 +223,20 @@
     },
     "section": {
       "infra_h2": "没有企业服务器或云",
-      "infra_lead": "MeshChatX 不运行聊天服务器。消息经由你配置的 Reticulum 链路传输。"
+      "infra_lead": "{app} 不运行聊天服务器。消息经由你配置的 Reticulum 链路传输。"
     },
     "feature": {
       "crypto_h3": "端到端加密",
       "crypto_p": "Reticulum 使用接收方的身份密钥加密每条消息,中间的中继节点只能转发密文。",
       "crypto_link": "Reticulum Crypto",
       "no_cloud_h3": "没有中心服务器",
-      "no_cloud_p": "MeshChatX 不运行消息服务器。投递经由你自己选择的 Reticulum 链路和节点。",
+      "no_cloud_p": "{app} 不运行消息服务器。投递经由你自己选择的 Reticulum 链路和节点。",
       "no_account_h3": "无需注册",
       "no_account_p": "不需要手机号、邮箱或账号。你的地址是你自己生成的身份密钥的哈希。",
       "tunnels_h3": "无线电、mesh 或互联网",
       "tunnels_p": "Reticulum 可以跑在 LoRa、分组无线电、Wi-Fi 或 I2P 和 Yggdrasil 这类覆盖网络上。用你手头有的路径。",
       "languages_h3": "多种语言",
-      "languages_p": "MeshChatX 提供九种语言。为本页选一种。",
+      "languages_p": "{app} 提供九种语言。为本页选一种。",
       "local_h3": "保存在你的设备上",
       "local_p": "身份密钥和消息历史留在你本机的本地存储里,不会同步到任何公司服务器。",
       "source_h3": "开源",
@@ -265,14 +265,14 @@
     },
     "videos": {
       "h2": "视频",
-      "lead": "MeshChatX 视频",
-      "youtube_title": "YouTube 上的 MeshChatX",
-      "youtube_title_2": "YouTube 上的 MeshChatX",
+      "lead": "{app} 视频",
+      "youtube_title": "YouTube 上的 {app}",
+      "youtube_title_2": "YouTube 上的 {app}",
       "play": "播放视频：:title"
     },
     "preview": {
       "demo_label": "在线演示",
-      "demo_open": "打开 MeshChatX 在线演示",
+      "demo_open": "打开 {app} 在线演示",
       "mosaic_h2": "截图",
       "desktop": "桌面",
       "mobile": "手机",
@@ -284,7 +284,7 @@
   },
   "roadmap": {
     "h1": "路线图",
-    "lead": "MeshChatX 大版本大约每两到三个月发布一次。每条记录列出该版本计划中的工作。",
+    "lead": "{app} 大版本大约每两到三个月发布一次。每条记录列出该版本计划中的工作。",
     "notice": "日期与功能可能随优先级变化而调整。",
     "rail_label": "发布时间线",
     "status_done": "已完成",
@@ -318,7 +318,7 @@
       "mobile_fmt": "移动 - %s"
     },
     "home": {
-      "version_here": "MeshChatX v%s 已发布"
+      "version_here": "{app} v%s 已发布"
     },
     "download": {
       "no_release": "暂无版本信息。",
@@ -374,9 +374,9 @@
   },
   "changelog": {
     "h1": "更新日志",
-    "lead": "来自 MeshChatX 仓库的版本说明，最新在前。未发布内容会留在顶部，直到正式发货。",
+    "lead": "来自 {app} 仓库的版本说明，最新在前。未发布内容会留在顶部，直到正式发货。",
     "rss": "RSS 订阅",
-    "rss_title": "MeshChatX 更新日志 RSS",
+    "rss_title": "{app} 更新日志 RSS",
     "source": "在 GitHub 上查看",
     "empty": "当前无法加载更新日志。请稍后再试，或在 GitHub 上打开。",
     "toc": "版本",
@@ -405,11 +405,11 @@
   },
   "branding": {
     "h1": "品牌",
-    "lead": "官方 MeshChatX 标志、图标与颜色，适用于新闻资料、文档与商店。",
+    "lead": "官方 {app} 标志、图标与颜色，适用于新闻资料、文档与商店。",
     "colors_h2": "颜色",
-    "colors_lead": "meshchatx.com 使用的主色板。",
+    "colors_lead": "{up:domain} 使用的主色板。",
     "lockup_h2": "带文字的标志",
-    "lockup_lead": "标志加 Outfit 字体的 MeshChatX。PNG 与 WebP 在深色与浅色字样下保持透明底。浅色 JPG 置于白底。深色 JPG 置于近黑底。",
+    "lockup_lead": "标志加 Outfit 字体的 {app}。PNG 与 WebP 在深色与浅色字样下保持透明底。浅色 JPG 置于白底。深色 JPG 置于近黑底。",
     "logo_h2": "标志",
     "logo_lead": "常见导出尺寸的完整标志。PNG 与 WebP 保留透明。JPG 变体置于白底或近黑底。",
     "icon_h2": "应用图标",
@@ -436,7 +436,7 @@
     "codefloe_lead": "公开 forge 镜像。若你更喜欢 CodeFloe 而非 GitHub，可用此源。"
   },
   "docs": {
-    "meta_suffix": "MeshChatX 文档",
+    "meta_suffix": "{app} 文档",
     "nav_label": "文档",
     "search_placeholder": "搜索文档...",
     "search_empty": "没有匹配的页面。",

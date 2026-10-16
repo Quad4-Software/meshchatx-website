@@ -31,7 +31,7 @@
       "hint_mid": " ou ",
       "hint_docker": "Docker",
       "hint_after": ".",
-      "friendly": "Téléchargez le DMG, ouvrez-le et glissez MeshChatX dans Applications.",
+      "friendly": "Téléchargez le DMG, ouvrez-le et glissez {app} dans Applications.",
       "btn_dmg_arm": "Télécharger le .dmg (Apple silicon)",
       "btn_dmg_x64": "Télécharger le .dmg (Intel)"
     },
@@ -69,7 +69,7 @@
       "arch_step2": "2. Compiler & Installer",
       "view_pkgbuild": "Voir le PKGBUILD",
       "source": "Depuis les sources",
-      "source_intro": "Si vous voulez lancer MeshChatX depuis le code source en local :",
+      "source_intro": "Si vous voulez lancer {app} depuis le code source en local :",
       "source_step1": "1. Cloner le dépôt",
       "source_step2": "2. Compiler le frontend (Node.js/pnpm)",
       "source_step3": "3. Lancer le backend (Python 3.10+/Poetry)",
@@ -82,7 +82,7 @@
       "btn_installer": "Télécharger l'installateur",
       "btn_portable": "Portable",
       "no_win": "Pas d'assets Windows dans la dernière release.",
-      "friendly": "Téléchargez l'installateur, lancez-le et ouvrez MeshChatX depuis le menu Démarrer. Utilisez portable si vous préférez ne pas installer."
+      "friendly": "Téléchargez l'installateur, lancez-le et ouvrez {app} depuis le menu Démarrer. Utilisez portable si vous préférez ne pas installer."
     },
     "containers": {
       "h2": "Conteneurs",
@@ -112,8 +112,8 @@
       "h2": "Python",
       "intro": "Installez depuis PyPI (inclut le frontend compilé). Les URL de wheels directes des releases GitHub apparaissent ci-dessous lorsqu'elles sont disponibles.",
       "pypi_heading": "PyPI",
-      "pypi_link_text": "pypi.org/project/reticulum-meshchatx",
-      "pypi_link_aria": "reticulum-meshchatx sur PyPI",
+      "pypi_link_text": "{up:pypiUrl}",
+      "pypi_link_aria": "{pypiPackage} sur PyPI",
       "wheel_heading": "URL directe du wheel",
       "wheel_intro": "Épinglez le fichier wheel exact de cette release depuis GitHub.",
       "btn_whl": "Télécharger .whl",
@@ -123,7 +123,7 @@
       "poetry": "Poetry",
       "uv": "uv",
       "uvx": "uvx",
-      "uvx_hint": "Exécutez le point d'entrée meshchatx du paquet sans installation persistante (uv tool run).",
+      "uvx_hint": "Exécutez le point d'entrée {slug} du paquet sans installation persistante (uv tool run).",
       "copy": "Copier",
       "friendly": "Installez depuis PyPI avec pip. Cela suffit pour la plupart des gens.",
       "pip_rns_intro": "Installez via Reticulum avec pip-rns, notre outil de paquets pour le mesh."
@@ -143,23 +143,23 @@
     },
     "archlinux": {
       "h2": "Arch Linux",
-      "intro": "Installez depuis le dépôt pacman Quad4. Ajoutez le dépôt, puis installez avec pacman.",
-      "warn": "Ajoutez d'abord le dépôt Quad4. N'installez pas MeshChatX depuis l'AUR.",
-      "btn": "Ouvrir arch.quad4.io"
+      "intro": "Installez depuis le dépôt pacman {author}. Ajoutez le dépôt, puis installez avec pacman.",
+      "warn": "Ajoutez d'abord le dépôt {author}. N'installez pas {app} depuis l'AUR.",
+      "btn": "Ouvrir {h:archUrl}"
     },
     "torrent": {
       "h2": "Torrent",
-      "intro": "BitTorrent avec webseeds HTTP depuis cdn.quad4.io. Fonctionne sans pairs.",
+      "intro": "BitTorrent avec webseeds HTTP. Fonctionne sans pairs.",
       "btn": "Telecharger .torrent",
       "magnet": "Copier le magnet",
       "privacy": "Les pairs peuvent voir votre adresse IP. Utilisez un VPN pour proteger votre vie privee."
     },
     "termux": {
       "h2": "Termux",
-      "intro_before": "Installez sur Android via Termux. Installez les dépendances, puis MeshChatX depuis PyPI. Lancez en headless avec ",
+      "intro_before": "Installez sur Android via Termux. Installez les dépendances, puis {app} depuis PyPI. Lancez en headless avec ",
       "intro_after": ".",
       "step1": "1. Mettre à jour et installer les paquets",
-      "step2": "2. Installer MeshChatX (pip install reticulum-meshchatx)",
+      "step2": "2. Installer {app} (pip install {pypiPackage})",
       "step3": "3. Lancer en headless"
     },
     "lead": "Choisissez votre système, téléchargez le build et lancez-le. Les installations avancées sont à un clic si vous en avez besoin.",
@@ -182,28 +182,14 @@
       "interfaces": "Répertoire d'interfaces",
       "open_tab": "Parcourir d'autres plateformes"
     },
-    "download_server": "Serveur de téléchargement",
-    "download_server_bunny": "BunnyCDN",
-    "download_server_github": "GitHub",
     "flatpak": {
       "h2": "Flatpak",
-      "friendly": "Si votre Linux utilise Flatpak, installez MeshChatX en un clic. Flatpak le mettra à jour ensuite.",
-      "remote_h3": "Commandes du terminal",
-      "remote_intro": "Vous préférez le terminal ? Ces commandes correspondent au bouton Installer ci-dessus.",
-      "remote_install": "Installer et mettre à jour",
-      "remote_add": "Ajouter la source MeshChatX",
-      "remote_note": "Déjà installé depuis une ancienne source Flatpak MeshChatX ? Supprimez-la d’abord avec : flatpak remote-delete meshchatx",
-      "remote_channels": "Les canaux beta et testing apparaissent une fois la première version beta ou testing publiée. D'ici là, cette source ne propose que stable.",
-      "bundle_h3": "Fichier téléchargé",
-      "bundle_intro": "Vous avez déjà le fichier .flatpak ? Installez-le ainsi :",
-      "btn": "Télécharger le fichier .flatpak",
-      "no_bundle": "Pas encore de fichier Flatpak dans cette version.",
-      "install": "Installer et ouvrir",
-      "btn_install": "Installer MeshChatX"
+      "friendly": "Si votre Linux utilise Flatpak, installez {app} en un clic. Flatpak le mettra à jour ensuite.",
+      "remote_note": "Déjà installé depuis une ancienne source Flatpak {app} ? Supprimez-la d’abord avec : flatpak remote-delete {slug}",
+      "btn": "Télécharger le fichier .flatpak"
     },
     "verify": "Vérifier",
     "verify_copy": "Copier la commande de vérification",
-    "recommended": "Recommandé",
-    "cdn_powered": "CDN fourni par"
+    "recommended": "Recommandé"
   }
 }

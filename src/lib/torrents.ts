@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { SITE } from '../config/site';
 import type { Release } from './releases';
 
 export interface TorrentMeta {
@@ -46,7 +47,6 @@ export function attachLocalTorrent(release: Release, local: Map<string, TorrentM
   release.downloads.torrent = {
     name: meta.torrent,
     url,
-    githubUrl: url,
     sha256: null,
     magnet: meta.magnet,
   };
@@ -129,9 +129,17 @@ export function magnetFromTorrent(buf: Buffer, dn: string): string | null {
     }
   }
   if (!hash) return null;
+  const dead = SITE.deadWebseedHosts;
   const parts = [`xt=urn:btih:${hash}`, `dn=${encodeURIComponent(dn)}`];
   for (const tr of new Set(trackers)) parts.push(`tr=${encodeURIComponent(tr)}`);
-  for (const ws of webseeds) parts.push(`ws=${encodeURIComponent(ws)}`);
+  for (const ws of webseeds) {
+    try {
+      if (dead.includes(new URL(ws).host)) continue;
+    } catch {
+      continue;
+    }
+    parts.push(`ws=${encodeURIComponent(ws)}`);
+  }
   return `magnet:?${parts.join('&')}`;
 }
 
@@ -145,11 +153,11 @@ export async function attachTorrentMagnets(releases: Release[]): Promise<void> {
     .map(async (r) => {
       const t = r.downloads.torrent;
       if (!t) return;
-      const url = t.cdnUrl || t.githubUrl || t.url;
+      const url = t.url;
       try {
         const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
         if (!res.ok) return;
-        const mag = magnetFromTorrent(Buffer.from(await res.arrayBuffer()), `MeshChatX-${r.tag}`);
+        const mag = magnetFromTorrent(Buffer.from(await res.arrayBuffer()), `${SITE.name}-${r.tag}`);
         if (mag) t.magnet = mag;
       } catch {
         // best effort; the API backfills magnets at runtime

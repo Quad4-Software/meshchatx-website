@@ -2,9 +2,9 @@ import type { APIRoute } from 'astro';
 import { SITE } from '../config/site';
 
 export const GET: APIRoute = async () => {
-  const body = `# MeshChatX
+  const body = `# ${SITE.name}
 
-> MeshChatX is an all-in-one Reticulum client: LXMF messaging, LXST voice calls, NomadNet browsing, relay chat, maps, and Reticulum utilities. No central servers. Identity is a destination hash.
+> ${SITE.name} is an all-in-one Reticulum client: LXMF messaging, LXST voice calls, NomadNet browsing, relay chat, maps, and Reticulum utilities. No central servers. Identity is a destination hash.
 
 ## Pages
 

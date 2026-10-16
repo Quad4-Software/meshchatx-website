@@ -6,9 +6,9 @@ export const GET: APIRoute = async () => {
   const docs = await getDocs();
   const en = docs.filter((d) => docSlug(d).locale === 'en');
   const body = [
-    '# MeshChatX',
+    `# ${SITE.name}`,
     '',
-    '> MeshChatX is an all-in-one Reticulum client: LXMF messaging, LXST voice calls, NomadNet browsing, relay chat, maps, and Reticulum utilities. No central servers. Identity is a destination hash.',
+    `> ${SITE.name} is an all-in-one Reticulum client: LXMF messaging, LXST voice calls, NomadNet browsing, relay chat, maps, and Reticulum utilities. No central servers. Identity is a destination hash.`,
     '',
     `Site: ${SITE.domain}`,
     `Source: ${SITE.githubUrl}`,

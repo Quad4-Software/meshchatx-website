@@ -31,7 +31,7 @@
       "hint_mid": " tai ",
       "hint_docker": "Dockeria",
       "hint_after": ".",
-      "friendly": "Lataa DMG, avaa se ja vedä MeshChatX Sovellukset-kansioon.",
+      "friendly": "Lataa DMG, avaa se ja vedä {app} Sovellukset-kansioon.",
       "btn_dmg_arm": "Lataa .dmg (Apple silicon)",
       "btn_dmg_x64": "Lataa .dmg (Intel)"
     },
@@ -69,7 +69,7 @@
       "arch_step2": "2. Rakenna & asenna",
       "view_pkgbuild": "Näytä PKGBUILD",
       "source": "Lähdekoodista",
-      "source_intro": "Jos haluat ajaa MeshChatX:ää paikallisesti lähdekoodista:",
+      "source_intro": "Jos haluat ajaa {app}:ää paikallisesti lähdekoodista:",
       "source_step1": "1. Kloonaa repositorio",
       "source_step2": "2. Rakenna frontend (Node.js/pnpm)",
       "source_step3": "3. Aja backend (Python 3.10+/Poetry)",
@@ -82,7 +82,7 @@
       "btn_installer": "Lataa asennusohjelma",
       "btn_portable": "Portable",
       "no_win": "Ei Windows-assetteja uusimmassa julkaisussa.",
-      "friendly": "Lataa asennusohjelma, aja se ja avaa MeshChatX Käynnistä-valikosta. Käytä portablea, jos et halua asentaa."
+      "friendly": "Lataa asennusohjelma, aja se ja avaa {app} Käynnistä-valikosta. Käytä portablea, jos et halua asentaa."
     },
     "containers": {
       "h2": "Kontit",
@@ -112,8 +112,8 @@
       "h2": "Python",
       "intro": "Asenna PyPI:stä (sisältää rakennetun frontendin). Suorat wheel-URL:t GitHub-julkaisuista näkyvät alla, kun saatavilla.",
       "pypi_heading": "PyPI",
-      "pypi_link_text": "pypi.org/project/reticulum-meshchatx",
-      "pypi_link_aria": "reticulum-meshchatx PyPI:ssä",
+      "pypi_link_text": "{up:pypiUrl}",
+      "pypi_link_aria": "{pypiPackage} PyPI:ssä",
       "wheel_heading": "Suora wheel-URL",
       "wheel_intro": "Kiinnitä tämän julkaisun tarkka wheel-tiedosto GitHubista.",
       "btn_whl": "Lataa .whl",
@@ -123,7 +123,7 @@
       "poetry": "Poetry",
       "uv": "uv",
       "uvx": "uvx",
-      "uvx_hint": "Aja paketin meshchatx-sisääntulo ilman pysyvää asennusta (uv tool run).",
+      "uvx_hint": "Aja paketin {slug}-sisääntulo ilman pysyvää asennusta (uv tool run).",
       "copy": "Kopioi",
       "friendly": "Asenna PyPI:stä pipillä. Se riittää useimmille.",
       "pip_rns_intro": "Asenna Reticulumin kautta pip-rns:llä, mesh-pakettityökalullamme."
@@ -143,23 +143,23 @@
     },
     "archlinux": {
       "h2": "Arch Linux",
-      "intro": "Asenna Quad4in pacman-repositoriosta. Lisää repo ja asenna pacmanilla.",
-      "warn": "Lisää Quad4-repo ensin. Älä asenna MeshChatX AUR:sta.",
-      "btn": "Avaa arch.quad4.io"
+      "intro": "Asenna {author}in pacman-repositoriosta. Lisää repo ja asenna pacmanilla.",
+      "warn": "Lisää {author}-repo ensin. Älä asenna {app} AUR:sta.",
+      "btn": "Avaa {h:archUrl}"
     },
     "torrent": {
       "h2": "Torrent",
-      "intro": "BitTorrent HTTP-webseedeillä cdn.quad4.io:sta. Toimii ilman peerejä.",
+      "intro": "BitTorrent HTTP-webseedeillä. Toimii ilman peerejä.",
       "btn": "Lataa .torrent",
       "magnet": "Kopioi magnet",
       "privacy": "Peert voivat nahda IP-osoitteesi. Kayta VPN-yhteytta yksityisyytesi suojaamiseksi."
     },
     "termux": {
       "h2": "Termux",
-      "intro_before": "Asenna Androidille Termuxilla. Asenna riippuvuudet, sitten MeshChatX PyPI:stä. Aja headless-tilassa komennolla ",
+      "intro_before": "Asenna Androidille Termuxilla. Asenna riippuvuudet, sitten {app} PyPI:stä. Aja headless-tilassa komennolla ",
       "intro_after": ".",
       "step1": "1. Päivitä ja asenna paketit",
-      "step2": "2. Asenna MeshChatX (pip install reticulum-meshchatx)",
+      "step2": "2. Asenna {app} (pip install {pypiPackage})",
       "step3": "3. Aja headless"
     },
     "lead": "Valitse järjestelmäsi, lataa build ja aja se. Edistyneet asennukset ovat yhden napsautuksen päässä tarvittaessa.",
@@ -182,28 +182,14 @@
       "interfaces": "Rajapintahakemisto",
       "open_tab": "Selaa muita alustoja"
     },
-    "download_server": "Latauspalvelin",
-    "download_server_bunny": "BunnyCDN",
-    "download_server_github": "GitHub",
     "flatpak": {
       "h2": "Flatpak",
-      "friendly": "Jos Linuxisi käyttää Flatpakia, asenna MeshChatX yhdellä napsautuksella. Flatpak pitää sen ajan tasalla sen jälkeen.",
-      "remote_h3": "Päätteen komennot",
-      "remote_intro": "Haluatko mieluummin päätteen? Nämä vastaavat Asenna-painiketta yllä.",
-      "remote_install": "Asenna ja päivitä",
-      "remote_add": "Lisää MeshChatX-lähde",
-      "remote_note": "Asensitko vanhemmasta MeshChatX Flatpak -lähteestä? Poista se ensin komennolla: flatpak remote-delete meshchatx",
-      "remote_channels": "Beta- ja testing-kanavat tulevat näkyviin, kun ensimmäinen beta- tai testing-versio julkaistaan. Siihen asti tässä lähteessä on vain stable.",
-      "bundle_h3": "Ladattu tiedosto",
-      "bundle_intro": "Latasitko jo .flatpak-tiedoston? Asenna se näin:",
-      "btn": "Lataa .flatpak-tiedosto",
-      "no_bundle": "Tässä julkaisussa ei ole vielä Flatpak-tiedostoa.",
-      "install": "Asenna ja avaa",
-      "btn_install": "Asenna MeshChatX"
+      "friendly": "Jos Linuxisi käyttää Flatpakia, asenna {app} yhdellä napsautuksella. Flatpak pitää sen ajan tasalla sen jälkeen.",
+      "remote_note": "Asensitko vanhemmasta {app} Flatpak -lähteestä? Poista se ensin komennolla: flatpak remote-delete {slug}",
+      "btn": "Lataa .flatpak-tiedosto"
     },
     "verify": "Varmista",
     "verify_copy": "Kopioi varmistuskomento",
-    "recommended": "Suositeltu",
-    "cdn_powered": "CDN-palvelun tarjoaa"
+    "recommended": "Suositeltu"
   }
 }

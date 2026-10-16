@@ -47,28 +47,15 @@ const payload = Object.fromEntries(
             ? {
                 name: a.name,
                 url: a.url,
-                githubUrl: a.githubUrl,
-                cdnUrl: a.cdnUrl ?? null,
                 magnet: a.magnet ?? null,
                 sha256: a.sha256 ?? null,
               }
             : null,
         ]),
       ),
-      downloadServer: r.downloadServer,
-      downloadServers: r.downloadServers,
     })),
   ]),
 );
-
-const flatpakRefName = (c: Channel) =>
-  c === 'beta' ? 'meshchatx-beta.flatpakref' : c === 'testing' ? 'meshchatx-testing.flatpakref' : 'meshchatx-stable.flatpakref';
-
-const flatpakCommands = (c: Channel) =>
-  `flatpak install --from ${SITE.flatpakCdnBase}/${flatpakRefName(c)}\nflatpak run ${SITE.flatpakAppId}\nflatpak update`;
-
-const flatpakRemote = (c: Channel) =>
-  `flatpak remote-add --if-not-exists meshchatx ${SITE.flatpakCdnBase}/meshchatx.flatpakrepo\nflatpak install meshchatx ${SITE.flatpakAppId}//${c}`;
 
 const dl = (key: string, vars: Record<string, string | number> = {}) => t(locale, `dl.${key}`, vars);
 
@@ -113,35 +100,6 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
         class="rounded-lg border border-line bg-surface px-3 py-1.5 font-mono text-xs text-muted focus:border-mist-500 focus:outline-none"
       >
       </select>
-      <div
-        id="dl-source-wrap"
-        class="dl-source-notch hidden"
-        role="tablist"
-        aria-label={t(locale, 'dl.download_server')}
-      >
-        <button
-          type="button"
-          role="tab"
-          class="dl-source-tab"
-          data-source="bunny"
-          aria-selected="true"
-          tabindex="0"
-        >
-          <img src="/vendor/bunny-logo-orange.svg" alt="" width="12" height="14" />
-          <span>{t(locale, 'dl.download_server_bunny')}</span>
-        </button>
-        <button
-          type="button"
-          role="tab"
-          class="dl-source-tab"
-          data-source="github"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          <Icon name="mdiGithub" size={14} />
-          <span>{t(locale, 'dl.download_server_github')}</span>
-        </button>
-      </div>
     </div>
   </div>
 
@@ -328,13 +286,13 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
               <a data-asset="pyzPy311Arm64" href={d?.pyzPy311Arm64?.url ?? '#'} class:list={[btnMini, !d?.pyzPy311Arm64 && 'hidden']}>.pyz py3.11 arm64</a>
             </div>
             <div class="mt-3">
-              <CommandBlock label="run" code={`python meshchatx-py314-linux-x64.pyz`} copyLabel={t(locale, 'dl.python.copy')} />
+              <CommandBlock label="run" code={`python ${SITE.slug}-py314-linux-x64.pyz`} copyLabel={t(locale, 'dl.python.copy')} />
             </div>
           </div>
           <div data-pip-panel="pip-rns" class="pip-panel mt-3 hidden">
             <p class="mb-3 text-xs text-muted">{t(locale, 'dl.python.pip_rns_intro')}</p>
             <a href={SITE.pipRnsUrl} target="_blank" rel="noopener noreferrer" class={btnGhost}>
-              pip-rns.quad4.io
+              {new URL(SITE.pipRnsUrl).host}
             </a>
           </div>
 
@@ -435,38 +393,18 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
           <h2 class="font-semibold text-fg">{t(locale, 'dl.flatpak.h2')}</h2>
         </div>
         <p class="mt-1 text-sm text-muted">{t(locale, 'dl.flatpak.friendly')}</p>
-        <div class="mt-5 grid gap-4 lg:grid-cols-2">
-          <CommandBlock
-            label={t(locale, 'dl.flatpak.remote_install')}
-            code={flatpakCommands(c)}
-            copyLabel={t(locale, 'dl.python.copy')}
-          />
-          <CommandBlock
-            label={t(locale, 'dl.flatpak.remote_add')}
-            code={flatpakRemote(c)}
-            copyLabel={t(locale, 'dl.python.copy')}
-          />
-        </div>
-        <a data-asset="flatpak" href={d?.flatpak?.url ?? '#'} class:list={[btnGhost, 'mt-4', !d?.flatpak && 'hidden']}>
+        <a data-asset="flatpak" href={d?.flatpak?.url ?? '#'} class:list={[btn, 'mt-4', !d?.flatpak && 'hidden']}>
+          <Icon name="mdiDownload" size={15} />
           {t(locale, 'dl.flatpak.btn')}
         </a>
         <p class="mt-4 text-xs text-faint">{t(locale, 'dl.flatpak.remote_note')}</p>
-        {c !== 'stable' && (
-          <p class="mt-2 text-xs text-faint">{t(locale, 'dl.flatpak.remote_channels')}</p>
-        )}
         <ShaDetails locale={locale} downloads={d} keys={['flatpak']} />
       </div>
     </section>
     );
   })}
 
-  <p class="mx-auto flex max-w-6xl items-center justify-center gap-2 px-5 pb-16 pt-4 text-xs text-faint">
-    <span>{t(locale, 'dl.cdn_powered')}</span>
-    <a href="https://bunny.net/" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 hover:opacity-85" title="bunny.net">
-      <img src="/vendor/bunny-logo-orange.svg" alt="" width="22" height="25" class="h-6 w-auto" />
-      <span class="font-medium text-muted">bunny.net</span>
-    </a>
-  </p>
+  <div class="pb-16"></div>
 
   <script type="application/json" id="dl-data" set:html={JSON.stringify(payload)} />
 
@@ -474,23 +412,8 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     const dataEl = document.getElementById('dl-data');
     const data = dataEl ? JSON.parse(dataEl.textContent || '{}') : {};
     const versionSel = document.getElementById('dl-version');
-    const sourceWrap = document.getElementById('dl-source-wrap');
     const meta = document.getElementById('dl-release-meta');
     let channel = 'stable';
-    const params = new URLSearchParams(location.search);
-    let source = params.get('source') === 'github' ? 'github' : 'bunny';
-
-    function sourceTabs() {
-      return document.querySelectorAll('.dl-source-tab');
-    }
-
-    function paintSource() {
-      sourceTabs().forEach((b) => {
-        const on = b.getAttribute('data-source') === source;
-        b.setAttribute('aria-selected', String(on));
-        b.tabIndex = on ? 0 : -1;
-      });
-    }
 
     function fmtDate(iso) {
       try {
@@ -516,30 +439,10 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
       versionSel.classList.toggle('hidden', list.length === 0);
     }
 
-    function assetHref(asset) {
-      if (!asset) return '';
-      if (source === 'bunny' && asset.cdnUrl) return asset.cdnUrl;
-      if (source === 'github' && asset.githubUrl) return asset.githubUrl;
-      return asset.url || '';
-    }
-
-    function syncSource(rel) {
-      const servers = Array.isArray(rel?.downloadServers) ? rel.downloadServers : [];
-      sourceWrap?.classList.toggle('hidden', servers.length < 2);
-      if (servers.length < 2) {
-        source = servers[0] || 'github';
-        paintSource();
-        return;
-      }
-      if (!servers.includes(source)) source = rel.downloadServer || servers[0];
-      paintSource();
-    }
-
     function applyRelease() {
       const rel = currentRelease();
       const panel = document.querySelector(`[data-channel-panel="${channel}"]`);
       if (!panel || !rel) return;
-      syncSource(rel);
       const dl = rel.downloads || {};
       panel.querySelectorAll('.dl-link').forEach((a) => {
         const key = a.getAttribute('data-asset');
@@ -547,7 +450,7 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
         const asset = dl[key] || null;
         a.classList.toggle('hidden', !asset);
         a.classList.toggle('inline-flex', !!asset && !a.classList.contains('btn-mini'));
-        if (asset) a.href = assetHref(asset);
+        if (asset) a.href = asset.url || '';
       });
       panel.querySelectorAll('[data-asset-none]').forEach((el) => {
         const has = !!dl.winInstaller;
@@ -635,17 +538,6 @@ const btnMini = 'dl-link inline-flex items-center justify-center rounded-md bord
     });
 
     versionSel?.addEventListener('change', applyRelease);
-    sourceTabs().forEach((btn) => {
-      btn.addEventListener('click', () => {
-        source = btn.getAttribute('data-source') === 'github' ? 'github' : 'bunny';
-        const next = new URL(location.href);
-        if (source === 'github') next.searchParams.set('source', 'github');
-        else next.searchParams.delete('source');
-        history.replaceState(null, '', next);
-        paintSource();
-        applyRelease();
-      });
-    });
 
     // pip/pipx/uv/pyz/pip-rns tabs inside the Python card
     document.querySelectorAll('.pip-tab').forEach((btn) => {

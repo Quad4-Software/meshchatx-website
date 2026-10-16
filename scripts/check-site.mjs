@@ -12,6 +12,10 @@ if (!existsSync(dist)) {
   process.exit(1);
 }
 
+const brand = JSON.parse(readFileSync(join(root, 'src/config/site.json'), 'utf8'));
+const canonicalHost = new URL(brand.domain).host.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const canonicalRe = new RegExp(`rel="canonical" href="https?://${canonicalHost}/`);
+
 const htmlFiles = [];
 (function walk(dir) {
   for (const f of readdirSync(dir)) {
@@ -69,7 +73,7 @@ for (const f of htmlFiles) {
   // metadata
   if (!/<title>[^<]{4,}<\/title>/.test(html)) err(rel, 'missing or empty <title>');
   if (!/name="description" content="[^"]{10,}"/.test(html)) err(rel, 'missing meta description');
-  if (!/rel="canonical" href="https:\/\/meshchatx\.com\//.test(html)) err(rel, 'missing canonical');
+  if (!canonicalRe.test(html)) err(rel, 'missing canonical');
 
   // duplicate ids on the same page
   const seen = new Set();

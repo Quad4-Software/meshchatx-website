@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { SITE } from '../config/site';
 
 export interface GitStamp {
   author: string;
@@ -35,16 +36,20 @@ function stampFrom(repo: string, rel: string): GitStamp | null {
 
 /**
  * Last git commit that touched a docs page, plus author.
- * Prefers the MeshChatX app docs tree when present, else the website copy.
+ * Prefers the app repo docs tree (MCX_APP_REPO, else a sibling checkout named
+ * after the app repo), else the website copy.
  */
 export function docsGitStamp(slug: string): GitStamp | null {
   const key = slug;
   if (cache.has(key)) return cache.get(key) ?? null;
   const website = process.cwd();
-  const mesh = resolve(website, '../../meshchatx');
+  const appDir = SITE.githubRepo.split('/').pop()?.toLowerCase() ?? '';
+  const mesh = process.env.MCX_APP_REPO?.trim()
+    ? resolve(process.env.MCX_APP_REPO)
+    : resolve(website, `../../${appDir}`);
   const candidates: [string, string][] = [
     [mesh, `docs/en/${slug}.md`],
-    [mesh, `meshchatx/src/frontend/public/meshchatx-docs/en/${slug}.md`],
+    [mesh, `${appDir}/src/frontend/public/${appDir}-docs/en/${slug}.md`],
     [website, `src/content/docs/en/${slug}.md`],
   ];
   let best: GitStamp | null = null;

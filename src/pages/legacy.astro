@@ -58,7 +58,7 @@ const commands = [
   { label: 'Python', code: `pip install ${SITE.pypiPackage}` },
   { label: 'Docker', code: `docker pull ${SITE.dockerHub}` },
   { label: 'Podman', code: `podman pull ${SITE.dockerHub}` },
-  { label: 'Arch Linux', code: 'sudo pacman -S meshchatx-bin' },
+  { label: 'Arch Linux', code: `sudo pacman -S ${SITE.archPackage}` },
 ];
 ---
 
@@ -67,10 +67,10 @@ const commands = [
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>MeshChatX - Legacy</title>
+    <title>{SITE.name} - Legacy</title>
     <meta
       name="description"
-      content="Text-only MeshChatX site for browsers without JavaScript or modern CSS."
+      content={`Text-only ${SITE.name} site for browsers without JavaScript or modern CSS.`}
     />
     <link rel="canonical" href={`${SITE.domain}/legacy`} />
     <style is:inline type="text/css">
@@ -117,7 +117,7 @@ const commands = [
     </style>
   </head>
   <body bgcolor="#d8d4cc" text="#2a2a28" link="#243a5e" vlink="#4a3f55">
-    <h1>MeshChatX</h1>
+    <h1>{SITE.name}</h1>
     <p>
       All-in-one Reticulum client: messaging, calls, and NomadNet. No central
       servers. This page is for text browsers, old browsers, and browsers with
@@ -177,7 +177,7 @@ const commands = [
     </table>
 
     <h2>Install commands</h2>
-    <p>Arch Linux: add the Quad4 repository first.</p>
+    <p>Arch Linux: add the {SITE.authorName} repository first.</p>
     <table border="1" cellpadding="6" cellspacing="0" width="100%" bordercolor="#b0aca4">
       <tr bgcolor="#cdc9c1">
         <th>Method</th>
@@ -261,7 +261,7 @@ const commands = [
 
     <hr />
     <p>
-      CDN: {SITE.cdnBase} (BunnyCDN). Project: <a href={SITE.quad4Url}>quad4.io</a>.
+      Downloads: <a href={SITE.githubReleases}>GitHub releases</a>. Project: <a href={SITE.authorUrl}>{SITE.authorName}</a>.
       MIT + 0BSD.
     </p>
   </body>

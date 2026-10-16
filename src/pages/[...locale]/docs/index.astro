@@ -1,5 +1,5 @@
 ---
-import { LOCALES, DOCS_DEFAULT_SLUG, type Locale } from '../../../config/site';
+import { LOCALES, DOCS_DEFAULT_SLUG, SITE, type Locale } from '../../../config/site';
 import { localePath } from '../../../i18n';
 
 export function getStaticPaths() {
@@ -14,13 +14,13 @@ const target = localePath(locale, `docs/${DOCS_DEFAULT_SLUG}`);
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={locale} data-theme-key={SITE.themeKey}>
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="refresh" content={`0;url=${target}`} />
-    <meta name="description" content="MeshChatX documentation, setup guides, and platform notes." />
-    <link rel="canonical" href={`https://meshchatx.com${target}`} />
-    <title>MeshChatX Docs</title>
+    <meta name="description" content={`${SITE.name} documentation, setup guides, and platform notes.`} />
+    <link rel="canonical" href={`${SITE.domain}${target}`} />
+    <title>{SITE.name} Docs</title>
     <style>
       html { background: #0a0a0b; }
       [data-theme='light'] html, html[data-theme='light'] { background: #fafafa; }
@@ -31,7 +31,7 @@ const target = localePath(locale, `docs/${DOCS_DEFAULT_SLUG}`);
       (function () {
         var theme = '';
         try {
-          theme = localStorage.getItem('mcx-theme') || '';
+          theme = localStorage.getItem(document.documentElement.getAttribute('data-theme-key') || 'theme') || '';
         } catch (e) {}
         if (!theme) {
           theme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';

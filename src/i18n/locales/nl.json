@@ -3,41 +3,41 @@
     "skip": "Ga naar inhoud"
   },
   "brand": {
-    "name": "MeshChatX"
+    "name": "{app}"
   },
   "meta": {
     "title": {
-      "home": "MeshChatX",
-      "download": "Download | MeshChatX",
-      "contact": "Contact | MeshChatX",
-      "donate": "Doneren | MeshChatX",
-      "license": "Licentie | MeshChatX",
-      "privacy": "Privacybeleid | MeshChatX",
-      "roadmap": "Roadmap | MeshChatX",
-      "interfaces": "Interfaces | MeshChatX",
-      "branding": "Branding | MeshChatX",
-      "error": "Fout | MeshChatX",
-      "git": "Git | MeshChatX",
-      "docs": "Docs | MeshChatX",
-      "changelog": "Wijzigingslog | MeshChatX",
-      "offline": "Offline | MeshChatX"
+      "home": "{app}",
+      "download": "Download | {app}",
+      "contact": "Contact | {app}",
+      "donate": "Doneren | {app}",
+      "license": "Licentie | {app}",
+      "privacy": "Privacybeleid | {app}",
+      "roadmap": "Roadmap | {app}",
+      "interfaces": "Interfaces | {app}",
+      "branding": "Branding | {app}",
+      "error": "Fout | {app}",
+      "git": "Git | {app}",
+      "docs": "Docs | {app}",
+      "changelog": "Wijzigingslog | {app}",
+      "offline": "Offline | {app}"
     },
-    "og_image_alt": "MeshChatX-logo",
+    "og_image_alt": "{app}-logo",
     "desc": {
-      "home": "MeshChatX-client voor berichten, gesprekken en NomadNet over Reticulum. Geen centrale servers.",
-      "download": "Download MeshChatX voor Windows, Linux, macOS, Docker en Python. Gedecentraliseerde berichten over Reticulum.",
-      "contact": "Neem contact op met MeshChatX via LXMF (Reticulum) of e-mail team@quad4.io.",
-      "donate": "Steun MeshChatX op Ko-fi, Buy Me a Coffee of met Monero (XMR).",
-      "license": "Licenties voor de website meshchatx.com (0BSD) en de MeshChatX-applicatie (0BSD + MIT).",
-      "privacy": "Hoe meshchatx.com omgaat met gegevens wanneer je de Site bezoekt.",
-      "roadmap": "Geplande MeshChatX-releases, werk in uitvoering en voltooide mijlpalen.",
-      "changelog": "Uitgebrachte MeshChatX-versies met notities uit de upstream-CHANGELOG.",
+      "home": "{app}-client voor berichten, gesprekken en NomadNet over Reticulum. Geen centrale servers.",
+      "download": "Download {app} voor Windows, Linux, macOS, Docker en Python. Gedecentraliseerde berichten over Reticulum.",
+      "contact": "Neem contact op met {app} via LXMF (Reticulum) of e-mail {email}.",
+      "donate": "Steun {app} op Ko-fi, Buy Me a Coffee of met Monero (XMR).",
+      "license": "Licenties voor de website {up:domain} (0BSD) en de {app}-applicatie (0BSD + MIT).",
+      "privacy": "Hoe {up:domain} omgaat met gegevens wanneer je de Site bezoekt.",
+      "roadmap": "Geplande {app}-releases, werk in uitvoering en voltooide mijlpalen.",
+      "changelog": "Uitgebrachte {app}-versies met notities uit de upstream-CHANGELOG.",
       "interfaces": "Online Reticulum-interfaces in cache van directory.rns.recipes, met config-blokken voor ~/.reticulum/config.",
-      "branding": "MeshChatX-logo's, pictogrammen en merkkleuren voor pers en productgebruik.",
+      "branding": "{app}-logo's, pictogrammen en merkkleuren voor pers en productgebruik.",
       "error": "Deze pagina kon niet worden getoond zoals gevraagd.",
-      "git": "Kloon MeshChatX via rngit over Reticulum, of gebruik de GitHub- en CodeFloe-mirrors.",
-      "docs": "MeshChatX-documentatie uit het docs-pakket van de app: installatie, berichten, LXST-gesprekken, NomadNet, interfaces en platformgidsen.",
-      "offline": "Je bent offline. Open een gecachte MeshChatX-pagina of maak opnieuw verbinding."
+      "git": "Kloon {app} via rngit over Reticulum, of gebruik de GitHub- en CodeFloe-mirrors.",
+      "docs": "{app}-documentatie uit het docs-pakket van de app: installatie, berichten, LXST-gesprekken, NomadNet, interfaces en platformgidsen.",
+      "offline": "Je bent offline. Open een gecachte {app}-pagina of maak opnieuw verbinding."
     }
   },
   "error": {
@@ -70,7 +70,7 @@
     "title_5xx": "Er ging iets mis",
     "lead_5xx": "Er is een onverwachte fout opgetreden. Probeer het later opnieuw.",
     "cta_home": "Terug naar home",
-    "cta_download": "Download MeshChatX"
+    "cta_download": "Download {app}"
   },
   "nav": {
     "primary": "Primair",
@@ -115,9 +115,9 @@
     "license": "Licentie",
     "privacy": "Privacybeleid",
     "license_badge": "MIT + 0BSD",
-    "meta_copyright": "© 2026 MeshChatX.",
-    "developed_by": "Ontwikkeld door Quad4 Software",
-    "meta_site": "MeshChatX is een <a href=\"https://quad4.io/\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">quad4.io</a>-project.",
+    "meta_copyright": "© 2026 {app}.",
+    "developed_by": "Ontwikkeld door {author} Software",
+    "meta_site": "{app} is een <a href=\"{authorUrl}\" class=\"mcx-link-blue\" style=\"text-decoration:underline\">{up:authorUrl}</a>-project.",
     "product": "Product",
     "explore": "Verkennen",
     "legacy": "Legacy"
@@ -127,18 +127,18 @@
     "panel_title": "Contact via LXMF",
     "copy_title": "LXMF-adres kopiëren",
     "panel_email": "E-mail",
-    "email_lead": "Voor algemene vragen bereik je het Quad4-team per e-mail.",
-    "email": "team@quad4.io",
+    "email_lead": "Voor algemene vragen bereik je het {author}-team per e-mail.",
+    "email": "{email}",
     "copy_email": "E-mailadres kopiëren",
     "click_copy": "Klik op het adres om te kopiëren",
     "copied": "Gekopieerd"
   },
   "eol": {
-    "banner": "MeshChatX bereikt het einde van de levensduur op 1 januari 2027."
+    "banner": "{app} bereikt het einde van de levensduur op 1 januari 2027."
   },
   "donate": {
-    "h1": "Steun MeshChatX",
-    "lead": "MeshChatX wordt gebouwd voor de community. Jouw donatie helpt ontwikkeling en infrastructuurkosten te financieren.",
+    "h1": "Steun {app}",
+    "lead": "{app} wordt gebouwd voor de community. Jouw donatie helpt ontwikkeling en infrastructuurkosten te financieren.",
     "xmr_only": "Cryptovaluta: alleen Monero (XMR).",
     "monero": "Monero",
     "copy_xmr": "Monero-adres kopiëren",
@@ -150,24 +150,24 @@
   },
   "license": {
     "h1": "Licentie",
-    "intro": "De openbare website meshchatx.com en de code van deze site worden uitgebracht onder 0BSD (copyright Quad4). De MeshChatX-applicatie wordt uitgebracht onder 0BSD en MIT. De volledige licentieteksten van de applicatie volgen hieronder.",
+    "intro": "De openbare website {up:domain} en de code van deze site worden uitgebracht onder 0BSD (copyright {author}). De {app}-applicatie wordt uitgebracht onder 0BSD en MIT. De volledige licentieteksten van de applicatie volgen hieronder.",
     "h2_website": "Website",
-    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
-    "h2_app": "MeshChatX-applicatie",
-    "app_intro": "Deze voorwaarden gelden voor de broncode en gedistribueerde builds van MeshChatX.",
-    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 Quad4\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+    "body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2026 {author}\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.",
+    "h2_app": "{app}-applicatie",
+    "app_intro": "Deze voorwaarden gelden voor de broncode en gedistribueerde builds van {app}.",
+    "app_body": "Zero-Clause BSD License (0BSD)\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 {author}\n\nPermission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nMIT License\n\nCopyright (c) 2024 Liam Cottle\nCopyright (c) 2026 {author}\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "privacy": {
     "h1": "Privacybeleid",
     "updated": "Laatst bijgewerkt: 5 augustus 2026",
-    "p_scope": "Dit beleid beschrijft hoe de openbare marketingwebsite op meshchatx.com (de \"Site\") omgaat met informatie wanneer je pagina's op de Site bezoekt. Het geldt niet voor de MeshChatX-applicatie, Reticulum of diensten van derden die je apart gebruikt.",
+    "p_scope": "Dit beleid beschrijft hoe de openbare marketingwebsite op {up:domain} (de \"Site\") omgaat met informatie wanneer je pagina's op de Site bezoekt. Het geldt niet voor de {app}-applicatie, Reticulum of diensten van derden die je apart gebruikt.",
     "h2_no_tracking": "Geen tracking, telemetrie of advertenties",
     "p_no_tracking": "We verzamelen geen analysetelemetrie, we tonen geen advertenties en we volgen je niet over het web. De Site laadt geen analysetools, advertenties of sociale trackingpixels van derden.",
     "h2_cookies": "Cookies en lokale opslag",
     "p_cookies": "Cookies of browseropslag die de Site gebruikt zijn strikt functioneel. Ze bestaan alleen zodat de Site voorkeuren kan onthouden die jij kiest of die je browser al doorgeeft.",
     "p_cookies_detail": "Voorbeelden: themavoorkeur (licht, donker of systeem volgen) en taalvoorkeur wanneer je een locale kiest of wanneer we bij het eerste bezoek de Accept-Language-header van je browser matchen. Deze worden niet gebruikt voor advertenties, profilering of cross-site tracking.",
     "h2_analytics": "Versiegegevens en uitgaande links",
-    "p_analytics": "Download-, versie- en interface-directorygegevens worden vanaf deze Site geladen. Wanneer de cache verloopt, haalt de Site openbare GitHub-releasemetadata voor MeshChatX en de online lijst van directory.rns.recipes op. Dat proces is geen advertentie en wordt niet gebruikt om een persoonlijk profiel op te bouwen.",
+    "p_analytics": "Download-, versie- en interface-directorygegevens worden vanaf deze Site geladen. Wanneer de cache verloopt, haalt de Site openbare GitHub-releasemetadata voor {app} en de online lijst van directory.rns.recipes op. Dat proces is geen advertentie en wordt niet gebruikt om een persoonlijk profiel op te bouwen.",
     "p_analytics_detail": "Als je download-, broncode-, donatie- of documentatielinks volgt, gaan die verzoeken naar de host waarop je klikt. Die derden hebben hun eigen beleid.",
     "h2_rights": "Je rechten (EER en VK)",
     "p_rights": "Afhankelijk van waar je woont, kun je rechten hebben op inzage, correctie, verwijdering of beperking van de verwerking van persoonsgegevens, en om een klacht in te dienen bij een toezichthouder. Deze marketing-Site is ontworpen om verwerking minimaal te houden. Heb je een specifiek verzoek over deze Site, neem dan contact op zoals hieronder en we reageren zoals de toepasselijke wet vereist.",
@@ -177,8 +177,8 @@
   "home": {
     "hero": {
       "h1": "Alles-in-één Reticulum-client",
-      "lead": "MeshChatX is een alles-in-één Reticulum-client met berichten, bellen en een NomadNet-browser.",
-      "shot_alt": "MeshChatX-gesprek"
+      "lead": "{app} is een alles-in-één Reticulum-client met berichten, bellen en een NomadNet-browser.",
+      "shot_alt": "{app}-gesprek"
     },
     "platform": {
       "macos": "macOS",
@@ -223,20 +223,20 @@
     },
     "section": {
       "infra_h2": "Geen bedrijfs- of cloudservers",
-      "infra_lead": "MeshChatX draait geen chatservers. Berichten bewegen over de Reticulum-links die jij instelt."
+      "infra_lead": "{app} draait geen chatservers. Berichten bewegen over de Reticulum-links die jij instelt."
     },
     "feature": {
       "crypto_h3": "End-to-end versleuteld",
       "crypto_p": "Reticulum versleutelt elk bericht voor de identiteitssleutel van de ontvanger. Relais ertussen sturen alleen cijfertekst door.",
       "crypto_link": "Reticulum Crypto",
       "no_cloud_h3": "Geen centrale servers",
-      "no_cloud_p": "MeshChatX draait geen berichtenservers. Bezorging verloopt via de Reticulum-links en -nodes die jij kiest.",
+      "no_cloud_p": "{app} draait geen berichtenservers. Bezorging verloopt via de Reticulum-links en -nodes die jij kiest.",
       "no_account_h3": "Geen registratie",
       "no_account_p": "Geen telefoonnummer, e-mail of account. Je adres is een hash van een identiteitssleutel die je zelf genereert.",
       "tunnels_h3": "Radio, mesh of internet",
       "tunnels_p": "Reticulum werkt over LoRa, packet radio, wifi of overlays zoals I2P en Yggdrasil. Gebruik het pad dat je hebt.",
       "languages_h3": "Veel talen",
-      "languages_p": "MeshChatX is beschikbaar in negen talen. Kies er een voor deze pagina.",
+      "languages_p": "{app} is beschikbaar in negen talen. Kies er een voor deze pagina.",
       "local_h3": "Blijft op je apparaat",
       "local_p": "Identiteitssleutels en berichtgeschiedenis blijven in de lokale opslag van je machine. Er wordt niets naar een bedrijfsserver gesynchroniseerd.",
       "source_h3": "Open source",
@@ -265,14 +265,14 @@
     },
     "videos": {
       "h2": "Video's",
-      "lead": "MeshChatX-video's",
-      "youtube_title": "MeshChatX op YouTube",
-      "youtube_title_2": "MeshChatX op YouTube",
+      "lead": "{app}-video's",
+      "youtube_title": "{app} op YouTube",
+      "youtube_title_2": "{app} op YouTube",
       "play": "Video afspelen: :title"
     },
     "preview": {
       "demo_label": "Live-demo",
-      "demo_open": "Live-demo van MeshChatX openen",
+      "demo_open": "Live-demo van {app} openen",
       "mosaic_h2": "Screenshots",
       "desktop": "Desktop",
       "mobile": "Mobiel",
@@ -284,7 +284,7 @@
   },
   "roadmap": {
     "h1": "Roadmap",
-    "lead": "Grote MeshChatX-releases verschijnen ongeveer elke twee tot drie maanden. Elke vermelding lijst het geplande werk voor die versie.",
+    "lead": "Grote {app}-releases verschijnen ongeveer elke twee tot drie maanden. Elke vermelding lijst het geplande werk voor die versie.",
     "notice": "Data en functies kunnen verschuiven als prioriteiten veranderen.",
     "rail_label": "Release-tijdlijn",
     "status_done": "Klaar",
@@ -296,9 +296,9 @@
   },
   "changelog": {
     "h1": "Wijzigingslog",
-    "lead": "Versienotities uit de MeshChatX-repository, nieuwste eerst. Niet-uitgebracht werk blijft bovenaan tot het verschijnt.",
+    "lead": "Versienotities uit de {app}-repository, nieuwste eerst. Niet-uitgebracht werk blijft bovenaan tot het verschijnt.",
     "rss": "RSS-feed",
-    "rss_title": "MeshChatX-wijzigingslog RSS",
+    "rss_title": "{app}-wijzigingslog RSS",
     "source": "Bekijken op GitHub",
     "empty": "Wijzigingslog kon nu niet worden geladen. Probeer het later opnieuw of open hem op GitHub.",
     "toc": "Versies",
@@ -327,11 +327,11 @@
   },
   "branding": {
     "h1": "Branding",
-    "lead": "Officiële MeshChatX-merken, pictogrammen en kleuren voor perskits, docs en stores.",
+    "lead": "Officiële {app}-merken, pictogrammen en kleuren voor perskits, docs en stores.",
     "colors_h2": "Kleuren",
-    "colors_lead": "Primaire palette gebruikt op meshchatx.com.",
+    "colors_lead": "Primaire palette gebruikt op {up:domain}.",
     "lockup_h2": "Logo met tekst",
-    "lockup_lead": "Merk plus MeshChatX in Outfit. PNG en WebP houden een transparant veld in donkere en lichte typografie. Lichte JPG op wit. Donkere JPG op bijna-zwart.",
+    "lockup_lead": "Merk plus {app} in Outfit. PNG en WebP houden een transparant veld in donkere en lichte typografie. Lichte JPG op wit. Donkere JPG op bijna-zwart.",
     "logo_h2": "Logo",
     "logo_lead": "Volledig merk in gangbare exportformaten. PNG en WebP houden transparantie. JPG-varianten op wit of bijna-zwart.",
     "icon_h2": "App-pictogrammen",
@@ -363,7 +363,7 @@
       "mobile_fmt": "Mobiel - %s"
     },
     "home": {
-      "version_here": "MeshChatX v%s is er"
+      "version_here": "{app} v%s is er"
     },
     "download": {
       "no_release": "Geen release-informatie beschikbaar.",
@@ -436,7 +436,7 @@
     "codefloe_lead": "Openbare forge-mirror. Handig als je CodeFloe boven GitHub verkiest."
   },
   "docs": {
-    "meta_suffix": "MeshChatX Docs",
+    "meta_suffix": "{app} Docs",
     "nav_label": "Documentatie",
     "search_placeholder": "Docs doorzoeken...",
     "search_empty": "Geen overeenkomende pagina's.",

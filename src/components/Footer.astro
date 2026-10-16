@@ -15,7 +15,7 @@ const { locale } = Astro.props;
       <div>
         <div class="flex items-center gap-2.5">
           <img src="/media/branding/logo/logo-128.webp" alt="" width="28" height="28" class="h-7 w-7" />
-          <span class="font-semibold tracking-tight">MeshChatX</span>
+          <span class="font-semibold tracking-tight">{SITE.name}</span>
         </div>
         <p class="mt-3 max-w-xs text-sm text-muted">{t(locale, 'footer.tagline')}</p>
       </div>
@@ -39,13 +39,13 @@ const { locale } = Astro.props;
     <div class="mcx-footer-meta mt-12 border-t border-line pt-6 text-xs text-faint">
       <span class="mcx-footer-meta-start">{t(locale, 'footer.meta_copyright')}</span>
       <a
-        href={SITE.quad4Url}
+        href={SITE.authorUrl}
         class="mcx-footer-credit inline-flex items-center justify-center gap-1.5 transition-colors hover:text-fg"
       >
         <span>{t(locale, 'footer.developed_by')}</span>
         <ThemeImage
-          dark="/media/quad4/quad4-mark.svg"
-          light="/media/quad4/quad4-mark-black.svg"
+          dark={SITE.authorMarkDark}
+          light={SITE.authorMarkLight}
           alt=""
           width={20}
           height={20}
