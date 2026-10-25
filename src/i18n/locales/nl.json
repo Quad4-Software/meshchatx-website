@@ -13,13 +13,13 @@
       "donate": "Doneren | {app}",
       "license": "Licentie | {app}",
       "privacy": "Privacybeleid | {app}",
-      "roadmap": "Roadmap | {app}",
       "interfaces": "Interfaces | {app}",
       "branding": "Branding | {app}",
       "error": "Fout | {app}",
       "git": "Git | {app}",
       "docs": "Docs | {app}",
       "changelog": "Wijzigingslog | {app}",
+      "news": "Nieuws | MeshChatX",
       "offline": "Offline | {app}"
     },
     "og_image_alt": "{app}-logo",
@@ -30,8 +30,8 @@
       "donate": "Steun {app} op Ko-fi, Buy Me a Coffee of met Monero (XMR).",
       "license": "Licenties voor de website {up:domain} (0BSD) en de {app}-applicatie (0BSD + MIT).",
       "privacy": "Hoe {up:domain} omgaat met gegevens wanneer je de Site bezoekt.",
-      "roadmap": "Geplande {app}-releases, werk in uitvoering en voltooide mijlpalen.",
       "changelog": "Uitgebrachte {app}-versies met notities uit de upstream-CHANGELOG.",
+      "news": "MeshChatX-nieuws, aankondigingen en een RSS-feed.",
       "interfaces": "Online Reticulum-interfaces in cache van directory.rns.recipes, met config-blokken voor ~/.reticulum/config.",
       "branding": "{app}-logo's, pictogrammen en merkkleuren voor pers en productgebruik.",
       "error": "Deze pagina kon niet worden getoond zoals gevraagd.",
@@ -78,7 +78,6 @@
     "showcase": "Screenshots",
     "donate": "Doneren",
     "contact": "Contact",
-    "roadmap": "Roadmap",
     "interfaces": "Interfaces",
     "branding": "Branding",
     "git": "Git",
@@ -88,6 +87,7 @@
     "mobile_menu_close": "Menu sluiten",
     "mobile_nav": "Mobiel",
     "docs": "Docs",
+    "news": "Nieuws",
     "secondary": "Meer",
     "theme_light": "Licht",
     "theme_dark": "Donker",
@@ -133,8 +133,9 @@
     "click_copy": "Klik op het adres om te kopiëren",
     "copied": "Gekopieerd"
   },
-  "eol": {
-    "banner": "{app} bereikt het einde van de levensduur op 1 januari 2027."
+  "notice": {
+    "banner": "{app} gaat na de release van v5 12 maanden in de modus alleen onderhoud en bereikt dan op 1 januari 2028 het einde van de levensduur (EOL).",
+    "read_more": "Lees meer"
   },
   "donate": {
     "h1": "Steun {app}",
@@ -281,18 +282,6 @@
       "prev": "Vorige screenshot",
       "next": "Volgende screenshot"
     }
-  },
-  "roadmap": {
-    "h1": "Roadmap",
-    "lead": "Grote {app}-releases verschijnen ongeveer elke twee tot drie maanden. Elke vermelding lijst het geplande werk voor die versie.",
-    "notice": "Data en functies kunnen verschuiven als prioriteiten veranderen.",
-    "rail_label": "Release-tijdlijn",
-    "status_done": "Klaar",
-    "status_progress": "In uitvoering",
-    "status_planned": "Gepland",
-    "status_upcoming": "Aankomend",
-    "status_released": "Uitgebracht",
-    "changelog_preview": "Volledige wijzigingslog lezen"
   },
   "changelog": {
     "h1": "Wijzigingslog",
@@ -457,5 +446,11 @@
     },
     "copy_md": "MD kopiëren",
     "updated": "Laatst bijgewerkt :date door :author"
+  },
+  "news": {
+    "h1": "Nieuws",
+    "lead": "Aankondigingen en site-updates.",
+    "empty": "Nog geen berichten. Abonneer op de RSS-feed voor de eerste.",
+    "rss": "RSS-feed"
   }
 }

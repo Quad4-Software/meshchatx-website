@@ -13,13 +13,13 @@
       "donate": "捐赠 | {app}",
       "license": "许可 | {app}",
       "privacy": "隐私政策 | {app}",
-      "roadmap": "路线图 | {app}",
       "interfaces": "接口 | {app}",
       "error": "错误 | {app}",
       "branding": "品牌 | {app}",
       "git": "Git | {app}",
       "docs": "文档 | {app}",
       "changelog": "更新日志 | {app}",
+      "news": "新闻 | MeshChatX",
       "offline": "离线 | {app}"
     },
     "og_image_alt": "{app} 标志",
@@ -30,10 +30,10 @@
       "donate": "在 Ko-fi、Buy Me a Coffee 或使用门罗币（XMR）支持 {app}。",
       "license": "{up:domain} 网站（0BSD）与 {app} 应用（0BSD + MIT）的许可说明。",
       "privacy": "{up:domain} 在您访问本站时如何处理数据。",
-      "roadmap": "{app} 已规划版本、进行中的工作与已完成里程碑。",
       "interfaces": "来自 directory.rns.recipes 的在线 Reticulum 接口，含可写入 ~/.reticulum/config 的配置块。",
       "error": "无法按请求显示此页面。",
       "changelog": "已发布的 {app} 版本及上游 CHANGELOG 中的说明。",
+      "news": "MeshChatX 新闻、公告和 RSS 源。",
       "branding": "{app} 徽标、图标与品牌色，供媒体与产品使用。",
       "git": "通过 Reticulum 上的 rngit 克隆 {app}，或使用 GitHub 与 CodeFloe 镜像。",
       "docs": "来自应用文档包的 {app} 文档：安装、消息、LXST 通话、NomadNet、接口与平台指南。",
@@ -78,7 +78,6 @@
     "showcase": "截图",
     "donate": "捐赠",
     "contact": "联系",
-    "roadmap": "路线图",
     "interfaces": "接口",
     "git": "Git",
     "download": "下载",
@@ -87,6 +86,7 @@
     "mobile_menu_close": "关闭菜单",
     "mobile_nav": "移动端",
     "docs": "文档",
+    "news": "新闻",
     "branding": "品牌",
     "secondary": "更多",
     "theme_light": "浅色",
@@ -133,8 +133,9 @@
     "click_copy": "点击地址即可复制",
     "copied": "已复制"
   },
-  "eol": {
-    "banner": "{app} 将于 2027 年 1 月 1 日结束生命周期。"
+  "notice": {
+    "banner": "{app} 将在 v5 发布后进入 12 个月的仅维护模式,然后于 2028 年 1 月 1 日进入 EOL。",
+    "read_more": "了解更多"
   },
   "donate": {
     "h1": "支持 {app}",
@@ -281,18 +282,6 @@
       "prev": "上一张",
       "next": "下一张"
     }
-  },
-  "roadmap": {
-    "h1": "路线图",
-    "lead": "{app} 大版本大约每两到三个月发布一次。每条记录列出该版本计划中的工作。",
-    "notice": "日期与功能可能随优先级变化而调整。",
-    "rail_label": "发布时间线",
-    "status_done": "已完成",
-    "status_progress": "进行中",
-    "status_planned": "已计划",
-    "status_upcoming": "即将推出",
-    "status_released": "已发布",
-    "changelog_preview": "阅读完整更新日志"
   },
   "js": {
     "theme": {
@@ -457,5 +446,11 @@
     },
     "copy_md": "复制 MD",
     "updated": "最近更新 :date，作者 :author"
+  },
+  "news": {
+    "h1": "新闻",
+    "lead": "公告与站点更新。",
+    "empty": "暂无文章。订阅 RSS 以获取第一篇。",
+    "rss": "RSS 源"
   }
 }

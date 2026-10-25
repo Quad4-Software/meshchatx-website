@@ -6,7 +6,7 @@ export const GET: APIRoute = () =>
     JSON.stringify({
       name: SITE.name,
       short_name: SITE.name,
-      description: `${SITE.name} site: docs, download, roadmap, interfaces, and product pages. Works offline for visited pages except Dependencies.`,
+      description: `${SITE.name} site: docs, download, interfaces, and product pages. Works offline for visited pages except Dependencies.`,
       theme_color: '#fafafa',
       background_color: '#09090b',
       display: 'standalone',

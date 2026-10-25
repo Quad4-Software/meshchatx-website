@@ -13,13 +13,13 @@
       "donate": "Donate | {app}",
       "license": "License | {app}",
       "privacy": "Privacy Policy | {app}",
-      "roadmap": "Roadmap | {app}",
       "interfaces": "Interfaces | {app}",
       "branding": "Branding | {app}",
       "error": "Error | {app}",
       "git": "Git | {app}",
       "docs": "Docs | {app}",
       "changelog": "Changelog | {app}",
+      "news": "News | MeshChatX",
       "offline": "Offline | {app}"
     },
     "og_image_alt": "{app} logo",
@@ -30,8 +30,8 @@
       "donate": "Support {app} on Ko-fi, Buy Me a Coffee, or with Monero (XMR).",
       "license": "Licensing for the {up:domain} website (0BSD) and the {app} application (0BSD + MIT).",
       "privacy": "How {up:domain} handles data when you visit the Site.",
-      "roadmap": "{app} planned releases, in-progress work, and completed milestones.",
       "changelog": "Released {app} versions with notes from the upstream CHANGELOG.",
+      "news": "MeshChatX news, announcements, and an RSS feed.",
       "interfaces": "Online Reticulum interfaces cached from directory.rns.recipes, with config blocks for ~/.reticulum/config.",
       "branding": "{app} logos, icons, and brand colors for press and product use.",
       "error": "This page could not be shown as requested.",
@@ -78,7 +78,6 @@
     "showcase": "Screenshots",
     "donate": "Donate",
     "contact": "Contact",
-    "roadmap": "Roadmap",
     "interfaces": "Interfaces",
     "branding": "Branding",
     "git": "Git",
@@ -88,6 +87,7 @@
     "mobile_menu_close": "Close menu",
     "mobile_nav": "Mobile",
     "docs": "Docs",
+    "news": "News",
     "secondary": "More",
     "theme_light": "Light",
     "theme_dark": "Dark",
@@ -133,8 +133,9 @@
     "click_copy": "Click the address to copy",
     "copied": "Copied"
   },
-  "eol": {
-    "banner": "{app} reaches end of life on 1 January 2027."
+  "notice": {
+    "banner": "{app} will be in maintenance only mode for 12 months after the v5 release, then reach EOL on 1 January 2028.",
+    "read_more": "Read more"
   },
   "donate": {
     "h1": "Support {app}",
@@ -281,18 +282,6 @@
       "prev": "Previous screenshot",
       "next": "Next screenshot"
     }
-  },
-  "roadmap": {
-    "h1": "Roadmap",
-    "lead": "Major {app} releases land about every two to three months. Each entry lists the work planned for that version.",
-    "notice": "Dates and features can move as priorities change.",
-    "rail_label": "Release timeline",
-    "status_done": "Done",
-    "status_progress": "In Progress",
-    "status_planned": "Planned",
-    "status_upcoming": "Upcoming",
-    "status_released": "Released",
-    "changelog_preview": "Read full changelog"
   },
   "changelog": {
     "h1": "Changelog",
@@ -457,5 +446,11 @@
     },
     "copy_md": "Copy MD",
     "updated": "Last updated :date by :author"
+  },
+  "news": {
+    "h1": "News",
+    "lead": "Announcements and site updates.",
+    "empty": "No posts yet. Subscribe to the RSS feed to hear when the first one lands.",
+    "rss": "RSS feed"
   }
 }

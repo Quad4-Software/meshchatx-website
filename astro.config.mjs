@@ -1,6 +1,7 @@
 // @ts-check
 import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
+import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { generateShotVariants } from './scripts/shot-variants.mjs';
@@ -23,7 +24,7 @@ function shotVariantsIntegration() {
 export default defineConfig({
   site: brand.domain,
   output: 'static',
-  integrations: [shotVariantsIntegration(), sitemap()],
+  integrations: [shotVariantsIntegration(), sitemap(), mdx()],
 
   build: {
     inlineStylesheets: 'always',

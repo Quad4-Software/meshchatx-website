@@ -13,13 +13,13 @@
       "donate": "Donazioni | {app}",
       "license": "Licenza | {app}",
       "privacy": "Privacy | {app}",
-      "roadmap": "Roadmap | {app}",
       "interfaces": "Interfacce | {app}",
       "error": "Errore | {app}",
       "branding": "Branding | {app}",
       "git": "Git | {app}",
       "docs": "Documentazione | {app}",
       "changelog": "Changelog | {app}",
+      "news": "Notizie | MeshChatX",
       "offline": "Offline | {app}"
     },
     "og_image_alt": "Logo {app}",
@@ -30,10 +30,10 @@
       "donate": "Sostieni {app} su Ko-fi, Buy Me a Coffee o con Monero (XMR).",
       "license": "Licenze del sito {up:domain} (0BSD) e dell'applicazione {app} (0BSD + MIT).",
       "privacy": "Come {up:domain} tratta i dati durante la visita al Sito.",
-      "roadmap": "Release pianificate di {app}, lavori in corso e traguardi raggiunti.",
       "interfaces": "Interfacce Reticulum online da directory.rns.recipes, con blocchi di config per ~/.reticulum/config.",
       "error": "Questa pagina non può essere mostrata come richiesto.",
       "changelog": "Versioni rilasciate di {app} con note dal CHANGELOG upstream.",
+      "news": "Notizie MeshChatX, annunci e feed RSS.",
       "branding": "Loghi, icone e colori {app} per stampa e uso prodotto.",
       "git": "Clona {app} da rngit su Reticulum, oppure usa i mirror GitHub e CodeFloe.",
       "docs": "Documentazione {app} dal pacchetto docs dell’app: installazione, messaggistica, chiamate LXST, NomadNet, interfacce e guide di piattaforma.",
@@ -78,7 +78,6 @@
     "showcase": "Screenshot",
     "donate": "Donazioni",
     "contact": "Contatti",
-    "roadmap": "Roadmap",
     "interfaces": "Interfacce",
     "git": "Git",
     "download": "Download",
@@ -87,6 +86,7 @@
     "mobile_menu_close": "Chiudi menu",
     "mobile_nav": "Mobile",
     "docs": "Docs",
+    "news": "Notizie",
     "branding": "Branding",
     "secondary": "Altro",
     "theme_light": "Chiaro",
@@ -133,8 +133,9 @@
     "click_copy": "Clicca l’indirizzo per copiare",
     "copied": "Copiato"
   },
-  "eol": {
-    "banner": "{app} raggiunge la fine del ciclo di vita il 1 gennaio 2027."
+  "notice": {
+    "banner": "{app} sarà in modalità di sola manutenzione per 12 mesi dopo il rilascio di v5, poi raggiungerà la fine vita (EOL) il 1 gennaio 2028.",
+    "read_more": "Leggi di più"
   },
   "donate": {
     "h1": "Sostieni {app}",
@@ -281,18 +282,6 @@
       "prev": "Screenshot precedente",
       "next": "Screenshot successivo"
     }
-  },
-  "roadmap": {
-    "h1": "Roadmap",
-    "lead": "Le release principali di {app} arrivano circa ogni due o tre mesi. Ogni voce elenca il lavoro previsto per quella versione.",
-    "notice": "Date e funzionalità possono cambiare al variare delle priorità.",
-    "status_done": "Fatto",
-    "status_progress": "In corso",
-    "status_planned": "Pianificato",
-    "status_upcoming": "Prossimo",
-    "rail_label": "Timeline delle release",
-    "status_released": "Rilasciato",
-    "changelog_preview": "Leggi il changelog completo"
   },
   "js": {
     "theme": {
@@ -457,5 +446,11 @@
     },
     "copy_md": "Copia MD",
     "updated": "Ultimo aggiornamento :date da :author"
+  },
+  "news": {
+    "h1": "Notizie",
+    "lead": "Annunci e aggiornamenti del sito.",
+    "empty": "Nessun articolo ancora. Iscriviti al feed RSS per il primo.",
+    "rss": "Feed RSS"
   }
 }

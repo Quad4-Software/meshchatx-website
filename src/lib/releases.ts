@@ -203,13 +203,4 @@ export async function releasesForChannel(channel: Channel): Promise<Release[]> {
   return all.filter((r) => r.channel === channel);
 }
 
-export async function publishedVersions(): Promise<string[]> {
-  const all = await getReleases();
-  return [
-    ...new Set(
-      all
-        .filter((r) => !r.prerelease && /^\d+\.\d+\.\d+$/.test(r.version))
-        .map((r) => r.version),
-    ),
-  ];
-}
+

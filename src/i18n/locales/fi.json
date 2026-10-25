@@ -13,13 +13,13 @@
       "donate": "Lahjoita | {app}",
       "license": "Lisenssi | {app}",
       "privacy": "Tietosuojakäytäntö | {app}",
-      "roadmap": "Tiekartta | {app}",
       "interfaces": "Rajapinnat | {app}",
       "branding": "Brändi | {app}",
       "error": "Virhe | {app}",
       "git": "Git | {app}",
       "docs": "Docs | {app}",
       "changelog": "Muutosloki | {app}",
+      "news": "Uutiset | MeshChatX",
       "offline": "Offline | {app}"
     },
     "og_image_alt": "{app}-logo",
@@ -30,8 +30,8 @@
       "donate": "Tue {app}:ää Ko-fissa, Buy Me a Coffeessa tai Monerolla (XMR).",
       "license": "{up:domain}-sivuston (0BSD) ja {app}-sovelluksen (0BSD + MIT) lisensointi.",
       "privacy": "Miten {up:domain} käsittelee tietoja, kun vierailet Sivustolla.",
-      "roadmap": "{app}:n suunnitellut julkaisut, käynnissä oleva työ ja valmiit virstanpylväät.",
       "changelog": "Julkaistut {app}-versiot muistiinpanoineen upstream-CHANGELOGista.",
+      "news": "MeshChatX-uutiset, tiedotteet ja RSS-syote.",
       "interfaces": "Online-Reticulum-rajapinnat välimuistissa directory.rns.recipesistä, config-lohkoineen polkuun ~/.reticulum/config.",
       "branding": "{app}-logot, kuvakkeet ja brändivärit lehdistölle ja tuotekäyttöön.",
       "error": "Tätä sivua ei voitu näyttää pyydetyllä tavalla.",
@@ -78,7 +78,6 @@
     "showcase": "Kuvakaappaukset",
     "donate": "Lahjoita",
     "contact": "Yhteystiedot",
-    "roadmap": "Tiekartta",
     "interfaces": "Rajapinnat",
     "branding": "Brändi",
     "git": "Git",
@@ -88,6 +87,7 @@
     "mobile_menu_close": "Sulje valikko",
     "mobile_nav": "Mobiili",
     "docs": "Docs",
+    "news": "Uutiset",
     "secondary": "Lisää",
     "theme_light": "Vaalea",
     "theme_dark": "Tumma",
@@ -133,8 +133,9 @@
     "click_copy": "Kopioi napsauttamalla osoitetta",
     "copied": "Kopioitu"
   },
-  "eol": {
-    "banner": "{app}:n elinkaari päättyy 1. tammikuuta 2027."
+  "notice": {
+    "banner": "{app} on vain ylläpitotilassa 12 kuukautta v5-julkaisun jälkeen ja saavuttaa sitten elinkaarensa pään (EOL) 1. tammikuuta 2028.",
+    "read_more": "Lue lisää"
   },
   "donate": {
     "h1": "Tue {app}:ää",
@@ -281,18 +282,6 @@
       "prev": "Edellinen kuvakaappaus",
       "next": "Seuraava kuvakaappaus"
     }
-  },
-  "roadmap": {
-    "h1": "Tiekartta",
-    "lead": "{app}:n isot julkaisut ilmestyvät noin kahden–kolmen kuukauden välein. Kukin kohta listaa kyseiseen versioon suunnitellun työn.",
-    "notice": "Päivämäärät ja ominaisuudet voivat siirtyä prioriteettien muuttuessa.",
-    "rail_label": "Julkaisuaikajana",
-    "status_done": "Valmis",
-    "status_progress": "Käynnissä",
-    "status_planned": "Suunniteltu",
-    "status_upcoming": "Tulossa",
-    "status_released": "Julkaistu",
-    "changelog_preview": "Lue koko muutosloki"
   },
   "changelog": {
     "h1": "Muutosloki",
@@ -457,5 +446,11 @@
     },
     "copy_md": "Kopioi MD",
     "updated": "Paivitetty :date, :author"
+  },
+  "news": {
+    "h1": "Uutiset",
+    "lead": "Tiedotteet ja sivuston paivitykset.",
+    "empty": "Ei julkaisuja viela. Tilaa RSS, niin kuulet ensimmaisesta.",
+    "rss": "RSS-syote"
   }
 }

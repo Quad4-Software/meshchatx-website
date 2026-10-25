@@ -13,13 +13,13 @@
       "donate": "Faire un don | {app}",
       "license": "Licence | {app}",
       "privacy": "Politique de confidentialité | {app}",
-      "roadmap": "Feuille de route | {app}",
       "interfaces": "Interfaces | {app}",
       "branding": "Identité visuelle | {app}",
       "error": "Erreur | {app}",
       "git": "Git | {app}",
       "docs": "Docs | {app}",
       "changelog": "Journal des changements | {app}",
+      "news": "Actualites | MeshChatX",
       "offline": "Hors ligne | {app}"
     },
     "og_image_alt": "Logo {app}",
@@ -30,8 +30,8 @@
       "donate": "Soutenez {app} sur Ko-fi, Buy Me a Coffee ou avec Monero (XMR).",
       "license": "Licences du site {up:domain} (0BSD) et de l'application {app} (0BSD + MIT).",
       "privacy": "Comment {up:domain} traite les données lorsque vous visitez le Site.",
-      "roadmap": "Versions prévues de {app}, travaux en cours et jalons terminés.",
       "changelog": "Versions publiées de {app} avec les notes du CHANGELOG amont.",
+      "news": "Actualites MeshChatX, annonces et flux RSS.",
       "interfaces": "Interfaces Reticulum en ligne mises en cache depuis directory.rns.recipes, avec des blocs de config pour ~/.reticulum/config.",
       "branding": "Logos, icônes et couleurs de marque {app} pour la presse et l'usage produit.",
       "error": "Cette page n'a pas pu être affichée comme demandé.",
@@ -78,7 +78,6 @@
     "showcase": "Captures d'écran",
     "donate": "Faire un don",
     "contact": "Contact",
-    "roadmap": "Feuille de route",
     "interfaces": "Interfaces",
     "branding": "Identité visuelle",
     "git": "Git",
@@ -88,6 +87,7 @@
     "mobile_menu_close": "Fermer le menu",
     "mobile_nav": "Mobile",
     "docs": "Docs",
+    "news": "Actualites",
     "secondary": "Plus",
     "theme_light": "Clair",
     "theme_dark": "Sombre",
@@ -133,8 +133,9 @@
     "click_copy": "Cliquez sur l'adresse pour copier",
     "copied": "Copié"
   },
-  "eol": {
-    "banner": "{app} arrive en fin de vie le 1er janvier 2027."
+  "notice": {
+    "banner": "{app} sera en mode maintenance uniquement pendant 12 mois après la sortie de v5, puis atteindra la fin de vie (EOL) le 1er janvier 2028.",
+    "read_more": "En savoir plus"
   },
   "donate": {
     "h1": "Soutenir {app}",
@@ -281,18 +282,6 @@
       "prev": "Capture precedente",
       "next": "Capture suivante"
     }
-  },
-  "roadmap": {
-    "h1": "Feuille de route",
-    "lead": "Les versions majeures de {app} sortent environ tous les deux à trois mois. Chaque entrée liste le travail prévu pour cette version.",
-    "notice": "Les dates et les fonctionnalités peuvent bouger si les priorités changent.",
-    "rail_label": "Calendrier des versions",
-    "status_done": "Terminé",
-    "status_progress": "En cours",
-    "status_planned": "Planifié",
-    "status_upcoming": "À venir",
-    "status_released": "Publié",
-    "changelog_preview": "Lire le journal complet"
   },
   "changelog": {
     "h1": "Journal des changements",
@@ -457,5 +446,11 @@
     },
     "copy_md": "Copier MD",
     "updated": "Derniere mise a jour :date par :author"
+  },
+  "news": {
+    "h1": "Actualites",
+    "lead": "Annonces et mises a jour du site.",
+    "empty": "Pas encore d'articles. Abonnez-vous au flux RSS pour le premier.",
+    "rss": "Flux RSS"
   }
 }

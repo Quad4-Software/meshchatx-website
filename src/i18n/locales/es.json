@@ -13,13 +13,13 @@
       "donate": "Donar | {app}",
       "license": "Licencia | {app}",
       "privacy": "Política de privacidad | {app}",
-      "roadmap": "Hoja de ruta | {app}",
       "interfaces": "Interfaces | {app}",
       "branding": "Marca | {app}",
       "error": "Error | {app}",
       "git": "Git | {app}",
       "docs": "Docs | {app}",
       "changelog": "Registro de cambios | {app}",
+      "news": "Noticias | MeshChatX",
       "offline": "Sin conexión | {app}"
     },
     "og_image_alt": "Logo de {app}",
@@ -30,8 +30,8 @@
       "donate": "Apoya {app} en Ko-fi, Buy Me a Coffee o con Monero (XMR).",
       "license": "Licencias del sitio {up:domain} (0BSD) y de la aplicación {app} (0BSD + MIT).",
       "privacy": "Cómo {up:domain} trata los datos cuando visitas el Sitio.",
-      "roadmap": "Versiones previstas de {app}, trabajo en curso y hitos completados.",
       "changelog": "Versiones publicadas de {app} con notas del CHANGELOG upstream.",
+      "news": "Noticias de MeshChatX, anuncios y un feed RSS.",
       "interfaces": "Interfaces Reticulum en línea en caché desde directory.rns.recipes, con bloques de config para ~/.reticulum/config.",
       "branding": "Logos, iconos y colores de marca de {app} para prensa y uso de producto.",
       "error": "Esta página no se pudo mostrar como se solicitó.",
@@ -78,7 +78,6 @@
     "showcase": "Capturas",
     "donate": "Donar",
     "contact": "Contacto",
-    "roadmap": "Hoja de ruta",
     "interfaces": "Interfaces",
     "branding": "Marca",
     "git": "Git",
@@ -88,6 +87,7 @@
     "mobile_menu_close": "Cerrar menú",
     "mobile_nav": "Móvil",
     "docs": "Docs",
+    "news": "Noticias",
     "secondary": "Más",
     "theme_light": "Claro",
     "theme_dark": "Oscuro",
@@ -133,8 +133,9 @@
     "click_copy": "Haz clic en la dirección para copiar",
     "copied": "Copiado"
   },
-  "eol": {
-    "banner": "{app} llega al fin de su ciclo de vida el 1 de enero de 2027."
+  "notice": {
+    "banner": "{app} pasará a modo de solo mantenimiento durante 12 meses tras el lanzamiento de v5 y luego llegará al fin de vida (EOL) el 1 de enero de 2028.",
+    "read_more": "Leer más"
   },
   "donate": {
     "h1": "Apoyar {app}",
@@ -281,18 +282,6 @@
       "prev": "Captura anterior",
       "next": "Captura siguiente"
     }
-  },
-  "roadmap": {
-    "h1": "Hoja de ruta",
-    "lead": "Las versiones mayores de {app} salen aproximadamente cada dos o tres meses. Cada entrada lista el trabajo previsto para esa versión.",
-    "notice": "Las fechas y las funciones pueden moverse si cambian las prioridades.",
-    "rail_label": "Cronología de versiones",
-    "status_done": "Hecho",
-    "status_progress": "En curso",
-    "status_planned": "Planificado",
-    "status_upcoming": "Próximo",
-    "status_released": "Publicado",
-    "changelog_preview": "Leer el registro completo"
   },
   "changelog": {
     "h1": "Registro de cambios",
@@ -457,5 +446,11 @@
     },
     "copy_md": "Copiar MD",
     "updated": "Ultima actualizacion :date por :author"
+  },
+  "news": {
+    "h1": "Noticias",
+    "lead": "Anuncios y actualizaciones del sitio.",
+    "empty": "Aun no hay publicaciones. Suscribete al RSS para enterarte de la primera.",
+    "rss": "Feed RSS"
   }
 }

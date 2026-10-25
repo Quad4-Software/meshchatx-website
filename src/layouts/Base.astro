@@ -85,6 +85,7 @@ const ogImage = `${SITE.domain}/og/${ogCard}.webp`;
     <link rel="alternate" hreflang="en" href={new URL(localePath('en', path ?? ''), SITE.domain).href} />
     <link rel="alternate" hreflang="x-default" href={new URL(localePath('en', path ?? ''), SITE.domain).href} />
     <link rel="alternate" href="/legacy" title="Legacy" />
+    <link rel="alternate" type="application/rss+xml" title="MeshChatX News" href="/news.xml" />
     <noscript>
       <meta http-equiv="refresh" content="0;url=/legacy" />
     </noscript>

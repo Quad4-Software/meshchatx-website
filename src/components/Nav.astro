@@ -1,7 +1,7 @@
 ---
 import { NAV_LINKS, LOCALES, LOCALE_NAMES, PREFIXED_LOCALES, SITE, type Locale } from '../config/site';
 import { t, localePath } from '../i18n';
-import EolBanner from './EolBanner.astro';
+import NoticeBanner from './NoticeBanner.astro';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -14,7 +14,7 @@ const currentPath = Astro.url.pathname.replace(localeRe, '');
 ---
 
 <header class="mcx-header">
-  <EolBanner locale={locale} />
+  <NoticeBanner locale={locale} />
   <div class="mcx-header-blur"></div>
   <nav class="mcx-header-nav" aria-label={t(locale, 'nav.primary')}>
     <a href={localePath(locale)} class="flex items-center gap-2.5 text-fg">

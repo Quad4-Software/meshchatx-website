@@ -53,7 +53,7 @@ export const OG_LOCALES: Record<Locale, string> = {
 
 export const NAV_LINKS = [
   { key: 'nav.docs', path: 'docs' },
-  { key: 'nav.roadmap', path: 'roadmap' },
+  { key: 'nav.news', path: 'news' },
   { key: 'nav.git', path: 'git' },
   { key: 'nav.contact', path: 'contact' },
 ] as const;
@@ -64,7 +64,6 @@ export const FOOTER_GROUPS = [
     links: [
       { key: 'nav.download', path: 'download' },
       { key: 'nav.docs', path: 'docs' },
-      { key: 'nav.roadmap', path: 'roadmap' },
       { key: 'nav.git', path: 'git' },
     ],
   },
@@ -72,6 +71,7 @@ export const FOOTER_GROUPS = [
     group: 'footer.explore',
     links: [
       { key: 'nav.interfaces', path: 'interfaces' },
+      { key: 'nav.news', path: 'news' },
       { key: 'footer.changelog', path: 'changelog' },
       { key: 'nav.branding', path: 'branding' },
       { key: 'nav.donate', path: 'donate' },

@@ -11,8 +11,8 @@ export const GET: APIRoute = async () => {
 - [Home](${SITE.domain}/)
 - [Download](${SITE.domain}/download) - installers and packages per channel
 - [Docs](${SITE.domain}/docs) - user documentation mirrored from the app
-- [Roadmap](${SITE.domain}/roadmap)
 - [Changelog](${SITE.domain}/changelog)
+- [News](${SITE.domain}/news) - announcements ([RSS](${SITE.domain}/news.xml))
 - [Interfaces](${SITE.domain}/interfaces) - public Reticulum interface directory
 - [Branding](${SITE.domain}/branding)
 - [Contact](${SITE.domain}/contact)
