@@ -17,6 +17,7 @@ for (const locale of ['en', ...PREFIXED_LOCALES] as Locale[]) {
 
 function deepMerge(target: Dict, src: Dict) {
   for (const [k, v] of Object.entries(src)) {
+    if (k === '__proto__' || k === 'constructor' || k === 'prototype') continue;
     if (v && typeof v === 'object' && !Array.isArray(v)) {
       const t = (target[k] ?? {}) as Dict;
       target[k] = t;

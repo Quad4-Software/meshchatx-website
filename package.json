@@ -12,20 +12,20 @@
     "check:site": "node scripts/check-site.mjs"
   },
   "dependencies": {
-    "@astrojs/mdx": "8.1.0",
+    "@astrojs/mdx": "8.1.1",
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource-variable/space-grotesk": "^5.3.0",
     "@fontsource/space-mono": "^5.3.0",
     "@mdi/js": "^7.4.47",
-    "astro": "^7.3.4",
-    "marked": "^18.0.14",
+    "astro": "^7.4.2",
+    "marked": "^18.1.1",
     "sharp": "^0.35.5"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
+    "@astrojs/check": "^0.9.12",
     "@lhci/cli": "^0.15.1",
     "@tailwindcss/vite": "^4.3.3",
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.5",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
   }
